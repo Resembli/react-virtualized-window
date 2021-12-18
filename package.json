@@ -1,0 +1,22 @@
+{
+  "name": "@resembli/root",
+  "version": "0.0.1",
+  "description": "root directory of @resembli/le-ui",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Resembli/le-ui.git"
+  },
+  "author": "Lee Beydoun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Resembli/le-ui/issues"
+  },
+  "homepage": "https://github.com/Resembli/le-ui#readme",
+  "devDependencies": {
+    "husky": "^7.0.0"
+  },
+  "scripts": {
+    "prepare": "husky install"
+  }
+}

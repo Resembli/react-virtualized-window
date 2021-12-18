@@ -1,0 +1,18 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+INPUT_FILE=$1
+
+START_LINE=`head -n1 $INPUT_FILE`
+
+ACCEPTED_LIST="DOCS|GRID|UI|DOM-TYPES|ROOT"
+
+PATTERN="^\[(${ACCEPTED_LIST})\]: [a-z0-9].+"
+
+COLOR_LIGHT_RED='\e[1;31m'
+
+if ! [[ "$START_LINE" =~ $PATTERN ]]; then
+    printf "\n${COLOR_LIGHT_RED}Commit message should match [<project>]: [a-z0-9].+\nwhere <project> is one of $ACCEPTED_LIST\n\n"
+    exit 1
+fi
+
