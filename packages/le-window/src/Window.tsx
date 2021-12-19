@@ -1,12 +1,13 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 
 export interface WindowProps {
-  width: number | string
-  height: number | string
+  width: number
+  height: number
   rowHeight: number
+  data: any[] // TODO: type is better
 }
 
-export const Window = ({ width, height, rowHeight }: WindowProps) => {
+export const Window = ({ width, height, rowHeight, data }: WindowProps) => {
   const overlayRef = useRef<HTMLDivElement>(null)
   const windowRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -14,31 +15,34 @@ export const Window = ({ width, height, rowHeight }: WindowProps) => {
 
   const windowHeight = useRef(0)
   const windowWidth = useRef(0)
+  const [offset, setOffset] = useState(0)
 
-  const offsetRef = useRef(0)
+  const innerHeight = useMemo(() => rowHeight * data.length, [data.length, rowHeight])
 
-  // TODO: Link up on wheel event and keep scroll state in sync
-  // TODO: Test out row virtualisation
-  // TODO: Add handling for variable size rows
   useEffect(() => {
     const handleScroll = (event: Event) => {
       if (!topShiftRef.current || !contentRef.current) return
 
       const target = event.currentTarget as HTMLDivElement
 
-      offsetRef.current = target.scrollTop
-      topShiftRef.current.style.height = `${offsetRef.current}px`
-      contentRef.current.style.transform = `translate3d(0px, -${offsetRef.current}px, 0px)`
+      const newOffset = target.scrollTop
+
+      setOffset(newOffset)
+      // topShiftRef.current.style.height = `${newOffset}px`
+      contentRef.current.style.transform = `translate3d(0px, -${newOffset}px, 0px)`
     }
 
     const handleWheel = (event: WheelEvent) => {
       if (!contentRef.current || !overlayRef.current || !topShiftRef.current) return
 
-      offsetRef.current = Math.max(0, offsetRef.current + event.deltaY)
-      overlayRef.current.scrollTop = offsetRef.current
+      const newOffset = Math.min(
+        Math.max(0, offset + event.deltaY),
+        innerHeight - windowHeight.current,
+      )
+      setOffset(newOffset)
 
-      topShiftRef.current.style.height = `${offsetRef.current}px`
-      contentRef.current.style.transform = `translate3d(0px, -${offsetRef.current}px, 0px)`
+      overlayRef.current.scrollTop = newOffset
+      contentRef.current.style.transform = `translate3d(0px, -${newOffset}px, 0px)`
     }
 
     const overlayNode = overlayRef.current
@@ -51,7 +55,7 @@ export const Window = ({ width, height, rowHeight }: WindowProps) => {
       overlayNode?.removeEventListener("scroll", handleScroll)
       contentNode?.removeEventListener("wheel", handleWheel)
     }
-  }, [])
+  }, [innerHeight, offset])
 
   useEffect(() => {
     if (!overlayRef.current || !windowRef.current) return
@@ -62,6 +66,17 @@ export const Window = ({ width, height, rowHeight }: WindowProps) => {
     windowRef.current.style.width = `${windowWidth.current}px`
     windowRef.current.style.height = `${windowHeight.current}px`
   }, [])
+
+  const [start, end, topShiftHeight] = useMemo(() => {
+    const itemsPerWindow = Math.ceil(height / rowHeight)
+
+    const startIndex = Math.floor(offset / rowHeight)
+    const endIndex = itemsPerWindow + startIndex
+
+    const topShiftHeight = startIndex * rowHeight
+
+    return [startIndex, endIndex, topShiftHeight] as const
+  }, [height, offset, rowHeight])
 
   return (
     <div style={{ position: "relative" }}>
@@ -76,7 +91,7 @@ export const Window = ({ width, height, rowHeight }: WindowProps) => {
           overflow: "auto",
         }}
       >
-        <div style={{ width: 1000, height: 5000 }}></div>
+        <div style={{ height: innerHeight }}></div>
       </div>
       <div
         ref={windowRef}
@@ -88,7 +103,14 @@ export const Window = ({ width, height, rowHeight }: WindowProps) => {
         onClick={() => console.log("I was clicked")}
       >
         <div ref={contentRef} style={{ width: "100%", height: "100%" }}>
-          <div ref={topShiftRef}></div>
+          <div ref={topShiftRef} style={{ height: topShiftHeight }}></div>
+          {data.slice(start, end + 1).map((d, i) => {
+            return (
+              <div key={i} style={{ height: rowHeight }}>
+                {d}
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>
