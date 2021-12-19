@@ -29,6 +29,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint . --ext .ts --ext .tsx --ext .js --ext .jsx"
+    "lint": "eslint . --ext .ts --ext .tsx --ext .js --ext .jsx",
+    "prettier": "prettier --check *"
   }
 }
