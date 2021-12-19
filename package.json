@@ -29,7 +29,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint . --ext .ts --ext .tsx --ext .js --ext .jsx",
+    "lint": "eslint . --ext .ts --ext .tsx --ext .js --ext .jsx --ignore-path .gitignore --max-warnings=0",
     "prettier": "prettier --check *"
   }
 }
