@@ -1,21 +1,25 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useReducer, useRef, useState } from "react"
 
-export interface WindowProps {
-  width: number
-  height: number
+export interface WindowProps<T> {
   rowHeight: number
-  data: any[] // TODO: type is better
+  data: T[]
+  ItemComponent: (props: T) => JSX.Element
 }
 
-export const Window = ({ width, height, rowHeight, data }: WindowProps) => {
+export const Window = <T extends Record<string, unknown>>({
+  rowHeight,
+  data,
+  ItemComponent,
+}: WindowProps<T>) => {
   const overlayRef = useRef<HTMLDivElement>(null)
   const windowRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
   const topShiftRef = useRef<HTMLDivElement>(null)
+  const windowHeightRef = useRef(0)
+  const windowWidthRef = useRef(0)
 
-  const windowHeight = useRef(0)
-  const windowWidth = useRef(0)
   const [offset, setOffset] = useState(0)
+  const [, forceUpdate] = useReducer((x) => (x + 1) % 10, 0)
 
   const innerHeight = useMemo(() => rowHeight * data.length, [data.length, rowHeight])
 
@@ -37,7 +41,7 @@ export const Window = ({ width, height, rowHeight, data }: WindowProps) => {
 
       const newOffset = Math.min(
         Math.max(0, offset + event.deltaY),
-        innerHeight - windowHeight.current,
+        innerHeight - windowHeightRef.current,
       )
       setOffset(newOffset)
 
@@ -58,36 +62,47 @@ export const Window = ({ width, height, rowHeight, data }: WindowProps) => {
   }, [innerHeight, offset])
 
   useEffect(() => {
-    if (!overlayRef.current || !windowRef.current) return
+    if (!overlayRef.current) return
 
-    windowWidth.current = overlayRef.current.clientWidth
-    windowHeight.current = overlayRef.current.clientHeight
+    const parentWidth = overlayRef.current.parentElement?.clientWidth
+    const parentHeight = overlayRef.current.parentElement?.clientHeight
 
-    windowRef.current.style.width = `${windowWidth.current}px`
-    windowRef.current.style.height = `${windowHeight.current}px`
+    if (!parentWidth || !parentHeight)
+      throw new Error("Expected overlay div to have a parent element")
+
+    overlayRef.current.style.width = `${parentWidth}px`
+    overlayRef.current.style.height = `${parentHeight}px`
   }, [])
 
-  const [start, end, topShiftHeight] = useMemo(() => {
-    const itemsPerWindow = Math.ceil(height / rowHeight)
+  useEffect(() => {
+    if (!overlayRef.current || !windowRef.current) return
 
-    const startIndex = Math.floor(offset / rowHeight)
-    const endIndex = itemsPerWindow + startIndex
+    windowWidthRef.current = overlayRef.current.clientWidth
+    windowHeightRef.current = overlayRef.current.clientHeight
 
-    const topShiftHeight = startIndex * rowHeight
+    windowRef.current.style.width = `${windowWidthRef.current}px`
+    windowRef.current.style.height = `${windowHeightRef.current}px`
 
-    return [startIndex, endIndex, topShiftHeight] as const
-  }, [height, offset, rowHeight])
+    // After all effect calculations are complete, we need to force a re-render as the
+    // div for the list will have changed height.
+    forceUpdate()
+  }, [])
+
+  // TODO: These calculations are for fixed size row heights. It will need to adjusted for variable size row heights.
+  const itemsPerWindow = Math.ceil(windowHeightRef.current / rowHeight)
+
+  const start = Math.floor(offset / rowHeight)
+  const end = itemsPerWindow + start
+
+  const topShiftHeight = start * rowHeight
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
       <div
         ref={overlayRef}
         style={{
           position: "relative",
           boxSizing: "border-box",
-          width: width,
-          height: height,
-          border: "1px solid black",
           overflow: "auto",
         }}
       >
@@ -106,8 +121,11 @@ export const Window = ({ width, height, rowHeight, data }: WindowProps) => {
           <div ref={topShiftRef} style={{ height: topShiftHeight }}></div>
           {data.slice(start, end + 1).map((d, i) => {
             return (
-              <div key={i} style={{ height: rowHeight }}>
-                {d}
+              <div
+                key={i}
+                style={{ height: rowHeight, maxHeight: rowHeight, minHeight: rowHeight }}
+              >
+                <ItemComponent {...d} />
               </div>
             )
           })}
