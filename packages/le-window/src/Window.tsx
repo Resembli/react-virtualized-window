@@ -72,7 +72,7 @@ export const Window = ({ width, height, rowHeight }: WindowProps) => {
           boxSizing: "border-box",
           width: width,
           height: height,
-          border: "1px solid white",
+          border: "1px solid black",
           overflow: "auto",
         }}
       >
