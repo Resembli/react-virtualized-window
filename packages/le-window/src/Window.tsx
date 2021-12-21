@@ -7,12 +7,14 @@ export interface WindowProps<T> {
   rowHeight: number
   data: T[]
   ItemComponent: (props: T) => JSX.Element
+  tableIndex?: number
 }
 
 export const Window = <T extends Record<string, unknown>>({
   rowHeight,
   data,
   ItemComponent,
+  tableIndex,
 }: WindowProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
@@ -33,6 +35,7 @@ export const Window = <T extends Record<string, unknown>>({
 
   return (
     <div
+      tabIndex={tableIndex ?? -1}
       ref={windowRef}
       onScroll={onScroll}
       style={{
@@ -43,7 +46,7 @@ export const Window = <T extends Record<string, unknown>>({
       }}
     >
       <div style={{ height: innerHeight }}>
-        <div style={{ position: "sticky", top: 0, bottom: 0, display: "block" }}>
+        <div style={{ position: "sticky", top: 0 }}>
           <div style={{ transform: `translate3d(0, ${translationOffset}px, 0)` }}>
             {data.slice(start, end + 1).map((d, i) => {
               return (
