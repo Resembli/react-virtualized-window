@@ -58,6 +58,7 @@ importers:
       '@docusaurus/preset-classic': 2.0.0-beta.13
       '@docusaurus/theme-classic': ^2.0.0-beta.13
       '@mdx-js/react': ^1.6.21
+      '@resembli/le-window': workspace:^
       '@tsconfig/docusaurus': ^1.0.4
       clsx: ^1.1.1
       prism-react-renderer: ^1.2.1
@@ -68,6 +69,7 @@ importers:
       '@docusaurus/core': 2.0.0-beta.13_05e59b520ac3ec5b5c63514484626b2f
       '@docusaurus/preset-classic': 2.0.0-beta.13_27ab95dbdfe5939f369d75284c43bfed
       '@mdx-js/react': 1.6.22_react@17.0.2
+      '@resembli/le-window': link:../packages/le-window
       clsx: 1.1.1
       prism-react-renderer: 1.2.1_react@17.0.2
       react: 17.0.2

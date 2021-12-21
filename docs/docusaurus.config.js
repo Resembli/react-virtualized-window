@@ -13,8 +13,8 @@ const config = {
   onBrokenMarkdownLinks: "throw",
   onDuplicateRoutes: "throw",
   favicon: "favicon.ico",
-  organizationName: "Resembli", // Usually your GitHub org/user name.
-  projectName: "le-ui", // Usually your repo name.
+  organizationName: "Resembli",
+  projectName: "le-ui",
 
   presets: [
     [
@@ -23,12 +23,10 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          // Please change this to your repo.
           editUrl: "https://github.com/Resembli/le-ui/edit/main/docs/",
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
           editUrl: "https://github.com/Resembli/le-ui/edit/main/docs/",
         },
         theme: {
@@ -50,11 +48,11 @@ const config = {
         items: [
           {
             type: "doc",
-            docId: "intro",
+            docId: "introduction",
             position: "left",
-            label: "Tutorial",
+            label: "Documentation",
           },
-          { to: "/blog", label: "Blog", position: "left" },
+          { to: "/blog", label: "Blog", position: "right" },
           {
             href: "https://github.com/Resembli/le-ui",
             label: "GitHub",
