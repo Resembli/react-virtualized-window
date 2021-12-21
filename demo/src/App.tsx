@@ -23,8 +23,8 @@ const RenderIndexCentered = (p: { index: number }) => {
 
 export const App = () => {
   return (
-    <div style={{ margin: 50, width: 800, height: 800 }}>
-      <Window rowHeight={35} data={listItems} ItemComponent={RenderIndexCentered} />
+    <div style={{ margin: 50, width: 800, height: 500 }}>
+      <Window rowHeight={20} data={listItems} ItemComponent={RenderIndexCentered} />
     </div>
   )
 }

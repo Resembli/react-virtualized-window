@@ -6,7 +6,7 @@ export const useWindowScroll = () => {
   const onScroll: UIEventHandler<HTMLDivElement> = useCallback((event) => {
     const target = event.currentTarget
 
-    const newOffset = target.scrollTop
+    const newOffset = Math.max(0, target.scrollTop)
     setOffset(newOffset)
   }, [])
 

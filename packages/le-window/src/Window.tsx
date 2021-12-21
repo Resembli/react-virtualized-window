@@ -24,7 +24,7 @@ export const Window = <T extends Record<string, unknown>>({
   // TODO: These calculations are for fixed size row heights. It will need to adjusted for variable size row heights.
   const itemsPerWindow = Math.ceil(height / rowHeight)
 
-  const start = Math.floor(offset / rowHeight)
+  const start = Math.max(0, Math.floor(offset / rowHeight))
   const end = itemsPerWindow + start
 
   // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
@@ -39,7 +39,6 @@ export const Window = <T extends Record<string, unknown>>({
         height: "100%",
         width: "100%",
         position: "relative",
-        background: "red",
         overflow: "auto",
       }}
     >
