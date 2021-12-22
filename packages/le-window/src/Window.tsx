@@ -1,41 +1,47 @@
-import { useMemo, useRef } from "react"
+import { useRef } from "react"
 
+import type { WindowDataItem } from "./types"
+import { useInnerDimensions } from "./useInnerDimensions"
+import { useOffsetIndices } from "./useOffsetIndices"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
 export interface WindowProps<T> {
   rowHeight: number
-  data: T[]
+  data: WindowDataItem<T>[]
   ItemComponent: (props: T) => JSX.Element
-  tableIndex?: number
+  tabIndex?: number
+  variableHeights?: boolean
 }
 
 export const Window = <T extends Record<string, unknown>>({
   rowHeight,
   data,
   ItemComponent,
-  tableIndex,
+  tabIndex,
+  variableHeights = false,
 }: WindowProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
-  const innerHeight = useMemo(() => rowHeight * data.length, [data.length, rowHeight])
-
-  const [, height] = useWindowDimensions(windowRef)
   const [offset, onScroll] = useWindowScroll()
-
-  // TODO: These calculations are for fixed size row heights. It will need to adjusted for variable size row heights.
-  const itemsPerWindow = Math.ceil(height / rowHeight)
-
-  const start = Math.max(0, Math.floor(offset / rowHeight))
-  const end = itemsPerWindow + start
+  const [, height] = useWindowDimensions(windowRef)
+  const [, innerHeight] = useInnerDimensions({ rowHeight, data, variableHeights })
+  const [start, end, runningHeight] = useOffsetIndices({
+    rowHeight,
+    height,
+    offset,
+    variableHeights,
+    data,
+  })
 
   // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
   // moving the div a little higher than it should be.
-  const translationOffset = innerHeight - offset - height < rowHeight ? 0 : -offset % rowHeight
+  const translationOffset =
+    innerHeight - offset - height < rowHeight ? 0 : -(offset - runningHeight)
 
   return (
     <div
-      tabIndex={tableIndex ?? -1}
+      tabIndex={tabIndex}
       ref={windowRef}
       onScroll={onScroll}
       style={{
@@ -49,12 +55,13 @@ export const Window = <T extends Record<string, unknown>>({
         <div style={{ position: "sticky", top: 0 }}>
           <div style={{ transform: `translate3d(0, ${translationOffset}px, 0)` }}>
             {data.slice(start, end + 1).map((d, i) => {
+              const itemHeight = variableHeights ? d.height ?? rowHeight : rowHeight
               return (
                 <div
                   key={i}
-                  style={{ height: rowHeight, maxHeight: rowHeight, minHeight: rowHeight }}
+                  style={{ height: itemHeight, maxHeight: itemHeight, minHeight: itemHeight }}
                 >
-                  <ItemComponent {...d} />
+                  <ItemComponent {...d.props} />
                 </div>
               )
             })}

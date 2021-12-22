@@ -6,7 +6,7 @@ import { Window } from "@resembli/le-window"
 export const WindowExample = () => {
   const listItems = Array(10_000)
     .fill(0)
-    .map((_, i) => ({ index: i }))
+    .map((_, i) => ({ props: { index: i } }))
 
   const RenderIndexCentered = (p: { index: number }) => {
     const { isDarkTheme } = useThemeContext()
