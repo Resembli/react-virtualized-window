@@ -1,8 +1,11 @@
+import type { MutableRefObject } from "react"
 import { useRef } from "react"
 
 import type { ListDataItem } from "./types"
 import { useInnerHeight } from "./useInnerHeight"
 import { useOffsetIndices } from "./useOffsetIndices"
+import type { WindowApi } from "./useWindowApi"
+import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
@@ -12,6 +15,7 @@ export interface WindowProps<T> {
   ItemComponent: (props: T) => JSX.Element
   tabIndex?: number
   variableHeights?: boolean
+  apiRef?: MutableRefObject<WindowApi | undefined>
 }
 
 export const List = <T extends Record<string, unknown>>({
@@ -20,10 +24,13 @@ export const List = <T extends Record<string, unknown>>({
   ItemComponent,
   tabIndex,
   variableHeights = false,
+  apiRef,
 }: WindowProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
-  const [offset, onScroll] = useWindowScroll()
+  useWindowApi(windowRef, apiRef)
+
+  const [offset, , onScroll] = useWindowScroll()
   const [, height] = useWindowDimensions(windowRef)
   const innerHeight = useInnerHeight({ rowHeight, data, variableHeights })
   const [start, end, runningHeight] = useOffsetIndices({
