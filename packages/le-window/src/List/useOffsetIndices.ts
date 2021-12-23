@@ -1,10 +1,10 @@
 import { useMemo } from "react"
 
-import type { WindowDataItem } from "./types"
+import type { ListDataItem } from "./types"
 
 export interface UseOffsetIndicesArgs<T> {
   rowHeight: number
-  data: WindowDataItem<T>[]
+  data: ListDataItem<T>[]
   height: number
   offset: number
   variableHeights: boolean

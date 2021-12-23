@@ -1,20 +1,14 @@
 import { useMemo } from "react"
 
-import type { WindowDataItem } from "./types"
+import type { ListDataItem } from "./types"
 
-export interface UseInnerDimensionsArgs<T> {
+export interface UseInnerHeight<T> {
   rowHeight: number
-  data: WindowDataItem<T>[]
+  data: ListDataItem<T>[]
   variableHeights: boolean
 }
 
-export const useInnerDimensions = <T>({
-  rowHeight,
-  data,
-  variableHeights,
-}: UseInnerDimensionsArgs<T>) => {
-  const innerWidth = 0
-
+export const useInnerHeight = <T>({ rowHeight, data, variableHeights }: UseInnerHeight<T>) => {
   const innerHeight = useMemo(() => {
     if (!variableHeights) {
       return rowHeight * data.length
@@ -27,5 +21,5 @@ export const useInnerDimensions = <T>({
     }
   }, [data, rowHeight, variableHeights])
 
-  return [innerWidth, innerHeight] as const
+  return innerHeight
 }

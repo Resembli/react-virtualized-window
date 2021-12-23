@@ -1,7 +1,6 @@
 import useThemeContext from "@theme/hooks/useThemeContext"
-import React from "react"
 
-import { Window } from "@resembli/le-window"
+import { List } from "@resembli/le-window"
 
 export const WindowExample = () => {
   const listItems = Array(10_000)
@@ -32,7 +31,7 @@ export const WindowExample = () => {
 
   return (
     <div style={{ width: "100%", height: "30vh", minHeight: 500, border: "1px solid black" }}>
-      <Window rowHeight={35} data={listItems} ItemComponent={RenderIndexCentered} />
+      <List rowHeight={35} data={listItems} ItemComponent={RenderIndexCentered} />
     </div>
   )
 }
