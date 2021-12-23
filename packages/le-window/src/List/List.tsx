@@ -1,20 +1,20 @@
 import { useRef } from "react"
 
-import type { WindowDataItem } from "./types"
-import { useInnerDimensions } from "./useInnerDimensions"
+import type { ListDataItem } from "./types"
+import { useInnerHeight } from "./useInnerHeight"
 import { useOffsetIndices } from "./useOffsetIndices"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
 export interface WindowProps<T> {
   rowHeight: number
-  data: WindowDataItem<T>[]
+  data: ListDataItem<T>[]
   ItemComponent: (props: T) => JSX.Element
   tabIndex?: number
   variableHeights?: boolean
 }
 
-export const Window = <T extends Record<string, unknown>>({
+export const List = <T extends Record<string, unknown>>({
   rowHeight,
   data,
   ItemComponent,
@@ -25,7 +25,7 @@ export const Window = <T extends Record<string, unknown>>({
 
   const [offset, onScroll] = useWindowScroll()
   const [, height] = useWindowDimensions(windowRef)
-  const [, innerHeight] = useInnerDimensions({ rowHeight, data, variableHeights })
+  const innerHeight = useInnerHeight({ rowHeight, data, variableHeights })
   const [start, end, runningHeight] = useOffsetIndices({
     rowHeight,
     height,

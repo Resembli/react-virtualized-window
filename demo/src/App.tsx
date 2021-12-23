@@ -1,4 +1,4 @@
-import { Window } from "@resembli/le-window"
+import { List } from "@resembli/le-window"
 
 const heights = [50, 75, 80, 90, undefined]
 
@@ -29,7 +29,7 @@ const RenderIndexCentered = (p: { index: number }) => {
 export const App = () => {
   return (
     <div style={{ margin: 50, width: 800, height: 500 }}>
-      <Window rowHeight={20} tabIndex={0} data={listItems} ItemComponent={RenderIndexCentered} />
+      <List rowHeight={20} tabIndex={0} data={listItems} ItemComponent={RenderIndexCentered} />
     </div>
   )
 }
