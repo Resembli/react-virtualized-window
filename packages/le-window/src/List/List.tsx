@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "react"
+import type { CSSProperties, MutableRefObject } from "react"
 import { useRef } from "react"
 
 import type { ListDataItem } from "./types"
@@ -16,6 +16,10 @@ export interface WindowProps<T> {
   tabIndex?: number
   variableHeights?: boolean
   apiRef?: MutableRefObject<WindowApi | undefined>
+  rtl?: boolean
+  className?: string
+  styles?: CSSProperties
+  asItem?: boolean
 }
 
 export const List = <T extends Record<string, unknown>>({
@@ -25,6 +29,10 @@ export const List = <T extends Record<string, unknown>>({
   tabIndex,
   variableHeights = false,
   apiRef,
+  rtl,
+  className,
+  styles,
+  asItem,
 }: WindowProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
@@ -51,7 +59,10 @@ export const List = <T extends Record<string, unknown>>({
       tabIndex={tabIndex}
       ref={windowRef}
       onScroll={onScroll}
+      className={className}
       style={{
+        ...styles,
+        direction: rtl ? "rtl" : undefined,
         height: "100%",
         width: "100%",
         position: "relative",
@@ -60,9 +71,30 @@ export const List = <T extends Record<string, unknown>>({
     >
       <div style={{ height: innerHeight }}>
         <div style={{ position: "sticky", top: 0 }}>
-          <div style={{ transform: `translate3d(0, ${translationOffset}px, 0)` }}>
+          <div
+            style={{
+              transform: `translate3d(0, ${translationOffset}px, 0)`,
+              willChange: "transform",
+            }}
+          >
             {data.slice(start, end + 1).map((d, i) => {
               const itemHeight = variableHeights ? d.height ?? rowHeight : rowHeight
+
+              const { styles = {} } = d.props
+
+              if (asItem)
+                return (
+                  <ItemComponent
+                    {...d.props}
+                    styles={{
+                      ...(styles as CSSProperties),
+                      height: itemHeight,
+                      maxHeight: itemHeight,
+                      minHeight: itemHeight,
+                    }}
+                  />
+                )
+
               return (
                 <div
                   key={i}
