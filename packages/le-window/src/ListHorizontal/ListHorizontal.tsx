@@ -10,7 +10,7 @@ import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 import { useData } from "./useData"
 import { useOffsetIndices } from "./useOffsetIndices"
-import { useRtlScrollOffsetEffect } from "./useRtlScrollOffsetter"
+import { useRtlScrollOffsetEffect } from "./useRtlScrollOffsetEffect"
 
 export interface ListHorizontalProps<T> {
   columnWidth: number
