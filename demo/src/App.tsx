@@ -8,14 +8,14 @@ const listItems = Array(1000)
   .fill(0)
   .map((_, i) => {
     const a = Math.floor(Math.random() * heights.length)
-    return { props: { index: i, styles: {} }, height: heights[a] }
+    return { props: { index: i, style: {} }, height: heights[a] }
   })
 
-const RenderIndexCentered = (p: { index: number; styles: CSSProperties }) => {
+const RenderIndexCentered = (p: { index: number; style: CSSProperties }) => {
   return (
     <div
       style={{
-        ...p.styles,
+        ...p.style,
         background: p.index % 2 === 0 ? "#f8f8f0" : "white",
         display: "flex",
         alignItems: "center",
