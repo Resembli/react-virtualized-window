@@ -96,7 +96,7 @@ export const List = <T extends Record<string, unknown>>({
                 return (
                   <ItemComponent
                     {...d.props}
-                    styles={{
+                    style={{
                       ...(style as CSSProperties),
                       height: itemHeight,
                       maxHeight: itemHeight,
