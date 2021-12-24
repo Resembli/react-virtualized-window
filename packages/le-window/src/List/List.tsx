@@ -19,11 +19,11 @@ export interface WindowProps<T> {
   apiRef?: MutableRefObject<WindowApi | undefined>
   rtl?: boolean
   className?: string
-  styles?: CSSProperties
+  style?: CSSProperties
   asItem?: boolean
   wrapperElement?: keyof JSX.IntrinsicElements
   wrapperClassName?: string
-  wrapperStyles?: CSSProperties
+  wrapperStyle?: CSSProperties
   onScroll?: UIEventHandler<HTMLElement>
 }
 
@@ -36,11 +36,11 @@ export const List = <T extends Record<string, unknown>>({
   apiRef,
   rtl,
   className,
-  styles,
+  style,
   asItem,
   wrapperElement = "div",
   wrapperClassName,
-  wrapperStyles,
+  wrapperStyle,
   onScroll: userOnScroll,
 }: WindowProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
@@ -70,7 +70,7 @@ export const List = <T extends Record<string, unknown>>({
       onScroll={onScroll}
       className={className}
       style={{
-        ...styles,
+        ...style,
         direction: rtl ? "rtl" : undefined,
         height: "100%",
         width: "100%",
@@ -89,7 +89,7 @@ export const List = <T extends Record<string, unknown>>({
             {data.slice(start, end + 1).map((d, i) => {
               const itemHeight = variableHeights ? d.height ?? rowHeight : rowHeight
 
-              const { styles = {} } = d.props
+              const { style = {} } = d.props
               const key = d.key ?? i
 
               if (asItem)
@@ -97,7 +97,7 @@ export const List = <T extends Record<string, unknown>>({
                   <ItemComponent
                     {...d.props}
                     styles={{
-                      ...(styles as CSSProperties),
+                      ...(style as CSSProperties),
                       height: itemHeight,
                       maxHeight: itemHeight,
                       minHeight: itemHeight,
@@ -112,7 +112,7 @@ export const List = <T extends Record<string, unknown>>({
                   key,
                   className: wrapperClassName,
                   style: {
-                    ...wrapperStyles,
+                    ...wrapperStyle,
                     height: itemHeight,
                     maxHeight: itemHeight,
                     minHeight: itemHeight,
