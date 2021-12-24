@@ -1,14 +1,14 @@
 import type { CSSProperties } from "react"
 
-import { List } from "@resembli/le-window"
+import { ListHorizontal } from "@resembli/le-window"
 
-const heights = [50, 75, 80, 90, undefined]
+const widths = [50, 75, 80, 90, undefined]
 
-const listItems = Array(1000)
+const listItems = Array(300)
   .fill(0)
   .map((_, i) => {
-    const a = Math.floor(Math.random() * heights.length)
-    return { props: { index: i, style: {} }, height: heights[a] }
+    const a = Math.floor(Math.random() * widths.length)
+    return { props: { index: i, style: {} }, width: widths[a] }
   })
 
 const RenderIndexCentered = (p: { index: number; style: CSSProperties }) => {
@@ -17,6 +17,7 @@ const RenderIndexCentered = (p: { index: number; style: CSSProperties }) => {
       style={{
         ...p.style,
         background: p.index % 2 === 0 ? "#f8f8f0" : "white",
+        height: "100%",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -30,8 +31,8 @@ const RenderIndexCentered = (p: { index: number; style: CSSProperties }) => {
 
 export const App = () => {
   return (
-    <div style={{ margin: 50, width: 800, height: 500 }}>
-      <List rowHeight={20} data={listItems} ItemComponent={RenderIndexCentered} />
+    <div style={{ margin: 50, width: 1000, height: 150, background: "green" }}>
+      <ListHorizontal columnWidth={100} data={listItems} ItemComponent={RenderIndexCentered} />
     </div>
   )
 }

@@ -1,2 +1,4 @@
 export { List } from "./List/List"
-export type { WindowApi } from "./List/useWindowApi"
+export { ListHorizontal } from "./ListHorizontal/ListHorizontal"
+
+export type { WindowApi } from "./useWindowApi"

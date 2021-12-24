@@ -2,18 +2,18 @@ import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
+import type { WindowApi } from "../useWindowApi"
+import { useWindowApi } from "../useWindowApi"
+import { useWindowDimensions } from "../useWindowDimensions"
+import { useWindowScroll } from "../useWindowScroll"
 import type { ListDataItem } from "./types"
 import { useInnerHeight } from "./useInnerHeight"
 import { useOffsetIndices } from "./useOffsetIndices"
-import type { WindowApi } from "./useWindowApi"
-import { useWindowApi } from "./useWindowApi"
-import { useWindowDimensions } from "./useWindowDimensions"
-import { useWindowScroll } from "./useWindowScroll"
 
 export interface WindowProps<T> {
   rowHeight: number
   data: ListDataItem<T>[]
-  ItemComponent: (props: T) => JSX.Element
+  ItemComponent: (props: T) => JSX.Element | null
   tabIndex?: number
   variableHeights?: boolean
   apiRef?: MutableRefObject<WindowApi | undefined>
