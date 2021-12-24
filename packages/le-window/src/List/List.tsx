@@ -1,4 +1,5 @@
-import type { CSSProperties, MutableRefObject } from "react"
+import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import { createElement } from "react"
 import { useRef } from "react"
 
 import type { ListDataItem } from "./types"
@@ -20,6 +21,10 @@ export interface WindowProps<T> {
   className?: string
   styles?: CSSProperties
   asItem?: boolean
+  wrapperElement?: keyof JSX.IntrinsicElements
+  wrapperClassName?: string
+  wrapperStyles?: CSSProperties
+  onScroll?: UIEventHandler<HTMLElement>
 }
 
 export const List = <T extends Record<string, unknown>>({
@@ -33,12 +38,16 @@ export const List = <T extends Record<string, unknown>>({
   className,
   styles,
   asItem,
+  wrapperElement = "div",
+  wrapperClassName,
+  wrapperStyles,
+  onScroll: userOnScroll,
 }: WindowProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
 
-  const [offset, , onScroll] = useWindowScroll()
+  const [offset, , onScroll] = useWindowScroll(userOnScroll)
   const [, height] = useWindowDimensions(windowRef)
   const innerHeight = useInnerHeight({ rowHeight, data, variableHeights })
   const [start, end, runningHeight] = useOffsetIndices({
@@ -81,6 +90,7 @@ export const List = <T extends Record<string, unknown>>({
               const itemHeight = variableHeights ? d.height ?? rowHeight : rowHeight
 
               const { styles = {} } = d.props
+              const key = d.key ?? i
 
               if (asItem)
                 return (
@@ -92,16 +102,24 @@ export const List = <T extends Record<string, unknown>>({
                       maxHeight: itemHeight,
                       minHeight: itemHeight,
                     }}
+                    key={key}
                   />
                 )
 
-              return (
-                <div
-                  key={i}
-                  style={{ height: itemHeight, maxHeight: itemHeight, minHeight: itemHeight }}
-                >
-                  <ItemComponent {...d.props} />
-                </div>
+              return createElement(
+                wrapperElement,
+                {
+                  key,
+                  className: wrapperClassName,
+                  style: {
+                    ...wrapperStyles,
+                    height: itemHeight,
+                    maxHeight: itemHeight,
+                    minHeight: itemHeight,
+                    display: "block",
+                  },
+                },
+                <ItemComponent {...d.props} />,
               )
             })}
           </div>
