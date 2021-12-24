@@ -1,4 +1,4 @@
-import type { CSSProperties, MutableRefObject } from "react"
+import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
@@ -24,6 +24,7 @@ export interface WindowProps<T> {
   wrapperElement?: keyof JSX.IntrinsicElements
   wrapperClassName?: string
   wrapperStyles?: CSSProperties
+  onScroll?: UIEventHandler<HTMLElement>
 }
 
 export const List = <T extends Record<string, unknown>>({
@@ -40,12 +41,13 @@ export const List = <T extends Record<string, unknown>>({
   wrapperElement = "div",
   wrapperClassName,
   wrapperStyles,
+  onScroll: userOnScroll,
 }: WindowProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
 
-  const [offset, , onScroll] = useWindowScroll()
+  const [offset, , onScroll] = useWindowScroll(userOnScroll)
   const [, height] = useWindowDimensions(windowRef)
   const innerHeight = useInnerHeight({ rowHeight, data, variableHeights })
   const [start, end, runningHeight] = useOffsetIndices({
