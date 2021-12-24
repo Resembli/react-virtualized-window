@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-import type { ListHorizontalDataItem } from "../List/types"
+import type { ListHorizontalDataItem } from "../types"
 
 export interface UseOffsetIndicesArgs<T> {
   columnWidth: number

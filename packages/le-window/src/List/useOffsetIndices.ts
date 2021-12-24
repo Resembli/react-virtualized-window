@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-import type { ListDataItem } from "./types"
+import type { ListDataItem } from "../types"
 
 export interface UseOffsetIndicesArgs<T> {
   rowHeight: number

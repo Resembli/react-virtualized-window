@@ -3,13 +3,13 @@ import { useEffect } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
-import type { ListHorizontalDataItem } from "../List/types"
+import type { ListHorizontalDataItem } from "../types"
+import { useInnerWidth } from "../useInnerDimensions"
 import type { WindowApi } from "../useWindowApi"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 import { useData } from "./useData"
-import { useInnerWidth } from "./useInnerWidth"
 import { useOffsetIndices } from "./useOffsetIndices"
 
 export interface ListHorizontalProps<T> {

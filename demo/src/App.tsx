@@ -22,7 +22,6 @@ const RenderIndexCentered = (p: { index: number; style: CSSProperties }) => {
         alignItems: "center",
         justifyContent: "center",
       }}
-      onClick={() => console.log("I was clicked")}
     >
       {p.index}
     </div>
