@@ -2,12 +2,12 @@ import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
+import type { ListDataItem } from "../types"
+import { useInnerHeight } from "../useInnerDimensions"
 import type { WindowApi } from "../useWindowApi"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
-import type { ListDataItem } from "./types"
-import { useInnerHeight } from "./useInnerHeight"
 import { useOffsetIndices } from "./useOffsetIndices"
 
 export interface WindowProps<T> {
