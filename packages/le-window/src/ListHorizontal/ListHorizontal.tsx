@@ -10,19 +10,27 @@ export interface ListHorizontalProps<T> {
   columnWidth: number
   data: ListHorizontalDataItem<T>[]
   ItemComponent: (props: T) => JSX.Element | null
+  variableWidths?: boolean
 }
 
 export const ListHorizontal = <T extends Record<string, unknown>>({
   columnWidth,
   data,
   ItemComponent,
+  variableWidths = false,
 }: ListHorizontalProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
   const [, offset, onScroll] = useWindowScroll()
-  const innerWidth = useInnerWidth({ data, columnWidth })
+  const innerWidth = useInnerWidth({ data, columnWidth, variableWidths })
   const [width] = useWindowDimensions(windowRef)
-  const [start, end, runningWidth] = useOffsetIndices({ columnWidth, width, offset })
+  const [start, end, runningWidth] = useOffsetIndices({
+    columnWidth,
+    width,
+    offset,
+    variableWidths,
+    data,
+  })
 
   // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
   // moving the div a little higher than it should be.
@@ -50,11 +58,12 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
           >
             {data.slice(start, end + 1).map((d, i) => {
               const key = d.key ?? i
+              const itemWidth = variableWidths ? d.width ?? columnWidth : columnWidth
 
               return (
                 <div
                   key={key}
-                  style={{ display: "inline-block", width: columnWidth, height: "100%" }}
+                  style={{ display: "inline-block", width: itemWidth, height: "100%" }}
                 >
                   <ItemComponent {...d.props} />
                 </div>
