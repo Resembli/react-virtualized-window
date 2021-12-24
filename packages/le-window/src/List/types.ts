@@ -5,3 +5,9 @@ export interface ListDataItem<T extends { styles?: CSSProperties }> {
   height?: number
   key?: string | number
 }
+
+export interface ListHorizontalDataItem<T extends { styles?: CSSProperties }> {
+  props: T
+  width?: number
+  key?: string | number
+}
