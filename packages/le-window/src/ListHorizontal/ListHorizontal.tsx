@@ -1,5 +1,4 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
-import { useEffect } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
@@ -11,6 +10,7 @@ import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 import { useData } from "./useData"
 import { useOffsetIndices } from "./useOffsetIndices"
+import { useRtlScrollOffsetEffect } from "./useRtlScrollOffsetter"
 
 export interface ListHorizontalProps<T> {
   columnWidth: number
@@ -61,16 +61,7 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
     data,
   })
 
-  // TODO: @Lee refactor this effect and fix the handling for scroll offsets
-  // Sticky position and rtl does not work correctly on IOS devices. This is a workaround to simulate
-  // rtl direction logic.
-  useEffect(() => {
-    // If there is already some scrolling done, then we do not reset the scroll logic.
-    if (!windowRef.current || windowRef.current.scrollLeft !== 0) return
-
-    if (!rtl) windowRef.current.scrollTo({ left: 0 })
-    else windowRef.current.scrollTo({ left: innerWidth }) // innerWidth will be greater than actual width (by the size of the window)
-  }, [innerWidth, rtl])
+  useRtlScrollOffsetEffect({ width, windowRef, rtl, innerWidth })
 
   // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
   // moving the div a little higher than it should be.
