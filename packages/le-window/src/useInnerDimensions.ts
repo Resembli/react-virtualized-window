@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-import type { ListDataItem, ListHorizontalDataItem } from "./types"
+import type { GridDataRow, ListDataItem, ListHorizontalDataItem } from "./types"
 
 export interface UseInnerHeight<T> {
   rowHeight: number
@@ -44,4 +44,31 @@ export const useInnerWidth = <T>({ data, columnWidth, variableWidths }: UseInner
   }, [columnWidth, data, variableWidths])
 
   return width
+}
+
+export interface UseInnerGridDimensionsArgs<T> {
+  rowHeight: number
+  columnWidth: number
+  data: GridDataRow<T>[]
+}
+
+export const useInnerGridDimensions = <T>({
+  data,
+  rowHeight,
+  columnWidth,
+}: UseInnerGridDimensionsArgs<T>) => {
+  const innerHeight = useMemo(() => {
+    return rowHeight * data.length
+  }, [data.length, rowHeight])
+
+  const innerWidth = useMemo(() => {
+    let maxWidth = 0
+    for (let i = 0; i < data.length; i++) {
+      maxWidth = Math.max(data[i].cells.length * columnWidth, maxWidth)
+    }
+
+    return maxWidth
+  }, [columnWidth, data])
+
+  return [innerWidth, innerHeight]
 }
