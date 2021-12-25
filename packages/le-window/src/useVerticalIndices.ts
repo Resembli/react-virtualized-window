@@ -1,28 +1,26 @@
 import { useMemo } from "react"
 
-import type { ListDataItem } from "../types"
-
-export interface UseOffsetIndicesArgs<T> {
+export interface UseVerticalIndices {
   rowHeight: number
-  data: ListDataItem<T>[]
+  data: { height?: number }[]
   height: number
   offset: number
   variableHeights: boolean
 }
 
-export const useOffsetIndices = <T>({
+export const useVerticalIndices = ({
   rowHeight,
   height,
   offset,
   variableHeights,
   data,
-}: UseOffsetIndicesArgs<T>) => {
+}: UseVerticalIndices) => {
   const [start, end, runningHeight] = useMemo(() => {
     if (!variableHeights) {
       const itemsPerWindow = Math.ceil(height / rowHeight)
 
       const start = Math.max(0, Math.floor(offset / rowHeight))
-      const end = itemsPerWindow + start
+      const end = itemsPerWindow + start + 1
 
       return [start, end, start * rowHeight]
     } else {

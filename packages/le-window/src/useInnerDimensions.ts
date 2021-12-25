@@ -1,14 +1,14 @@
 import { useMemo } from "react"
 
-import type { GridDataRow, ListDataItem, ListHorizontalDataItem } from "./types"
+import type { GridDataRow, ListHorizontalDataItem } from "./types"
 
-export interface UseInnerHeight<T> {
+export interface UseInnerHeight {
   rowHeight: number
-  data: ListDataItem<T>[]
+  data: { height?: number }[]
   variableHeights: boolean
 }
 
-export const useInnerHeight = <T>({ rowHeight, data, variableHeights }: UseInnerHeight<T>) => {
+export const useInnerHeight = ({ rowHeight, data, variableHeights }: UseInnerHeight) => {
   const innerHeight = useMemo(() => {
     if (!variableHeights) {
       return rowHeight * data.length
