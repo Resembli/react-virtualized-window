@@ -1,6 +1,6 @@
 import { useMemo } from "react"
 
-export interface UseVerticalIndices {
+interface UseVerticalIndices {
   rowHeight: number
   data: { height?: number }[]
   height: number
