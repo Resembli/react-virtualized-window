@@ -1,10 +1,10 @@
 import { useRef } from "react"
 
-import { useDataDimension } from "../useDataDimension"
-import { useIndicesForDimensions } from "../useDimensionIndices"
-import { useInnerDimension } from "../useInnerDimensions"
-import { useWindowDimensions } from "../useWindowDimensions"
-import { useWindowScroll } from "../useWindowScroll"
+import { useDataDimension } from "./useDataDimension"
+import { useIndicesForDimensions } from "./useDimensionIndices"
+import { useInnerDimension } from "./useInnerDimensions"
+import { useWindowDimensions } from "./useWindowDimensions"
+import { useWindowScroll } from "./useWindowScroll"
 
 export interface GridDataItem<T> {
   props: T
@@ -94,7 +94,7 @@ export const Grid = <T extends Record<string, unknown>>({
           >
             {data.slice(vertStart, vertEnd).map((row, i) => {
               const rowKey = row.key ?? i
-              const itemHeight = dataHeights[i]
+              const itemHeight = dataHeights[vertStart + i]
 
               return (
                 <div
@@ -103,12 +103,15 @@ export const Grid = <T extends Record<string, unknown>>({
                 >
                   {row.cells.slice(horiStart, horiEnd).map((cell, j) => {
                     const cellKey = cell.key ?? j
+                    const itemWidth = dataWidths[horiStart + j]
 
                     return (
                       <div
                         key={cellKey}
                         style={{
-                          width: dataWidths[j],
+                          width: itemWidth,
+                          minWidth: itemWidth,
+                          maxWidth: itemWidth,
                           display: "inline-block",
                           height: "100%",
                         }}
