@@ -31,7 +31,7 @@ export const WindowExample = () => {
 
   return (
     <div style={{ width: "100%", height: "30vh", minHeight: 500, border: "1px solid black" }}>
-      <List rowHeight={35} data={listItems} ItemComponent={RenderIndexCentered} />
+      <List defaultRowHeight={35} data={listItems} ItemComponent={RenderIndexCentered} />
     </div>
   )
 }

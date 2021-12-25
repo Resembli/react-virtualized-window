@@ -1,23 +1,13 @@
 import { useMemo } from "react"
 
-interface UseInnerHeight {
-  rowHeight: number
-  data: { height?: number }[]
-  variableHeights: boolean
-}
-
-export const useInnerHeight = ({ rowHeight, data, variableHeights }: UseInnerHeight) => {
+export const useInnerHeight = (dataHeights: number[]) => {
   const innerHeight = useMemo(() => {
-    if (!variableHeights) {
-      return rowHeight * data.length
-    } else {
-      let runningHeight = 0
-      for (let i = 0; i < data.length; i++) {
-        runningHeight += data[i].height ?? rowHeight
-      }
-      return runningHeight
+    let runningHeight = 0
+    for (let i = 0; i < dataHeights.length; i++) {
+      runningHeight += dataHeights[i]
     }
-  }, [data, rowHeight, variableHeights])
+    return runningHeight
+  }, [dataHeights])
 
   return innerHeight
 }

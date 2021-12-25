@@ -2,6 +2,7 @@ import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
+import { useDataHeights } from "../useDataHeights"
 import { useInnerHeight } from "../useInnerDimensions"
 import { useVerticalIndices } from "../useVerticalIndices"
 import type { WindowApi } from "../useWindowApi"
@@ -16,16 +17,15 @@ export interface ListDataItem<T> {
 }
 
 export interface WindowProps<T> {
-  rowHeight: number
   data: ListDataItem<T>[]
   ItemComponent: (props: T) => JSX.Element | null
   tabIndex?: number
-  variableHeights?: boolean
+  defaultRowHeight: number
+  rowHeights?: number[]
   apiRef?: MutableRefObject<WindowApi | undefined>
   rtl?: boolean
   className?: string
   style?: CSSProperties
-  asItem?: boolean
   wrapperElement?: keyof JSX.IntrinsicElements
   wrapperClassName?: string
   wrapperStyle?: CSSProperties
@@ -33,16 +33,15 @@ export interface WindowProps<T> {
 }
 
 export const List = <T extends Record<string, unknown>>({
-  rowHeight,
+  defaultRowHeight,
   data,
   ItemComponent,
   tabIndex,
-  variableHeights = false,
+  rowHeights,
   apiRef,
   rtl,
   className,
   style,
-  asItem,
   wrapperElement = "div",
   wrapperClassName,
   wrapperStyle,
@@ -54,19 +53,24 @@ export const List = <T extends Record<string, unknown>>({
 
   const [offset, , onScroll] = useWindowScroll(userOnScroll)
   const [, height] = useWindowDimensions(windowRef)
-  const innerHeight = useInnerHeight({ rowHeight, data, variableHeights })
+
+  const dataHeights = useDataHeights({
+    count: data.length,
+    defaultHeight: defaultRowHeight,
+    heights: rowHeights,
+  })
+
+  const innerHeight = useInnerHeight(dataHeights)
   const [start, end, runningHeight] = useVerticalIndices({
-    rowHeight,
+    dataHeights,
     height,
     offset,
-    variableHeights,
-    data,
   })
 
   // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
   // moving the div a little higher than it should be.
   const translationOffset =
-    innerHeight - offset - height < rowHeight ? 0 : -(offset - runningHeight)
+    innerHeight - offset - height < defaultRowHeight ? 0 : -(offset - runningHeight)
 
   return (
     <div
@@ -92,24 +96,8 @@ export const List = <T extends Record<string, unknown>>({
             }}
           >
             {data.slice(start, end + 1).map((d, i) => {
-              const itemHeight = variableHeights ? d.height ?? rowHeight : rowHeight
-
-              const { style = {} } = d.props
+              const itemHeight = dataHeights[i]
               const key = d.key ?? i
-
-              if (asItem)
-                return (
-                  <ItemComponent
-                    {...d.props}
-                    style={{
-                      ...(style as CSSProperties),
-                      height: itemHeight,
-                      maxHeight: itemHeight,
-                      minHeight: itemHeight,
-                    }}
-                    key={key}
-                  />
-                )
 
               return createElement(
                 wrapperElement,

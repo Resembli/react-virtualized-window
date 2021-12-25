@@ -1,53 +1,36 @@
 import { useMemo } from "react"
 
 interface UseVerticalIndices {
-  rowHeight: number
-  data: { height?: number }[]
+  dataHeights: number[]
   height: number
   offset: number
-  variableHeights: boolean
 }
 
-export const useVerticalIndices = ({
-  rowHeight,
-  height,
-  offset,
-  variableHeights,
-  data,
-}: UseVerticalIndices) => {
+export const useVerticalIndices = ({ height, offset, dataHeights }: UseVerticalIndices) => {
   const [start, end, runningHeight] = useMemo(() => {
-    if (!variableHeights) {
-      const itemsPerWindow = Math.ceil(height / rowHeight)
+    let start = 0
+    let runningHeight = 0
 
-      const start = Math.max(0, Math.floor(offset / rowHeight))
-      const end = itemsPerWindow + start + 1
+    while (start < dataHeights.length) {
+      const itemHeight = dataHeights[start]
+      if (itemHeight + runningHeight > offset) break
 
-      return [start, end, start * rowHeight]
-    } else {
-      let start = 0
-      let runningHeight = 0
-
-      while (start < data.length) {
-        const itemHeight = data[start].height ?? rowHeight
-        if (itemHeight + runningHeight > offset) break
-
-        start++
-        runningHeight += itemHeight
-      }
-
-      const startItemHeight = data[start].height ?? rowHeight
-      let end = start
-      let endHeight = 0
-      while (end < data.length && endHeight < height + startItemHeight) {
-        const itemHeight = data[end].height ?? rowHeight
-
-        endHeight += itemHeight
-        end++
-      }
-
-      return [start, end, runningHeight]
+      start++
+      runningHeight += itemHeight
     }
-  }, [variableHeights, height, rowHeight, offset, data])
+
+    const startItemHeight = dataHeights[start]
+    let end = start
+    let endHeight = 0
+    while (end < dataHeights.length && endHeight < height + startItemHeight) {
+      const itemHeight = dataHeights[end]
+
+      endHeight += itemHeight
+      end++
+    }
+
+    return [start, end, runningHeight]
+  }, [dataHeights, height, offset])
 
   return [start, end, runningHeight] as const
 }

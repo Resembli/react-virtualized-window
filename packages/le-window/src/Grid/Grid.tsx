@@ -1,5 +1,6 @@
 import { useRef } from "react"
 
+import { useDataHeights } from "../useDataHeights"
 import { useInnerHeight, useInnerWidthGrid } from "../useInnerDimensions"
 import { useVerticalIndices } from "../useVerticalIndices"
 import { useWindowDimensions } from "../useWindowDimensions"
@@ -14,25 +15,24 @@ export interface GridDataItem<T> {
 
 export interface GridDataRow<T> {
   cells: GridDataItem<T>[]
-  height?: number
   key?: string | number
 }
 
 export interface GridProps<T> {
   data: GridDataRow<T>[]
   ItemComponent: (props: T) => JSX.Element | null
-  rowHeight: number
+  defaultRowHeight: number
+  rowHeights?: number[]
   columnWidth: number
-  variableHeights?: boolean
   variableWidths?: boolean
 }
 
 export const Grid = <T extends Record<string, unknown>>({
   data,
-  rowHeight,
+  defaultRowHeight,
   columnWidth,
   ItemComponent,
-  variableHeights = false,
+  rowHeights,
   variableWidths = false,
 }: GridProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
@@ -40,15 +40,19 @@ export const Grid = <T extends Record<string, unknown>>({
   const [topOffset, leftOffset, onScroll] = useWindowScroll()
   const [width, height] = useWindowDimensions(windowRef)
 
-  const innerHeight = useInnerHeight({ data, rowHeight, variableHeights })
+  const dataHeights = useDataHeights({
+    count: data.length,
+    defaultHeight: defaultRowHeight,
+    heights: rowHeights,
+  })
+
+  const innerHeight = useInnerHeight(dataHeights)
   const innerWidth = useInnerWidthGrid({ data, columnWidth, variableWidths })
 
   const [vertStart, vertEnd, runningHeight] = useVerticalIndices({
-    data,
-    rowHeight,
+    dataHeights,
     offset: topOffset,
     height,
-    variableHeights,
   })
 
   const [horiStart, horiEnd, runningWidth] = useHorizontalIndicesGrid({
@@ -60,7 +64,9 @@ export const Grid = <T extends Record<string, unknown>>({
   })
 
   const verticalTranslationOffset =
-    innerHeight - topOffset - height < rowHeight ? 0 : -(topOffset - runningHeight)
+    innerHeight - topOffset - height < dataHeights[dataHeights.length - 1]
+      ? 0
+      : -(topOffset - runningHeight)
 
   const horizontalTranslationOffset =
     innerWidth - leftOffset - width < columnWidth ? 0 : -(leftOffset - runningWidth)
@@ -86,7 +92,7 @@ export const Grid = <T extends Record<string, unknown>>({
           >
             {data.slice(vertStart, vertEnd).map((row, i) => {
               const rowKey = row.key ?? i
-              const itemHeight = variableHeights ? row.height ?? rowHeight : rowHeight
+              const itemHeight = dataHeights[i]
 
               return (
                 <div
