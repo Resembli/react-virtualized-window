@@ -1,8 +1,8 @@
 import { useRef } from "react"
 
-import { useDataHeights } from "../useDataHeights"
-import { useInnerHeight, useInnerWidthGrid } from "../useInnerDimensions"
-import { useVerticalIndices } from "../useVerticalIndices"
+import { useDataDimension } from "../useDataDimension"
+import { useIndicesForDimensions } from "../useDimensionIndices"
+import { useInnerDimension, useInnerWidthGrid } from "../useInnerDimensions"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 import { useHorizontalIndicesGrid } from "./useHorizontalIndicesGrid"
@@ -40,19 +40,19 @@ export const Grid = <T extends Record<string, unknown>>({
   const [topOffset, leftOffset, onScroll] = useWindowScroll()
   const [width, height] = useWindowDimensions(windowRef)
 
-  const dataHeights = useDataHeights({
+  const dataHeights = useDataDimension({
     count: data.length,
-    defaultHeight: defaultRowHeight,
-    heights: rowHeights,
+    defaultDimension: defaultRowHeight,
+    dimensions: rowHeights,
   })
 
-  const innerHeight = useInnerHeight(dataHeights)
+  const innerHeight = useInnerDimension(dataHeights)
   const innerWidth = useInnerWidthGrid({ data, columnWidth, variableWidths })
 
-  const [vertStart, vertEnd, runningHeight] = useVerticalIndices({
-    dataHeights,
+  const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
+    itemDimensions: dataHeights,
     offset: topOffset,
-    height,
+    windowDimension: height,
   })
 
   const [horiStart, horiEnd, runningWidth] = useHorizontalIndicesGrid({

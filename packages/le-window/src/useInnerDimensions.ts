@@ -1,15 +1,15 @@
 import { useMemo } from "react"
 
-export const useInnerHeight = (dataHeights: number[]) => {
-  const innerHeight = useMemo(() => {
-    let runningHeight = 0
-    for (let i = 0; i < dataHeights.length; i++) {
-      runningHeight += dataHeights[i]
+export const useInnerDimension = (dataDimensions: number[]) => {
+  const innerDimension = useMemo(() => {
+    let runningTotal = 0
+    for (let i = 0; i < dataDimensions.length; i++) {
+      runningTotal += dataDimensions[i]
     }
-    return runningHeight
-  }, [dataHeights])
+    return runningTotal
+  }, [dataDimensions])
 
-  return innerHeight
+  return innerDimension
 }
 
 interface UseInnerWidthArgs {

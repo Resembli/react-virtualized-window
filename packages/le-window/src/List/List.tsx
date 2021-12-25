@@ -2,9 +2,9 @@ import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
-import { useDataHeights } from "../useDataHeights"
-import { useInnerHeight } from "../useInnerDimensions"
-import { useVerticalIndices } from "../useVerticalIndices"
+import { useDataDimension } from "../useDataDimension"
+import { useIndicesForDimensions } from "../useDimensionIndices"
+import { useInnerDimension } from "../useInnerDimensions"
 import type { WindowApi } from "../useWindowApi"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
@@ -54,16 +54,16 @@ export const List = <T extends Record<string, unknown>>({
   const [offset, , onScroll] = useWindowScroll(userOnScroll)
   const [, height] = useWindowDimensions(windowRef)
 
-  const dataHeights = useDataHeights({
+  const dataHeights = useDataDimension({
     count: data.length,
-    defaultHeight: defaultRowHeight,
-    heights: rowHeights,
+    defaultDimension: defaultRowHeight,
+    dimensions: rowHeights,
   })
 
-  const innerHeight = useInnerHeight(dataHeights)
-  const [start, end, runningHeight] = useVerticalIndices({
-    dataHeights,
-    height,
+  const innerHeight = useInnerDimension(dataHeights)
+  const [start, end, runningHeight] = useIndicesForDimensions({
+    itemDimensions: dataHeights,
+    windowDimension: height,
     offset,
   })
 

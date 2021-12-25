@@ -1,6 +1,5 @@
 import type { GridDataRow } from "@resembli/le-window"
-import { List } from "@resembli/le-window"
-import { Grid } from "@resembli/le-window"
+import { Grid, List, ListHorizontal } from "@resembli/le-window"
 
 const h = [30, 40, 50, 60]
 
@@ -64,22 +63,29 @@ const listHeights = Array(1000)
 export const App = () => {
   return (
     <>
-      <div style={{ margin: 20, width: 500, height: 500, border: "1px solid black" }}>
-        <Grid
-          data={gridData}
-          columnWidth={100}
-          ItemComponent={Item}
-          defaultRowHeight={50}
-          rowHeights={gridHeights}
-        />
-      </div>
-      <div style={{ margin: 20, width: 500, height: 500, border: "1px solid black" }}>
-        <List
-          ItemComponent={ListItem}
-          data={listData}
-          defaultRowHeight={50}
-          rowHeights={listHeights}
-        />
+      <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+        <div style={{ display: "flex" }}>
+          <div style={{ margin: 20, width: 500, height: 500, border: "1px solid black" }}>
+            <Grid
+              data={gridData}
+              columnWidth={100}
+              ItemComponent={Item}
+              defaultRowHeight={50}
+              rowHeights={gridHeights}
+            />
+          </div>
+          <div style={{ margin: 20, width: 500, height: 500, border: "1px solid black" }}>
+            <List
+              ItemComponent={ListItem}
+              data={listData}
+              defaultRowHeight={50}
+              rowHeights={listHeights}
+            />
+          </div>
+        </div>
+        <div style={{ margin: 20, width: 1000, height: 500, border: "1px solid black" }}>
+          <ListHorizontal ItemComponent={ListItem} data={listData} defaultColumnWidth={50} />
+        </div>
       </div>
     </>
   )
