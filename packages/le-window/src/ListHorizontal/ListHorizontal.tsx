@@ -9,8 +9,6 @@ import type { WindowApi } from "../useWindowApi"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
-import { useData } from "./useData"
-import { useRtlScrollOffsetEffect } from "./useRtlScrollOffsetEffect"
 
 export interface ListHorizontalDataItem<T> {
   props: T
@@ -24,7 +22,6 @@ export interface ListHorizontalProps<T> {
   tabIndex?: number
   columnWidths?: number[]
   apiRef?: MutableRefObject<WindowApi | undefined>
-  rtl?: boolean
   className?: string
   style?: CSSProperties
   wrapperElement?: keyof JSX.IntrinsicElements
@@ -35,12 +32,11 @@ export interface ListHorizontalProps<T> {
 
 export const ListHorizontal = <T extends Record<string, unknown>>({
   defaultColumnWidth,
-  data: userData,
+  data,
   ItemComponent,
   tabIndex,
   columnWidths,
   apiRef,
-  rtl = false,
   className,
   style,
   wrapperElement = "div",
@@ -48,8 +44,6 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
   wrapperStyle,
 }: ListHorizontalProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
-
-  const data = useData(userData, rtl)
 
   useWindowApi(windowRef, apiRef)
 
@@ -69,8 +63,6 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
     offset,
     itemDimensions: dataWidths,
   })
-
-  useRtlScrollOffsetEffect({ width, windowRef, rtl, innerWidth })
 
   // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
   // moving the div a little higher than it should be.

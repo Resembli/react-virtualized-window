@@ -22,7 +22,6 @@ export interface WindowProps<T> {
   defaultRowHeight: number
   rowHeights?: number[]
   apiRef?: MutableRefObject<WindowApi | undefined>
-  rtl?: boolean
   className?: string
   style?: CSSProperties
   wrapperElement?: keyof JSX.IntrinsicElements
@@ -38,7 +37,6 @@ export const List = <T extends Record<string, unknown>>({
   tabIndex,
   rowHeights,
   apiRef,
-  rtl,
   className,
   style,
   wrapperElement = "div",
@@ -79,7 +77,6 @@ export const List = <T extends Record<string, unknown>>({
       className={className}
       style={{
         ...style,
-        direction: rtl ? "rtl" : undefined,
         height: "100%",
         width: "100%",
         position: "relative",
