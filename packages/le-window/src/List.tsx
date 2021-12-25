@@ -18,30 +18,38 @@ export interface ListDataItem<T> {
 export interface WindowProps<T> {
   data: ListDataItem<T>[]
   ItemComponent: (props: T) => JSX.Element | null
-  tabIndex?: number
   defaultRowHeight: number
   rowHeights?: number[]
+
+  tabIndex?: number
   apiRef?: MutableRefObject<WindowApi | undefined>
+
   className?: string
   style?: CSSProperties
+
   wrapperElement?: keyof JSX.IntrinsicElements
   wrapperClassName?: string
   wrapperStyle?: CSSProperties
+
   onScroll?: UIEventHandler<HTMLElement>
 }
 
 export const List = <T extends Record<string, unknown>>({
-  defaultRowHeight,
   data,
   ItemComponent,
-  tabIndex,
+  defaultRowHeight,
   rowHeights,
+
+  tabIndex,
   apiRef,
+
   className,
   style,
+
   wrapperElement = "div",
   wrapperClassName,
   wrapperStyle,
+
   onScroll: userOnScroll,
 }: WindowProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)

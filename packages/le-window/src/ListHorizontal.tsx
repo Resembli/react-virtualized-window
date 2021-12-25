@@ -16,38 +16,47 @@ export interface ListHorizontalDataItem<T> {
 }
 
 export interface ListHorizontalProps<T> {
-  defaultColumnWidth: number
   data: ListHorizontalDataItem<T>[]
   ItemComponent: (props: T) => JSX.Element | null
-  tabIndex?: number
+  defaultColumnWidth: number
   columnWidths?: number[]
+
+  tabIndex?: number
   apiRef?: MutableRefObject<WindowApi | undefined>
+
   className?: string
   style?: CSSProperties
+
   wrapperElement?: keyof JSX.IntrinsicElements
   wrapperClassName?: string
   wrapperStyle?: CSSProperties
+
   onScroll?: UIEventHandler<HTMLElement>
 }
 
 export const ListHorizontal = <T extends Record<string, unknown>>({
-  defaultColumnWidth,
   data,
   ItemComponent,
-  tabIndex,
+  defaultColumnWidth,
   columnWidths,
+
+  tabIndex,
   apiRef,
+
   className,
   style,
+
   wrapperElement = "div",
   wrapperClassName,
   wrapperStyle,
+
+  onScroll: userOnScroll,
 }: ListHorizontalProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
 
-  const [, offset, onScroll] = useWindowScroll()
+  const [, offset, onScroll] = useWindowScroll(userOnScroll)
   const [width] = useWindowDimensions(windowRef)
 
   const dataWidths = useDataDimension({
