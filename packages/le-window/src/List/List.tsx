@@ -4,11 +4,11 @@ import { useRef } from "react"
 
 import type { ListDataItem } from "../types"
 import { useInnerHeight } from "../useInnerDimensions"
+import { useVerticalIndices } from "../useVerticalIndices"
 import type { WindowApi } from "../useWindowApi"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
-import { useOffsetIndices } from "./useOffsetIndices"
 
 export interface WindowProps<T> {
   rowHeight: number
@@ -50,7 +50,7 @@ export const List = <T extends Record<string, unknown>>({
   const [offset, , onScroll] = useWindowScroll(userOnScroll)
   const [, height] = useWindowDimensions(windowRef)
   const innerHeight = useInnerHeight({ rowHeight, data, variableHeights })
-  const [start, end, runningHeight] = useOffsetIndices({
+  const [start, end, runningHeight] = useVerticalIndices({
     rowHeight,
     height,
     offset,
