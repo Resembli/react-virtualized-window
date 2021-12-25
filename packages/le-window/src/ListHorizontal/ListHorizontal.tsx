@@ -14,7 +14,6 @@ import { useRtlScrollOffsetEffect } from "./useRtlScrollOffsetEffect"
 
 export interface ListHorizontalDataItem<T> {
   props: T
-  width?: number
   key?: string | number
 }
 

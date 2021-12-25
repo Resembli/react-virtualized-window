@@ -68,7 +68,7 @@ export const App = () => {
           <div style={{ margin: 20, width: 500, height: 500, border: "1px solid black" }}>
             <Grid
               data={gridData}
-              columnWidth={100}
+              defaultColumnWidth={100}
               ItemComponent={Item}
               defaultRowHeight={50}
               rowHeights={gridHeights}

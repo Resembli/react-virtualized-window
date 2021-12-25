@@ -12,7 +12,6 @@ import { useWindowScroll } from "../useWindowScroll"
 
 export interface ListDataItem<T> {
   props: T
-  height?: number
   key?: string | number
 }
 

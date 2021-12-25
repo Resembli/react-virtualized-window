@@ -2,14 +2,12 @@ import { useRef } from "react"
 
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
-import { useInnerDimension, useInnerWidthGrid } from "../useInnerDimensions"
+import { useInnerDimension } from "../useInnerDimensions"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
-import { useHorizontalIndicesGrid } from "./useHorizontalIndicesGrid"
 
 export interface GridDataItem<T> {
   props: T
-  width?: number
   key?: string | number
 }
 
@@ -23,17 +21,17 @@ export interface GridProps<T> {
   ItemComponent: (props: T) => JSX.Element | null
   defaultRowHeight: number
   rowHeights?: number[]
-  columnWidth: number
-  variableWidths?: boolean
+  defaultColumnWidth: number
+  columnWidths?: number[]
 }
 
 export const Grid = <T extends Record<string, unknown>>({
   data,
   defaultRowHeight,
-  columnWidth,
+  defaultColumnWidth,
   ItemComponent,
   rowHeights,
-  variableWidths = false,
+  columnWidths,
 }: GridProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
@@ -46,8 +44,14 @@ export const Grid = <T extends Record<string, unknown>>({
     dimensions: rowHeights,
   })
 
+  const dataWidths = useDataDimension({
+    count: data[0].cells.length ?? 0,
+    defaultDimension: defaultColumnWidth,
+    dimensions: columnWidths,
+  })
+
   const innerHeight = useInnerDimension(dataHeights)
-  const innerWidth = useInnerWidthGrid({ data, columnWidth, variableWidths })
+  const innerWidth = useInnerDimension(dataWidths)
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
@@ -55,12 +59,10 @@ export const Grid = <T extends Record<string, unknown>>({
     windowDimension: height,
   })
 
-  const [horiStart, horiEnd, runningWidth] = useHorizontalIndicesGrid({
-    data,
-    columnWidth,
+  const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
+    windowDimension: width,
     offset: leftOffset,
-    width,
-    variableWidths,
+    itemDimensions: dataWidths,
   })
 
   const verticalTranslationOffset =
@@ -69,7 +71,7 @@ export const Grid = <T extends Record<string, unknown>>({
       : -(topOffset - runningHeight)
 
   const horizontalTranslationOffset =
-    innerWidth - leftOffset - width < columnWidth ? 0 : -(leftOffset - runningWidth)
+    innerWidth - leftOffset - width < defaultColumnWidth ? 0 : -(leftOffset - runningWidth)
 
   return (
     <div
@@ -105,9 +107,13 @@ export const Grid = <T extends Record<string, unknown>>({
                     return (
                       <div
                         key={cellKey}
-                        style={{ width: columnWidth, display: "inline-block", height: "100%" }}
+                        style={{
+                          width: dataWidths[j],
+                          display: "inline-block",
+                          height: "100%",
+                        }}
                       >
-                        <ItemComponent {...cell.props} />{" "}
+                        <ItemComponent {...cell.props} />
                       </div>
                     )
                   })}
