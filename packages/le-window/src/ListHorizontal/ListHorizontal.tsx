@@ -2,7 +2,6 @@ import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
-import type { ListHorizontalDataItem } from "../types"
 import { useInnerWidth } from "../useInnerDimensions"
 import type { WindowApi } from "../useWindowApi"
 import { useWindowApi } from "../useWindowApi"
@@ -11,6 +10,12 @@ import { useWindowScroll } from "../useWindowScroll"
 import { useData } from "./useData"
 import { useOffsetIndices } from "./useOffsetIndices"
 import { useRtlScrollOffsetEffect } from "./useRtlScrollOffsetEffect"
+
+export interface ListHorizontalDataItem<T> {
+  props: T
+  width?: number
+  key?: string | number
+}
 
 export interface ListHorizontalProps<T> {
   columnWidth: number

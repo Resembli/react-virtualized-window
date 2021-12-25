@@ -1,8 +1,6 @@
 import { useMemo } from "react"
 
-import type { GridDataRow, ListHorizontalDataItem } from "./types"
-
-export interface UseInnerHeight {
+interface UseInnerHeight {
   rowHeight: number
   data: { height?: number }[]
   variableHeights: boolean
@@ -24,13 +22,13 @@ export const useInnerHeight = ({ rowHeight, data, variableHeights }: UseInnerHei
   return innerHeight
 }
 
-export interface UseInnerWidthArgs<T> {
+interface UseInnerWidthArgs {
   columnWidth: number
-  data: ListHorizontalDataItem<T>[]
+  data: { width?: number }[]
   variableWidths: boolean
 }
 
-export const useInnerWidth = <T>({ data, columnWidth, variableWidths }: UseInnerWidthArgs<T>) => {
+export const useInnerWidth = ({ data, columnWidth, variableWidths }: UseInnerWidthArgs) => {
   const width = useMemo(() => {
     if (!variableWidths) {
       return data.length * columnWidth
@@ -46,29 +44,22 @@ export const useInnerWidth = <T>({ data, columnWidth, variableWidths }: UseInner
   return width
 }
 
-export interface UseInnerGridDimensionsArgs<T> {
-  rowHeight: number
+export interface UseInnerWidthGridArgs {
+  data: { cells: { width?: number }[] }[]
   columnWidth: number
-  data: GridDataRow<T>[]
+  variableWidths: boolean
 }
 
-export const useInnerGridDimensions = <T>({
-  data,
-  rowHeight,
-  columnWidth,
-}: UseInnerGridDimensionsArgs<T>) => {
-  const innerHeight = useMemo(() => {
-    return rowHeight * data.length
-  }, [data.length, rowHeight])
+export const useInnerWidthGrid = ({ data, columnWidth, variableWidths }: UseInnerWidthGridArgs) => {
+  const width = useMemo(() => {
+    if (!data.length) return 0
 
-  const innerWidth = useMemo(() => {
-    let maxWidth = 0
-    for (let i = 0; i < data.length; i++) {
-      maxWidth = Math.max(data[i].cells.length * columnWidth, maxWidth)
+    if (!variableWidths) {
+      return data[0].cells.length * columnWidth
+    } else {
+      return 0
     }
+  }, [columnWidth, data, variableWidths])
 
-    return maxWidth
-  }, [columnWidth, data])
-
-  return [innerWidth, innerHeight]
+  return width
 }

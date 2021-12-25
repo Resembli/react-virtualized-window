@@ -2,7 +2,7 @@ import type { RefObject } from "react"
 import { useRef } from "react"
 import { useEffect } from "react"
 
-export interface UseRtlScrollOffsetEffectArgs {
+interface UseRtlScrollOffsetEffectArgs {
   windowRef: RefObject<HTMLElement>
   rtl: boolean
   width: number

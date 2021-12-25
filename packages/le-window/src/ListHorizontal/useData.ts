@@ -1,8 +1,6 @@
 import { useMemo } from "react"
 
-import type { ListHorizontalDataItem } from "../types"
-
-export const useData = <T>(userData: ListHorizontalDataItem<T>[], rtl: boolean) => {
+export const useData = <T>(userData: T[], rtl: boolean) => {
   const data = useMemo(() => {
     const dataCopy = [...userData]
 

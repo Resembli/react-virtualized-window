@@ -1,22 +1,20 @@
 import { useMemo } from "react"
 
-import type { ListHorizontalDataItem } from "../types"
-
-export interface UseOffsetIndicesArgs<T> {
+export interface UseOffsetIndicesArgs {
   columnWidth: number
   width: number
   offset: number
   variableWidths: boolean
-  data: ListHorizontalDataItem<T>[]
+  data: { width?: number }[]
 }
 
-export const useOffsetIndices = <T>({
+export const useOffsetIndices = ({
   columnWidth,
   width,
   offset,
   variableWidths,
   data,
-}: UseOffsetIndicesArgs<T>) => {
+}: UseOffsetIndicesArgs) => {
   const [start, end, runningWidth] = useMemo(() => {
     if (!variableWidths) {
       const itemsPerWindow = Math.ceil(width / columnWidth)
