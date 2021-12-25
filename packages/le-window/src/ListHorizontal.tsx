@@ -2,25 +2,25 @@ import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
-import { useDataDimension } from "../useDataDimension"
-import { useIndicesForDimensions } from "../useDimensionIndices"
-import { useInnerDimension } from "../useInnerDimensions"
-import type { WindowApi } from "../useWindowApi"
-import { useWindowApi } from "../useWindowApi"
-import { useWindowDimensions } from "../useWindowDimensions"
-import { useWindowScroll } from "../useWindowScroll"
+import { useDataDimension } from "./useDataDimension"
+import { useIndicesForDimensions } from "./useDimensionIndices"
+import { useInnerDimension } from "./useInnerDimensions"
+import type { WindowApi } from "./useWindowApi"
+import { useWindowApi } from "./useWindowApi"
+import { useWindowDimensions } from "./useWindowDimensions"
+import { useWindowScroll } from "./useWindowScroll"
 
-export interface ListDataItem<T> {
+export interface ListHorizontalDataItem<T> {
   props: T
   key?: string | number
 }
 
-export interface WindowProps<T> {
-  data: ListDataItem<T>[]
+export interface ListHorizontalProps<T> {
+  defaultColumnWidth: number
+  data: ListHorizontalDataItem<T>[]
   ItemComponent: (props: T) => JSX.Element | null
   tabIndex?: number
-  defaultRowHeight: number
-  rowHeights?: number[]
+  columnWidths?: number[]
   apiRef?: MutableRefObject<WindowApi | undefined>
   className?: string
   style?: CSSProperties
@@ -30,50 +30,50 @@ export interface WindowProps<T> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export const List = <T extends Record<string, unknown>>({
-  defaultRowHeight,
+export const ListHorizontal = <T extends Record<string, unknown>>({
+  defaultColumnWidth,
   data,
   ItemComponent,
   tabIndex,
-  rowHeights,
+  columnWidths,
   apiRef,
   className,
   style,
   wrapperElement = "div",
   wrapperClassName,
   wrapperStyle,
-  onScroll: userOnScroll,
-}: WindowProps<T>) => {
+}: ListHorizontalProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
 
-  const [offset, , onScroll] = useWindowScroll(userOnScroll)
-  const [, height] = useWindowDimensions(windowRef)
+  const [, offset, onScroll] = useWindowScroll()
+  const [width] = useWindowDimensions(windowRef)
 
-  const dataHeights = useDataDimension({
+  const dataWidths = useDataDimension({
     count: data.length,
-    defaultDimension: defaultRowHeight,
-    dimensions: rowHeights,
+    defaultDimension: defaultColumnWidth,
+    dimensions: columnWidths,
   })
 
-  const innerHeight = useInnerDimension(dataHeights)
-  const [start, end, runningHeight] = useIndicesForDimensions({
-    itemDimensions: dataHeights,
-    windowDimension: height,
+  const innerWidth = useInnerDimension(dataWidths)
+
+  const [start, end, runningWidth] = useIndicesForDimensions({
+    windowDimension: width,
     offset,
+    itemDimensions: dataWidths,
   })
 
   // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
   // moving the div a little higher than it should be.
   const translationOffset =
-    innerHeight - offset - height < defaultRowHeight ? 0 : -(offset - runningHeight)
+    innerWidth - offset - width < defaultColumnWidth ? 0 : -(offset - runningWidth)
 
   return (
     <div
-      tabIndex={tabIndex}
       ref={windowRef}
       onScroll={onScroll}
+      tabIndex={tabIndex}
       className={className}
       style={{
         ...style,
@@ -83,16 +83,17 @@ export const List = <T extends Record<string, unknown>>({
         overflow: "auto",
       }}
     >
-      <div style={{ height: innerHeight }}>
-        <div style={{ position: "sticky", top: 0 }}>
+      <div style={{ width: innerWidth, height: "100%" }}>
+        <div style={{ position: "sticky", left: 0, height: "100%", display: "inline-block" }}>
           <div
             style={{
-              transform: `translate3d(0, ${translationOffset}px, 0)`,
+              height: "100%",
+              transform: `translate3d(${translationOffset}px, 0, 0)`,
               willChange: "transform",
             }}
           >
             {data.slice(start, end + 1).map((d, i) => {
-              const itemHeight = dataHeights[i]
+              const itemWidth = dataWidths[start + i]
               const key = d.key ?? i
 
               return createElement(
@@ -102,10 +103,11 @@ export const List = <T extends Record<string, unknown>>({
                   className: wrapperClassName,
                   style: {
                     ...wrapperStyle,
-                    height: itemHeight,
-                    maxHeight: itemHeight,
-                    minHeight: itemHeight,
-                    display: "block",
+                    display: "inline-block",
+                    width: itemWidth,
+                    maxWidth: itemWidth,
+                    minWidth: itemWidth,
+                    height: "100%",
                   },
                 },
                 <ItemComponent {...d.props} />,

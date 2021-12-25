@@ -3,6 +3,8 @@ import { Grid, List, ListHorizontal } from "@resembli/le-window"
 
 const h = [30, 40, 50, 60]
 
+const widths = [80, 140, 120, 100]
+
 const gridData: GridDataRow<{ row: number; column: number }>[] = Array(1000)
   .fill(0)
   .map((_, row) => {
@@ -16,6 +18,10 @@ const gridData: GridDataRow<{ row: number; column: number }>[] = Array(1000)
 const gridHeights = Array(1000)
   .fill(0)
   .map((_, i) => h[i % h.length])
+
+const gridCellsWidths = Array(200)
+  .fill(0)
+  .map((_, i) => widths[i % widths.length])
 
 const Item = ({ row, column }: { row: number; column: number }) => {
   const light = row % 2 === 1 ? "white" : "#f8f8f0"
@@ -65,13 +71,14 @@ export const App = () => {
     <>
       <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
         <div style={{ display: "flex" }}>
-          <div style={{ margin: 20, width: 500, height: 500, border: "1px solid black" }}>
+          <div style={{ margin: 20, width: 1000, height: 500, border: "1px solid black" }}>
             <Grid
               data={gridData}
               defaultColumnWidth={100}
               ItemComponent={Item}
               defaultRowHeight={50}
               rowHeights={gridHeights}
+              columnWidths={gridCellsWidths}
             />
           </div>
           <div style={{ margin: 20, width: 500, height: 500, border: "1px solid black" }}>
@@ -84,7 +91,12 @@ export const App = () => {
           </div>
         </div>
         <div style={{ margin: 20, width: 1000, height: 500, border: "1px solid black" }}>
-          <ListHorizontal ItemComponent={ListItem} data={listData} defaultColumnWidth={50} />
+          <ListHorizontal
+            ItemComponent={ListItem}
+            data={listData}
+            defaultColumnWidth={50}
+            columnWidths={listHeights}
+          />
         </div>
       </div>
     </>
