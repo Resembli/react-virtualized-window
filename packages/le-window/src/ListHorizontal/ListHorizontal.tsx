@@ -2,32 +2,31 @@ import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 import { createElement } from "react"
 import { useRef } from "react"
 
-import { useInnerWidth } from "../useInnerDimensions"
+import { useDataDimension } from "../useDataDimension"
+import { useIndicesForDimensions } from "../useDimensionIndices"
+import { useInnerDimension } from "../useInnerDimensions"
 import type { WindowApi } from "../useWindowApi"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 import { useData } from "./useData"
-import { useOffsetIndices } from "./useOffsetIndices"
 import { useRtlScrollOffsetEffect } from "./useRtlScrollOffsetEffect"
 
 export interface ListHorizontalDataItem<T> {
   props: T
-  width?: number
   key?: string | number
 }
 
 export interface ListHorizontalProps<T> {
-  columnWidth: number
+  defaultColumnWidth: number
   data: ListHorizontalDataItem<T>[]
   ItemComponent: (props: T) => JSX.Element | null
   tabIndex?: number
-  variableWidths?: boolean
+  columnWidths?: number[]
   apiRef?: MutableRefObject<WindowApi | undefined>
   rtl?: boolean
   className?: string
   style?: CSSProperties
-  asItem?: boolean
   wrapperElement?: keyof JSX.IntrinsicElements
   wrapperClassName?: string
   wrapperStyle?: CSSProperties
@@ -35,16 +34,15 @@ export interface ListHorizontalProps<T> {
 }
 
 export const ListHorizontal = <T extends Record<string, unknown>>({
-  columnWidth,
+  defaultColumnWidth,
   data: userData,
   ItemComponent,
   tabIndex,
-  variableWidths = false,
+  columnWidths,
   apiRef,
   rtl = false,
   className,
   style,
-  asItem,
   wrapperElement = "div",
   wrapperClassName,
   wrapperStyle,
@@ -56,21 +54,28 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
   useWindowApi(windowRef, apiRef)
 
   const [, offset, onScroll] = useWindowScroll()
-  const innerWidth = useInnerWidth({ data, columnWidth, variableWidths })
   const [width] = useWindowDimensions(windowRef)
-  const [start, end, runningWidth] = useOffsetIndices({
-    columnWidth,
-    width,
+
+  const dataWidths = useDataDimension({
+    count: data.length,
+    defaultDimension: defaultColumnWidth,
+    dimensions: columnWidths,
+  })
+
+  const innerWidth = useInnerDimension(dataWidths)
+
+  const [start, end, runningWidth] = useIndicesForDimensions({
+    windowDimension: width,
     offset,
-    variableWidths,
-    data,
+    itemDimensions: dataWidths,
   })
 
   useRtlScrollOffsetEffect({ width, windowRef, rtl, innerWidth })
 
   // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
   // moving the div a little higher than it should be.
-  const translationOffset = innerWidth - offset - width < columnWidth ? 0 : -(offset - runningWidth)
+  const translationOffset =
+    innerWidth - offset - width < defaultColumnWidth ? 0 : -(offset - runningWidth)
 
   return (
     <div
@@ -96,26 +101,8 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
             }}
           >
             {data.slice(start, end + 1).map((d, i) => {
-              const itemWidth = variableWidths ? d.width ?? columnWidth : columnWidth
-
-              const { style = {} } = d.props
+              const itemWidth = dataWidths[i]
               const key = d.key ?? i
-
-              if (asItem) {
-                return (
-                  <ItemComponent
-                    {...d.props}
-                    style={{
-                      height: "100%",
-                      ...(style as CSSProperties),
-                      width: itemWidth,
-                      maxWidth: itemWidth,
-                      minWidth: itemWidth,
-                      display: "inline-block",
-                    }}
-                  />
-                )
-              }
 
               return createElement(
                 wrapperElement,
