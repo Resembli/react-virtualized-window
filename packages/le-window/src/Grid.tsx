@@ -33,14 +33,6 @@ export interface GridProps<T> {
   className?: string
   style?: CSSProperties
 
-  rowWrapperElement?: keyof JSX.IntrinsicElements
-  rowWrapperClassName?: string
-  rowWrapperStyle?: CSSProperties
-
-  cellWrapperElement?: keyof JSX.IntrinsicElements
-  cellWrapperClassName?: string
-  cellWrapperStyle?: CSSProperties
-
   onScroll?: UIEventHandler<HTMLElement>
 }
 
@@ -94,13 +86,8 @@ export const Grid = <T extends Record<string, unknown>>({
     itemDimensions: dataWidths,
   })
 
-  const verticalTranslationOffset =
-    innerHeight - topOffset - height < dataHeights[dataHeights.length - 1]
-      ? 0
-      : -(topOffset - runningHeight)
-
-  const horizontalTranslationOffset =
-    innerWidth - leftOffset - width < defaultColumnWidth ? 0 : -(leftOffset - runningWidth)
+  const stickyWidth =
+    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b) + runningWidth
 
   return (
     <div
@@ -117,46 +104,64 @@ export const Grid = <T extends Record<string, unknown>>({
       }}
     >
       <div style={{ width: innerWidth, height: innerHeight }}>
-        <div style={{ position: "sticky", top: 0, left: 0, right: 0, display: "inline-block" }}>
-          <div
-            style={{
-              transform: `translate3d(${horizontalTranslationOffset}px, ${verticalTranslationOffset}px, 0)`,
-              willChange: "transform",
-            }}
-          >
-            {data.slice(vertStart, vertEnd).map((row, i) => {
-              const rowKey = row.key ?? i
-              const itemHeight = dataHeights[vertStart + i]
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            left: 0,
+            // Somehow table works best without as any unexpected scrolling issues.
+            display: "table",
+          }}
+        >
+          <div style={{ position: "absolute", top: 0, left: 0, width: stickyWidth }}>
+            <div
+              style={{
+                transform: `translate3d(${-leftOffset}px, ${-topOffset}px, 0)`,
+                willChange: "transform",
+                display: "grid",
+                gridTemplateColumns: `${runningWidth}px auto`,
+                gridTemplateRows: `${runningHeight}px auto`,
+              }}
+            >
+              {/* The first two divs are positioning divs. They ensure the scroll translations work */}
+              <div style={{ gridColumnStart: 1, gridColumnEnd: 3 }} />
+              <div />
+              <div>
+                {data.slice(vertStart, vertEnd).map((row, i) => {
+                  const rowKey = row.key ?? i
+                  const itemHeight = dataHeights[vertStart + i]
 
-              const rowChildren = row.cells.slice(horiStart, horiEnd).map((cell, j) => {
-                const cellKey = cell.key ?? j
-                const itemWidth = dataWidths[horiStart + j]
+                  const rowChildren = row.cells.slice(horiStart, horiEnd).map((cell, j) => {
+                    const cellKey = cell.key ?? j
+                    const itemWidth = dataWidths[horiStart + j]
 
-                return (
-                  <div
-                    key={cellKey}
-                    style={{
-                      width: itemWidth,
-                      minWidth: itemWidth,
-                      maxWidth: itemWidth,
-                      display: "inline-block",
-                      height: "100%",
-                    }}
-                  >
-                    <ItemComponent {...cell.props} />
-                  </div>
-                )
-              })
+                    return (
+                      <div
+                        key={cellKey}
+                        style={{
+                          width: itemWidth,
+                          minWidth: itemWidth,
+                          maxWidth: itemWidth,
+                          display: "inline-block",
+                          height: "100%",
+                        }}
+                      >
+                        <ItemComponent {...cell.props} />
+                      </div>
+                    )
+                  })
 
-              return (
-                <div
-                  key={rowKey}
-                  style={{ height: itemHeight, minHeight: itemHeight, maxHeight: itemHeight }}
-                >
-                  {rowChildren}
-                </div>
-              )
-            })}
+                  return (
+                    <div
+                      key={rowKey}
+                      style={{ height: itemHeight, minHeight: itemHeight, maxHeight: itemHeight }}
+                    >
+                      {rowChildren}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
