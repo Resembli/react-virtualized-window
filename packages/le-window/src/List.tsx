@@ -1,5 +1,4 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
-import { createElement } from "react"
 import { useRef } from "react"
 
 import { useDataDimension } from "./useDataDimension"
@@ -45,10 +44,6 @@ export const List = <T extends Record<string, unknown>>({
 
   className,
   style,
-
-  wrapperElement = "div",
-  wrapperClassName,
-  wrapperStyle,
 
   onScroll: userOnScroll,
 }: WindowProps<T>) => {
@@ -100,20 +95,18 @@ export const List = <T extends Record<string, unknown>>({
                 const itemHeight = dataHeights[start + i]
                 const key = d.key ?? i
 
-                return createElement(
-                  wrapperElement,
-                  {
-                    key,
-                    className: wrapperClassName,
-                    style: {
-                      ...wrapperStyle,
+                return (
+                  <div
+                    key={key}
+                    style={{
                       height: itemHeight,
                       maxHeight: itemHeight,
                       minHeight: itemHeight,
                       display: "block",
-                    },
-                  },
-                  <ItemComponent {...d.props} />,
+                    }}
+                  >
+                    <ItemComponent {...d.props} />
+                  </div>
                 )
               })}
             </div>

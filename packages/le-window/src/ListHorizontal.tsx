@@ -1,5 +1,4 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
-import { createElement } from "react"
 import { useRef } from "react"
 
 import { useDataDimension } from "./useDataDimension"
@@ -46,10 +45,6 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
   className,
   style,
 
-  wrapperElement = "div",
-  wrapperClassName,
-  wrapperStyle,
-
   onScroll: userOnScroll,
 }: ListHorizontalProps<T>) => {
   const windowRef = useRef<HTMLDivElement>(null)
@@ -73,9 +68,7 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
     itemDimensions: dataWidths,
   })
 
-  const stickyWidth =
-    data.slice(start, end + 1).reduce((total, _, i) => total + dataWidths[i + start], 0) +
-    runningWidth
+  const stickyWidth = dataWidths.slice(start, end + 1).reduce((a, b) => a + b) + runningWidth
 
   return (
     <div
@@ -113,21 +106,19 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
                 const itemWidth = dataWidths[start + i]
                 const key = d.key ?? i
 
-                return createElement(
-                  wrapperElement,
-                  {
-                    key,
-                    className: wrapperClassName,
-                    style: {
-                      ...wrapperStyle,
+                return (
+                  <div
+                    key={key}
+                    style={{
                       display: "inline-block",
                       width: itemWidth,
                       maxWidth: itemWidth,
                       minWidth: itemWidth,
                       height: "100%",
-                    },
-                  },
-                  <ItemComponent {...d.props} />,
+                    }}
+                  >
+                    <ItemComponent {...d.props} />
+                  </div>
                 )
               })}
             </div>
