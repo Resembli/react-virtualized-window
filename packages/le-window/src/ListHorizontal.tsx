@@ -57,7 +57,7 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
   useWindowApi(windowRef, apiRef)
 
   const [, offset, onScroll] = useWindowScroll(userOnScroll)
-  const [width] = useWindowDimensions(windowRef)
+  const [width, height] = useWindowDimensions(windowRef)
 
   const dataWidths = useDataDimension({
     count: data.length,
@@ -73,10 +73,9 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
     itemDimensions: dataWidths,
   })
 
-  // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
-  // moving the div a little higher than it should be.
-  const translationOffset =
-    innerWidth - offset - width < defaultColumnWidth ? 0 : -(offset - runningWidth)
+  const stickyWidth =
+    data.slice(start, end + 1).reduce((total, _, i) => total + dataWidths[i + start], 0) +
+    runningWidth
 
   return (
     <div
@@ -93,35 +92,45 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
       }}
     >
       <div style={{ width: innerWidth, height: "100%" }}>
-        <div style={{ position: "sticky", left: 0, height: "100%", display: "inline-block" }}>
-          <div
-            style={{
-              height: "100%",
-              transform: `translate3d(${translationOffset}px, 0, 0)`,
-              willChange: "transform",
-            }}
-          >
-            {data.slice(start, end + 1).map((d, i) => {
-              const itemWidth = dataWidths[start + i]
-              const key = d.key ?? i
+        <div
+          style={{
+            position: "sticky",
+            left: 0,
+            height: "100%",
+            display: "inline-block",
+          }}
+        >
+          <div style={{ position: "absolute", left: 0, width: stickyWidth }}>
+            <div
+              style={{
+                height,
+                transform: `translate3d(${-offset}px, 0, 0)`,
+                willChange: "transform",
+              }}
+            >
+              <div style={{ display: "inline-block", width: runningWidth }} />
+              {data.slice(start, end + 1).map((d, i) => {
+                const itemWidth = dataWidths[start + i]
+                const key = d.key ?? i
 
-              return createElement(
-                wrapperElement,
-                {
-                  key,
-                  className: wrapperClassName,
-                  style: {
-                    ...wrapperStyle,
-                    display: "inline-block",
-                    width: itemWidth,
-                    maxWidth: itemWidth,
-                    minWidth: itemWidth,
-                    height: "100%",
+                return createElement(
+                  wrapperElement,
+                  {
+                    key,
+                    className: wrapperClassName,
+                    style: {
+                      ...wrapperStyle,
+                      display: "inline-block",
+                      width: itemWidth,
+                      maxWidth: itemWidth,
+                      minWidth: itemWidth,
+                      height: "100%",
+                    },
                   },
-                },
-                <ItemComponent {...d.props} />,
-              )
-            })}
+                  <ItemComponent {...d.props} />,
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
