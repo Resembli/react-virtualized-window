@@ -72,11 +72,6 @@ export const List = <T extends Record<string, unknown>>({
     offset,
   })
 
-  // Prevents an issue where we scroll to the bottom, then scrolling a little up applies a translation
-  // moving the div a little higher than it should be.
-  const translationOffset =
-    innerHeight - offset - height < defaultRowHeight ? 0 : -(offset - runningHeight)
-
   return (
     <div
       tabIndex={tabIndex}
@@ -93,32 +88,35 @@ export const List = <T extends Record<string, unknown>>({
     >
       <div style={{ height: innerHeight }}>
         <div style={{ position: "sticky", top: 0 }}>
-          <div
-            style={{
-              transform: `translate3d(0, ${translationOffset}px, 0)`,
-              willChange: "transform",
-            }}
-          >
-            {data.slice(start, end + 1).map((d, i) => {
-              const itemHeight = dataHeights[start + i]
-              const key = d.key ?? i
+          <div style={{ position: "absolute", top: 0, width: "100%" }}>
+            <div
+              style={{
+                transform: `translate3d(0, ${-offset}px, 0)`,
+                willChange: "transform",
+              }}
+            >
+              <div style={{ height: runningHeight }}></div>
+              {data.slice(start, end + 1).map((d, i) => {
+                const itemHeight = dataHeights[start + i]
+                const key = d.key ?? i
 
-              return createElement(
-                wrapperElement,
-                {
-                  key,
-                  className: wrapperClassName,
-                  style: {
-                    ...wrapperStyle,
-                    height: itemHeight,
-                    maxHeight: itemHeight,
-                    minHeight: itemHeight,
-                    display: "block",
+                return createElement(
+                  wrapperElement,
+                  {
+                    key,
+                    className: wrapperClassName,
+                    style: {
+                      ...wrapperStyle,
+                      height: itemHeight,
+                      maxHeight: itemHeight,
+                      minHeight: itemHeight,
+                      display: "block",
+                    },
                   },
-                },
-                <ItemComponent {...d.props} />,
-              )
-            })}
+                  <ItemComponent {...d.props} />,
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
