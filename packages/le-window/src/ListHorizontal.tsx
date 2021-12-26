@@ -26,10 +26,6 @@ export interface ListHorizontalProps<T> {
   className?: string
   style?: CSSProperties
 
-  wrapperElement?: keyof JSX.IntrinsicElements
-  wrapperClassName?: string
-  wrapperStyle?: CSSProperties
-
   onScroll?: UIEventHandler<HTMLElement>
 }
 
