@@ -1,5 +1,4 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
-import { createElement } from "react"
 import { useRef } from "react"
 
 import { useDataDimension } from "./useDataDimension"
@@ -58,14 +57,6 @@ export const Grid = <T extends Record<string, unknown>>({
 
   className,
   style,
-
-  rowWrapperElement = "div",
-  rowWrapperClassName,
-  rowWrapperStyle,
-
-  cellWrapperElement = "div",
-  cellWrapperClassName,
-  cellWrapperStyle,
 
   onScroll: userOnScroll,
 }: GridProps<T>) => {
@@ -141,37 +132,29 @@ export const Grid = <T extends Record<string, unknown>>({
                 const cellKey = cell.key ?? j
                 const itemWidth = dataWidths[horiStart + j]
 
-                return createElement(
-                  cellWrapperElement,
-                  {
-                    key: cellKey,
-                    className: cellWrapperClassName,
-                    style: {
-                      ...cellWrapperStyle,
+                return (
+                  <div
+                    key={cellKey}
+                    style={{
                       width: itemWidth,
                       minWidth: itemWidth,
                       maxWidth: itemWidth,
                       display: "inline-block",
                       height: "100%",
-                    },
-                  },
-                  <ItemComponent {...cell.props} />,
+                    }}
+                  >
+                    <ItemComponent {...cell.props} />
+                  </div>
                 )
               })
 
-              return createElement(
-                rowWrapperElement,
-                {
-                  key: rowKey,
-                  className: rowWrapperClassName,
-                  style: {
-                    ...rowWrapperStyle,
-                    height: itemHeight,
-                    minHeight: itemHeight,
-                    maxHeight: itemHeight,
-                  },
-                },
-                rowChildren,
+              return (
+                <div
+                  key={rowKey}
+                  style={{ height: itemHeight, minHeight: itemHeight, maxHeight: itemHeight }}
+                >
+                  {rowChildren}
+                </div>
               )
             })}
           </div>
