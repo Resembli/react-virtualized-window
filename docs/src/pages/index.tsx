@@ -19,15 +19,13 @@ function HomepageHeader() {
 export default function Home(): JSX.Element {
   return (
     <Layout title="Home" description="Description will go into a meta tag in <head />">
-      <div className="main-container">
-        <div className="bg"></div>
-        <div className="bg bg2"></div>
+      <div className="bg"></div>
+      <div className="bg bg2"></div>
 
-        <HomepageHeader />
-        <main className={styles.section}>
-          <HomepageFeatures />
-        </main>
-      </div>
+      <HomepageHeader />
+      <main className={styles.section}>
+        <HomepageFeatures />
+      </main>
     </Layout>
   )
 }

@@ -27,7 +27,7 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   bottom: 0;
   left: -50%;
   opacity: 0.5;
-  position: absolute;
+  position: fixed;
   right: -50%;
   top: 0;
   z-index: -1;
@@ -45,13 +45,4 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   100% {
     transform: translateX(25%);
   }
-}
-
-.main-wrapper {
-  display: flex;
-}
-
-.main-container {
-  position: relative;
-  flex: 1 0 auto;
 }
