@@ -32,7 +32,7 @@ const config = {
           editUrl: "https://github.com/Resembli/le-ui/edit/main/docs/",
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: require.resolve("./src/css/main.css"),
         },
       }),
     ],

@@ -20,6 +20,12 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+@media only screen and (max-width: 600px) {
+  .small-font-for-mobile {
+    font-size: 0.6rem;
+  }
+}
+
 .bg {
   animation: slide 3s ease-in-out infinite alternate;
   animation-duration: 120s;
