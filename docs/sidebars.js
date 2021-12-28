@@ -20,6 +20,8 @@ const sidebars = {
             "le-window/examples/variable-size-list",
             "le-window/examples/horizontally-fixed-size-list",
             "le-window/examples/horizontally-variable-size-list",
+            "le-window/examples/fixed-size-grid",
+            "le-window/examples/variable-size-grid",
           ],
         },
       ],

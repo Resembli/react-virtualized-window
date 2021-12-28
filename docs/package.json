@@ -27,6 +27,7 @@
   "devDependencies": {
     "@docusaurus/module-type-aliases": "2.0.0-beta.14",
     "@docusaurus/theme-classic": "^2.0.0-beta.14",
+    "@docusaurus/theme-live-codeblock": "^2.0.0-beta.14",
     "@tsconfig/docusaurus": "^1.0.4",
     "typescript": "^4.5.2"
   },
