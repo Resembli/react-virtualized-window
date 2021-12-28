@@ -1,0 +1,20 @@
+.features {
+  display: flex;
+  align-items: center;
+  padding-bottom: 2rem;
+  width: 100%;
+}
+
+.featureSvg {
+  height: 400px;
+  width: 200px;
+  object-fit: cover;
+}
+
+@media only screen and (max-width: 600px) {
+  .featureSvg {
+    height: 180px;
+    width: 90px;
+    object-fit: cover;
+  }
+}

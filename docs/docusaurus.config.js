@@ -6,7 +6,8 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Resembli le-ui",
+  title: "Le-UI",
+  tagline: "Innovative UI components for React",
   url: "https://resembli.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -14,7 +15,7 @@ const config = {
   onDuplicateRoutes: "throw",
   favicon: "favicon.ico",
   organizationName: "Resembli",
-  projectName: "le-ui",
+  projectName: "Le-UI",
 
   presets: [
     [
@@ -40,7 +41,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: "le-ui",
+        title: "Le-UI",
         logo: {
           alt: "Resembli logo",
           src: "resembli-icon.svg",
