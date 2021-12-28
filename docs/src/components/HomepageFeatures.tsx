@@ -16,7 +16,7 @@ export default function HomepageFeatures(): JSX.Element {
               <h3>Le-Window</h3>
               <p>
                 Fast window virtualization to render only what is visible to the user. For when you
-                need to performantly render massive lists or tabular data
+                need to performantly render massive lists or tables.
               </p>
               <Link className="button button--primary" to="/docs/le-window/">
                 Checkout the docs
