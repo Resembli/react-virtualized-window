@@ -1,5 +1,4 @@
 ---
-id: introduction
 title: Introduction
 ---
 
@@ -26,7 +25,7 @@ The road map is liable to change without warning. Only Le-Window and Le-Grid are
 
 ## What is Resembli?
 
-Resembli is the name of the organization responsible for contributing, managing and supporting the [le-ui](le-ui) project.
+Resembli is the name of the organization responsible for contributing, managing and supporting the [le-ui](/docs/introduction) project.
 The **le-ui** project is a collection of front-end technologies that make it easier to develop fast, featureful, highly interactive, and data rich
 web UIs and applications.
 
