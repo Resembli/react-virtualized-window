@@ -12,7 +12,9 @@ export default function HomepageFeatures(): JSX.Element {
             <div className="text--center">
               <img className={styles.featureSvg} alt="le-window svg logo" src="/le-window.svg" />
             </div>
-            <div className="text--center text--bold padding-horiz--md">
+            <div
+              className={clsx("text--center", "text--bold", "padding-horiz--md", styles.feature)}
+            >
               <h3>Le-Window</h3>
               <p>
                 Fast window virtualization to render only what is visible to the user. For when you
