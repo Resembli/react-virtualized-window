@@ -11,13 +11,6 @@
   object-fit: cover;
 }
 
-.feature {
-  color: white;
-}
-.feature a {
-  color: black;
-}
-
 @media only screen and (max-width: 600px) {
   .featureSvg {
     height: 180px;

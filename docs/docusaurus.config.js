@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Le-UI",
-  tagline: "Innovative UI components for React",
+  tagline: "Build interactive, accessible, and data dense applications quickly",
   url: "https://resembli.com",
   baseUrl: "/",
   onBrokenLinks: "throw",

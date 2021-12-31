@@ -15,14 +15,14 @@ import { List } from "@resembli/le-window"
 ```jsx live
 function FixedSizeListExample() {
   const someItems = [
-    ["Apples 🍎", "Keeps the doctor away"],
-    ["Pear 🍐", "People think it's an apple"],
-    ["Cherries 🍒", "Not berries"],
-    ["Strawberry 🍓", "The best berries"],
-    ["Burger 🍔", "Nice any time of the day"],
-    ["Pizza 🍕", "Cheesey goodness"],
-    ["Meat 🍖", "To stay strong"],
-    ["Chicken Leg 🍗", "I hope the chicken is alright"],
+    ["Apples 🍎", "Keeps the doctor away", 200],
+    ["Pear 🍐", "People think it's an apple", 300],
+    ["Cherries 🍒", "Not berries", 400],
+    ["Strawberry 🍓", "The best berries", 500],
+    ["Burger 🍔", "Nice any time of the day", 600],
+    ["Pizza 🍕", "Cheesey goodness", 700],
+    ["Meat 🍖", "To stay strong", 800],
+    ["Chicken Leg 🍗", "I hope the chicken is alright", 900],
   ]
 
   const data = Array(1000)
@@ -32,7 +32,7 @@ function FixedSizeListExample() {
       const props = {
         item: someItems[index][0],
         desc: someItems[index][1],
-        price: (Math.random() * 1000).toFixed(2),
+        price: someItems[index][2],
       }
       return { props }
     })
@@ -71,6 +71,35 @@ function FixedSizeListExample() {
 
 ```jsx live
 function AsyncFixedSizeListExample() {
-  return <div>TODO:</div>
+  const fakeRead = () =>
+    new Promise((resolve) =>
+      setTimeout(() => {
+        resolve()
+      }, 1000),
+    )
+
+  const AsyncItem = () => {
+    fakeRead()
+
+    return <div>I have loaded</div>
+  }
+
+  const SuspenseItem = () => {
+    return (
+      <Suspense fallback="Loading...">
+        <AsyncItem />
+      </Suspense>
+    )
+  }
+
+  const data = Array(1000)
+    .fill(0)
+    .map((_, i) => ({ props: {} }))
+
+  return (
+    <div style={{ height: 250, border: "1px solid grey" }}>
+      <List data={data} defaultRowHeight={50} ItemComponent={SuspenseItem} />
+    </div>
+  )
 }
 ```
