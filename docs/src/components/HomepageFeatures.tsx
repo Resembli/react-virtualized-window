@@ -11,7 +11,7 @@ export default function HomepageFeatures(): JSX.Element {
         <div className="row">
           <div className={clsx("col col--6 col--offset-3")}>
             <div className="text--center">
-              <img className={styles.featureSvg} alt="le-window svg logo" src="/le-window.svg" />
+              <img className={styles.featureImg} alt="le-window svg logo" src="/le-window.png" />
             </div>
             <div
               className={clsx("text--center", "text--bold", "padding-horiz--md", styles.feature)}
