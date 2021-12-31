@@ -1,19 +1,56 @@
 ---
-id: index
-position: 1
 title: Le-Window
 ---
 
 ## What is le-window
 
-The window is a React component for creating virtualized views. A virtualized view is an element that renders only what is visible to the user
-in browser. It is a necessary performance optimization when we want to render a large number of items in the browser.
+The window is a React component for creating virtualized views. A virtualized view is an element that renders only what is visible to the user.
+It is a necessary performance optimization when we want to render a large number of items in the browser.
 
-### Example
+## Installation
 
-The is list below contains 10,000 items. Only what is visible is rendered and attached to the browser's DOM, but the user can scroll through all
-10,000 items.
+import TabItem from "@theme/TabItem"
+import Tabs from "@theme/Tabs"
 
-import { WindowExample } from "../../src/components/WindowExample.tsx"
+<Tabs>
+<TabItem value="npm" label="npm">
 
-<WindowExample />
+```bash
+npm install @resembli/le-window
+```
+
+</TabItem>
+<TabItem value="pnpm" label="pnpm">
+
+```bash
+pnpm i @resembli/le-window
+```
+
+</TabItem>
+<TabItem value="yarn" label="yarn">
+
+```bash
+yarn add @resembli/le-window
+```
+
+</TabItem>
+</Tabs>
+
+## Brief overview of the Le-Window component
+
+| Component                                              | Description                                                                                                     |
+| ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| [List](/docs/le-window/list)                           | Useful for rendering a list of items. The List component vertically virtualizes the view                        |
+| [ListHorizontal](/docs/le-window/list-horizontal)      | Useful for rendering a horizontal list of items. The ListHorizontal component horizontally virtualizes the view |
+| [Grid](/docs/le-window/grid)                           | Useful for rendering tabular data. The Grid component horizontally and vertically virtualizes the view          |
+| [Free Form](/docs/le-window/free-form)                 | Planned - will allow rendering of items based on a set of coordinates                                           |
+| [Infinite Scroller](/docs/le-window/infinite-scroller) | Planned - will provide infinite scrolling capabilities (not final)                                              |
+
+### Examples
+
+- [Fixed Size List](/docs/le-window/examples/fixed-size-list)
+- [Variable Size List](/docs/le-window/examples/variable-size-list)
+- [Horizontally Fixed Size List](/docs/le-window/examples/horizontally-fixed-size-list)
+- [Horizontally Variable Size List](/docs/le-window/examples/horizontally-variable-size-list)
+- [Fixed Size Grid](/docs/le-window/examples/fixed-size-grid)
+- [Variable Size Grid](/docs/le-window/examples/variable-size-grid)

@@ -20,22 +20,10 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.bg {
-  animation: slide 3s ease-in-out infinite alternate;
-  animation-duration: 120s;
-  background-image: linear-gradient(-60deg, rgb(160, 157, 0) 50%, rgb(0, 53, 87) 50%);
-  bottom: 0;
-  left: -50%;
-  opacity: 0.5;
-  position: fixed;
-  right: -50%;
-  top: 0;
-  z-index: -1;
-}
-
-.bg2 {
-  animation-direction: alternate-reverse;
-  animation-duration: 120s;
+@media only screen and (max-width: 600px) {
+  .small-font-for-mobile {
+    font-size: 0.6rem;
+  }
 }
 
 @keyframes slide {

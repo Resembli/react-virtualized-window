@@ -1,4 +1,5 @@
 import Link from "@docusaurus/Link"
+import CodeBlock from "@theme/CodeBlock"
 import clsx from "clsx"
 
 import styles from "./HomepageFeatures.module.css"
@@ -12,14 +13,17 @@ export default function HomepageFeatures(): JSX.Element {
             <div className="text--center">
               <img className={styles.featureSvg} alt="le-window svg logo" src="/le-window.svg" />
             </div>
-            <div className="text--center text--bold padding-horiz--md">
+            <div
+              className={clsx("text--center", "text--bold", "padding-horiz--md", styles.feature)}
+            >
               <h3>Le-Window</h3>
               <p>
-                Fast window virtualization to render only what is visible to the user. For when you
-                need to performantly render massive lists or tabular data
+                React virtualization for performant rendering of large lists or massive amounts of
+                tabular data.
               </p>
+              <CodeBlock metastring="bash">npm install @resembli/le-window</CodeBlock>
               <Link className="button button--primary" to="/docs/le-window/">
-                Checkout the docs
+                Getting Started and Docs
               </Link>
             </div>
           </div>

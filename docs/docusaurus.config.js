@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Le-UI",
-  tagline: "Innovative UI components for React",
+  tagline: "Build interactive, accessible, and data dense applications quickly",
   url: "https://resembli.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
@@ -17,6 +17,7 @@ const config = {
   organizationName: "Resembli",
   projectName: "Le-UI",
 
+  themes: ["@docusaurus/theme-live-codeblock"],
   presets: [
     [
       "classic",
@@ -31,15 +32,18 @@ const config = {
           editUrl: "https://github.com/Resembli/le-ui/edit/main/docs/",
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: require.resolve("./src/css/main.css"),
         },
       }),
     ],
   ],
 
   themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
+    /** @type {import('@docusaurus/preset-classic').ThemeConfig;} */
+    {
+      liveCodeBlock: {
+        playgroundPosition: "top",
+      },
       navbar: {
         title: "Le-UI",
         logo: {
@@ -69,7 +73,7 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-    }),
+    },
 }
 
 module.exports = config

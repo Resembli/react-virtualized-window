@@ -57,6 +57,7 @@ importers:
       '@docusaurus/module-type-aliases': 2.0.0-beta.14
       '@docusaurus/preset-classic': 2.0.0-beta.14
       '@docusaurus/theme-classic': ^2.0.0-beta.14
+      '@docusaurus/theme-live-codeblock': ^2.0.0-beta.14
       '@mdx-js/react': ^1.6.21
       '@resembli/le-window': workspace:^
       '@tsconfig/docusaurus': ^1.0.4
@@ -77,6 +78,7 @@ importers:
     devDependencies:
       '@docusaurus/module-type-aliases': 2.0.0-beta.14
       '@docusaurus/theme-classic': 2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f
+      '@docusaurus/theme-live-codeblock': 2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f
       '@tsconfig/docusaurus': 1.0.4
       typescript: 4.5.4
 
@@ -2059,6 +2061,43 @@ packages:
       - vue-template-compiler
       - webpack-cli
 
+  /@docusaurus/theme-live-codeblock/2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f:
+    resolution: {integrity: sha512-CQ+RY+Uc7gM2frGz+uzedo471CkvKJhuIsiOlSGEq+6WuFk/FTuguUToNiGMAe6KrIjbAopIV9iyHqGwmTQ98Q==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: ^16.8.4 || ^17.0.0
+      react-dom: ^16.8.4 || ^17.0.0
+    dependencies:
+      '@docusaurus/core': 2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f
+      '@docusaurus/theme-translations': 2.0.0-beta.14
+      '@docusaurus/utils': 2.0.0-beta.14_react-dom@17.0.2+react@17.0.2
+      '@docusaurus/utils-validation': 2.0.0-beta.14_react-dom@17.0.2+react@17.0.2
+      '@philpl/buble': 0.19.7
+      clsx: 1.1.1
+      fs-extra: 10.0.0
+      parse-numeric-range: 1.3.0
+      prism-react-renderer: 1.2.1_react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-live: 2.2.3_react-dom@17.0.2+react@17.0.2
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - '@swc/core'
+      - acorn
+      - bufferutil
+      - csso
+      - debug
+      - esbuild
+      - eslint
+      - supports-color
+      - typescript
+      - uglify-js
+      - utf-8-validate
+      - vue-template-compiler
+      - webpack
+      - webpack-cli
+    dev: true
+
   /@docusaurus/theme-search-algolia/2.0.0-beta.14_27ab95dbdfe5939f369d75284c43bfed:
     resolution: {integrity: sha512-kTQl8vKXn8FAVVkCeN4XvU8PGWZTHToc+35F9GL06b4rv33zL9HaFIRX3nPM1NHC7I8qh+6gGeV0DRKGjO+j2g==}
     engines: {node: '>=14'}
@@ -2328,6 +2367,21 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+
+  /@philpl/buble/0.19.7:
+    resolution: {integrity: sha512-wKTA2DxAGEW+QffRQvOhRQ0VBiYU2h2p8Yc1oBNlqSKws48/8faxqKNIuub0q4iuyTuLwtB8EkwiKwhlfV1PBA==}
+    hasBin: true
+    dependencies:
+      acorn: 6.4.2
+      acorn-class-fields: 0.2.1_acorn@6.4.2
+      acorn-dynamic-import: 4.0.0_acorn@6.4.2
+      acorn-jsx: 5.3.2_acorn@6.4.2
+      chalk: 2.4.2
+      magic-string: 0.25.7
+      minimist: 1.2.5
+      os-homedir: 1.0.2
+      regexpu-core: 4.8.0
+    dev: true
 
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
@@ -2880,6 +2934,15 @@ packages:
       mime-types: 2.1.34
       negotiator: 0.6.2
 
+  /acorn-class-fields/0.2.1_acorn@6.4.2:
+    resolution: {integrity: sha512-US/kqTe0H8M4LN9izoL+eykVAitE68YMuYZ3sHn3i1fjniqR7oQ3SPvuMK/VT1kjOQHrx5Q88b90TtOKgAv2hQ==}
+    engines: {node: '>=4.8.2'}
+    peerDependencies:
+      acorn: ^6.0.0
+    dependencies:
+      acorn: 6.4.2
+    dev: true
+
   /acorn-dynamic-import/4.0.0_acorn@6.4.2:
     resolution: {integrity: sha512-d3OEjQV4ROpoflsnUA8HozoIR504TFxNivYEUi6uwz0IYhBkTDXGuWlNdMtybRt3nqVx/L6XqMt0FxkXuWKZhw==}
     peerDependencies:
@@ -3293,6 +3356,18 @@ packages:
       minimist: 1.2.5
       regexpu-core: 4.8.0
 
+  /buble/0.19.6:
+    resolution: {integrity: sha512-9kViM6nJA1Q548Jrd06x0geh+BG2ru2+RMDkIHHgJY/8AcyCs34lTHwra9BX7YdPrZXd5aarkpr/SY8bmPgPdg==}
+    hasBin: true
+    dependencies:
+      chalk: 2.4.2
+      magic-string: 0.25.7
+      minimist: 1.2.5
+      os-homedir: 1.0.2
+      regexpu-core: 4.8.0
+      vlq: 1.0.1
+    dev: true
+
   /buffer-from/1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
 
@@ -3505,6 +3580,14 @@ packages:
   /commondir/1.0.1:
     resolution: {integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=}
 
+  /component-props/1.1.1:
+    resolution: {integrity: sha1-+bffm5kntubZfJvScqqGdnDzSUQ=}
+    dev: true
+
+  /component-xor/0.0.4:
+    resolution: {integrity: sha1-xV2DzMG5TNUImk6T+niRxyY+Wao=}
+    dev: true
+
   /compressible/2.0.18:
     resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
     engines: {node: '>= 0.6'}
@@ -3597,6 +3680,12 @@ packages:
   /core-js-pure/3.20.0:
     resolution: {integrity: sha512-qsrbIwWSEEYOM7z616jAVgwhuDDtPLwZSpUsU3vyUkHYqKTf/uwOJBZg2V7lMurYWkpVlaVOxBrfX0Q3ppvjfg==}
     requiresBuild: true
+
+  /core-js/2.6.12:
+    resolution: {integrity: sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==}
+    deprecated: core-js@<3.4 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Please, upgrade your dependencies to the actual version of core-js.
+    requiresBuild: true
+    dev: true
 
   /core-js/3.20.0:
     resolution: {integrity: sha512-KjbKU7UEfg4YPpskMtMXPhUKn7m/1OdTHTVjy09ScR2LVaoUXe8Jh0UdvN2EKUR6iKTJph52SJP95mAB0MnVLQ==}
@@ -3962,6 +4051,13 @@ packages:
     resolution: {integrity: sha512-gd3ypIPfOMr9h5jIKq8E3sHOTCjeirnl0WK5ZdS1AW0Odt0b1PaWaHdJ4Qk4klv+YB9aJBS7mESXjFoDQPu6DA==}
     dependencies:
       utila: 0.4.0
+
+  /dom-iterator/1.0.0:
+    resolution: {integrity: sha512-7dsMOQI07EMU98gQM8NSB3GsAiIeBYIPKpnxR3c9xOvdvBjChAcOM0iJ222I3p5xyiZO9e5oggkNaCusuTdYig==}
+    dependencies:
+      component-props: 1.1.1
+      component-xor: 0.0.4
+    dev: true
 
   /dom-serializer/0.1.1:
     resolution: {integrity: sha512-l0IU0pPzLWSHBcieZbpOKgkIn3ts3vAh7ZuFyXNwJxJXk/c4Gwj9xaTJwIDVQCXawWD0qb3IzMGH5rglQaO0XA==}
@@ -6133,6 +6229,11 @@ packages:
       word-wrap: 1.2.3
     dev: true
 
+  /os-homedir/1.0.2:
+    resolution: {integrity: sha1-/7xJiDNuDoM94MFox+8VISGqf7M=}
+    engines: {node: '>=0.10.0'}
+    dev: true
+
   /p-cancelable/1.1.0:
     resolution: {integrity: sha512-s73XxOZ4zpt1edZYZzvhqFa6uvQc1vwUa0K0BdtIZgQMAJj9IbebH+JkgKZc9h+B05PKHLOTl4ajG1BmNrVZlw==}
     engines: {node: '>=6'}
@@ -6933,6 +7034,22 @@ packages:
     resolution: {integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==}
     dev: false
 
+  /react-live/2.2.3_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-tpKruvfytNETuzO3o1mrQUj180GVrq35IE8F5gH1NJVPt4szYCx83/dOSCOyjgRhhc3gQvl0pQ3k/CjOjwJkKQ==}
+    engines: {node: '>= 0.12.0', npm: '>= 2.0.0'}
+    dependencies:
+      buble: 0.19.6
+      core-js: 2.6.12
+      dom-iterator: 1.0.0
+      prism-react-renderer: 1.2.1_react@17.0.2
+      prop-types: 15.7.2
+      react-simple-code-editor: 0.10.0_react-dom@17.0.2+react@17.0.2
+      unescape: 1.0.1
+    transitivePeerDependencies:
+      - react
+      - react-dom
+    dev: true
+
   /react-loadable-ssr-addon-v5-slorber/1.0.1_deea275baa3dfcbec832f09dc5d9e498:
     resolution: {integrity: sha512-lq3Lyw1lGku8zUEJPDxsNm1AfYHBrO9Y1+olAYwpUJ2IGFBskM0DMKok97A6LWUpHm+o7IvQBOWu9MLenp9Z+A==}
     engines: {node: '>=10.13.0'}
@@ -6996,6 +7113,16 @@ packages:
       react: ^16.3.0 || ^17.0.0
     dependencies:
       react: 17.0.2
+
+  /react-simple-code-editor/0.10.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-bL5W5mAxSW6+cLwqqVWY47Silqgy2DKDTR4hDBrLrUqC5BXc29YVx17l2IZk5v36VcDEq1Bszu2oHm1qBwKqBA==}
+    peerDependencies:
+      react: ^16.0.0
+      react-dom: ^16.0.0
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: true
 
   /react-textarea-autosize/8.3.3_cfedea9b3ed0faf0dded75c187406c5e:
     resolution: {integrity: sha512-2XlHXK2TDxS6vbQaoPbMOfQ8GK7+irc2fVK6QFIcC8GOnH3zI/v481n+j1L0WaPVvKxwesnY93fEfH++sus2rQ==}
@@ -7922,6 +8049,13 @@ packages:
       which-boxed-primitive: 1.0.2
     dev: true
 
+  /unescape/1.0.1:
+    resolution: {integrity: sha512-O0+af1Gs50lyH1nUu3ZyYS1cRh01Q/kUKatTOkSs7jukXE6/NebucDVxyiDsA9AQ4JC1V1jUH9EO8JX2nMDgGQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      extend-shallow: 2.0.1
+    dev: true
+
   /unherit/1.1.3:
     resolution: {integrity: sha512-Ft16BJcnapDKp0+J/rqFC3Rrk6Y/Ng4nzsC028k2jdDII/rdZ7Wd3pPT/6+vIIxRagwRc9K0IUX0Ra4fKvw+WQ==}
     dependencies:
@@ -8196,6 +8330,10 @@ packages:
       rollup: 2.61.1
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /vlq/1.0.1:
+    resolution: {integrity: sha512-gQpnTgkubC6hQgdIcRdYGDSDc+SaujOdyesZQMv6JlfQee/9Mp0Qhnys6WxDWvQnL5WZdT7o2Ul187aSt0Rq+w==}
     dev: true
 
   /wait-on/6.0.0:
