@@ -69,32 +69,65 @@ function FixedSizeListExample() {
 
 ## Asynchrono List Items with React Suspense Example
 
+:::caution
+It's not recommened to data load within the `ItemComponent` passed to the `List` component without some form
+of request caching.
+
+Components that are "in-view" and subsequently moved "out-of-view" will be unmounted. If a
+user is scrolling quickly (or jumping from place to place in the list) there will be a large series of mounts and
+unmounts. Your data fetching logic will need to take this into account.
+:::
+
 ```jsx live
 function AsyncFixedSizeListExample() {
-  const fakeRead = () =>
-    new Promise((resolve) =>
-      setTimeout(() => {
-        resolve()
-      }, 1000),
-    )
+  const cache = useMemo(() => ({}), [])
 
-  const AsyncItem = () => {
-    fakeRead()
+  const resource = useMemo(() => {
+    const read = (index) => {
+      if (cache[index] !== undefined) return cache[index]
 
-    return <div>I have loaded</div>
+      throw new Promise((res) => {
+        setTimeout(() => {
+          // Since we aren't cleaning up setTimeouts of previous
+          // renders in a useEffect, we no-op if the cache is already set.
+          // DON'T DO THIS IN PRODUCTION CODE!
+          if (cache[index] !== undefined) {
+            res()
+            return
+          }
+
+          cache[index] = Math.random() * 1000
+          res()
+        }, Math.random() * 1000)
+      })
+    }
+
+    return { read }
+  }, [cache])
+
+  const AsyncItem = ({ index }) => {
+    const randomValue = resource.read(index)
+
+    return <div style={{ textAlign: "center" }}>My random value is {randomValue}</div>
   }
 
-  const SuspenseItem = () => {
+  const SuspenseItem = ({ index }) => {
     return (
-      <Suspense fallback="Loading...">
-        <AsyncItem />
+      <Suspense
+        fallback={
+          <div className="center">
+            <BeatLoader color="grey" />
+          </div>
+        }
+      >
+        <AsyncItem index={index} />
       </Suspense>
     )
   }
 
   const data = Array(1000)
     .fill(0)
-    .map((_, i) => ({ props: {} }))
+    .map((_, i) => ({ props: { index: i } }))
 
   return (
     <div style={{ height: 250, border: "1px solid grey" }}>
