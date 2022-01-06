@@ -34,3 +34,9 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
     transform: translateX(25%);
   }
 }
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
