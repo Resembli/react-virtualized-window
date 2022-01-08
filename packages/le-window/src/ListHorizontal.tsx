@@ -1,4 +1,5 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import { memo, useMemo } from "react"
 import { useRef } from "react"
 
 import { useDataDimension } from "./useDataDimension"
@@ -16,7 +17,7 @@ export interface ListHorizontalDataItem<T> {
 
 export interface ListHorizontalProps<T> {
   data: ListHorizontalDataItem<T>[]
-  ItemComponent: (props: T) => JSX.Element | null
+  ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultColumnWidth: number
   columnWidths?: number[]
 
@@ -29,7 +30,7 @@ export interface ListHorizontalProps<T> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export const ListHorizontal = <T extends Record<string, unknown>>({
+export function ListHorizontal<T>({
   data,
   ItemComponent,
   defaultColumnWidth,
@@ -42,7 +43,7 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
   style,
 
   onScroll: userOnScroll,
-}: ListHorizontalProps<T>) => {
+}: ListHorizontalProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
@@ -65,6 +66,10 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
   })
 
   const stickyWidth = dataWidths.slice(start, end + 1).reduce((a, b) => a + b) + runningWidth
+
+  const items = useMemo(() => {
+    return data.slice(start, end + 1)
+  }, [data, end, start])
 
   return (
     <div
@@ -98,23 +103,17 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
               }}
             >
               <div style={{ display: "inline-block", width: runningWidth }} />
-              {data.slice(start, end + 1).map((d, i) => {
+              {items.map((d, i) => {
                 const itemWidth = dataWidths[start + i]
-                const key = d.key ?? i
+                const key = d.key ?? i + start
 
                 return (
-                  <div
+                  <RenderItem
                     key={key}
-                    style={{
-                      display: "inline-block",
-                      width: itemWidth,
-                      maxWidth: itemWidth,
-                      minWidth: itemWidth,
-                      height: "100%",
-                    }}
-                  >
-                    <ItemComponent {...d.props} />
-                  </div>
+                    itemWidth={itemWidth}
+                    ItemComponent={ItemComponent}
+                    itemProps={d.props}
+                  />
                 )
               })}
             </div>
@@ -124,3 +123,27 @@ export const ListHorizontal = <T extends Record<string, unknown>>({
     </div>
   )
 }
+
+type RenderItemsProps<T> = {
+  ItemComponent: ListHorizontalProps<T>["ItemComponent"]
+  itemProps: ListHorizontalDataItem<T>["props"]
+  itemWidth: number
+}
+
+const RenderItem = memo(function <T>({ ItemComponent, itemProps, itemWidth }: RenderItemsProps<T>) {
+  return (
+    <div
+      style={{
+        display: "inline-block",
+        width: itemWidth,
+        maxWidth: itemWidth,
+        minWidth: itemWidth,
+        height: "100%",
+      }}
+    >
+      <ItemComponent {...itemProps} />
+    </div>
+  )
+})
+
+RenderItem.displayName = "ListHorizontalItem"
