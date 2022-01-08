@@ -55,9 +55,10 @@ importers:
     specifiers:
       '@docusaurus/core': 2.0.0-beta.14
       '@docusaurus/module-type-aliases': 2.0.0-beta.14
+      '@docusaurus/plugin-client-redirects': 2.0.0-beta.14
       '@docusaurus/preset-classic': 2.0.0-beta.14
-      '@docusaurus/theme-classic': ^2.0.0-beta.14
-      '@docusaurus/theme-live-codeblock': ^2.0.0-beta.14
+      '@docusaurus/theme-classic': 2.0.0-beta.14
+      '@docusaurus/theme-live-codeblock': 2.0.0-beta.14
       '@mdx-js/react': ^1.6.21
       '@resembli/le-window': workspace:^
       '@tsconfig/docusaurus': ^1.0.4
@@ -70,6 +71,7 @@ importers:
       typescript: ^4.5.2
     dependencies:
       '@docusaurus/core': 2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f
+      '@docusaurus/plugin-client-redirects': 2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f
       '@docusaurus/preset-classic': 2.0.0-beta.14_27ab95dbdfe5939f369d75284c43bfed
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@resembli/le-window': link:../packages/le-window
@@ -1699,6 +1701,42 @@ packages:
       - uglify-js
       - webpack-cli
     dev: true
+
+  /@docusaurus/plugin-client-redirects/2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f:
+    resolution: {integrity: sha512-CHxEZk20URQb3CU6l4egXYpSVMpgIQ3/niTrx8MCjyfQVnLl/yIKiLeYA1ja4i/wa8UmQnJwKUL7mZDbuP9qeg==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: ^16.8.4 || ^17.0.0
+      react-dom: ^16.8.4 || ^17.0.0
+    dependencies:
+      '@docusaurus/core': 2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f
+      '@docusaurus/logger': 2.0.0-beta.14
+      '@docusaurus/utils': 2.0.0-beta.14_react-dom@17.0.2+react@17.0.2
+      '@docusaurus/utils-common': 2.0.0-beta.14
+      '@docusaurus/utils-validation': 2.0.0-beta.14_react-dom@17.0.2+react@17.0.2
+      chalk: 4.1.2
+      eta: 1.12.3
+      fs-extra: 10.0.0
+      lodash: 4.17.21
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - '@swc/core'
+      - acorn
+      - bufferutil
+      - csso
+      - debug
+      - esbuild
+      - eslint
+      - supports-color
+      - typescript
+      - uglify-js
+      - utf-8-validate
+      - vue-template-compiler
+      - webpack
+      - webpack-cli
+    dev: false
 
   /@docusaurus/plugin-content-blog/2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f:
     resolution: {integrity: sha512-MLDRNbQKxwBDsWADyBT/fES7F7xzEEGS8CsdTnm48l7yGSWL8GM3PT6YvjdqHxNxZw3RCRRPUAiJcjZwfOjd8w==}
