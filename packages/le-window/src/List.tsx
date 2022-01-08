@@ -138,4 +138,4 @@ const RenderItem = memo(function <T>({
   )
 })
 
-RenderItem.displayName = "RenderItem"
+RenderItem.displayName = "ListItem"
