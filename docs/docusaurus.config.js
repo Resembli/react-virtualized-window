@@ -41,9 +41,6 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig;} */
     {
-      liveCodeBlock: {
-        playgroundPosition: "top",
-      },
       navbar: {
         title: "Le-UI",
         logo: {
