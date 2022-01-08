@@ -11,8 +11,6 @@ const sidebars = {
         "le-window/list",
         "le-window/list-horizontal",
         "le-window/grid",
-        "le-window/free-form",
-        "le-window/infinite-scroller",
         {
           type: "category",
           label: "Examples",
