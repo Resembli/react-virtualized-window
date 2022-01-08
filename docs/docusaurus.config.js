@@ -27,10 +27,7 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl: "https://github.com/Resembli/le-ui/edit/main/docs/",
         },
-        blog: {
-          showReadingTime: true,
-          editUrl: "https://github.com/Resembli/le-ui/edit/main/docs/",
-        },
+        blog: false,
         theme: {
           customCss: require.resolve("./src/css/main.css"),
         },
@@ -54,7 +51,6 @@ const config = {
             position: "left",
             label: "Documentation",
           },
-          { to: "/blog", label: "Blog", position: "right" },
           {
             href: "https://github.com/Resembli/le-ui",
             label: "GitHub",
