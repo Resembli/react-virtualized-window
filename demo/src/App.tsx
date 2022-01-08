@@ -50,12 +50,21 @@ const ListItem = ({ index }: { index: number }) => {
         justifyContent: "center",
         alignItems: "center",
         height: "100%",
-        background: index % 2 === 1 ? "white" : "#f8f8f0",
+        background: `linear-gradient(to right, ${getRandomHEXColor()}, ${getRandomHEXColor()}`,
       }}
     >
       {index}
     </div>
   )
+}
+
+function getRandomHEXColor() {
+  const SEED = "0123456789abcdef"
+  let output = "#"
+  while (output.length < 7) {
+    output += SEED[Math.floor(Math.random() * SEED.length)]
+  }
+  return output
 }
 
 const listData = Array(1000)

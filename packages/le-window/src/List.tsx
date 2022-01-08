@@ -1,4 +1,5 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import { memo, useMemo } from "react"
 import { useRef } from "react"
 
 import { useDataDimension } from "./useDataDimension"
@@ -14,9 +15,9 @@ export interface ListDataItem<T> {
   key?: string | number
 }
 
-export interface WindowProps<T> {
+export interface ListProps<T> {
   data: ListDataItem<T>[]
-  ItemComponent: (props: T) => JSX.Element | null
+  ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultRowHeight: number
   rowHeights?: number[]
 
@@ -29,7 +30,7 @@ export interface WindowProps<T> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export const List = <T extends Record<string, unknown>>({
+export function List<T>({
   data,
   ItemComponent,
   defaultRowHeight,
@@ -42,7 +43,7 @@ export const List = <T extends Record<string, unknown>>({
   style,
 
   onScroll: userOnScroll,
-}: WindowProps<T>) => {
+}: ListProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
@@ -62,6 +63,10 @@ export const List = <T extends Record<string, unknown>>({
     windowDimension: height,
     offset,
   })
+
+  const items = useMemo(() => {
+    return data.slice(start, end + 1)
+  }, [data, end, start])
 
   return (
     <div
@@ -87,22 +92,17 @@ export const List = <T extends Record<string, unknown>>({
               }}
             >
               <div style={{ height: runningHeight }}></div>
-              {data.slice(start, end + 1).map((d, i) => {
+              {items.map((d, i) => {
                 const itemHeight = dataHeights[start + i]
-                const key = d.key ?? i
+                const key = d.key ?? start + i
 
                 return (
-                  <div
+                  <RenderItem
                     key={key}
-                    style={{
-                      height: itemHeight,
-                      maxHeight: itemHeight,
-                      minHeight: itemHeight,
-                      display: "block",
-                    }}
-                  >
-                    <ItemComponent {...d.props} />
-                  </div>
+                    itemHeight={itemHeight}
+                    itemProps={d.props}
+                    ItemComponent={ItemComponent}
+                  />
                 )
               })}
             </div>
@@ -112,3 +112,30 @@ export const List = <T extends Record<string, unknown>>({
     </div>
   )
 }
+
+type RenderItemsProps<T> = {
+  ItemComponent: ListProps<T>["ItemComponent"]
+  itemProps: ListDataItem<T>["props"]
+  itemHeight: number
+}
+
+const RenderItem = memo(function <T>({
+  itemProps,
+  ItemComponent,
+  itemHeight,
+}: RenderItemsProps<T>) {
+  return (
+    <div
+      style={{
+        height: itemHeight,
+        maxHeight: itemHeight,
+        minHeight: itemHeight,
+        display: "block",
+      }}
+    >
+      <ItemComponent {...itemProps} />
+    </div>
+  )
+})
+
+RenderItem.displayName = "RenderItem"
