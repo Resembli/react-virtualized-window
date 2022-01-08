@@ -1,3 +1,90 @@
 ---
 title: Variable Size List
 ---
+
+Remember to import the `<List />` component. It is not shown in the examples below.
+
+```js
+import { List } from "@resembli/le-window"
+```
+
+For more on the `<List />` component, please refer to the component's [API documentation](/docs/le-window/list)
+
+## Basic Example
+
+:::info
+The same `<List/>` component is used for fixed and variable height rows. If you pass
+a value to the `rowHeights` prop of the list, variable heights will be assumed. Normally,
+each item in the list will have a corresponding row height, but this is not strictly necessary.
+If an item does not have a variable row height, it will use the `defaultRowHeight` provided.
+:::
+
+```jsx live
+function FixedSizeListExample() {
+  const someItems = [
+    ["Apples 🍎", "Keeps the doctor away", 200],
+    ["Pear 🍐", "People think it's an apple", 300],
+    ["Cherries 🍒", "Not berries", 400],
+    ["Strawberry 🍓", "The best berries", 500],
+    ["Burger 🍔", "Nice any time of the day", 600],
+    ["Pizza 🍕", "Cheesey goodness", 700],
+    ["Meat 🍖", "To stay strong", 800],
+    ["Chicken Leg 🍗", "I hope the chicken is alright", 900],
+  ]
+
+  const sizeOptions = [30, 40, 50, 30, 60]
+  const rowHeights = Array(1000)
+    .fill(0)
+    .map((_, i) => sizeOptions[i % sizeOptions.length])
+
+  const data = Array(1000)
+    .fill(0)
+    .map((_, i) => {
+      const index = i % someItems.length
+      const props = {
+        item: someItems[index][0],
+        desc: someItems[index][1],
+        price: someItems[index][2],
+      }
+      return { props }
+    })
+
+  const ItemComponent = (props) => {
+    return (
+      <div
+        className="small-font-for-mobile"
+        style={{
+          display: "inline-grid",
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
+          gridTemplateColumns: "1fr 2fr auto",
+          width: "100%",
+          alignItems: "center",
+          borderBottom: "1px solid grey",
+          height: "100%",
+        }}
+      >
+        <div>{props.item}</div>
+        <div>{props.desc}</div>
+        <div style={{ color: "green", fontWeight: "bold" }}>${props.price}</div>
+      </div>
+    )
+  }
+
+  return (
+    <div style={{ height: 250, border: "1px solid grey" }}>
+      <List
+        data={data}
+        defaultRowHeight={50}
+        ItemComponent={ItemComponent}
+        rowHeights={rowHeights}
+      />
+    </div>
+  )
+}
+```
+
+:::tip
+See this [fixed size list example](/docs/le-window/examples/fixed-size-list#asynchronous-list-items-with-react-suspense-example)
+for list usage with asynchronous data.
+:::
