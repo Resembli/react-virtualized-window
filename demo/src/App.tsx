@@ -24,9 +24,6 @@ const gridCellsWidths = Array(200)
   .map((_, i) => widths[i % widths.length])
 
 const Item = ({ row, column }: { row: number; column: number }) => {
-  const light = row % 2 === 1 ? "white" : "#f8f8f0"
-  const dark = row % 2 === 1 ? "#f8f8f0" : "white"
-
   return (
     <div
       style={{
@@ -34,7 +31,7 @@ const Item = ({ row, column }: { row: number; column: number }) => {
         justifyContent: "center",
         alignItems: "center",
         height: "100%",
-        background: column % 2 === 1 ? dark : light,
+        background: `linear-gradient(to right, ${getRandomHEXColor()}, ${getRandomHEXColor()}`,
       }}
     >
       {row}, {column}

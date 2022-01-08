@@ -1,4 +1,5 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import { memo } from "react"
 import { useRef } from "react"
 
 import { useDataDimension } from "./useDataDimension"
@@ -21,7 +22,7 @@ export interface GridDataRow<T> {
 
 export interface GridProps<T> {
   data: GridDataRow<T>[]
-  ItemComponent: (props: T) => JSX.Element | null
+  ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultRowHeight: number
   rowHeights?: number[]
   defaultColumnWidth: number
@@ -36,7 +37,7 @@ export interface GridProps<T> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export const Grid = <T extends Record<string, unknown>>({
+export function Grid<T>({
   data,
   ItemComponent,
   defaultRowHeight,
@@ -51,7 +52,7 @@ export const Grid = <T extends Record<string, unknown>>({
   style,
 
   onScroll: userOnScroll,
-}: GridProps<T>) => {
+}: GridProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
 
   const [topOffset, leftOffset, onScroll] = useWindowScroll(userOnScroll)
@@ -128,26 +129,20 @@ export const Grid = <T extends Record<string, unknown>>({
               <div />
               <div>
                 {data.slice(vertStart, vertEnd).map((row, i) => {
-                  const rowKey = row.key ?? i
+                  const rowKey = row.key ?? i + vertStart
                   const itemHeight = dataHeights[vertStart + i]
 
                   const rowChildren = row.cells.slice(horiStart, horiEnd).map((cell, j) => {
-                    const cellKey = cell.key ?? j
+                    const cellKey = cell.key ?? j + horiStart
                     const itemWidth = dataWidths[horiStart + j]
 
                     return (
-                      <div
+                      <RenderItem
                         key={cellKey}
-                        style={{
-                          width: itemWidth,
-                          minWidth: itemWidth,
-                          maxWidth: itemWidth,
-                          display: "inline-block",
-                          height: "100%",
-                        }}
-                      >
-                        <ItemComponent {...cell.props} />
-                      </div>
+                        itemWidth={itemWidth}
+                        ItemComponent={ItemComponent}
+                        itemProps={cell.props}
+                      />
                     )
                   })
 
@@ -168,3 +163,27 @@ export const Grid = <T extends Record<string, unknown>>({
     </div>
   )
 }
+
+type RenderItemsProps<T> = {
+  ItemComponent: GridProps<T>["ItemComponent"]
+  itemProps: GridDataItem<T>["props"]
+  itemWidth: number
+}
+
+const RenderItem = memo(function <T>({ ItemComponent, itemProps, itemWidth }: RenderItemsProps<T>) {
+  return (
+    <div
+      style={{
+        width: itemWidth,
+        minWidth: itemWidth,
+        maxWidth: itemWidth,
+        display: "inline-block",
+        height: "100%",
+      }}
+    >
+      <ItemComponent {...itemProps} />
+    </div>
+  )
+})
+
+RenderItem.displayName = "GridCellItem"
