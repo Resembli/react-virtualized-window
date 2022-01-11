@@ -1,3 +1,30 @@
 ---
 title: List
 ---
+
+The list component should be used whenever you need to optimise rendering for **vertically** presented items, for example, the options of
+a `ComboBox` component.
+
+## Basic Usage
+
+Import the `<List />` component:
+
+```ts
+import { List } from "@resembli/le-window"
+```
+
+The list component has three mandatory props:
+
+```jsx
+function RenderMyList() {
+    const data = Array(100).fill(0).map((_, i) => )
+
+    const ItemComponent = (props) => <div>{props.index}</div>
+
+    return (
+        <div>
+            <List data={data} ItemComponent={} />
+        </div>
+    )
+}
+```
