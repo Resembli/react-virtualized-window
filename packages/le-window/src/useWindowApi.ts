@@ -1,7 +1,7 @@
 import type { MutableRefObject, RefObject } from "react"
 import { useEffect } from "react"
 
-export interface WindowApi {
+export interface LeWindowApi {
   scroll: HTMLDivElement["scroll"]
   scrollTo: HTMLDivElement["scrollTo"]
   scrollBy: HTMLDivElement["scrollBy"]
@@ -11,7 +11,7 @@ export interface WindowApi {
 
 export const useWindowApi = (
   windowRef: RefObject<HTMLDivElement>,
-  windowApiRef?: MutableRefObject<WindowApi | undefined>,
+  windowApiRef?: MutableRefObject<LeWindowApi | undefined>,
 ) => {
   useEffect(() => {
     if (!windowRef.current || !windowApiRef) return

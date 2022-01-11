@@ -36,7 +36,7 @@ function FixedSizeListExample() {
         desc: someItems[index][1],
         price: someItems[index][2],
       }
-      return { props }
+      return props
     })
 
   const ItemComponent = (props) => {
@@ -110,7 +110,11 @@ function AsyncFixedSizeListExample() {
   const AsyncItem = ({ index }) => {
     const randomValue = resource.read(index)
 
-    return <div style={{ textAlign: "center" }}>My random value is {randomValue}</div>
+    return (
+      <div style={{ textAlign: "center" }}>
+        My random value at {index} is: {randomValue}
+      </div>
+    )
   }
 
   const SuspenseItem = ({ index }) => {
@@ -129,7 +133,7 @@ function AsyncFixedSizeListExample() {
 
   const data = Array(1000)
     .fill(0)
-    .map((_, i) => ({ props: { index: i } }))
+    .map((_, i) => ({ index: i }))
 
   return (
     <div style={{ height: 250, border: "1px solid grey" }}>

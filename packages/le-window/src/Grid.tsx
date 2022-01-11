@@ -5,22 +5,17 @@ import { useRef } from "react"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { WindowApi } from "./useWindowApi"
+import type { LeWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface GridDataItem<T> {
-  props: T
+export interface GridDataRow<T extends { key?: string | number }> {
+  cells: T[]
   key?: string | number
 }
 
-export interface GridDataRow<T> {
-  cells: GridDataItem<T>[]
-  key?: string | number
-}
-
-export interface GridProps<T> {
+export interface GridProps<T extends { key?: string | number }> {
   data: GridDataRow<T>[]
   ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultRowHeight: number
@@ -29,7 +24,7 @@ export interface GridProps<T> {
   columnWidths?: number[]
 
   tabIndex?: number
-  apiRef?: MutableRefObject<WindowApi | undefined>
+  apiRef?: MutableRefObject<LeWindowApi | undefined>
 
   className?: string
   style?: CSSProperties
@@ -37,7 +32,7 @@ export interface GridProps<T> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export function Grid<T>({
+export function Grid<T extends { key?: string | number }>({
   data,
   ItemComponent,
   defaultRowHeight,
@@ -133,7 +128,9 @@ export function Grid<T>({
                   const itemHeight = dataHeights[vertStart + i]
 
                   const rowChildren = row.cells.slice(horiStart, horiEnd).map((cell, j) => {
-                    const cellKey = cell.key ?? j + horiStart
+                    const { key: userProvidedKey, ...props } = cell
+
+                    const cellKey = userProvidedKey ?? j + horiStart
                     const itemWidth = dataWidths[horiStart + j]
 
                     return (
@@ -141,7 +138,7 @@ export function Grid<T>({
                         key={cellKey}
                         itemWidth={itemWidth}
                         ItemComponent={ItemComponent}
-                        itemProps={cell.props}
+                        itemProps={props}
                       />
                     )
                   })
@@ -166,7 +163,7 @@ export function Grid<T>({
 
 type RenderItemsProps<T> = {
   ItemComponent: GridProps<T>["ItemComponent"]
-  itemProps: GridDataItem<T>["props"]
+  itemProps: T
   itemWidth: number
 }
 

@@ -5,24 +5,19 @@ import { useRef } from "react"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { WindowApi } from "./useWindowApi"
+import type { LeWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface ListDataItem<T> {
-  props: T
-  key?: string | number
-}
-
-export interface ListProps<T> {
-  data: ListDataItem<T>[]
+export interface ListProps<T extends { key?: string | number }> {
+  data: T[]
   ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultRowHeight: number
   rowHeights?: number[]
 
   tabIndex?: number
-  apiRef?: MutableRefObject<WindowApi | undefined>
+  apiRef?: MutableRefObject<LeWindowApi | undefined>
 
   className?: string
   style?: CSSProperties
@@ -30,7 +25,7 @@ export interface ListProps<T> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export function List<T>({
+export function List<T extends { key?: string | number }>({
   data,
   ItemComponent,
   defaultRowHeight,
@@ -94,13 +89,15 @@ export function List<T>({
               <div style={{ height: runningHeight }}></div>
               {items.map((d, i) => {
                 const itemHeight = dataHeights[start + i]
-                const key = d.key ?? start + i
+
+                const { key: userProvidedKey, ...props } = d
+                const key = userProvidedKey ?? start + i
 
                 return (
                   <RenderItem
                     key={key}
                     itemHeight={itemHeight}
-                    itemProps={d.props}
+                    itemProps={props}
                     ItemComponent={ItemComponent}
                   />
                 )
@@ -115,7 +112,7 @@ export function List<T>({
 
 type RenderItemsProps<T> = {
   ItemComponent: ListProps<T>["ItemComponent"]
-  itemProps: ListDataItem<T>["props"]
+  itemProps: T
   itemHeight: number
 }
 
