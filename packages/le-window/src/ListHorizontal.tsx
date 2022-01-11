@@ -5,7 +5,7 @@ import { useRef } from "react"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { WindowApi } from "./useWindowApi"
+import type { LeWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
@@ -17,7 +17,7 @@ export interface ListHorizontalProps<T extends { key?: string | number }> {
   columnWidths?: number[]
 
   tabIndex?: number
-  apiRef?: MutableRefObject<WindowApi | undefined>
+  apiRef?: MutableRefObject<LeWindowApi | undefined>
 
   className?: string
   style?: CSSProperties

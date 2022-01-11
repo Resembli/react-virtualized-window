@@ -1,5 +1,5 @@
 export { List } from "./List"
 export { ListHorizontal } from "./ListHorizontal"
 export { Grid } from "./Grid"
-export type { GridDataRow, GridProps, GridDataItem } from "./Grid"
-export type { WindowApi } from "./useWindowApi"
+export type { GridDataRow, GridProps } from "./Grid"
+export type { LeWindowApi } from "./useWindowApi"
