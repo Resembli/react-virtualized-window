@@ -15,16 +15,113 @@ import { List } from "@resembli/le-window"
 
 The list component has three mandatory props:
 
+| prop               | description                                                                          |
+| ------------------ | ------------------------------------------------------------------------------------ |
+| `data`             | Must be an array. Each item will be passed to the `ItemComponent` component as props |
+| `ItemComponent`    | A render props that will be used to render the individual list items                 |
+| `defaultRowHeight` | The default height of each list item. This must be a `number`                        |
+
 ```jsx
+// 1. Create an array with list data. Each item will be passed as props
+// to the list items.
+const data = Array(100)
+  .fill(0)
+  .map((_, i) => ({ index: i }))
+
+// 2. Create a component that we can use to render a list item
+const ItemComponent = (props) => <div>{props.index}</div>
+
 function RenderMyList() {
-    const data = Array(100).fill(0).map((_, i) => )
-
-    const ItemComponent = (props) => <div>{props.index}</div>
-
-    return (
-        <div>
-            <List data={data} ItemComponent={} />
-        </div>
-    )
+  // Note we must render the List component in a div
+  // that has an actual size, otherwise the list will
+  // expand to be large enough to contain all the items
+  return (
+    <div style={{ height: 250 }}>
+      <List data={data} ItemComponent={ItemComponent} defaultRowHeight={50} />
+    </div>
+  )
 }
 ```
+
+:::caution
+
+## Sizing the `<List />` component
+
+The `<List />` item must be rendered into a div that has a size that is not automatically computed by the browser.
+For example, the following works:
+
+```jsx
+<div style={{ height: 500 }}>
+  <div style={{ height: "50%" }}>
+    <List {...props} />
+  </div>
+</div>
+```
+
+But this will **NOT** work:
+
+```jsx
+<div style={{ height: 500 }}>
+  <div>
+    <List {...props} />
+  </div>
+</div>
+```
+
+Similarly the following will **NOT** work, since the outer most div will grow to fit the size of it's content:
+
+```jsx
+<div>
+  <div style={{ height: "50%" }}>
+    <List {...props} />
+  </div>
+</div>
+```
+
+This will also **NOT** work:
+
+```jsx
+<div style={{ height: "20vh" }}>
+  <div>
+    <div>
+      <div style={{ height: "50%" }}>
+        <List {...props} />
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+For a full explanation of why the sizing works the way it does see [LeWindow Implementation Explained](./implementation)
+:::
+
+## Variable Size List Items
+
+## Tab Index
+
+## Imperative API
+
+See [Imperative API](./imperative-api) docs for more information
+
+## See the `List` examples here:
+
+- [Fixed size list examples](./examples/fixed-size-list)
+- [Variable size list examples](./examples/variable-size-list)
+
+## Full Props Description
+
+| prop               | type                                     | description                                                                                                                                                        | default                       |
+| ------------------ | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
+| `data`             | `T[]`                                    | Array of list data items. Each item corresponds to a list item. If there are 100 elements in the array there are 100 list items                                    | none (user must provide this) |
+| `ItemComponent`    | `<B extends T>(props: B) => JSX.Element` | The component to use with which to render individual items                                                                                                         | none (user must provide this) |
+| `defaultRowHeight` | `number`                                 | The default height of each list item. If `rowHeights` is provided, this will override the default                                                                  | none (user must provide this) |
+| `rowHeights`       | `number[]?`                              | Heights to use for list items. Each element corresponds to a list item                                                                                             | `undefined`                   |
+| `tabIndex`         | `number?`                                | Tab index value to use for the `<List />` component. Only provide this if the list you be reach via the tab key                                                    | `undefined`                   |
+| `apiRef`           | `MutableRefObject<LeWindowApi?>`         | A ref object that can be used to get an instance of the List api. The api allows the user to programmatically scroll and adjust the list view                      | `undefined`                   |
+| `className`        | `string?`                                | `className` to use for the containg list `div`                                                                                                                     | `undefined`                   |
+| `styles`           | `CSSProperties?`                         | Inline styles to use the containing list `div`                                                                                                                     | `undefined`                   |
+| `onScroll`         | `UIEventHandler<HTMLElement>?`           | An onScroll callback to call when the user scrolls in the list. **Note** this scroll will not be debounced, and will be called whenever the `onScroll` event fires | `undefined`                   |
+
+:::info
+The `?` next to the type indicates the argument is optional.
+:::
