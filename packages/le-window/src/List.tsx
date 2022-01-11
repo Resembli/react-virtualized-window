@@ -10,7 +10,7 @@ import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface ListProps<T extends { key?: string }> {
+export interface ListProps<T extends { key?: string | number }> {
   data: T[]
   ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultRowHeight: number
@@ -25,7 +25,7 @@ export interface ListProps<T extends { key?: string }> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export function List<T extends { key?: string }>({
+export function List<T extends { key?: string | number }>({
   data,
   ItemComponent,
   defaultRowHeight,
