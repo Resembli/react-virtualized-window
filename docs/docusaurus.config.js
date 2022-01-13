@@ -38,6 +38,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig;} */
     {
+      algolia: {
+        appId: "PZCG2I7O2N",
+        apiKey: "259fbd7acef20a9273cb6f13ebcd63f3",
+        indexName: "le-ui",
+      },
       navbar: {
         title: "Le-UI",
         logo: {
