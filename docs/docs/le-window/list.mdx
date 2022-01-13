@@ -43,6 +43,10 @@ function RenderMyList() {
 }
 ```
 
+import { FixedSizeDocsExample } from "./components/ListDocsExamples.tsx"
+
+<FixedSizeDocsExample />
+
 :::caution
 
 ## Sizing the `<List />` component
@@ -98,6 +102,19 @@ For a full explanation of why the sizing works the way it does see [LeWindow Imp
 ## Variable Size List Items
 
 ## Tab Index
+
+By default a `<List />` will not be tabbable. This is the default behavior of `<div />` elements in the browser. Adding
+a value to the `tabIndex` prop will make it tabbable, e.g.
+
+```jsx
+<List tabIndex={1} {...otherProps} />
+```
+
+:::info
+The whole `List` is treated as a single tab item. The purpose of the `List` component is to render massives sets of list data.
+If individual list items were made tabbable, then the user will get stuck trying to tab through all the items. When
+a `List` has focus it can be scrolled using the direction keys - this is the desired behavior.
+:::
 
 ## Imperative API
 

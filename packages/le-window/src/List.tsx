@@ -25,7 +25,7 @@ export interface ListProps<T extends { key?: string | number }> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export function List<T extends { key?: string | number }>({
+export function List<T extends { key?: string | number } | Record<string, unknown>>({
   data,
   ItemComponent,
   defaultRowHeight,
@@ -95,7 +95,7 @@ export function List<T extends { key?: string | number }>({
 
                 return (
                   <RenderItem
-                    key={key}
+                    key={key as string | undefined}
                     itemHeight={itemHeight}
                     itemProps={props}
                     ItemComponent={ItemComponent}
