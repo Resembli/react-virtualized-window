@@ -12,7 +12,7 @@ import { useWindowScroll } from "./useWindowScroll"
 
 export interface ListProps<T> {
   data: T[]
-  ItemComponent: <B extends T>(props: B) => JSX.Element | null
+  children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
   defaultRowHeight: number
   rowHeights?: number[]
 
@@ -27,7 +27,7 @@ export interface ListProps<T> {
 
 export function List<T>({
   data,
-  ItemComponent,
+  children,
   defaultRowHeight,
   rowHeights,
 
@@ -97,7 +97,7 @@ export function List<T>({
                     key={key}
                     itemHeight={itemHeight}
                     itemProps={d}
-                    ItemComponent={ItemComponent}
+                    component={children}
                   />
                 )
               })}
@@ -110,28 +110,22 @@ export function List<T>({
 }
 
 type RenderItemsProps<T> = {
-  ItemComponent: ListProps<T>["ItemComponent"]
+  component: ListProps<T>["children"]
   itemProps: T
   itemHeight: number
 }
 
-const RenderItem = memo(function <T>({
-  itemProps,
-  ItemComponent,
-  itemHeight,
-}: RenderItemsProps<T>) {
-  return (
-    <div
-      style={{
-        height: itemHeight,
-        maxHeight: itemHeight,
-        minHeight: itemHeight,
-        display: "block",
-      }}
-    >
-      <ItemComponent {...itemProps} />
-    </div>
+const RenderItem = memo(function <T>({ itemProps, component, itemHeight }: RenderItemsProps<T>) {
+  const itemStyle = useMemo(
+    () => ({
+      height: itemHeight,
+      maxHeight: itemHeight,
+      minHeight: itemHeight,
+    }),
+    [itemHeight],
   )
+
+  return component(itemProps, itemStyle)
 })
 
 RenderItem.displayName = "ListItem"
