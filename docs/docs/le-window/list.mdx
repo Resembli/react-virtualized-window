@@ -43,7 +43,7 @@ function RenderMyList() {
 }
 ```
 
-import { FixedSizeDocsExample } from "./components/ListDocsExamples.tsx"
+import { FixedSizeDocsExample, VariableSizeDocsExample } from "./_components/ListDocsExamples.tsx"
 
 <FixedSizeDocsExample />
 
@@ -100,6 +100,31 @@ For a full explanation of why the sizing works the way it does see [LeWindow Imp
 :::
 
 ## Variable Size List Items
+
+The list component supports items with arbitrary size by passing an array where each item in the array is the height
+of the corresponding list item to the `rowHeights` prop. For example:
+
+```jsx
+const heights = [50, 60, 100, 40]
+const rowHeights = Array(1000)
+  .fill(0)
+  .map((_, i) => heights[i % heights.length])
+
+function VariableSizeList() {
+  return (
+    <div style={{ height: 250 }}>
+      <List
+        data={data}
+        ItemComponent={ItemComponent}
+        defaultRowHeight={50}
+        rowHeights={rowHeights}
+      />
+    </div>
+  )
+}
+```
+
+<VariableSizeDocsExample />
 
 ## Tab Index
 
