@@ -10,7 +10,7 @@ const gridData: GridDataRow<{ row: number; column: number }>[] = Array(1000)
   .map((_, row) => {
     const cells = Array(200)
       .fill(0)
-      .map((_, column) => ({ props: { row, column } }))
+      .map((_, column) => ({ row, column }))
 
     return { cells }
   })
@@ -66,7 +66,7 @@ function getRandomHEXColor() {
 
 const listData = Array(1000)
   .fill(0)
-  .map((_, i) => ({ props: { index: i } }))
+  .map((_, i) => ({ index: i }))
 
 const listHeights = Array(1000)
   .fill(0)
