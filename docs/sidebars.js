@@ -24,6 +24,7 @@ const sidebars = {
             "le-window/examples/variable-size-grid",
           ],
         },
+        "le-window/implementation",
       ],
       link: {
         type: "doc",
