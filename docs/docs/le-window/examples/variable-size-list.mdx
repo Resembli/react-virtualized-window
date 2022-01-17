@@ -49,36 +49,32 @@ function FixedSizeListExample() {
       return props
     })
 
-  const ItemComponent = (props) => {
-    return (
-      <div
-        className="small-font-for-mobile"
-        style={{
-          display: "inline-grid",
-          paddingLeft: "1rem",
-          paddingRight: "1rem",
-          gridTemplateColumns: "1fr 2fr auto",
-          width: "100%",
-          alignItems: "center",
-          borderBottom: "1px solid grey",
-          height: "100%",
-        }}
-      >
-        <div>{props.item}</div>
-        <div>{props.desc}</div>
-        <div style={{ color: "green", fontWeight: "bold" }}>${props.price}</div>
-      </div>
-    )
-  }
-
   return (
     <div style={{ height: 250, border: "1px solid grey" }}>
-      <List
-        data={data}
-        defaultRowHeight={50}
-        ItemComponent={ItemComponent}
-        rowHeights={rowHeights}
-      />
+      <List data={data} defaultRowHeight={50} rowHeights={rowHeights}>
+        {(props, style) => {
+          return (
+            <div
+              className="small-font-for-mobile"
+              style={{
+                display: "inline-grid",
+                paddingLeft: "1rem",
+                paddingRight: "1rem",
+                gridTemplateColumns: "1fr 2fr auto",
+                width: "100%",
+                alignItems: "center",
+                borderBottom: "1px solid grey",
+                height: "100%",
+                ...style,
+              }}
+            >
+              <div>{props.item}</div>
+              <div>{props.desc}</div>
+              <div style={{ color: "green", fontWeight: "bold" }}>${props.price}</div>
+            </div>
+          )
+        }}
+      </List>
     </div>
   )
 }

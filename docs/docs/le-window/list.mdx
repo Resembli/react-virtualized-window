@@ -2,8 +2,13 @@
 title: List
 ---
 
-The list component should be used whenever you need to optimise rendering for **vertically** presented items, for example, the options of
+The list component should be used whenever you need to optimise rendering for **vertically** presented items. For example, the options of
 a `ComboBox` component.
+
+## See the `List` examples here:
+
+- [Fixed size list examples](./examples/fixed-size-list)
+- [Variable size list examples](./examples/variable-size-list)
 
 ## Basic Usage
 
@@ -15,21 +20,23 @@ import { List } from "@resembli/le-window"
 
 The list component has three mandatory props:
 
-| prop               | description                                                                          |
-| ------------------ | ------------------------------------------------------------------------------------ |
-| `data`             | Must be an array. Each item will be passed to the `ItemComponent` component as props |
-| `ItemComponent`    | A render props that will be used to render the individual list items                 |
-| `defaultRowHeight` | The default height of each list item. This must be a `number`                        |
+| prop               | description                                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------------------------ |
+| `data`             | Must be an array. Each item will be passed to the `ItemComponent` component as props                   |
+| `children`         | A function which should return a `JSX Element`. This function will be called for each item in the list |
+| `defaultRowHeight` | The default height of each list item. This must be a `number`                                          |
+
+:::note
+
+The element returned by the `children` function should be a block element. This is the default for `div` elements, but if you prefer
+to use a non-block element, like `span`, then you must set the `display` accordingly.
+
+:::
 
 ```jsx
-// 1. Create an array with list data. Each item will be passed as props
-// to the list items.
 const data = Array(100)
   .fill(0)
   .map((_, i) => ({ index: i }))
-
-// 2. Create a component that we can use to render a list item
-const ItemComponent = (props) => <div>{props.index}</div>
 
 function RenderMyList() {
   // Note we must render the List component in a div
@@ -37,19 +44,106 @@ function RenderMyList() {
   // expand to be large enough to contain all the items
   return (
     <div style={{ height: 250 }}>
-      <List data={data} ItemComponent={ItemComponent} defaultRowHeight={50} />
+      <List data={listData} defaultRowHeight={50}>
+        {({ index }, style) => {
+          // IMPORTANT: you must apply the 'style' argument to your list item.
+          return <div style={{ ...style }}>{index}</div>
+        }}
+      </List>
     </div>
   )
 }
 ```
 
+:::caution
+
+For the list item to work properly the styles provided must not be overridden. An easy way to ensure this is to spread
+the `style` last.
+
+**Do**
+
+```jsx
+<div style={{ display: 'flex', margin: '20px', ...style }}
+```
+
+**Don't do**
+
+```jsx
+<div style={{ ...style, display: 'flex', margin: '20px' }}
+```
+
+:::
+
 import { FixedSizeDocsExample, VariableSizeDocsExample } from "./_components/ListDocsExamples.tsx"
 
 <FixedSizeDocsExample />
 
-:::caution
+## Variable Size List Items
+
+The list component supports items with arbitrary size by passing an array where each item in the array is the height
+of the corresponding list item to the `rowHeights` prop. For example:
+
+```jsx
+const heights = [50, 60, 100, 40]
+const rowHeights = Array(1000)
+  .fill(0)
+  .map((_, i) => heights[i % heights.length])
+
+function VariableSizeList() {
+  return (
+    <div style={{ height: 250 }}>
+      <List {...otherProps} rowHeights={rowHeights}>
+        {({ index }, style) => {
+          return <div style={{ ...style }}>{index}</div>
+        }}
+      </List>
+    </div>
+  )
+}
+```
+
+<VariableSizeDocsExample />
+
+## Tab Index
+
+By default a `<List />` will not be tabbable. This is the default behavior of `<div />` elements in the browser. Adding
+a value to the `tabIndex` prop will make it tabbable, e.g.
+
+```jsx
+<List tabIndex={1} {...otherProps} />
+```
+
+:::info
+The whole `List` is treated as a single tab item. The purpose of the `List` component is to render massives sets of list data.
+If individual list items were made tabbable, then the user will get stuck trying to tab through all the items. When
+a `List` has focus it can be scrolled using the direction keys - this is the desired behavior.
+:::
+
+## Imperative API
+
+See [Imperative API](./imperative-api) docs for more information
+
+## Full Props Description
+
+| prop               | type                                                           | description                                                                                                                                                        | default                       |
+| ------------------ | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
+| `data`             | `T[]`                                                          | Array of list data items. Each item corresponds to a list item. If there are 100 elements in the array there are 100 list items                                    | none (user must provide this) |
+| `children`         | `<B extends T>(props: B, style: CSSProperties) => JSX.Element` | A function to call per list item. Should return a `JSX Element`                                                                                                    | none (user must provide this) |
+| `defaultRowHeight` | `number`                                                       | The default height of each list item. If `rowHeights` is provided, this will override the default                                                                  | none (user must provide this) |
+| `rowHeights`       | `number[]?`                                                    | Heights to use for list items. Each element corresponds to a list item                                                                                             | `undefined`                   |
+| `tabIndex`         | `number?`                                                      | Tab index value to use for the `<List />` component. Only provide this if the list you be reach via the tab key                                                    | `undefined`                   |
+| `apiRef`           | `MutableRefObject<LeWindowApi?>`                               | A ref object that can be used to get an instance of the List api. The api allows the user to programmatically scroll and adjust the list view                      | `undefined`                   |
+| `className`        | `string?`                                                      | `className` to use for the containg list `div`                                                                                                                     | `undefined`                   |
+| `style`            | `CSSProperties?`                                               | Inline styles to use the containing list `div`                                                                                                                     | `undefined`                   |
+| `onScroll`         | `UIEventHandler<HTMLElement>?`                                 | An onScroll callback to call when the user scrolls in the list. **Note** this scroll will not be debounced, and will be called whenever the `onScroll` event fires | `undefined`                   |
+
+:::info
+The `?` next to the type indicates the argument is optional.
+:::
 
 ## Sizing the `<List />` component
+
+:::caution
 
 The `<List />` item must be rendered into a div that has a size that is not automatically computed by the browser.
 For example, the following works:
@@ -97,73 +191,4 @@ This will also **NOT** work:
 ```
 
 For a full explanation of why the sizing works the way it does see [LeWindow Implementation Explained](./implementation)
-:::
-
-## Variable Size List Items
-
-The list component supports items with arbitrary size by passing an array where each item in the array is the height
-of the corresponding list item to the `rowHeights` prop. For example:
-
-```jsx
-const heights = [50, 60, 100, 40]
-const rowHeights = Array(1000)
-  .fill(0)
-  .map((_, i) => heights[i % heights.length])
-
-function VariableSizeList() {
-  return (
-    <div style={{ height: 250 }}>
-      <List
-        data={data}
-        ItemComponent={ItemComponent}
-        defaultRowHeight={50}
-        rowHeights={rowHeights}
-      />
-    </div>
-  )
-}
-```
-
-<VariableSizeDocsExample />
-
-## Tab Index
-
-By default a `<List />` will not be tabbable. This is the default behavior of `<div />` elements in the browser. Adding
-a value to the `tabIndex` prop will make it tabbable, e.g.
-
-```jsx
-<List tabIndex={1} {...otherProps} />
-```
-
-:::info
-The whole `List` is treated as a single tab item. The purpose of the `List` component is to render massives sets of list data.
-If individual list items were made tabbable, then the user will get stuck trying to tab through all the items. When
-a `List` has focus it can be scrolled using the direction keys - this is the desired behavior.
-:::
-
-## Imperative API
-
-See [Imperative API](./imperative-api) docs for more information
-
-## See the `List` examples here:
-
-- [Fixed size list examples](./examples/fixed-size-list)
-- [Variable size list examples](./examples/variable-size-list)
-
-## Full Props Description
-
-| prop               | type                                     | description                                                                                                                                                        | default                       |
-| ------------------ | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------- |
-| `data`             | `T[]`                                    | Array of list data items. Each item corresponds to a list item. If there are 100 elements in the array there are 100 list items                                    | none (user must provide this) |
-| `ItemComponent`    | `<B extends T>(props: B) => JSX.Element` | The component to use with which to render individual items                                                                                                         | none (user must provide this) |
-| `defaultRowHeight` | `number`                                 | The default height of each list item. If `rowHeights` is provided, this will override the default                                                                  | none (user must provide this) |
-| `rowHeights`       | `number[]?`                              | Heights to use for list items. Each element corresponds to a list item                                                                                             | `undefined`                   |
-| `tabIndex`         | `number?`                                | Tab index value to use for the `<List />` component. Only provide this if the list you be reach via the tab key                                                    | `undefined`                   |
-| `apiRef`           | `MutableRefObject<LeWindowApi?>`         | A ref object that can be used to get an instance of the List api. The api allows the user to programmatically scroll and adjust the list view                      | `undefined`                   |
-| `className`        | `string?`                                | `className` to use for the containg list `div`                                                                                                                     | `undefined`                   |
-| `styles`           | `CSSProperties?`                         | Inline styles to use the containing list `div`                                                                                                                     | `undefined`                   |
-| `onScroll`         | `UIEventHandler<HTMLElement>?`           | An onScroll callback to call when the user scrolls in the list. **Note** this scroll will not be debounced, and will be called whenever the `onScroll` event fires | `undefined`                   |
-
-:::info
-The `?` next to the type indicates the argument is optional.
 :::
