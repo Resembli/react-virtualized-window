@@ -10,7 +10,7 @@ import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface ListHorizontalProps<T extends { key?: string | number }> {
+export interface ListHorizontalProps<T> {
   data: T[]
   ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultColumnWidth: number
@@ -25,7 +25,7 @@ export interface ListHorizontalProps<T extends { key?: string | number }> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export function ListHorizontal<T extends { key?: string | number }>({
+export function ListHorizontal<T>({
   data,
   ItemComponent,
   defaultColumnWidth,
@@ -101,16 +101,14 @@ export function ListHorizontal<T extends { key?: string | number }>({
               {items.map((d, i) => {
                 const itemWidth = dataWidths[start + i]
 
-                const { key: userProvidedKey, ...props } = d
-
-                const key = userProvidedKey ?? i + start
+                const key = start + i
 
                 return (
                   <RenderItem
                     key={key}
                     itemWidth={itemWidth}
                     ItemComponent={ItemComponent}
-                    itemProps={props}
+                    itemProps={d}
                   />
                 )
               })}

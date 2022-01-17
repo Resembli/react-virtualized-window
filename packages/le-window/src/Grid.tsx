@@ -10,12 +10,12 @@ import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface GridDataRow<T extends { key?: string | number }> {
+export interface GridDataRow<T> {
   cells: T[]
   key?: string | number
 }
 
-export interface GridProps<T extends { key?: string | number }> {
+export interface GridProps<T> {
   data: GridDataRow<T>[]
   ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultRowHeight: number
@@ -32,7 +32,7 @@ export interface GridProps<T extends { key?: string | number }> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export function Grid<T extends { key?: string | number }>({
+export function Grid<T>({
   data,
   ItemComponent,
   defaultRowHeight,
@@ -128,9 +128,7 @@ export function Grid<T extends { key?: string | number }>({
                   const itemHeight = dataHeights[vertStart + i]
 
                   const rowChildren = row.cells.slice(horiStart, horiEnd).map((cell, j) => {
-                    const { key: userProvidedKey, ...props } = cell
-
-                    const cellKey = userProvidedKey ?? j + horiStart
+                    const cellKey = horiStart + j
                     const itemWidth = dataWidths[horiStart + j]
 
                     return (
@@ -138,7 +136,7 @@ export function Grid<T extends { key?: string | number }>({
                         key={cellKey}
                         itemWidth={itemWidth}
                         ItemComponent={ItemComponent}
-                        itemProps={props}
+                        itemProps={cell}
                       />
                     )
                   })

@@ -10,7 +10,7 @@ import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface ListProps<T extends { key?: string | number }> {
+export interface ListProps<T> {
   data: T[]
   ItemComponent: <B extends T>(props: B) => JSX.Element | null
   defaultRowHeight: number
@@ -25,7 +25,7 @@ export interface ListProps<T extends { key?: string | number }> {
   onScroll?: UIEventHandler<HTMLElement>
 }
 
-export function List<T extends { key?: string | number } | Record<string, unknown>>({
+export function List<T>({
   data,
   ItemComponent,
   defaultRowHeight,
@@ -90,14 +90,13 @@ export function List<T extends { key?: string | number } | Record<string, unknow
               {items.map((d, i) => {
                 const itemHeight = dataHeights[start + i]
 
-                const { key: userProvidedKey, ...props } = d
-                const key = userProvidedKey ?? start + i
+                const key = start + i
 
                 return (
                   <RenderItem
-                    key={key as string | undefined}
+                    key={key}
                     itemHeight={itemHeight}
-                    itemProps={props}
+                    itemProps={d}
                     ItemComponent={ItemComponent}
                   />
                 )
