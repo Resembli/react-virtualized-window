@@ -1,4 +1,4 @@
-import { List } from "@resembli/le-window"
+import { List, ListHorizontal } from "@resembli/le-window"
 
 const h = [30, 40, 50, 60]
 
@@ -32,7 +32,7 @@ export const App = () => {
         }}
       >
         <div style={{ margin: 20, width: 1000, height: 600, border: "1px solid black" }}>
-          <List data={listData} defaultRowHeight={50} rowHeights={listHeights}>
+          <ListHorizontal data={listData} defaultColumnWidth={200} tabIndex={0}>
             {(props, style) => {
               return (
                 <div
@@ -48,7 +48,7 @@ export const App = () => {
                 </div>
               )
             }}
-          </List>
+          </ListHorizontal>
         </div>
       </div>
     </>
