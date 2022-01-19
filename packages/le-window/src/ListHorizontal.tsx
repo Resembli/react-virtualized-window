@@ -12,7 +12,7 @@ import { useWindowScroll } from "./useWindowScroll"
 
 export interface ListHorizontalProps<T> {
   data: T[]
-  ItemComponent: <B extends T>(props: B) => JSX.Element | null
+  children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
   defaultColumnWidth: number
   columnWidths?: number[]
 
@@ -27,7 +27,7 @@ export interface ListHorizontalProps<T> {
 
 export function ListHorizontal<T>({
   data,
-  ItemComponent,
+  children,
   defaultColumnWidth,
   columnWidths,
 
@@ -104,12 +104,7 @@ export function ListHorizontal<T>({
                 const key = start + i
 
                 return (
-                  <RenderItem
-                    key={key}
-                    itemWidth={itemWidth}
-                    ItemComponent={ItemComponent}
-                    itemProps={d}
-                  />
+                  <RenderItem key={key} itemWidth={itemWidth} component={children} itemProps={d} />
                 )
               })}
             </div>
@@ -121,25 +116,22 @@ export function ListHorizontal<T>({
 }
 
 type RenderItemsProps<T> = {
-  ItemComponent: ListHorizontalProps<T>["ItemComponent"]
+  component: ListHorizontalProps<T>["children"]
   itemProps: T
   itemWidth: number
 }
 
-const RenderItem = memo(function <T>({ ItemComponent, itemProps, itemWidth }: RenderItemsProps<T>) {
-  return (
-    <div
-      style={{
-        display: "inline-block",
-        width: itemWidth,
-        maxWidth: itemWidth,
-        minWidth: itemWidth,
-        height: "100%",
-      }}
-    >
-      <ItemComponent {...itemProps} />
-    </div>
-  )
+const RenderItem = memo(function <T>({ component, itemProps, itemWidth }: RenderItemsProps<T>) {
+  const itemStyle: CSSProperties = useMemo(() => {
+    return {
+      width: itemWidth,
+      maxWidth: itemWidth,
+      minWidth: itemWidth,
+      display: "inline-block",
+      height: "100%",
+    }
+  }, [itemWidth])
+  return component(itemProps, itemStyle)
 })
 
 RenderItem.displayName = "ListHorizontalItem"

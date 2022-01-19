@@ -39,31 +39,23 @@ function FixedSizeHorizontalList() {
       return props
     })
 
-  const ItemComponent = (props) => {
-    return (
-      <div
-        className="small-font-for-mobile"
-        style={{
-          width: "100%",
-          alignItems: "center",
-          borderRight: "1px solid grey",
-          height: "100%",
-          padding: 10,
-        }}
-      >
-        <img src={props.src} alt={props.alt} style={{ width: "100%", height: "100%" }} />
-      </div>
-    )
-  }
-
   return (
     <div style={{ height: 250, border: "1px solid grey" }}>
-      <ListHorizontal
-        data={data}
-        defaultColumnWidth={200}
-        ItemComponent={ItemComponent}
-        columnWidths={columnWidths}
-      />
+      <ListHorizontal data={data} defaultColumnWidth={200} columnWidths={columnWidths}>
+        {(props, styles) => {
+          return (
+            <div
+              className="small-font-for-mobile"
+              style={{
+                padding: 10,
+                ...styles,
+              }}
+            >
+              <img src={props.src} alt={props.alt} style={{ width: "100%", height: "100%" }} />
+            </div>
+          )
+        }}
+      </ListHorizontal>
     </div>
   )
 }

@@ -1,6 +1,4 @@
-import { List } from "@resembli/le-window"
-
-const h = [30, 40, 50, 60]
+import { ListHorizontal } from "@resembli/le-window"
 
 function getRandomHEXColor() {
   const SEED = "0123456789abcdef"
@@ -15,10 +13,6 @@ const listData = Array(1000)
   .fill(0)
   .map((_, i) => ({ index: i }))
 
-const listHeights = Array(1000)
-  .fill(0)
-  .map((_, i) => h[i % h.length])
-
 export const App = () => {
   return (
     <>
@@ -32,7 +26,7 @@ export const App = () => {
         }}
       >
         <div style={{ margin: 20, width: 1000, height: 600, border: "1px solid black" }}>
-          <List data={listData} defaultRowHeight={50} rowHeights={listHeights}>
+          <ListHorizontal data={listData} defaultColumnWidth={200} tabIndex={0}>
             {(props, style) => {
               return (
                 <div
@@ -48,7 +42,7 @@ export const App = () => {
                 </div>
               )
             }}
-          </List>
+          </ListHorizontal>
         </div>
       </div>
     </>
