@@ -2,7 +2,7 @@ import type { UIEventHandler } from "react"
 import { useRef } from "react"
 import { useCallback, useState } from "react"
 
-export const useWindowScroll = (userOnScroll?: UIEventHandler<HTMLElement>) => {
+export const useWindowScroll = (rtl: boolean, userOnScroll?: UIEventHandler<HTMLElement>) => {
   const verticalOffsetRef = useRef(0)
   const horizontalOffsetRef = useRef(0)
 
@@ -19,8 +19,10 @@ export const useWindowScroll = (userOnScroll?: UIEventHandler<HTMLElement>) => {
     (event) => {
       const target = event.currentTarget
 
+      const scrollLeft = rtl ? -target.scrollLeft : target.scrollLeft
+
       const verticalOffset = Math.max(0, target.scrollTop)
-      const horizontalOffset = Math.max(0, target.scrollLeft)
+      const horizontalOffset = Math.max(0, scrollLeft)
 
       horizontalOffsetRef.current = horizontalOffset
       verticalOffsetRef.current = verticalOffset
@@ -33,7 +35,7 @@ export const useWindowScroll = (userOnScroll?: UIEventHandler<HTMLElement>) => {
       }
       debounceTime.current = requestAnimationFrame(debouncedEnded)
     },
-    [debouncedEnded, userOnScroll],
+    [debouncedEnded, rtl, userOnScroll],
   )
 
   return [verticalOffsetRef.current, horizontalOffsetRef.current, onScroll, isScrolling] as const

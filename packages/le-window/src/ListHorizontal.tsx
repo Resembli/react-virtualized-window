@@ -47,7 +47,7 @@ export function ListHorizontal<T>({
 
   useWindowApi(windowRef, apiRef)
 
-  const [, offset, onScroll, isScrolling] = useWindowScroll(userOnScroll)
+  const [, offset, onScroll, isScrolling] = useWindowScroll(rtl ?? false, userOnScroll)
   const [width, height] = useWindowDimensions(windowRef)
 
   const dataWidths = useDataDimension({
@@ -91,7 +91,6 @@ export function ListHorizontal<T>({
           style={{
             position: "sticky",
             left: 0,
-            right: 0,
             height: "100%",
             display: "inline-block",
           }}
@@ -100,11 +99,11 @@ export function ListHorizontal<T>({
             <div
               style={{
                 height,
-                transform: `translate3d(${-offset}px, 0, 0)`,
+                transform: `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
                 willChange: "transform",
               }}
             >
-              {!rtl && <div style={{ display: "inline-block", width: runningWidth }} />}
+              <div style={{ display: "inline-block", width: runningWidth }} />
               {items.map((d, i) => {
                 const itemWidth = dataWidths[start + i]
 
@@ -114,7 +113,6 @@ export function ListHorizontal<T>({
                   <RenderItem key={key} itemWidth={itemWidth} component={children} itemProps={d} />
                 )
               })}
-              {rtl && <div style={{ display: "inline-block", width: runningWidth }} />}
             </div>
           </div>
         </div>

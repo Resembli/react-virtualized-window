@@ -51,7 +51,7 @@ export function Grid<T>({
 }: GridProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
 
-  const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll(userOnScroll)
+  const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll(false, userOnScroll)
   const [width, height] = useWindowDimensions(windowRef)
 
   useWindowApi(windowRef, apiRef)
