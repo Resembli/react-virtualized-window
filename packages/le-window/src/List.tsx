@@ -43,7 +43,7 @@ export function List<T>({
 
   useWindowApi(windowRef, apiRef)
 
-  const [offset, , onScroll] = useWindowScroll(userOnScroll)
+  const [offset, , onScroll, isScrolling] = useWindowScroll(userOnScroll)
   const [, height] = useWindowDimensions(windowRef)
 
   const dataHeights = useDataDimension({
@@ -75,6 +75,7 @@ export function List<T>({
         width: "100%",
         position: "relative",
         overflow: "auto",
+        pointerEvents: isScrolling ? "none" : "all",
       }}
     >
       <div style={{ height: innerHeight }}>

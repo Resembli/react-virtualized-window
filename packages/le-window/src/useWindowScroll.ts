@@ -6,8 +6,7 @@ export const useWindowScroll = (userOnScroll?: UIEventHandler<HTMLElement>) => {
   const verticalOffsetRef = useRef(0)
   const horizontalOffsetRef = useRef(0)
 
-  // TODO: @Lee determine if we want to provide an isScrolling flag - perhaps disable pointer events??
-  const [, setIsScrolling] = useState(false)
+  const [isScrolling, setIsScrolling] = useState(false)
 
   const debounceTime = useRef<number | null>(null)
 
@@ -37,5 +36,5 @@ export const useWindowScroll = (userOnScroll?: UIEventHandler<HTMLElement>) => {
     [debouncedEnded, userOnScroll],
   )
 
-  return [verticalOffsetRef.current, horizontalOffsetRef.current, onScroll] as const
+  return [verticalOffsetRef.current, horizontalOffsetRef.current, onScroll, isScrolling] as const
 }
