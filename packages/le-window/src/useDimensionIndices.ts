@@ -26,7 +26,9 @@ export const useIndicesForDimensions = ({
     const startDim = itemDimensions[start]
     let end = start
     let endDim = 0
-    while (end < itemDimensions.length && endDim < windowDimension + startDim) {
+
+    const overscanHeuristic = 1.5
+    while (end < itemDimensions.length && endDim < windowDimension * overscanHeuristic + startDim) {
       const itemDim = itemDimensions[end]
 
       endDim += itemDim
