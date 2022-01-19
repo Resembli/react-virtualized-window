@@ -1,4 +1,5 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import { useMemo } from "react"
 import { memo } from "react"
 import { useRef } from "react"
 
@@ -17,7 +18,7 @@ export interface GridDataRow<T> {
 
 export interface GridProps<T> {
   data: GridDataRow<T>[]
-  ItemComponent: <B extends T>(props: B) => JSX.Element | null
+  children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
   defaultRowHeight: number
   rowHeights?: number[]
   defaultColumnWidth: number
@@ -34,7 +35,7 @@ export interface GridProps<T> {
 
 export function Grid<T>({
   data,
-  ItemComponent,
+  children,
   defaultRowHeight,
   rowHeights,
   defaultColumnWidth,
@@ -135,7 +136,7 @@ export function Grid<T>({
                       <RenderItem
                         key={cellKey}
                         itemWidth={itemWidth}
-                        ItemComponent={ItemComponent}
+                        component={children}
                         itemProps={cell}
                       />
                     )
@@ -160,25 +161,23 @@ export function Grid<T>({
 }
 
 type RenderItemsProps<T> = {
-  ItemComponent: GridProps<T>["ItemComponent"]
+  component: GridProps<T>["children"]
   itemProps: T
   itemWidth: number
 }
 
-const RenderItem = memo(function <T>({ ItemComponent, itemProps, itemWidth }: RenderItemsProps<T>) {
-  return (
-    <div
-      style={{
-        width: itemWidth,
-        minWidth: itemWidth,
-        maxWidth: itemWidth,
-        display: "inline-block",
-        height: "100%",
-      }}
-    >
-      <ItemComponent {...itemProps} />
-    </div>
-  )
+const RenderItem = memo(function <T>({ component, itemProps, itemWidth }: RenderItemsProps<T>) {
+  const itemStyles = useMemo(() => {
+    return {
+      width: itemWidth,
+      minWidth: itemWidth,
+      maxWidth: itemWidth,
+      display: "inline-block",
+      height: "100%",
+    }
+  }, [itemWidth])
+
+  return component(itemProps, itemStyles)
 })
 
 RenderItem.displayName = "GridCellItem"
