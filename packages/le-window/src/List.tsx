@@ -22,6 +22,8 @@ export interface ListProps<T> {
   className?: string
   style?: CSSProperties
 
+  rtl?: boolean
+
   onScroll?: UIEventHandler<HTMLElement>
 }
 
@@ -37,6 +39,8 @@ export function List<T>({
   className,
   style,
 
+  rtl,
+
   onScroll: userOnScroll,
 }: ListProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
@@ -46,7 +50,7 @@ export function List<T>({
 
   const [offset, , onScroll, isScrolling] = useWindowScroll({
     userOnScroll,
-    rtl: false,
+    rtl: rtl ?? false,
     translationRef,
     x: false,
     y: true,
@@ -83,6 +87,7 @@ export function List<T>({
         position: "relative",
         overflow: "auto",
         pointerEvents: isScrolling ? "none" : "all",
+        direction: rtl ? "rtl" : "ltr",
       }}
     >
       <div style={{ height: innerHeight }}>
