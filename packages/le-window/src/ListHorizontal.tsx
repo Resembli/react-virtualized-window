@@ -44,10 +44,17 @@ export function ListHorizontal<T>({
   onScroll: userOnScroll,
 }: ListHorizontalProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
+  const translationRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
 
-  const [, offset, onScroll, isScrolling] = useWindowScroll(rtl ?? false, userOnScroll)
+  const [, offset, onScroll, isScrolling] = useWindowScroll({
+    userOnScroll,
+    rtl: rtl ?? false,
+    translationRef,
+    x: true,
+    y: false,
+  })
   const [width, height] = useWindowDimensions(windowRef)
 
   const dataWidths = useDataDimension({
@@ -97,6 +104,7 @@ export function ListHorizontal<T>({
         >
           <div style={{ position: "absolute", left: 0, right: 0, width: stickyWidth }}>
             <div
+              ref={translationRef}
               style={{
                 height,
                 transform: `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
