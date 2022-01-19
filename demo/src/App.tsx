@@ -1,6 +1,4 @@
-import { List, ListHorizontal } from "@resembli/le-window"
-
-const h = [30, 40, 50, 60]
+import { ListHorizontal } from "@resembli/le-window"
 
 function getRandomHEXColor() {
   const SEED = "0123456789abcdef"
@@ -14,10 +12,6 @@ function getRandomHEXColor() {
 const listData = Array(1000)
   .fill(0)
   .map((_, i) => ({ index: i }))
-
-const listHeights = Array(1000)
-  .fill(0)
-  .map((_, i) => h[i % h.length])
 
 export const App = () => {
   return (
