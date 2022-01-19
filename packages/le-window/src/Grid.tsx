@@ -51,7 +51,7 @@ export function Grid<T>({
 }: GridProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
 
-  const [topOffset, leftOffset, onScroll] = useWindowScroll(userOnScroll)
+  const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll(userOnScroll)
   const [width, height] = useWindowDimensions(windowRef)
 
   useWindowApi(windowRef, apiRef)
@@ -98,6 +98,7 @@ export function Grid<T>({
         width: "100%",
         position: "relative",
         overflow: "auto",
+        pointerEvents: isScrolling ? "none" : "all",
       }}
     >
       <div style={{ width: innerWidth, height: innerHeight }}>
@@ -110,7 +111,14 @@ export function Grid<T>({
             display: "table",
           }}
         >
-          <div style={{ position: "absolute", top: 0, left: 0, width: stickyWidth }}>
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: stickyWidth,
+            }}
+          >
             <div
               style={{
                 transform: `translate3d(${-leftOffset}px, ${-topOffset}px, 0)`,

@@ -43,7 +43,7 @@ export function ListHorizontal<T>({
 
   useWindowApi(windowRef, apiRef)
 
-  const [, offset, onScroll] = useWindowScroll(userOnScroll)
+  const [, offset, onScroll, isScrolling] = useWindowScroll(userOnScroll)
   const [width, height] = useWindowDimensions(windowRef)
 
   const dataWidths = useDataDimension({
@@ -78,6 +78,7 @@ export function ListHorizontal<T>({
         width: "100%",
         position: "relative",
         overflow: "auto",
+        pointerEvents: isScrolling ? "none" : "all",
       }}
     >
       <div style={{ width: innerWidth, height: "100%" }}>
