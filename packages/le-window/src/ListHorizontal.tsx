@@ -22,6 +22,8 @@ export interface ListHorizontalProps<T> {
   className?: string
   style?: CSSProperties
 
+  rtl?: boolean
+
   onScroll?: UIEventHandler<HTMLElement>
 }
 
@@ -37,13 +39,15 @@ export function ListHorizontal<T>({
   className,
   style,
 
+  rtl,
+
   onScroll: userOnScroll,
 }: ListHorizontalProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
 
-  const [, offset, onScroll, isScrolling] = useWindowScroll(userOnScroll)
+  const [, offset, onScroll, isScrolling] = useWindowScroll(rtl ?? false, userOnScroll)
   const [width, height] = useWindowDimensions(windowRef)
 
   const dataWidths = useDataDimension({
@@ -79,6 +83,7 @@ export function ListHorizontal<T>({
         position: "relative",
         overflow: "auto",
         pointerEvents: isScrolling ? "none" : "all",
+        direction: rtl ? "rtl" : "ltr",
       }}
     >
       <div style={{ width: innerWidth, height: "100%" }}>
@@ -90,11 +95,11 @@ export function ListHorizontal<T>({
             display: "inline-block",
           }}
         >
-          <div style={{ position: "absolute", left: 0, width: stickyWidth }}>
+          <div style={{ position: "absolute", left: 0, right: 0, width: stickyWidth }}>
             <div
               style={{
                 height,
-                transform: `translate3d(${-offset}px, 0, 0)`,
+                transform: `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
                 willChange: "transform",
               }}
             >

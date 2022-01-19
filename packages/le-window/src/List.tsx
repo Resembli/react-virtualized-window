@@ -43,7 +43,7 @@ export function List<T>({
 
   useWindowApi(windowRef, apiRef)
 
-  const [offset, , onScroll, isScrolling] = useWindowScroll(userOnScroll)
+  const [offset, , onScroll, isScrolling] = useWindowScroll(false, userOnScroll)
   const [, height] = useWindowDimensions(windowRef)
 
   const dataHeights = useDataDimension({

@@ -15,36 +15,34 @@ const listData = Array(1000)
 
 export const App = () => {
   return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        <div style={{ margin: 20, width: 1000, height: 600, border: "1px solid black" }}>
-          <ListHorizontal data={listData} defaultColumnWidth={200} tabIndex={0}>
-            {(props, style) => {
-              return (
-                <div
-                  style={{
-                    background: `linear-gradient(to right, ${getRandomHEXColor()}, ${getRandomHEXColor()}`,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    display: "flex",
-                    ...style,
-                  }}
-                >
-                  {props.index}
-                </div>
-              )
-            }}
-          </ListHorizontal>
-        </div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
+      <div style={{ margin: 20, width: 1000, height: 600, border: "1px solid black" }}>
+        <ListHorizontal data={listData} defaultColumnWidth={50} tabIndex={0}>
+          {(props, style) => {
+            return (
+              <div
+                style={{
+                  background: `linear-gradient(to right, ${getRandomHEXColor()}, ${getRandomHEXColor()}`,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  display: "flex",
+                  ...style,
+                }}
+              >
+                {props.index}
+              </div>
+            )
+          }}
+        </ListHorizontal>
       </div>
-    </>
+    </div>
   )
 }
