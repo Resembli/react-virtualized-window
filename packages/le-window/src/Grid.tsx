@@ -30,6 +30,8 @@ export interface GridProps<T> {
   className?: string
   style?: CSSProperties
 
+  rtl?: boolean
+
   onScroll?: UIEventHandler<HTMLElement>
 }
 
@@ -47,6 +49,8 @@ export function Grid<T>({
   className,
   style,
 
+  rtl,
+
   onScroll: userOnScroll,
 }: GridProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
@@ -55,7 +59,7 @@ export function Grid<T>({
   const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll({
     userOnScroll,
     translationRef,
-    rtl: false,
+    rtl: rtl ?? false,
     x: true,
     y: true,
   })
@@ -106,6 +110,7 @@ export function Grid<T>({
         position: "relative",
         overflow: "auto",
         pointerEvents: isScrolling ? "none" : "all",
+        direction: rtl ? "rtl" : "ltr",
       }}
     >
       <div style={{ width: innerWidth, height: innerHeight }}>
@@ -123,6 +128,7 @@ export function Grid<T>({
               position: "absolute",
               top: 0,
               left: 0,
+              right: 0,
               width: stickyWidth,
             }}
           >
