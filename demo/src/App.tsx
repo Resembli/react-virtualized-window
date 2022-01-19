@@ -25,10 +25,11 @@ export const App = () => {
       }}
     >
       <div style={{ margin: 20, width: 1000, height: 600, border: "1px solid black" }}>
-        <List data={listData} defaultRowHeight={50} tabIndex={0} rtl>
+        <List data={listData} defaultRowHeight={50} tabIndex={0}>
           {(props, style) => {
             return (
               <div
+                tabIndex={0}
                 style={{
                   background: `linear-gradient(to right, ${getRandomHEXColor()}, ${getRandomHEXColor()}`,
                   alignItems: "center",
