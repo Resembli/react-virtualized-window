@@ -35,39 +35,30 @@ function GridBasicExample() {
     return output
   }
 
-  const CellItem = ({ row, column }) => {
-    const light = row % 2 === 1 ? "white" : "#f8f8f0"
-    const dark = row % 2 === 1 ? "#f8f8f0" : "white"
-
-    const color = row % 16 >= 7 ? "black" : "yellow"
-
-    const startColor = useMemo(() => getRandomHEXColor(), [])
-    const endColor = useMemo(() => getRandomHEXColor(), [])
-
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-          background: `linear-gradient(to right, ${startColor}, ${endColor}`,
-          color: "black",
-        }}
-      >
-        ({row}, {column})
-      </div>
-    )
-  }
-
   return (
     <div style={{ height: 600 }}>
-      <Grid
-        data={gridData}
-        defaultColumnWidth={100}
-        defaultRowHeight={100}
-        ItemComponent={CellItem}
-      />
+      <Grid data={gridData} defaultColumnWidth={100} defaultRowHeight={100}>
+        {({ row, column }, styles) => {
+          const startColor = getRandomHEXColor()
+          const endColor = getRandomHEXColor()
+
+          return (
+            <div
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+                background: `linear-gradient(to right, ${startColor}, ${endColor}`,
+                color: "black",
+                ...styles,
+                display: "inline-flex",
+              }}
+            >
+              ({row}, {column})
+            </div>
+          )
+        }}
+      </Grid>
     </div>
   )
 }
