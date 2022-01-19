@@ -22,6 +22,8 @@ export interface ListHorizontalProps<T> {
   className?: string
   style?: CSSProperties
 
+  rtl?: boolean
+
   onScroll?: UIEventHandler<HTMLElement>
 }
 
@@ -36,6 +38,8 @@ export function ListHorizontal<T>({
 
   className,
   style,
+
+  rtl,
 
   onScroll: userOnScroll,
 }: ListHorizontalProps<T>) {
@@ -79,6 +83,7 @@ export function ListHorizontal<T>({
         position: "relative",
         overflow: "auto",
         pointerEvents: isScrolling ? "none" : "all",
+        direction: rtl ? "rtl" : "ltr",
       }}
     >
       <div style={{ width: innerWidth, height: "100%" }}>
@@ -86,11 +91,12 @@ export function ListHorizontal<T>({
           style={{
             position: "sticky",
             left: 0,
+            right: 0,
             height: "100%",
             display: "inline-block",
           }}
         >
-          <div style={{ position: "absolute", left: 0, width: stickyWidth }}>
+          <div style={{ position: "absolute", left: 0, right: 0, width: stickyWidth }}>
             <div
               style={{
                 height,
@@ -98,7 +104,7 @@ export function ListHorizontal<T>({
                 willChange: "transform",
               }}
             >
-              <div style={{ display: "inline-block", width: runningWidth }} />
+              {!rtl && <div style={{ display: "inline-block", width: runningWidth }} />}
               {items.map((d, i) => {
                 const itemWidth = dataWidths[start + i]
 
@@ -108,6 +114,7 @@ export function ListHorizontal<T>({
                   <RenderItem key={key} itemWidth={itemWidth} component={children} itemProps={d} />
                 )
               })}
+              {rtl && <div style={{ display: "inline-block", width: runningWidth }} />}
             </div>
           </div>
         </div>

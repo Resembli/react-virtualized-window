@@ -26,7 +26,7 @@ export const App = () => {
         }}
       >
         <div style={{ margin: 20, width: 1000, height: 600, border: "1px solid black" }}>
-          <ListHorizontal data={listData} defaultColumnWidth={200} tabIndex={0}>
+          <ListHorizontal data={listData} defaultColumnWidth={200} tabIndex={0} rtl>
             {(props, style) => {
               return (
                 <div
