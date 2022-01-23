@@ -9,6 +9,10 @@ function getRandomHEXColor() {
   return output
 }
 
+const rowHeights = Array(1000)
+  .fill(0)
+  .map((_, i) => [40, 50, 60, 80][i % 4])
+
 const listData = Array(1000)
   .fill(0)
   .map((_, i) => ({ index: i }))
@@ -25,7 +29,7 @@ export const App = () => {
       }}
     >
       <div style={{ margin: 20, width: 1000, height: 600, border: "1px solid black" }}>
-        <List data={listData} defaultRowHeight={50} tabIndex={0}>
+        <List data={listData} defaultRowHeight={50} tabIndex={0} rowHeights={rowHeights}>
           {(props, style) => {
             return (
               <div
