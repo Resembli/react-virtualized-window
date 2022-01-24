@@ -1,4 +1,4 @@
-import { List as WList } from "@resembli/le-window"
+import { List as WList } from "@resembli/react-virtualized-window"
 
 function getRandomHEXColor() {
   const SEED = "0123456789abcdef"

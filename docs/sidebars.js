@@ -6,34 +6,40 @@ const sidebars = {
     "introduction",
     {
       type: "category",
-      label: "Le-Window",
+      label: "React Virtualized Window",
       items: [
         {
           type: "category",
           label: "List",
-          items: ["le-window/examples/fixed-size-list", "le-window/examples/variable-size-list"],
-          link: { type: "doc", id: "le-window/list" },
+          items: [
+            "react-virtualized-window/examples/fixed-size-list",
+            "react-virtualized-window/examples/variable-size-list",
+          ],
+          link: { type: "doc", id: "react-virtualized-window/list" },
         },
         {
           type: "category",
           label: "ListHorizontal",
           items: [
-            "le-window/examples/horizontally-fixed-size-list",
-            "le-window/examples/horizontally-variable-size-list",
+            "react-virtualized-window/examples/horizontally-fixed-size-list",
+            "react-virtualized-window/examples/horizontally-variable-size-list",
           ],
-          link: { type: "doc", id: "le-window/list-horizontal" },
+          link: { type: "doc", id: "react-virtualized-window/list-horizontal" },
         },
         {
           type: "category",
           label: "Grid",
-          link: { type: "doc", id: "le-window/grid" },
-          items: ["le-window/examples/fixed-size-grid", "le-window/examples/variable-size-grid"],
+          link: { type: "doc", id: "react-virtualized-window/grid" },
+          items: [
+            "react-virtualized-window/examples/fixed-size-grid",
+            "react-virtualized-window/examples/variable-size-grid",
+          ],
         },
-        "le-window/implementation",
+        "react-virtualized-window/implementation",
       ],
       link: {
         type: "doc",
-        id: "le-window/index",
+        id: "react-virtualized-window/index",
       },
     },
   ],

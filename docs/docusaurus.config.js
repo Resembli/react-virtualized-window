@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "Le-UI",
+  title: "UI",
   tagline: "Build interactive, accessible, and data dense applications quickly",
   url: "https://resembli.com",
   baseUrl: "/",
@@ -15,7 +15,7 @@ const config = {
   onDuplicateRoutes: "throw",
   favicon: "favicon.ico",
   organizationName: "Resembli",
-  projectName: "Le-UI",
+  projectName: "Resembli UI",
 
   themes: ["@docusaurus/theme-live-codeblock"],
   presets: [
@@ -25,7 +25,7 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/Resembli/le-ui/edit/main/docs/",
+          editUrl: "https://github.com/Resembli/ui/edit/main/docs/",
         },
         blog: false,
         theme: {
@@ -41,10 +41,10 @@ const config = {
       algolia: {
         appId: "PZCG2I7O2N",
         apiKey: "259fbd7acef20a9273cb6f13ebcd63f3",
-        indexName: "le-ui",
+        indexName: "ui",
       },
       navbar: {
-        title: "Le-UI",
+        title: "Resembli UI",
         logo: {
           alt: "Resembli logo",
           src: "resembli-icon.svg",
@@ -56,7 +56,7 @@ const config = {
             label: "Documentation",
           },
           {
-            href: "https://github.com/Resembli/le-ui",
+            href: "https://github.com/Resembli/ui",
             label: "GitHub",
             position: "right",
           },

@@ -1,6 +1,6 @@
 import useThemeContext from "@theme/hooks/useThemeContext"
 
-import { List } from "@resembli/le-window"
+import { List } from "@resembli/react-virtualized-window"
 
 const listData = Array(1000)
   .fill(0)

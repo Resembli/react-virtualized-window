@@ -1,18 +1,18 @@
 {
   "name": "@resembli/root",
   "version": "0.0.1",
-  "description": "root directory of @resembli/le-ui",
+  "description": "root directory of @resembli/ui",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Resembli/le-ui.git"
+    "url": "git+https://github.com/Resembli/ui.git"
   },
   "author": "Lee Beydoun",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Resembli/le-ui/issues"
+    "url": "https://github.com/Resembli/ui/issues"
   },
-  "homepage": "https://github.com/Resembli/le-ui#readme",
+  "homepage": "https://github.com/Resembli/ui#readme",
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
     "@types/prettier": "^2.4.2",
