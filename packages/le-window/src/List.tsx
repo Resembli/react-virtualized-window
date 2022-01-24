@@ -17,6 +17,7 @@ export interface ListProps<T> {
   rowHeights?: number[]
 
   tabIndex?: number
+  overscan?: boolean | number
   apiRef?: MutableRefObject<LeWindowApi | undefined>
 
   className?: string
@@ -34,6 +35,7 @@ export function List<T>({
   rowHeights,
 
   tabIndex,
+  overscan,
   apiRef,
 
   className,
@@ -68,6 +70,7 @@ export function List<T>({
     itemDimensions: dataHeights,
     windowDimension: height,
     offset,
+    overscan: overscan ?? false,
   })
 
   const items = useMemo(() => {

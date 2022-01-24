@@ -13,12 +13,17 @@ const data = Array(1000)
   .fill(0)
   .map((_, i) => ({ index: i }))
 
+const heights = Array(1000)
+  .fill(0)
+  .map((_, i) => [20, 100, 50, 150][i % 4])
+
 export function List() {
   return (
-    <WList data={data} defaultRowHeight={50}>
+    <WList data={data} defaultRowHeight={50} rowHeights={heights}>
       {(p, style) => {
         return (
           <div
+            tabIndex={0}
             style={{
               backgroundColor: getRandomHEXColor(),
               alignItems: "center",
