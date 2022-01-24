@@ -25,6 +25,7 @@ export interface GridProps<T> {
   columnWidths?: number[]
 
   tabIndex?: number
+  overscan?: boolean | number
   apiRef?: MutableRefObject<LeWindowApi | undefined>
 
   className?: string
@@ -44,6 +45,7 @@ export function Grid<T>({
   columnWidths,
 
   tabIndex,
+  overscan,
   apiRef,
 
   className,
@@ -86,12 +88,14 @@ export function Grid<T>({
     itemDimensions: dataHeights,
     offset: topOffset,
     windowDimension: height,
+    overscan: overscan ?? false,
   })
 
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset: leftOffset,
     itemDimensions: dataWidths,
+    overscan: overscan ?? false,
   })
 
   const stickyWidth =

@@ -17,6 +17,7 @@ export interface ListHorizontalProps<T> {
   columnWidths?: number[]
 
   tabIndex?: number
+  overscan?: boolean | number
   apiRef?: MutableRefObject<LeWindowApi | undefined>
 
   className?: string
@@ -34,6 +35,7 @@ export function ListHorizontal<T>({
   columnWidths,
 
   tabIndex,
+  overscan,
   apiRef,
 
   className,
@@ -69,6 +71,7 @@ export function ListHorizontal<T>({
     windowDimension: width,
     offset,
     itemDimensions: dataWidths,
+    overscan: overscan ?? false,
   })
 
   const stickyWidth = dataWidths.slice(start, end + 1).reduce((a, b) => a + b) + runningWidth

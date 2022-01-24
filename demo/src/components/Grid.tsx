@@ -30,6 +30,7 @@ export function Grid() {
 
         return (
           <div
+            tabIndex={0}
             style={{
               justifyContent: "center",
               alignItems: "center",
