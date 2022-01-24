@@ -32,7 +32,7 @@ importers:
 
   demo:
     specifiers:
-      '@resembli/le-window': workspace:^
+      '@resembli/react-virtualized-window': workspace:^
       '@stitches/core': ^1.2.6
       '@types/react': ^17.0.33
       '@types/react-dom': ^17.0.10
@@ -43,7 +43,7 @@ importers:
       vite: ^2.7.2
       wouter: ^2.8.0-alpha.2
     dependencies:
-      '@resembli/le-window': link:../packages/le-window
+      '@resembli/react-virtualized-window': link:../packages/react-virtualized-window
       '@stitches/core': 1.2.6
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -64,7 +64,7 @@ importers:
       '@docusaurus/theme-classic': 2.0.0-beta.14
       '@docusaurus/theme-live-codeblock': 2.0.0-beta.14
       '@mdx-js/react': ^1.6.21
-      '@resembli/le-window': workspace:^
+      '@resembli/react-virtualized-window': workspace:^
       '@tsconfig/docusaurus': ^1.0.4
       clsx: ^1.1.1
       prism-react-renderer: ^1.2.1
@@ -78,7 +78,7 @@ importers:
       '@docusaurus/plugin-client-redirects': 2.0.0-beta.14_05e59b520ac3ec5b5c63514484626b2f
       '@docusaurus/preset-classic': 2.0.0-beta.14_27ab95dbdfe5939f369d75284c43bfed
       '@mdx-js/react': 1.6.22_react@17.0.2
-      '@resembli/le-window': link:../packages/le-window
+      '@resembli/react-virtualized-window': link:../packages/react-virtualized-window
       clsx: 1.1.1
       prism-react-renderer: 1.2.1_react@17.0.2
       react: 17.0.2
@@ -92,7 +92,7 @@ importers:
       '@tsconfig/docusaurus': 1.0.4
       typescript: 4.5.4
 
-  packages/le-window:
+  packages/react-virtualized-window:
     specifiers: {}
 
 packages:
