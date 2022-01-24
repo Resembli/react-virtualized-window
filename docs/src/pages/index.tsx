@@ -19,7 +19,7 @@ function HomepageHeader() {
 
 export default function Home(): JSX.Element {
   return (
-    <Layout title="Home" description="Le-UI Home Page, Le-Window Home Page">
+    <Layout title="Home" description="Resembli UI Home Page, react-virtualized-window Home Page">
       <HomepageHeader />
       <main className={styles.section}>
         <HomepageFeatures />

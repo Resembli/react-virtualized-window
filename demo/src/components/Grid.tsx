@@ -1,4 +1,4 @@
-import { Grid as WGrid } from "@resembli/le-window"
+import { Grid as WGrid } from "@resembli/react-virtualized-window"
 
 const gridData = Array(1000)
   .fill(0)

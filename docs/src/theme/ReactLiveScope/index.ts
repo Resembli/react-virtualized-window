@@ -1,7 +1,7 @@
 import React from "react"
 import { BeatLoader } from "react-spinners"
 
-import { Grid, List, ListHorizontal } from "@resembli/le-window"
+import { Grid, List, ListHorizontal } from "@resembli/react-virtualized-window"
 
 const ReactLiveScope = {
   React,

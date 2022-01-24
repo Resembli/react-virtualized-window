@@ -1,19 +1,19 @@
 ---
-title: Fixed Size Examples
+title: Variable Size Examples
 ---
 
 Remember to import the `<Grid />` component. It is not shown in the examples below.
 
 ```js
-import { Grid } from "@resembli/le-window"
+import { Grid } from "@resembli/react-virtualized-window"
 ```
 
-For more on the `<Grid />` component, please refer to the component's [API documentation](/docs/le-window/grid)
+For more on the `<Grid />` component, please refer to the component's [API documentation](/docs/react-virtualized-window/grid)
 
 ## Basic Example
 
 ```js live
-function GridBasicExample() {
+function GridVariableSizeBasicExample() {
   const gridData = Array(1000)
     .fill(0)
     .map((_, row) => {
@@ -26,6 +26,17 @@ function GridBasicExample() {
       return { cells }
     })
 
+  const heights = [75, 100, 125, 100, 80]
+  const widths = [80, 90, 100, 90, 80, 120]
+
+  const gridHeights = Array(1000)
+    .fill(0)
+    .map((_, i) => heights[i % heights.length])
+
+  const gridWidths = Array(200)
+    .fill(0)
+    .map((_, i) => widths[i % widths.length])
+
   function getRandomHEXColor() {
     const SEED = "0123456789abcdef"
     let output = "#"
@@ -37,7 +48,13 @@ function GridBasicExample() {
 
   return (
     <div style={{ height: 600 }}>
-      <Grid data={gridData} defaultColumnWidth={100} defaultRowHeight={100}>
+      <Grid
+        data={gridData}
+        defaultColumnWidth={100}
+        defaultRowHeight={100}
+        rowHeights={gridHeights}
+        columnWidths={gridWidths}
+      >
         {({ row, column }, styles) => {
           const startColor = getRandomHEXColor()
           const endColor = getRandomHEXColor()
