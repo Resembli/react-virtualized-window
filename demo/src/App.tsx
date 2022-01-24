@@ -1,52 +1,47 @@
-import { List } from "@resembli/le-window"
+import { css } from "@stitches/core"
+import { Route, Switch } from "wouter"
 
-function getRandomHEXColor() {
-  const SEED = "0123456789abcdef"
-  let output = "#"
-  while (output.length < 7) {
-    output += SEED[Math.floor(Math.random() * SEED.length)]
-  }
-  return output
-}
+import { Grid } from "./components/Grid"
+import { List } from "./components/List"
+import { ListHorizontal } from "./components/ListHorizontal"
+import { Sidebar } from "./components/Sidebar"
 
-const rowHeights = Array(1000)
-  .fill(0)
-  .map((_, i) => [40, 50, 60, 80][i % 4])
+const app = css({
+  display: "grid",
+  gridTemplateColumns: "200px auto",
+  height: "100%",
+})
 
-const listData = Array(1000)
-  .fill(0)
-  .map((_, i) => ({ index: i }))
+const listContainer = css({
+  width: 800,
+  height: 800,
+  border: "1px solid black",
+})
+
+const gridSpace = css({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+})
 
 export const App = () => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-      }}
-    >
-      <div style={{ margin: 20, width: 1000, height: 600, border: "1px solid black" }}>
-        <List data={listData} defaultRowHeight={50} tabIndex={0} rowHeights={rowHeights}>
-          {(props, style) => {
-            return (
-              <div
-                tabIndex={0}
-                style={{
-                  background: `linear-gradient(to right, ${getRandomHEXColor()}, ${getRandomHEXColor()}`,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  display: "flex",
-                  ...style,
-                }}
-              >
-                {props.index}
-              </div>
-            )
-          }}
-        </List>
+    <div className={app()}>
+      <Sidebar />
+      <div className={gridSpace()}>
+        <div className={listContainer()}>
+          <Switch>
+            <Route path="/list-component">
+              <List />
+            </Route>
+            <Route path="/grid-component">
+              <Grid />
+            </Route>
+            <Route path="/list-horizontal-component">
+              <ListHorizontal />
+            </Route>
+          </Switch>
+        </div>
       </div>
     </div>
   )
