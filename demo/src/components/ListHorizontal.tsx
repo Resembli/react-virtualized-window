@@ -13,9 +13,13 @@ const data = Array(1000)
   .fill(0)
   .map((_, i) => ({ index: i }))
 
+const widths = Array(1000)
+  .fill(0)
+  .map((_, i) => [100, 150, 200, 50][i % 4])
+
 export function ListHorizontal() {
   return (
-    <WList data={data} defaultColumnWidth={100}>
+    <WList data={data} defaultColumnWidth={100} gap={20} columnWidths={widths}>
       {(p, style) => {
         return (
           <div

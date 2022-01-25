@@ -2,6 +2,7 @@ import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
+import { getHorizontalGap, getMarginStyling } from "./itemGapUtilities"
 import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
@@ -29,6 +30,7 @@ export function ListHorizontal<T>({
 
   className,
   style,
+  gap,
 
   rtl,
 
@@ -54,21 +56,26 @@ export function ListHorizontal<T>({
     dimensions: columnWidths,
   })
 
+  const { left, right } = getHorizontalGap(gap)
+  const gapBetweenItems = left + right
   const innerWidth = useInnerDimension({
     dataDimensions: dataWidths,
-    gapBetweenItems: 0,
+    gapBetweenItems,
     gapTop: 0,
   })
 
   const [start, end, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset,
-    gapBetweenItems: 0,
+    gapBetweenItems,
     itemDimensions: dataWidths,
     overscan: overscan ?? false,
   })
 
-  const stickyWidth = dataWidths.slice(start, end + 1).reduce((a, b) => a + b) + runningWidth
+  const stickyWidth =
+    dataWidths.slice(start, end + 1).reduce((a, b) => a + b + gapBetweenItems) +
+    runningWidth +
+    gapBetweenItems
 
   const items = useMemo(() => {
     return data.slice(start, end + 1)
@@ -115,7 +122,13 @@ export function ListHorizontal<T>({
                 const key = start + i
 
                 return (
-                  <RenderItem key={key} itemWidth={itemWidth} component={children} itemProps={d} />
+                  <RenderItem
+                    key={key}
+                    itemWidth={itemWidth}
+                    component={children}
+                    itemProps={d}
+                    itemGap={gap}
+                  />
                 )
               })}
             </div>
@@ -128,20 +141,29 @@ export function ListHorizontal<T>({
 
 type RenderItemsProps<T> = {
   component: ListHorizontalProps<T>["children"]
+  itemGap: ListHorizontalProps<T>["gap"]
   itemProps: T
   itemWidth: number
 }
 
-const RenderItem = memo(function <T>({ component, itemProps, itemWidth }: RenderItemsProps<T>) {
+const RenderItem = memo(function <T>({
+  component,
+  itemProps,
+  itemGap,
+  itemWidth,
+}: RenderItemsProps<T>) {
   const itemStyle: CSSProperties = useMemo(() => {
+    const marginStyling = getMarginStyling(itemGap)
+
     return {
       width: itemWidth,
       maxWidth: itemWidth,
       minWidth: itemWidth,
       display: "inline-block",
-      height: "100%",
+      height: `calc(100% - ${marginStyling.marginBottom + marginStyling.marginTop}px)`,
+      ...marginStyling,
     }
-  }, [itemWidth])
+  }, [itemGap, itemWidth])
   return component(itemProps, itemStyle)
 })
 
