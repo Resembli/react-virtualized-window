@@ -1,31 +1,20 @@
-import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
+import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { VirtualWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface ListProps<T> {
+export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]
   children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
   defaultRowHeight: number
   rowHeights?: number[]
-
-  tabIndex?: number
-  overscan?: boolean | number
-  apiRef?: MutableRefObject<VirtualWindowApi | undefined>
-
-  className?: string
-  style?: CSSProperties
-
-  rtl?: boolean
-
-  onScroll?: UIEventHandler<HTMLElement>
 }
 
 export function List<T>({

@@ -1,12 +1,12 @@
-import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import type { CSSProperties } from "react"
 import { useMemo } from "react"
 import { memo } from "react"
 import { useRef } from "react"
 
+import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { VirtualWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
@@ -16,24 +16,13 @@ export interface GridDataRow<T> {
   key?: string | number
 }
 
-export interface GridProps<T> {
+export interface GridProps<T> extends VirtualWindowBaseProps {
   data: GridDataRow<T>[]
   children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
   defaultRowHeight: number
   rowHeights?: number[]
   defaultColumnWidth: number
   columnWidths?: number[]
-
-  tabIndex?: number
-  overscan?: boolean | number
-  apiRef?: MutableRefObject<VirtualWindowApi | undefined>
-
-  className?: string
-  style?: CSSProperties
-
-  rtl?: boolean
-
-  onScroll?: UIEventHandler<HTMLElement>
 }
 
 export function Grid<T>({
