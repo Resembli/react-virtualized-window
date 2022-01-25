@@ -2,7 +2,7 @@ import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 
 import type { VirtualWindowApi } from "./useWindowApi"
 
-export type ItemGap = number | { left: number; right: number; top: number; bottom: number }
+export type ItemGap = number | { left?: number; right?: number; top?: number; bottom?: number }
 
 export interface VirtualWindowBaseProps {
   tabIndex?: number

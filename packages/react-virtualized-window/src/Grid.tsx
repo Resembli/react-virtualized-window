@@ -76,6 +76,7 @@ export function Grid<T>({
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     offset: topOffset,
+    gapBetweenItems: 0,
     windowDimension: height,
     overscan: overscan ?? false,
   })
@@ -83,6 +84,7 @@ export function Grid<T>({
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset: leftOffset,
+    gapBetweenItems: 0,
     itemDimensions: dataWidths,
     overscan: overscan ?? false,
   })

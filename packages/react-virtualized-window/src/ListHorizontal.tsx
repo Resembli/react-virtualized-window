@@ -59,6 +59,7 @@ export function ListHorizontal<T>({
   const [start, end, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset,
+    gapBetweenItems: 0,
     itemDimensions: dataWidths,
     overscan: overscan ?? false,
   })

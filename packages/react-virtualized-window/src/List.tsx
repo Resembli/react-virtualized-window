@@ -2,6 +2,7 @@ import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
+import { getMarginStyling, getVerticalGap } from "./itemGapUtilities"
 import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
@@ -29,6 +30,7 @@ export function List<T>({
 
   className,
   style,
+  gap,
 
   rtl,
 
@@ -54,10 +56,13 @@ export function List<T>({
     dimensions: rowHeights,
   })
 
-  const innerHeight = useInnerDimension(dataHeights)
+  const { top, bottom } = getVerticalGap(gap)
+
+  const innerHeight = useInnerDimension(dataHeights, Math.max(top, bottom), top)
   const [start, end, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     windowDimension: height,
+    gapBetweenItems: Math.max(top, bottom),
     offset,
     overscan: overscan ?? false,
   })
@@ -103,6 +108,7 @@ export function List<T>({
                     key={key}
                     itemHeight={itemHeight}
                     itemProps={d}
+                    itemGap={gap}
                     component={children}
                   />
                 )
@@ -117,19 +123,27 @@ export function List<T>({
 
 type RenderItemsProps<T> = {
   component: ListProps<T>["children"]
+  itemGap: ListProps<T>["gap"]
   itemProps: T
   itemHeight: number
 }
 
-const RenderItem = memo(function <T>({ itemProps, component, itemHeight }: RenderItemsProps<T>) {
-  const itemStyle = useMemo(
-    () => ({
+const RenderItem = memo(function <T>({
+  itemProps,
+  itemGap,
+  component,
+  itemHeight,
+}: RenderItemsProps<T>) {
+  const itemStyle = useMemo(() => {
+    const marginStyle = getMarginStyling(itemGap)
+
+    return {
       height: itemHeight,
       maxHeight: itemHeight,
       minHeight: itemHeight,
-    }),
-    [itemHeight],
-  )
+      ...marginStyle,
+    }
+  }, [itemGap, itemHeight])
 
   return component(itemProps, itemStyle)
 })
