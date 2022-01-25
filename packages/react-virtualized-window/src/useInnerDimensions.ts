@@ -1,6 +1,16 @@
 import { useMemo } from "react"
 
-export const useInnerDimension = (dataDimensions: number[], gapBetweenItems = 0, topGap = 0) => {
+interface UseInnerDimensionArgs {
+  dataDimensions: number[]
+  gapBetweenItems: number
+  gapTop: number
+}
+
+export const useInnerDimension = ({
+  dataDimensions,
+  gapBetweenItems,
+  gapTop,
+}: UseInnerDimensionArgs) => {
   const innerDimension = useMemo(() => {
     let runningTotal = 0
     for (let i = 0; i < dataDimensions.length; i++) {
@@ -8,10 +18,10 @@ export const useInnerDimension = (dataDimensions: number[], gapBetweenItems = 0,
     }
 
     runningTotal += gapBetweenItems * dataDimensions.length
-    runningTotal += topGap
+    runningTotal += gapTop
 
     return runningTotal
-  }, [dataDimensions, gapBetweenItems, topGap])
+  }, [dataDimensions, gapBetweenItems, gapTop])
 
   return innerDimension
 }

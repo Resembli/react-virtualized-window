@@ -70,8 +70,16 @@ export function Grid<T>({
     dimensions: columnWidths,
   })
 
-  const innerHeight = useInnerDimension(dataHeights)
-  const innerWidth = useInnerDimension(dataWidths)
+  const innerHeight = useInnerDimension({
+    dataDimensions: dataHeights,
+    gapBetweenItems: 0,
+    gapTop: 0,
+  })
+  const innerWidth = useInnerDimension({
+    dataDimensions: dataWidths,
+    gapBetweenItems: 0,
+    gapTop: 0,
+  })
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,

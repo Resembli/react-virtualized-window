@@ -54,7 +54,11 @@ export function ListHorizontal<T>({
     dimensions: columnWidths,
   })
 
-  const innerWidth = useInnerDimension(dataWidths)
+  const innerWidth = useInnerDimension({
+    dataDimensions: dataWidths,
+    gapBetweenItems: 0,
+    gapTop: 0,
+  })
 
   const [start, end, runningWidth] = useIndicesForDimensions({
     windowDimension: width,

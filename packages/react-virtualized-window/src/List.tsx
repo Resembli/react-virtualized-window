@@ -58,7 +58,12 @@ export function List<T>({
 
   const { top, bottom } = getVerticalGap(gap)
 
-  const innerHeight = useInnerDimension(dataHeights, Math.max(top, bottom), top)
+  const innerHeight = useInnerDimension({
+    dataDimensions: dataHeights,
+    gapBetweenItems: Math.max(top, bottom),
+    gapTop: top,
+  })
+
   const [start, end, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     windowDimension: height,
