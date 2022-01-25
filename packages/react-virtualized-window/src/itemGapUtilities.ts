@@ -21,9 +21,10 @@ export function getVerticalMarginStyling(itemGap?: ItemGap) {
   return { marginTop: itemGap.top ?? 0, marginBottom: itemGap.bottom ?? 0 }
 }
 
-export function getHorizontalMarginStyling(itemGap?: ItemGap) {
+export function getHorizontalMarginStyling(itemGap?: ItemGap, isLastItem?: boolean) {
   if (!itemGap) return { marginLeft: 0, marginRight: 0 }
-  if (typeof itemGap === "number") return { marginLeft: itemGap, marginRight: itemGap }
+  if (typeof itemGap === "number")
+    return { marginLeft: itemGap, marginRight: isLastItem ? itemGap : 0 }
 
   return { marginLeft: itemGap.left ?? 0, marginRight: itemGap.right ?? 0 }
 }

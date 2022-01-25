@@ -2,7 +2,12 @@ import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
-import { getHorizontalGap, getMarginStyling } from "./itemGapUtilities"
+import {
+  getHorizontalGap,
+  getHorizontalMarginStyling,
+  getMarginStyling,
+  getVerticalMarginStyling,
+} from "./itemGapUtilities"
 import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
@@ -56,8 +61,8 @@ export function ListHorizontal<T>({
     dimensions: columnWidths,
   })
 
-  const { left, right } = getHorizontalGap(gap)
-  const gapBetweenItems = left + right
+  const { left } = getHorizontalGap(gap)
+  const gapBetweenItems = left
   const innerWidth = useInnerDimension({
     dataDimensions: dataWidths,
     gapBetweenItems,
@@ -75,7 +80,7 @@ export function ListHorizontal<T>({
   const stickyWidth =
     dataWidths.slice(start, end + 1).reduce((a, b) => a + b + gapBetweenItems) +
     runningWidth +
-    gapBetweenItems
+    gapBetweenItems * 2
 
   const items = useMemo(() => {
     return data.slice(start, end + 1)
@@ -124,6 +129,7 @@ export function ListHorizontal<T>({
                 return (
                   <RenderItem
                     key={key}
+                    isLastItem={start + i === data.length - 1}
                     itemWidth={itemWidth}
                     component={children}
                     itemProps={d}
@@ -142,6 +148,7 @@ export function ListHorizontal<T>({
 type RenderItemsProps<T> = {
   component: ListHorizontalProps<T>["children"]
   itemGap: ListHorizontalProps<T>["gap"]
+  isLastItem: boolean
   itemProps: T
   itemWidth: number
 }
@@ -149,21 +156,27 @@ type RenderItemsProps<T> = {
 const RenderItem = memo(function <T>({
   component,
   itemProps,
+  isLastItem,
   itemGap,
   itemWidth,
 }: RenderItemsProps<T>) {
   const itemStyle: CSSProperties = useMemo(() => {
-    const marginStyling = getMarginStyling(itemGap)
+    const verticalMarginStyling = getVerticalMarginStyling(itemGap)
+    const horizontalMarginStyling = getHorizontalMarginStyling(itemGap, isLastItem)
 
     return {
       width: itemWidth,
       maxWidth: itemWidth,
       minWidth: itemWidth,
       display: "inline-block",
-      height: `calc(100% - ${marginStyling.marginBottom + marginStyling.marginTop}px)`,
-      ...marginStyling,
+
+      height: `calc(100% - ${
+        verticalMarginStyling.marginBottom + verticalMarginStyling.marginTop
+      }px)`,
+      ...verticalMarginStyling,
+      ...horizontalMarginStyling,
     }
-  }, [itemGap, itemWidth])
+  }, [isLastItem, itemGap, itemWidth])
   return component(itemProps, itemStyle)
 })
 

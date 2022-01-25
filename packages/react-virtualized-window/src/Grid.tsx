@@ -85,7 +85,7 @@ export function Grid<T>({
   })
 
   const { left, right } = getHorizontalGap(gap)
-  const horizontalGapBetweenItems = left + right
+  const horizontalGapBetweenItems = left
   const innerWidth = useInnerDimension({
     dataDimensions: dataWidths,
     gapBetweenItems: horizontalGapBetweenItems,
@@ -111,7 +111,7 @@ export function Grid<T>({
   const stickyWidth =
     dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGapBetweenItems) +
     runningWidth +
-    horizontalGapBetweenItems
+    horizontalGapBetweenItems * 2
 
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 
@@ -175,6 +175,7 @@ export function Grid<T>({
                         key={cellKey}
                         itemWidth={itemWidth}
                         component={children}
+                        isLastItem={horiStart + j === row.cells.length - 1}
                         itemGap={gap}
                         itemProps={cell}
                       />
@@ -207,6 +208,7 @@ export function Grid<T>({
 type RenderItemsProps<T> = {
   component: GridProps<T>["children"]
   itemGap: GridProps<T>["gap"]
+  isLastItem: boolean
   itemProps: T
   itemWidth: number
 }
@@ -214,11 +216,12 @@ type RenderItemsProps<T> = {
 const RenderItem = memo(function <T>({
   component,
   itemGap,
+  isLastItem,
   itemProps,
   itemWidth,
 }: RenderItemsProps<T>) {
   const itemStyles = useMemo(() => {
-    const marginStyling = getHorizontalMarginStyling(itemGap)
+    const marginStyling = getHorizontalMarginStyling(itemGap, isLastItem)
     return {
       width: itemWidth,
       minWidth: itemWidth,
@@ -227,7 +230,7 @@ const RenderItem = memo(function <T>({
       height: "100%",
       ...marginStyling,
     }
-  }, [itemGap, itemWidth])
+  }, [isLastItem, itemGap, itemWidth])
 
   return component(itemProps, itemStyles)
 })
