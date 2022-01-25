@@ -6,7 +6,7 @@ import { useRef } from "react"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { LeWindowApi } from "./useWindowApi"
+import type { VirtualWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
@@ -26,7 +26,7 @@ export interface GridProps<T> {
 
   tabIndex?: number
   overscan?: boolean | number
-  apiRef?: MutableRefObject<LeWindowApi | undefined>
+  apiRef?: MutableRefObject<VirtualWindowApi | undefined>
 
   className?: string
   style?: CSSProperties
