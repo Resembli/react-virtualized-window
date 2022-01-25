@@ -23,7 +23,7 @@ function getRandomHEXColor() {
 
 export function Grid() {
   return (
-    <WGrid data={gridData} defaultColumnWidth={100} defaultRowHeight={100}>
+    <WGrid data={gridData} defaultColumnWidth={100} defaultRowHeight={100} gap={20}>
       {({ row, column }, styles) => {
         const startColor = getRandomHEXColor()
         const endColor = getRandomHEXColor()

@@ -14,6 +14,20 @@ export function getMarginStyling(itemGap?: ItemGap) {
   }
 }
 
+export function getVerticalMarginStyling(itemGap?: ItemGap) {
+  if (!itemGap) return { marginTop: 0, marginBottom: 0 }
+  if (typeof itemGap === "number") return { marginTop: itemGap, marginBottom: itemGap }
+
+  return { marginTop: itemGap.top ?? 0, marginBottom: itemGap.bottom ?? 0 }
+}
+
+export function getHorizontalMarginStyling(itemGap?: ItemGap) {
+  if (!itemGap) return { marginLeft: 0, marginRight: 0 }
+  if (typeof itemGap === "number") return { marginLeft: itemGap, marginRight: itemGap }
+
+  return { marginLeft: itemGap.left ?? 0, marginRight: itemGap.right ?? 0 }
+}
+
 export function getVerticalGap(itemGap?: ItemGap) {
   if (!itemGap) return { top: 0, bottom: 0 }
   if (typeof itemGap === "number") return { top: itemGap, bottom: itemGap }

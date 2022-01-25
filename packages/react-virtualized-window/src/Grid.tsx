@@ -3,6 +3,12 @@ import { useMemo } from "react"
 import { memo } from "react"
 import { useRef } from "react"
 
+import {
+  getHorizontalGap,
+  getHorizontalMarginStyling,
+  getVerticalGap,
+  getVerticalMarginStyling,
+} from "./itemGapUtilities"
 import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
@@ -39,6 +45,7 @@ export function Grid<T>({
 
   className,
   style,
+  gap,
 
   rtl,
 
@@ -70,21 +77,25 @@ export function Grid<T>({
     dimensions: columnWidths,
   })
 
+  const { top, bottom } = getVerticalGap(gap)
   const innerHeight = useInnerDimension({
     dataDimensions: dataHeights,
-    gapBetweenItems: 0,
-    gapTop: 0,
+    gapBetweenItems: Math.max(top, bottom),
+    gapTop: top,
   })
+
+  const { left, right } = getHorizontalGap(gap)
+  const horizontalGapBetweenItems = left + right
   const innerWidth = useInnerDimension({
     dataDimensions: dataWidths,
-    gapBetweenItems: 0,
+    gapBetweenItems: horizontalGapBetweenItems,
     gapTop: 0,
   })
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     offset: topOffset,
-    gapBetweenItems: 0,
+    gapBetweenItems: Math.max(top, bottom),
     windowDimension: height,
     overscan: overscan ?? false,
   })
@@ -92,13 +103,17 @@ export function Grid<T>({
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset: leftOffset,
-    gapBetweenItems: 0,
+    gapBetweenItems: horizontalGapBetweenItems,
     itemDimensions: dataWidths,
     overscan: overscan ?? false,
   })
 
   const stickyWidth =
-    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b) + runningWidth
+    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGapBetweenItems) +
+    runningWidth +
+    horizontalGapBetweenItems
+
+  const verticalMarginStyles = getVerticalMarginStyling(gap)
 
   return (
     <div
@@ -160,6 +175,7 @@ export function Grid<T>({
                         key={cellKey}
                         itemWidth={itemWidth}
                         component={children}
+                        itemGap={gap}
                         itemProps={cell}
                       />
                     )
@@ -168,7 +184,12 @@ export function Grid<T>({
                   return (
                     <div
                       key={rowKey}
-                      style={{ height: itemHeight, minHeight: itemHeight, maxHeight: itemHeight }}
+                      style={{
+                        height: itemHeight,
+                        minHeight: itemHeight,
+                        maxHeight: itemHeight,
+                        ...verticalMarginStyles,
+                      }}
                     >
                       {rowChildren}
                     </div>
@@ -185,20 +206,28 @@ export function Grid<T>({
 
 type RenderItemsProps<T> = {
   component: GridProps<T>["children"]
+  itemGap: GridProps<T>["gap"]
   itemProps: T
   itemWidth: number
 }
 
-const RenderItem = memo(function <T>({ component, itemProps, itemWidth }: RenderItemsProps<T>) {
+const RenderItem = memo(function <T>({
+  component,
+  itemGap,
+  itemProps,
+  itemWidth,
+}: RenderItemsProps<T>) {
   const itemStyles = useMemo(() => {
+    const marginStyling = getHorizontalMarginStyling(itemGap)
     return {
       width: itemWidth,
       minWidth: itemWidth,
       maxWidth: itemWidth,
       display: "inline-block",
       height: "100%",
+      ...marginStyling,
     }
-  }, [itemWidth])
+  }, [itemGap, itemWidth])
 
   return component(itemProps, itemStyles)
 })
