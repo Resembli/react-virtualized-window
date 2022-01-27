@@ -2,6 +2,7 @@ import { useMemo } from "react"
 
 interface UseVerticalIndices {
   itemDimensions: number[]
+  gapBetweenItems: number
   windowDimension: number
   offset: number
   overscan: boolean | number
@@ -10,6 +11,7 @@ interface UseVerticalIndices {
 export const useIndicesForDimensions = ({
   windowDimension,
   offset,
+  gapBetweenItems = 0,
   itemDimensions,
   overscan,
 }: UseVerticalIndices) => {
@@ -24,7 +26,7 @@ export const useIndicesForDimensions = ({
     let runningTotal = 0
 
     while (runningTotal < Math.max(0, offset - overscanValue * 2)) {
-      const itemDim = itemDimensions[start]
+      const itemDim = itemDimensions[start] + gapBetweenItems
       if (itemDim + runningTotal > offset) break
 
       start++
@@ -35,14 +37,14 @@ export const useIndicesForDimensions = ({
     let endingTotal = runningTotal
 
     while (endingTotal <= offset + windowDimension + overscanValue) {
-      const itemDim = itemDimensions[end]
+      const itemDim = itemDimensions[end] + gapBetweenItems
 
       endingTotal += itemDim
       end++
     }
 
     return [start, end, runningTotal]
-  }, [offset, overscanValue, windowDimension, itemDimensions])
+  }, [offset, overscanValue, windowDimension, itemDimensions, gapBetweenItems])
 
   return [start, end, running] as const
 }

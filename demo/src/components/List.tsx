@@ -19,7 +19,7 @@ const heights = Array(1000)
 
 export function List() {
   return (
-    <WList data={data} defaultRowHeight={50} rowHeights={heights}>
+    <WList data={data} defaultRowHeight={50} gap={20} rowHeights={heights}>
       {(p, style) => {
         return (
           <div

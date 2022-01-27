@@ -1,12 +1,18 @@
-import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import type { CSSProperties } from "react"
 import { useMemo } from "react"
 import { memo } from "react"
 import { useRef } from "react"
 
+import {
+  getHorizontalGap,
+  getHorizontalMarginStyling,
+  getVerticalGap,
+  getVerticalMarginStyling,
+} from "./itemGapUtilities"
+import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { VirtualWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
@@ -16,24 +22,13 @@ export interface GridDataRow<T> {
   key?: string | number
 }
 
-export interface GridProps<T> {
+export interface GridProps<T> extends VirtualWindowBaseProps {
   data: GridDataRow<T>[]
   children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
   defaultRowHeight: number
   rowHeights?: number[]
   defaultColumnWidth: number
   columnWidths?: number[]
-
-  tabIndex?: number
-  overscan?: boolean | number
-  apiRef?: MutableRefObject<VirtualWindowApi | undefined>
-
-  className?: string
-  style?: CSSProperties
-
-  rtl?: boolean
-
-  onScroll?: UIEventHandler<HTMLElement>
 }
 
 export function Grid<T>({
@@ -50,6 +45,7 @@ export function Grid<T>({
 
   className,
   style,
+  gap,
 
   rtl,
 
@@ -81,12 +77,23 @@ export function Grid<T>({
     dimensions: columnWidths,
   })
 
-  const innerHeight = useInnerDimension(dataHeights)
-  const innerWidth = useInnerDimension(dataWidths)
+  const verticalGap = getVerticalGap(gap)
+  const innerHeight = useInnerDimension({
+    dataDimensions: dataHeights,
+    gapBetweenItems: verticalGap,
+  })
+
+  const horizontalGap = getHorizontalGap(gap)
+
+  const innerWidth = useInnerDimension({
+    dataDimensions: dataWidths,
+    gapBetweenItems: horizontalGap,
+  })
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     offset: topOffset,
+    gapBetweenItems: verticalGap,
     windowDimension: height,
     overscan: overscan ?? false,
   })
@@ -94,12 +101,17 @@ export function Grid<T>({
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset: leftOffset,
+    gapBetweenItems: horizontalGap,
     itemDimensions: dataWidths,
     overscan: overscan ?? false,
   })
 
   const stickyWidth =
-    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b) + runningWidth
+    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGap) +
+    runningWidth +
+    horizontalGap * 2
+
+  const verticalMarginStyles = getVerticalMarginStyling(gap)
 
   return (
     <div
@@ -161,6 +173,8 @@ export function Grid<T>({
                         key={cellKey}
                         itemWidth={itemWidth}
                         component={children}
+                        isLastItem={horiStart + j === row.cells.length - 1}
+                        itemGap={gap}
                         itemProps={cell}
                       />
                     )
@@ -169,7 +183,12 @@ export function Grid<T>({
                   return (
                     <div
                       key={rowKey}
-                      style={{ height: itemHeight, minHeight: itemHeight, maxHeight: itemHeight }}
+                      style={{
+                        height: itemHeight,
+                        minHeight: itemHeight,
+                        maxHeight: itemHeight,
+                        ...verticalMarginStyles,
+                      }}
                     >
                       {rowChildren}
                     </div>
@@ -186,20 +205,30 @@ export function Grid<T>({
 
 type RenderItemsProps<T> = {
   component: GridProps<T>["children"]
+  itemGap: GridProps<T>["gap"]
+  isLastItem: boolean
   itemProps: T
   itemWidth: number
 }
 
-const RenderItem = memo(function <T>({ component, itemProps, itemWidth }: RenderItemsProps<T>) {
+const RenderItem = memo(function <T>({
+  component,
+  itemGap,
+  isLastItem,
+  itemProps,
+  itemWidth,
+}: RenderItemsProps<T>) {
   const itemStyles = useMemo(() => {
+    const marginStyling = getHorizontalMarginStyling(itemGap, isLastItem)
     return {
       width: itemWidth,
       minWidth: itemWidth,
       maxWidth: itemWidth,
       display: "inline-block",
       height: "100%",
+      ...marginStyling,
     }
-  }, [itemWidth])
+  }, [isLastItem, itemGap, itemWidth])
 
   return component(itemProps, itemStyles)
 })

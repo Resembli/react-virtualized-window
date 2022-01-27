@@ -1,31 +1,25 @@
-import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
+import {
+  getHorizontalGap,
+  getHorizontalMarginStyling,
+  getVerticalMarginStyling,
+} from "./itemGapUtilities"
+import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { VirtualWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface ListHorizontalProps<T> {
+export interface ListHorizontalProps<T> extends VirtualWindowBaseProps {
   data: T[]
   children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
   defaultColumnWidth: number
   columnWidths?: number[]
-
-  tabIndex?: number
-  overscan?: boolean | number
-  apiRef?: MutableRefObject<VirtualWindowApi | undefined>
-
-  className?: string
-  style?: CSSProperties
-
-  rtl?: boolean
-
-  onScroll?: UIEventHandler<HTMLElement>
 }
 
 export function ListHorizontal<T>({
@@ -40,6 +34,7 @@ export function ListHorizontal<T>({
 
   className,
   style,
+  gap,
 
   rtl,
 
@@ -65,16 +60,24 @@ export function ListHorizontal<T>({
     dimensions: columnWidths,
   })
 
-  const innerWidth = useInnerDimension(dataWidths)
+  const gapBetweenItems = getHorizontalGap(gap)
+  const innerWidth = useInnerDimension({
+    dataDimensions: dataWidths,
+    gapBetweenItems,
+  })
 
   const [start, end, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset,
+    gapBetweenItems,
     itemDimensions: dataWidths,
     overscan: overscan ?? false,
   })
 
-  const stickyWidth = dataWidths.slice(start, end + 1).reduce((a, b) => a + b) + runningWidth
+  const stickyWidth =
+    dataWidths.slice(start, end + 1).reduce((a, b) => a + b + gapBetweenItems) +
+    runningWidth +
+    gapBetweenItems * 2
 
   const items = useMemo(() => {
     return data.slice(start, end + 1)
@@ -121,7 +124,14 @@ export function ListHorizontal<T>({
                 const key = start + i
 
                 return (
-                  <RenderItem key={key} itemWidth={itemWidth} component={children} itemProps={d} />
+                  <RenderItem
+                    key={key}
+                    isLastItem={start + i === data.length - 1}
+                    itemWidth={itemWidth}
+                    component={children}
+                    itemProps={d}
+                    itemGap={gap}
+                  />
                 )
               })}
             </div>
@@ -134,20 +144,36 @@ export function ListHorizontal<T>({
 
 type RenderItemsProps<T> = {
   component: ListHorizontalProps<T>["children"]
+  itemGap: ListHorizontalProps<T>["gap"]
+  isLastItem: boolean
   itemProps: T
   itemWidth: number
 }
 
-const RenderItem = memo(function <T>({ component, itemProps, itemWidth }: RenderItemsProps<T>) {
+const RenderItem = memo(function <T>({
+  component,
+  itemProps,
+  isLastItem,
+  itemGap,
+  itemWidth,
+}: RenderItemsProps<T>) {
   const itemStyle: CSSProperties = useMemo(() => {
+    const verticalMarginStyling = getVerticalMarginStyling(itemGap)
+    const horizontalMarginStyling = getHorizontalMarginStyling(itemGap, isLastItem)
+
     return {
       width: itemWidth,
       maxWidth: itemWidth,
       minWidth: itemWidth,
       display: "inline-block",
-      height: "100%",
+
+      height: `calc(100% - ${
+        verticalMarginStyling.marginBottom + verticalMarginStyling.marginTop
+      }px)`,
+      ...verticalMarginStyling,
+      ...horizontalMarginStyling,
     }
-  }, [itemWidth])
+  }, [isLastItem, itemGap, itemWidth])
   return component(itemProps, itemStyle)
 })
 

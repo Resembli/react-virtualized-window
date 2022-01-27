@@ -1,31 +1,25 @@
-import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
+import {
+  getHorizontalMarginStyling,
+  getVerticalGap,
+  getVerticalMarginStyling,
+} from "./itemGapUtilities"
+import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
 import { useInnerDimension } from "./useInnerDimensions"
-import type { VirtualWindowApi } from "./useWindowApi"
 import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
-export interface ListProps<T> {
+export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]
   children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
   defaultRowHeight: number
   rowHeights?: number[]
-
-  tabIndex?: number
-  overscan?: boolean | number
-  apiRef?: MutableRefObject<VirtualWindowApi | undefined>
-
-  className?: string
-  style?: CSSProperties
-
-  rtl?: boolean
-
-  onScroll?: UIEventHandler<HTMLElement>
 }
 
 export function List<T>({
@@ -40,6 +34,7 @@ export function List<T>({
 
   className,
   style,
+  gap,
 
   rtl,
 
@@ -65,10 +60,17 @@ export function List<T>({
     dimensions: rowHeights,
   })
 
-  const innerHeight = useInnerDimension(dataHeights)
+  const gapBetweenItems = getVerticalGap(gap)
+
+  const innerHeight = useInnerDimension({
+    dataDimensions: dataHeights,
+    gapBetweenItems,
+  })
+
   const [start, end, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     windowDimension: height,
+    gapBetweenItems,
     offset,
     overscan: overscan ?? false,
   })
@@ -114,6 +116,7 @@ export function List<T>({
                     key={key}
                     itemHeight={itemHeight}
                     itemProps={d}
+                    itemGap={gap}
                     component={children}
                   />
                 )
@@ -128,19 +131,30 @@ export function List<T>({
 
 type RenderItemsProps<T> = {
   component: ListProps<T>["children"]
+  itemGap: ListProps<T>["gap"]
   itemProps: T
   itemHeight: number
 }
 
-const RenderItem = memo(function <T>({ itemProps, component, itemHeight }: RenderItemsProps<T>) {
-  const itemStyle = useMemo(
-    () => ({
+const RenderItem = memo(function <T>({
+  itemProps,
+  itemGap,
+  component,
+  itemHeight,
+}: RenderItemsProps<T>) {
+  const itemStyle = useMemo(() => {
+    const verticalMargins = getVerticalMarginStyling(itemGap)
+    // Every item in the list component is the last item in its row.
+    const horizontalMargins = getHorizontalMarginStyling(itemGap, true)
+
+    return {
       height: itemHeight,
       maxHeight: itemHeight,
       minHeight: itemHeight,
-    }),
-    [itemHeight],
-  )
+      ...verticalMargins,
+      ...horizontalMargins,
+    }
+  }, [itemGap, itemHeight])
 
   return component(itemProps, itemStyle)
 })
