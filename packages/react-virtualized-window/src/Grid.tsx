@@ -77,25 +77,23 @@ export function Grid<T>({
     dimensions: columnWidths,
   })
 
-  const { top, bottom } = getVerticalGap(gap)
+  const verticalGap = getVerticalGap(gap)
   const innerHeight = useInnerDimension({
     dataDimensions: dataHeights,
-    gapBetweenItems: Math.max(top, bottom),
-    gapTop: top,
+    gapBetweenItems: verticalGap,
   })
 
-  const { left, right } = getHorizontalGap(gap)
-  const horizontalGapBetweenItems = left
+  const horizontalGap = getHorizontalGap(gap)
+
   const innerWidth = useInnerDimension({
     dataDimensions: dataWidths,
-    gapBetweenItems: horizontalGapBetweenItems,
-    gapTop: 0,
+    gapBetweenItems: horizontalGap,
   })
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     offset: topOffset,
-    gapBetweenItems: Math.max(top, bottom),
+    gapBetweenItems: verticalGap,
     windowDimension: height,
     overscan: overscan ?? false,
   })
@@ -103,15 +101,15 @@ export function Grid<T>({
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset: leftOffset,
-    gapBetweenItems: horizontalGapBetweenItems,
+    gapBetweenItems: horizontalGap,
     itemDimensions: dataWidths,
     overscan: overscan ?? false,
   })
 
   const stickyWidth =
-    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGapBetweenItems) +
+    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGap) +
     runningWidth +
-    horizontalGapBetweenItems * 2
+    horizontalGap * 2
 
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 

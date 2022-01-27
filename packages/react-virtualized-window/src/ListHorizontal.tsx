@@ -5,7 +5,6 @@ import { useRef } from "react"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
-  getMarginStyling,
   getVerticalMarginStyling,
 } from "./itemGapUtilities"
 import type { VirtualWindowBaseProps } from "./types"
@@ -61,12 +60,10 @@ export function ListHorizontal<T>({
     dimensions: columnWidths,
   })
 
-  const { left } = getHorizontalGap(gap)
-  const gapBetweenItems = left
+  const gapBetweenItems = getHorizontalGap(gap)
   const innerWidth = useInnerDimension({
     dataDimensions: dataWidths,
     gapBetweenItems,
-    gapTop: 0,
   })
 
   const [start, end, runningWidth] = useIndicesForDimensions({

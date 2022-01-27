@@ -2,7 +2,11 @@ import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
-import { getMarginStyling, getVerticalGap } from "./itemGapUtilities"
+import {
+  getHorizontalMarginStyling,
+  getVerticalGap,
+  getVerticalMarginStyling,
+} from "./itemGapUtilities"
 import type { VirtualWindowBaseProps } from "./types"
 import { useDataDimension } from "./useDataDimension"
 import { useIndicesForDimensions } from "./useDimensionIndices"
@@ -56,18 +60,17 @@ export function List<T>({
     dimensions: rowHeights,
   })
 
-  const { top, bottom } = getVerticalGap(gap)
+  const gapBetweenItems = getVerticalGap(gap)
 
   const innerHeight = useInnerDimension({
     dataDimensions: dataHeights,
-    gapBetweenItems: Math.max(top, bottom),
-    gapTop: top,
+    gapBetweenItems,
   })
 
   const [start, end, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     windowDimension: height,
-    gapBetweenItems: Math.max(top, bottom),
+    gapBetweenItems,
     offset,
     overscan: overscan ?? false,
   })
@@ -140,13 +143,16 @@ const RenderItem = memo(function <T>({
   itemHeight,
 }: RenderItemsProps<T>) {
   const itemStyle = useMemo(() => {
-    const marginStyle = getMarginStyling(itemGap)
+    const verticalMargins = getVerticalMarginStyling(itemGap)
+    // Every item in the list component is the last item in its row.
+    const horizontalMargins = getHorizontalMarginStyling(itemGap, true)
 
     return {
       height: itemHeight,
       maxHeight: itemHeight,
       minHeight: itemHeight,
-      ...marginStyle,
+      ...verticalMargins,
+      ...horizontalMargins,
     }
   }, [itemGap, itemHeight])
 
