@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/colors": "^0.1.8",
+    "@radix-ui/react-icons": "^1.0.3",
     "@resembli/react-virtualized-window": "workspace:^",
     "@stitches/core": "^1.2.6",
     "react": "^17.0.2",

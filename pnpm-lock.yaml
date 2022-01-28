@@ -32,6 +32,8 @@ importers:
 
   demo:
     specifiers:
+      '@radix-ui/colors': ^0.1.8
+      '@radix-ui/react-icons': ^1.0.3
       '@resembli/react-virtualized-window': workspace:^
       '@stitches/core': ^1.2.6
       '@types/react': ^17.0.33
@@ -43,6 +45,8 @@ importers:
       vite: ^2.7.2
       wouter: ^2.8.0-alpha.2
     dependencies:
+      '@radix-ui/colors': 0.1.8
+      '@radix-ui/react-icons': 1.0.3_react@17.0.2
       '@resembli/react-virtualized-window': link:../packages/react-virtualized-window
       '@stitches/core': 1.2.6
       react: 17.0.2
@@ -2498,6 +2502,18 @@ packages:
 
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
+
+  /@radix-ui/colors/0.1.8:
+    resolution: {integrity: sha512-jwRMXYwC0hUo0mv6wGpuw254Pd9p/R6Td5xsRpOmaWkUHlooNWqVcadgyzlRumMq3xfOTXwJReU0Jv+EIy4Jbw==}
+    dev: false
+
+  /@radix-ui/react-icons/1.0.3_react@17.0.2:
+    resolution: {integrity: sha512-YbPAUZwTsvF/2H7IU35txaLUB+JNSV8GIhnswlqiFODP/P32t5op5keYUvQWsSj9TA0VLF367J24buUjIprn0w==}
+    peerDependencies:
+      react: ^16.x || ^17.x
+    dependencies:
+      react: 17.0.2
+    dev: false
 
   /@rollup/pluginutils/4.1.2:
     resolution: {integrity: sha512-ROn4qvkxP9SyPeHaf7uQC/GPFY6L/OWy9+bd9AwcjOAWQwxRscoEyAUD8qCY5o5iL4jqQwoLk2kaTKJPb/HwzQ==}
