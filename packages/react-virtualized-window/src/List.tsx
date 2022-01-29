@@ -52,7 +52,7 @@ export function List<T>({
     x: false,
     y: true,
   })
-  const [, height] = useWindowDimensions(windowRef)
+  const [width, height] = useWindowDimensions(windowRef)
 
   const dataHeights = useDataDimension({
     count: data.length,
@@ -87,8 +87,8 @@ export function List<T>({
       className={className}
       style={{
         ...style,
-        height: "100%",
-        width: "100%",
+        height: height,
+        width: width || "100%",
         position: "relative",
         overflow: "auto",
         pointerEvents: isScrolling ? "none" : "all",

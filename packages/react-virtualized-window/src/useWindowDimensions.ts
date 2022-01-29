@@ -8,13 +8,13 @@ export const useWindowDimensions = (windowRef: RefObject<HTMLDivElement>) => {
   const [, forceUpdate] = useReducer((x) => (x + 1) % 10, 0)
 
   useEffect(() => {
-    if (!windowRef.current) return
+    if (!windowRef.current || !windowRef.current.parentElement) return
 
     const resizeObserver = new ResizeObserver(() => {
-      if (!windowRef.current) return
+      if (!windowRef.current || !windowRef.current.parentElement) return
 
-      windowWidthRef.current = windowRef.current.clientWidth
-      windowHeightRef.current = windowRef.current.clientHeight
+      windowWidthRef.current = windowRef.current.parentElement.clientWidth
+      windowHeightRef.current = windowRef.current.parentElement.clientHeight
 
       // After all effect calculations are complete, we need to force a re-render as the
       // div for the list will have changed height.

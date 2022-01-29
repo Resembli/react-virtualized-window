@@ -18,9 +18,9 @@ const itemClass = css({
   },
 })
 
-export function NormalList() {
+export function BasicList() {
   return (
-    <div style={{ width: "500px", height: "700px" }}>
+    <div style={{ height: "100%" }}>
       <List data={data} defaultRowHeight={50}>
         {(props, style) => {
           const clx = itemClass({ odd: props % 2 === 1 })

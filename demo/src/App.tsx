@@ -1,7 +1,8 @@
 import { Redirect, Route, Switch } from "wouter"
 
+import { BasicHorizontalList } from "./components/HorizontalLists/BasicHorizontalList"
 import { Link } from "./components/Link"
-import { NormalList } from "./components/Lists/NormalList"
+import { BasicList } from "./components/Lists/BasicList"
 import { Navbar } from "./components/Navbar"
 import { SideNav } from "./components/SideNav"
 import { css } from "./theme/theme"
@@ -26,7 +27,8 @@ interface RouteItem {
 
 export const App = () => {
   const routes: RouteItem[] = [
-    { label: "Normal List", path: "/normal-list", Component: NormalList },
+    { label: "Basic List", path: "/basic-list", Component: BasicList },
+    { label: "Horizontal List", path: "/horizontal-list", Component: BasicHorizontalList },
   ]
 
   return (
