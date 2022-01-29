@@ -1,13 +1,23 @@
-import { indigoDark } from "@radix-ui/colors"
+import { blueDark, cyanDark, indigoDark, mintDark } from "@radix-ui/colors"
 import { createStitches } from "@stitches/core"
+import type * as Stitches from "@stitches/core"
 
-export const { css, createTheme, globalCss } = createStitches({
+export const { css, createTheme, globalCss, config } = createStitches({
   theme: {
     colors: {
       ...indigoDark,
+      ...blueDark,
+      ...cyanDark,
+      ...mintDark,
 
       appBg: "$indigo1",
       subtleBg: "$indigo2",
+      subtleBorder: "$indigo6",
+
+      surfaceBg: "$blue3",
+      surfaceBorder: "$blue7",
+
+      linkPrimary: "$cyan12",
 
       textPrimary: "$indigo11",
       textSecondary: "$indigo12",
@@ -31,3 +41,5 @@ export const { css, createTheme, globalCss } = createStitches({
     },
   },
 })
+
+export type CSS = Stitches.CSS<typeof config>
