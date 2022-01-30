@@ -1,5 +1,6 @@
 import { Redirect, Route, Switch } from "wouter"
 
+import { BasicGrid } from "./components/Grids/BasicGrid"
 import { BasicHorizontalList } from "./components/HorizontalLists/BasicHorizontalList"
 import { Link } from "./components/Link"
 import { BasicList } from "./components/Lists/BasicList"
@@ -29,6 +30,7 @@ export const App = () => {
   const routes: RouteItem[] = [
     { label: "Basic List", path: "/basic-list", Component: BasicList },
     { label: "Horizontal List", path: "/horizontal-list", Component: BasicHorizontalList },
+    { label: "Basic Grid", path: "/basic-grid", Component: BasicGrid },
   ]
 
   return (

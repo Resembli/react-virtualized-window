@@ -16,6 +16,10 @@ export const useWindowDimensions = (windowRef: RefObject<HTMLDivElement>) => {
       const parentElement = windowRef.current.parentElement
       parentElement.replaceChildren(document.createElement("div"))
 
+      // When width/height is 100%, resizing the element does not work
+      // as expected - resizing up works, but resizing down will not be calculated
+      // correctly (it doesn't resize at all). Subtracting 1 from the width and height
+      // seems to fix this behavior.
       windowWidthRef.current = parentElement.clientWidth - 1
       windowHeightRef.current = parentElement.clientHeight - 1
 
