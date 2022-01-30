@@ -1,4 +1,4 @@
-import { List } from "@resembli/react-virtualized-window"
+import { ListHorizontal } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
@@ -10,6 +10,7 @@ const itemClass = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  flexDirection: "column",
   backgroundColor: "$blue4",
   variants: {
     odd: {
@@ -18,9 +19,9 @@ const itemClass = css({
   },
 })
 
-export function BasicList() {
+export function BasicHorizontalListRTL() {
   return (
-    <List data={data} defaultRowHeight={50}>
+    <ListHorizontal data={data} defaultColumnWidth={50} rtl>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -29,6 +30,6 @@ export function BasicList() {
           </div>
         )
       }}
-    </List>
+    </ListHorizontal>
   )
 }

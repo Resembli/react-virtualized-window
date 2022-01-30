@@ -11,6 +11,7 @@ const itemClass = css({
   alignItems: "center",
   justifyContent: "center",
   flexDirection: "column",
+  backgroundColor: "$blue4",
   variants: {
     odd: {
       true: { backgroundColor: "$mint3", color: "$mint11" },

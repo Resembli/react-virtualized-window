@@ -18,9 +18,9 @@ const itemClass = css({
   },
 })
 
-export function BasicList() {
+export function BasicListRTL() {
   return (
-    <List data={data} defaultRowHeight={50}>
+    <List data={data} defaultRowHeight={50} rtl>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (

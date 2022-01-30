@@ -24,9 +24,9 @@ const itemClass = css({
   },
 })
 
-export function BasicGrid() {
+export function GridWithGapRTL() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} gap={20} rtl>
       {([row, column], styles) => {
         return (
           <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
