@@ -13,15 +13,20 @@ export const useWindowDimensions = (windowRef: RefObject<HTMLDivElement>) => {
     const resizeObserver = new ResizeObserver(() => {
       if (!windowRef.current || !windowRef.current.parentElement) return
 
-      windowWidthRef.current = windowRef.current.parentElement.clientWidth
-      windowHeightRef.current = windowRef.current.parentElement.clientHeight
+      const parentElement = windowRef.current.parentElement
+      parentElement.replaceChildren(document.createElement("div"))
+
+      windowWidthRef.current = parentElement.clientWidth - 1
+      windowHeightRef.current = parentElement.clientHeight - 1
+
+      parentElement.replaceChildren(windowRef.current)
 
       // After all effect calculations are complete, we need to force a re-render as the
       // div for the list will have changed height.
       forceUpdate()
     })
 
-    resizeObserver.observe(windowRef.current)
+    resizeObserver.observe(windowRef.current.parentElement)
 
     return () => resizeObserver.disconnect()
   }, [windowRef])

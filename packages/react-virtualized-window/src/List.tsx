@@ -52,7 +52,6 @@ export function List<T>({
     x: false,
     y: true,
   })
-  const [width, height] = useWindowDimensions(windowRef)
 
   const dataHeights = useDataDimension({
     count: data.length,
@@ -66,6 +65,8 @@ export function List<T>({
     dataDimensions: dataHeights,
     gapBetweenItems,
   })
+
+  const [width, height] = useWindowDimensions(windowRef)
 
   const [start, end, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
