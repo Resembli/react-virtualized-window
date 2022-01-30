@@ -2,6 +2,7 @@ import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
+import { SizingDiv } from "./SizingDiv"
 import {
   getHorizontalMarginStyling,
   getVerticalGap,
@@ -37,6 +38,9 @@ export function List<T>({
   gap,
 
   rtl,
+
+  width: sizingWidth,
+  height: sizingHeight,
 
   onScroll: userOnScroll,
 }: ListProps<T>) {
@@ -81,52 +85,54 @@ export function List<T>({
   }, [data, end, start])
 
   return (
-    <div
-      tabIndex={tabIndex}
-      ref={windowRef}
-      onScroll={onScroll}
-      className={className}
-      style={{
-        ...style,
-        height: height,
-        width: width || "100%",
-        position: "relative",
-        overflow: "auto",
-        pointerEvents: isScrolling ? "none" : "all",
-        direction: rtl ? "rtl" : "ltr",
-      }}
-    >
-      <div style={{ height: innerHeight }}>
-        <div style={{ position: "sticky", top: 0 }}>
-          <div style={{ position: "absolute", top: 0, width: "100%" }}>
-            <div
-              ref={translationRef}
-              style={{
-                transform: `translate3d(0, ${-offset}px, 0)`,
-                willChange: "transform",
-              }}
-            >
-              <div style={{ height: runningHeight }}></div>
-              {items.map((d, i) => {
-                const itemHeight = dataHeights[start + i]
+    <SizingDiv width={sizingWidth} height={sizingHeight}>
+      <div
+        tabIndex={tabIndex}
+        ref={windowRef}
+        onScroll={onScroll}
+        className={className}
+        style={{
+          ...style,
+          height: height,
+          width: width || "100%",
+          position: "relative",
+          overflow: "auto",
+          pointerEvents: isScrolling ? "none" : "all",
+          direction: rtl ? "rtl" : "ltr",
+        }}
+      >
+        <div style={{ height: innerHeight }}>
+          <div style={{ position: "sticky", top: 0 }}>
+            <div style={{ position: "absolute", top: 0, width: "100%" }}>
+              <div
+                ref={translationRef}
+                style={{
+                  transform: `translate3d(0, ${-offset}px, 0)`,
+                  willChange: "transform",
+                }}
+              >
+                <div style={{ height: runningHeight }}></div>
+                {items.map((d, i) => {
+                  const itemHeight = dataHeights[start + i]
 
-                const key = start + i
+                  const key = start + i
 
-                return (
-                  <RenderItem
-                    key={key}
-                    itemHeight={itemHeight}
-                    itemProps={d}
-                    itemGap={gap}
-                    component={children}
-                  />
-                )
-              })}
+                  return (
+                    <RenderItem
+                      key={key}
+                      itemHeight={itemHeight}
+                      itemProps={d}
+                      itemGap={gap}
+                      component={children}
+                    />
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </SizingDiv>
   )
 }
 

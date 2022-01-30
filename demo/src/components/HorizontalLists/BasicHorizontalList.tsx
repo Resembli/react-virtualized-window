@@ -19,17 +19,15 @@ const itemClass = css({
 
 export function BasicHorizontalList() {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
-      <ListHorizontal data={data} defaultColumnWidth={50}>
-        {(props, style) => {
-          const clx = itemClass({ odd: props % 2 === 1 })
-          return (
-            <div style={{ ...style, display: "inline-flex" }} className={clx}>
-              {props}
-            </div>
-          )
-        }}
-      </ListHorizontal>
-    </div>
+    <ListHorizontal data={data} defaultColumnWidth={50}>
+      {(props, style) => {
+        const clx = itemClass({ odd: props % 2 === 1 })
+        return (
+          <div style={{ ...style, display: "inline-flex" }} className={clx}>
+            {props}
+          </div>
+        )
+      }}
+    </ListHorizontal>
   )
 }

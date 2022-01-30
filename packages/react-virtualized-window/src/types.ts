@@ -16,4 +16,7 @@ export interface VirtualWindowBaseProps {
   rtl?: boolean
 
   onScroll?: UIEventHandler<HTMLElement>
+
+  width?: CSSProperties["width"]
+  height?: CSSProperties["height"]
 }

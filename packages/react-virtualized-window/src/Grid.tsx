@@ -3,6 +3,7 @@ import { useMemo } from "react"
 import { memo } from "react"
 import { useRef } from "react"
 
+import { SizingDiv } from "./SizingDiv"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
@@ -48,6 +49,9 @@ export function Grid<T>({
   gap,
 
   rtl,
+
+  width: sizingWidth,
+  height: sizingHeight,
 
   onScroll: userOnScroll,
 }: GridProps<T>) {
@@ -114,92 +118,94 @@ export function Grid<T>({
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 
   return (
-    <div
-      ref={windowRef}
-      className={className}
-      tabIndex={tabIndex}
-      onScroll={onScroll}
-      style={{
-        ...style,
-        height,
-        width,
-        position: "relative",
-        overflow: "auto",
-        pointerEvents: isScrolling ? "none" : "all",
-        direction: rtl ? "rtl" : "ltr",
-      }}
-    >
-      <div style={{ width: innerWidth, height: innerHeight }}>
-        <div
-          style={{
-            position: "sticky",
-            top: 0,
-            left: 0,
-            // Somehow table works best without as any unexpected scrolling issues.
-            display: "table",
-          }}
-        >
+    <SizingDiv width={sizingWidth} height={sizingHeight}>
+      <div
+        ref={windowRef}
+        className={className}
+        tabIndex={tabIndex}
+        onScroll={onScroll}
+        style={{
+          ...style,
+          height,
+          width,
+          position: "relative",
+          overflow: "auto",
+          pointerEvents: isScrolling ? "none" : "all",
+          direction: rtl ? "rtl" : "ltr",
+        }}
+      >
+        <div style={{ width: innerWidth, height: innerHeight }}>
           <div
             style={{
-              position: "absolute",
+              position: "sticky",
               top: 0,
               left: 0,
-              right: 0,
-              width: stickyWidth,
+              // Somehow table works best without as any unexpected scrolling issues.
+              display: "table",
             }}
           >
             <div
-              ref={translationRef}
               style={{
-                display: "grid",
-                gridTemplateColumns: `${runningWidth}px auto`,
-                gridTemplateRows: `${runningHeight}px auto`,
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                width: stickyWidth,
               }}
             >
-              {/* The first two divs are positioning divs. They ensure the scroll translations work */}
-              <div style={{ gridColumnStart: 1, gridColumnEnd: 3 }} />
-              <div />
-              <div>
-                {data.slice(vertStart, vertEnd).map((row, i) => {
-                  const rowKey = row.key ?? i + vertStart
-                  const itemHeight = dataHeights[vertStart + i]
+              <div
+                ref={translationRef}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: `${runningWidth}px auto`,
+                  gridTemplateRows: `${runningHeight}px auto`,
+                }}
+              >
+                {/* The first two divs are positioning divs. They ensure the scroll translations work */}
+                <div style={{ gridColumnStart: 1, gridColumnEnd: 3 }} />
+                <div />
+                <div>
+                  {data.slice(vertStart, vertEnd).map((row, i) => {
+                    const rowKey = row.key ?? i + vertStart
+                    const itemHeight = dataHeights[vertStart + i]
 
-                  const rowChildren = row.cells.slice(horiStart, horiEnd).map((cell, j) => {
-                    const cellKey = horiStart + j
-                    const itemWidth = dataWidths[horiStart + j]
+                    const rowChildren = row.cells.slice(horiStart, horiEnd).map((cell, j) => {
+                      const cellKey = horiStart + j
+                      const itemWidth = dataWidths[horiStart + j]
+
+                      return (
+                        <RenderItem
+                          key={cellKey}
+                          itemWidth={itemWidth}
+                          component={children}
+                          isLastItem={horiStart + j === row.cells.length - 1}
+                          itemGap={gap}
+                          itemProps={cell}
+                        />
+                      )
+                    })
 
                     return (
-                      <RenderItem
-                        key={cellKey}
-                        itemWidth={itemWidth}
-                        component={children}
-                        isLastItem={horiStart + j === row.cells.length - 1}
-                        itemGap={gap}
-                        itemProps={cell}
-                      />
+                      <div
+                        key={rowKey}
+                        style={{
+                          height: itemHeight,
+                          minHeight: itemHeight,
+                          maxHeight: itemHeight,
+                          ...verticalMarginStyles,
+                        }}
+                      >
+                        {rowChildren}
+                      </div>
                     )
-                  })
-
-                  return (
-                    <div
-                      key={rowKey}
-                      style={{
-                        height: itemHeight,
-                        minHeight: itemHeight,
-                        maxHeight: itemHeight,
-                        ...verticalMarginStyles,
-                      }}
-                    >
-                      {rowChildren}
-                    </div>
-                  )
-                })}
+                  })}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </SizingDiv>
   )
 }
 

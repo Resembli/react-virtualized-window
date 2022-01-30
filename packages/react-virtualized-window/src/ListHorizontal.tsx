@@ -2,6 +2,7 @@ import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
+import { SizingDiv } from "./SizingDiv"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
@@ -37,6 +38,9 @@ export function ListHorizontal<T>({
   gap,
 
   rtl,
+
+  width: sizingWidth,
+  height: sizingHeight,
 
   onScroll: userOnScroll,
 }: ListHorizontalProps<T>) {
@@ -87,68 +91,70 @@ export function ListHorizontal<T>({
   const innerWindowHeight = innerWindowRef.current?.clientHeight
 
   return (
-    <div
-      ref={windowRef}
-      onScroll={onScroll}
-      tabIndex={tabIndex}
-      className={className}
-      style={{
-        ...style,
-        height: "100%",
-        width: width,
-        position: "relative",
-        overflow: "auto",
-        pointerEvents: isScrolling ? "none" : "all",
-        direction: rtl ? "rtl" : "ltr",
-      }}
-    >
-      <div ref={innerWindowRef} style={{ width: innerWidth, height: "100%" }}>
-        <div
-          style={{
-            position: "sticky",
-            left: 0,
-            height: "100%",
-            display: "inline-block",
-          }}
-        >
+    <SizingDiv width={sizingWidth} height={sizingHeight}>
+      <div
+        ref={windowRef}
+        onScroll={onScroll}
+        tabIndex={tabIndex}
+        className={className}
+        style={{
+          ...style,
+          height: "100%",
+          width: width,
+          position: "relative",
+          overflow: "auto",
+          pointerEvents: isScrolling ? "none" : "all",
+          direction: rtl ? "rtl" : "ltr",
+        }}
+      >
+        <div ref={innerWindowRef} style={{ width: innerWidth, height: "100%" }}>
           <div
             style={{
-              position: "absolute",
+              position: "sticky",
               left: 0,
-              right: 0,
-              width: stickyWidth,
+              height: "100%",
+              display: "inline-block",
             }}
           >
             <div
-              ref={translationRef}
               style={{
-                height: innerWindowHeight,
-                transform: `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
-                willChange: "transform",
+                position: "absolute",
+                left: 0,
+                right: 0,
+                width: stickyWidth,
               }}
             >
-              <div style={{ display: "inline-block", width: runningWidth }} />
-              {items.map((d, i) => {
-                const itemWidth = dataWidths[start + i]
+              <div
+                ref={translationRef}
+                style={{
+                  height: innerWindowHeight,
+                  transform: `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
+                  willChange: "transform",
+                }}
+              >
+                <div style={{ display: "inline-block", width: runningWidth }} />
+                {items.map((d, i) => {
+                  const itemWidth = dataWidths[start + i]
 
-                const key = start + i
+                  const key = start + i
 
-                return (
-                  <RenderItem
-                    key={key}
-                    isLastItem={start + i === data.length - 1}
-                    itemWidth={itemWidth}
-                    component={children}
-                    itemProps={d}
-                    itemGap={gap}
-                  />
-                )
-              })}
+                  return (
+                    <RenderItem
+                      key={key}
+                      isLastItem={start + i === data.length - 1}
+                      itemWidth={itemWidth}
+                      component={children}
+                      itemProps={d}
+                      itemGap={gap}
+                    />
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </SizingDiv>
   )
 }
 
