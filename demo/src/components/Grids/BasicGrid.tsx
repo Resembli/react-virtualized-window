@@ -16,15 +16,21 @@ const itemClass = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  backgroundColor: "$blue4",
+  variants: {
+    odd: {
+      true: { backgroundColor: "$mint3", color: "$mint11" },
+    },
+  },
 })
 
 export function BasicGrid() {
   return (
     <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
-      {(props, styles) => {
+      {([row, column], styles) => {
         return (
-          <div style={{ ...styles }} className={itemClass()}>
-            {props[0]},{props[1]}
+          <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+            {row},{column}
           </div>
         )
       }}
