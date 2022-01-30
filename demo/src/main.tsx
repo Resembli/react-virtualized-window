@@ -5,10 +5,8 @@ import ReactDOM from "react-dom"
 import { App } from "./App"
 
 const globalStyles = globalCss({
-  html: { width: "100%", height: "100%", display: "table" },
-  body: { width: "100%", display: "table-cell" },
-  "html, body": { margin: 0, padding: 0 },
-  "#root": { height: "100%" },
+  "html, body": { height: "100%", margin: 0, padding: 0 },
+  "#root": { height: "100%", minHeight: "100%" },
 })
 
 globalStyles()

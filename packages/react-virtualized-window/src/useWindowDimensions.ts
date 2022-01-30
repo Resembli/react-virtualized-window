@@ -8,20 +8,29 @@ export const useWindowDimensions = (windowRef: RefObject<HTMLDivElement>) => {
   const [, forceUpdate] = useReducer((x) => (x + 1) % 10, 0)
 
   useEffect(() => {
-    if (!windowRef.current) return
+    if (!windowRef.current || !windowRef.current.parentElement) return
 
     const resizeObserver = new ResizeObserver(() => {
-      if (!windowRef.current) return
+      if (!windowRef.current || !windowRef.current.parentElement) return
 
-      windowWidthRef.current = windowRef.current.clientWidth
-      windowHeightRef.current = windowRef.current.clientHeight
+      const parentElement = windowRef.current.parentElement
+      parentElement.replaceChildren(document.createElement("div"))
+
+      // When width/height is 100%, resizing the element does not work
+      // as expected - resizing up works, but resizing down will not be calculated
+      // correctly (it doesn't resize at all). Subtracting 1 from the width and height
+      // seems to fix this behavior.
+      windowWidthRef.current = parentElement.clientWidth - 1
+      windowHeightRef.current = parentElement.clientHeight - 1
+
+      parentElement.replaceChildren(windowRef.current)
 
       // After all effect calculations are complete, we need to force a re-render as the
       // div for the list will have changed height.
       forceUpdate()
     })
 
-    resizeObserver.observe(windowRef.current)
+    resizeObserver.observe(windowRef.current.parentElement)
 
     return () => resizeObserver.disconnect()
   }, [windowRef])

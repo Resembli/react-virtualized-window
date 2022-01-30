@@ -41,6 +41,7 @@ export function ListHorizontal<T>({
   onScroll: userOnScroll,
 }: ListHorizontalProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
+  const innerWindowRef = useRef<HTMLDivElement>(null)
   const translationRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
@@ -52,7 +53,7 @@ export function ListHorizontal<T>({
     x: true,
     y: false,
   })
-  const [width, height] = useWindowDimensions(windowRef)
+  const [width] = useWindowDimensions(windowRef)
 
   const dataWidths = useDataDimension({
     count: data.length,
@@ -83,6 +84,8 @@ export function ListHorizontal<T>({
     return data.slice(start, end + 1)
   }, [data, end, start])
 
+  const innerWindowHeight = innerWindowRef.current?.clientHeight
+
   return (
     <div
       ref={windowRef}
@@ -92,14 +95,14 @@ export function ListHorizontal<T>({
       style={{
         ...style,
         height: "100%",
-        width: "100%",
+        width: width,
         position: "relative",
         overflow: "auto",
         pointerEvents: isScrolling ? "none" : "all",
         direction: rtl ? "rtl" : "ltr",
       }}
     >
-      <div style={{ width: innerWidth, height: "100%" }}>
+      <div ref={innerWindowRef} style={{ width: innerWidth, height: "100%" }}>
         <div
           style={{
             position: "sticky",
@@ -108,11 +111,18 @@ export function ListHorizontal<T>({
             display: "inline-block",
           }}
         >
-          <div style={{ position: "absolute", left: 0, right: 0, width: stickyWidth }}>
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              width: stickyWidth,
+            }}
+          >
             <div
               ref={translationRef}
               style={{
-                height,
+                height: innerWindowHeight,
                 transform: `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
                 willChange: "transform",
               }}

@@ -121,8 +121,8 @@ export function Grid<T>({
       onScroll={onScroll}
       style={{
         ...style,
-        height: "100%",
-        width: "100%",
+        height,
+        width,
         position: "relative",
         overflow: "auto",
         pointerEvents: isScrolling ? "none" : "all",
