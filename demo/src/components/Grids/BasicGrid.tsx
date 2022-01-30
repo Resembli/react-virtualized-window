@@ -20,16 +20,14 @@ const itemClass = css({
 
 export function BasicGrid() {
   return (
-    <div style={{ height: "100%", width: "100%" }}>
-      <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
-        {(props, styles) => {
-          return (
-            <div style={{ ...styles, display: "inline-flex" }} className={itemClass()}>
-              {props[0]},{props[1]}
-            </div>
-          )
-        }}
-      </Grid>
-    </div>
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
+      {(props, styles) => {
+        return (
+          <div style={{ ...styles }} className={itemClass()}>
+            {props[0]},{props[1]}
+          </div>
+        )
+      }}
+    </Grid>
   )
 }
