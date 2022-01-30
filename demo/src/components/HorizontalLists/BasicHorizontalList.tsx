@@ -19,7 +19,7 @@ const itemClass = css({
 
 export function BasicHorizontalList() {
   return (
-    <div style={{ width: "500px", height: "500px" }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <ListHorizontal data={data} defaultColumnWidth={50}>
         {(props, style) => {
           const clx = itemClass({ odd: props % 2 === 1 })
