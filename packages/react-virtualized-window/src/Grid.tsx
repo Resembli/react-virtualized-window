@@ -189,6 +189,7 @@ export function Grid<T>({
                       <div
                         key={rowKey}
                         style={{
+                          display: "flex",
                           height: itemHeight,
                           minHeight: itemHeight,
                           maxHeight: itemHeight,
@@ -230,7 +231,6 @@ const RenderItem = memo(function <T>({
       width: itemWidth,
       minWidth: itemWidth,
       maxWidth: itemWidth,
-      display: "inline-block",
       height: "100%",
       ...marginStyling,
     }

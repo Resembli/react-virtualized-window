@@ -127,12 +127,13 @@ export function ListHorizontal<T>({
               <div
                 ref={translationRef}
                 style={{
+                  display: "flex",
                   height: innerWindowHeight,
                   transform: `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
                   willChange: "transform",
                 }}
               >
-                <div style={{ display: "inline-block", width: runningWidth }} />
+                <div style={{ width: runningWidth }} />
                 {items.map((d, i) => {
                   const itemWidth = dataWidths[start + i]
 
@@ -181,8 +182,6 @@ const RenderItem = memo(function <T>({
       width: itemWidth,
       maxWidth: itemWidth,
       minWidth: itemWidth,
-      display: "inline-block",
-
       height: `calc(100% - ${
         verticalMarginStyling.marginBottom + verticalMarginStyling.marginTop
       }px)`,

@@ -7,6 +7,7 @@ const data = Array(2000)
   .map((_, i) => i)
 
 const itemClass = css({
+  display: "flex",
   alignItems: "center",
   justifyContent: "center",
   flexDirection: "column",
@@ -23,7 +24,7 @@ export function BasicHorizontalList() {
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
-          <div style={{ ...style, display: "inline-flex" }} className={clx}>
+          <div style={style} className={clx}>
             {props}
           </div>
         )
