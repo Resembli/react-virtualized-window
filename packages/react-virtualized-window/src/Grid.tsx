@@ -113,7 +113,7 @@ export function Grid<T>({
   const stickyWidth =
     dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGap) +
     runningWidth +
-    horizontalGap * 2
+    horizontalGap * (rtl ? 1 : 2)
 
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 
@@ -134,7 +134,7 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: innerHeight }}>
+        <div style={{ width: innerWidth, height: innerHeight + verticalGap }}>
           <div
             style={{
               position: "sticky",
@@ -173,12 +173,16 @@ export function Grid<T>({
                       const cellKey = horiStart + j
                       const itemWidth = dataWidths[horiStart + j]
 
+                      const isLastItem = rtl
+                        ? horiStart + j === 0
+                        : horiStart + j === row.cells.length - 1
+
                       return (
                         <RenderItem
                           key={cellKey}
                           itemWidth={itemWidth}
                           component={children}
-                          isLastItem={horiStart + j === row.cells.length - 1}
+                          isLastItem={isLastItem}
                           itemGap={gap}
                           itemProps={cell}
                         />

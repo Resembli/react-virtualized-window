@@ -12,7 +12,7 @@ export const useInnerDimension = ({ dataDimensions, gapBetweenItems }: UseInnerD
       runningTotal += dataDimensions[i]
     }
 
-    runningTotal += gapBetweenItems * dataDimensions.length + gapBetweenItems
+    runningTotal += gapBetweenItems * dataDimensions.length
 
     return runningTotal
   }, [dataDimensions, gapBetweenItems])
