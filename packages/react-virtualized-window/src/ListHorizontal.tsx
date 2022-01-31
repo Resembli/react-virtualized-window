@@ -16,9 +16,13 @@ import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
+interface ColumnMeta {
+  column: number
+}
+
 export interface ListHorizontalProps<T> extends VirtualWindowBaseProps {
   data: T[]
-  children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
+  children: <B extends T>(itemProps: B, style: CSSProperties, columnMeta: ColumnMeta) => JSX.Element
   defaultColumnWidth: number
   columnWidths?: number[]
 }
@@ -149,6 +153,7 @@ export function ListHorizontal<T>({
                       component={children}
                       itemProps={d}
                       itemGap={gap}
+                      column={start + i}
                     />
                   )
                 })}
@@ -167,6 +172,7 @@ type RenderItemsProps<T> = {
   isLastItem: boolean
   itemProps: T
   itemWidth: number
+  column: number
 }
 
 const RenderItem = memo(function <T>({
@@ -175,6 +181,7 @@ const RenderItem = memo(function <T>({
   isLastItem,
   itemGap,
   itemWidth,
+  column,
 }: RenderItemsProps<T>) {
   const itemStyle: CSSProperties = useMemo(() => {
     const verticalMarginStyling = getVerticalMarginStyling(itemGap)
@@ -191,7 +198,10 @@ const RenderItem = memo(function <T>({
       ...horizontalMarginStyling,
     }
   }, [isLastItem, itemGap, itemWidth])
-  return component(itemProps, itemStyle)
+
+  const columnMeta = useMemo<ColumnMeta>(() => ({ column }), [column])
+
+  return component(itemProps, itemStyle, columnMeta)
 })
 
 RenderItem.displayName = "ListHorizontalItem"
