@@ -12,6 +12,7 @@ export interface VirtualWindowBaseProps {
   className?: string
   style?: CSSProperties
   gap?: ItemGap
+  disableSticky?: boolean
 
   rtl?: boolean
 
