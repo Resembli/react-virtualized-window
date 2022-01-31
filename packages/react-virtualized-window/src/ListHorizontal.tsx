@@ -3,6 +3,7 @@ import { memo, useMemo } from "react"
 import { useRef } from "react"
 
 import { SizingDiv } from "./SizingDiv"
+import { StickyDiv } from "./StickyDiv"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
@@ -36,6 +37,7 @@ export function ListHorizontal<T>({
   tabIndex,
   overscan,
   apiRef,
+  disableSticky,
 
   className,
   style,
@@ -108,53 +110,42 @@ export function ListHorizontal<T>({
         }}
       >
         <div ref={innerWindowRef} style={{ width: innerWidth, height: "100%" }}>
-          <div
-            style={{
-              position: "sticky",
-              left: 0,
-              height: "100%",
-              display: "inline-block",
-            }}
+          <StickyDiv
+            disabled={disableSticky ?? false}
+            display="inline-block"
+            height="100%"
+            width={stickyWidth}
           >
             <div
               style={{
-                position: "absolute",
-                left: 0,
-                right: 0,
-                width: stickyWidth,
+                display: "flex",
+                height: innerWindowHeight,
+                transform: disableSticky ? undefined : `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
+                willChange: "transform",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  height: innerWindowHeight,
-                  transform: `translate3d(${rtl ? 0 : -offset}px, 0, 0)`,
-                  willChange: "transform",
-                }}
-              >
-                <div style={{ width: runningWidth }} />
-                {items.map((d, i) => {
-                  const itemWidth = dataWidths[start + i]
+              <div style={{ width: runningWidth }} />
+              {items.map((d, i) => {
+                const itemWidth = dataWidths[start + i]
 
-                  const key = start + i
+                const key = start + i
 
-                  const isLastItem = rtl ? start + i === 0 : start + i === data.length - 1
+                const isLastItem = rtl ? start + i === 0 : start + i === data.length - 1
 
-                  return (
-                    <RenderItem
-                      key={key}
-                      isLastItem={isLastItem}
-                      itemWidth={itemWidth}
-                      component={children}
-                      itemProps={d}
-                      itemGap={gap}
-                      column={start + i}
-                    />
-                  )
-                })}
-              </div>
+                return (
+                  <RenderItem
+                    key={key}
+                    isLastItem={isLastItem}
+                    itemWidth={itemWidth}
+                    component={children}
+                    itemProps={d}
+                    itemGap={gap}
+                    column={start + i}
+                  />
+                )
+              })}
             </div>
-          </div>
+          </StickyDiv>
         </div>
       </div>
     </SizingDiv>

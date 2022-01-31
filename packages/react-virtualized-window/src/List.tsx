@@ -3,6 +3,7 @@ import { memo, useMemo } from "react"
 import { useRef } from "react"
 
 import { SizingDiv } from "./SizingDiv"
+import { StickyDiv } from "./StickyDiv"
 import {
   getHorizontalMarginStyling,
   getVerticalGap,
@@ -32,6 +33,8 @@ export function List<T>({
   children,
   defaultRowHeight,
   rowHeights,
+
+  disableSticky,
 
   tabIndex,
   overscan,
@@ -102,34 +105,32 @@ export function List<T>({
         }}
       >
         <div style={{ height: innerHeight + gapBetweenItems }}>
-          <div style={{ position: "sticky", top: 0 }}>
-            <div style={{ position: "absolute", top: 0, width: "100%" }}>
-              <div
-                style={{
-                  transform: `translate3d(0, ${-offset}px, 0)`,
-                  willChange: "transform",
-                }}
-              >
-                <div style={{ height: runningHeight }}></div>
-                {items.map((d, i) => {
-                  const itemHeight = dataHeights[start + i]
+          <StickyDiv disabled={disableSticky ?? false}>
+            <div
+              style={{
+                transform: disableSticky ? undefined : `translate3d(0, ${-offset}px, 0)`,
+                willChange: "transform",
+              }}
+            >
+              <div style={{ height: runningHeight }}></div>
+              {items.map((d, i) => {
+                const itemHeight = dataHeights[start + i]
 
-                  const key = start + i
+                const key = start + i
 
-                  return (
-                    <RenderItem
-                      key={key}
-                      itemHeight={itemHeight}
-                      itemProps={d}
-                      itemGap={gap}
-                      component={children}
-                      row={start + i}
-                    />
-                  )
-                })}
-              </div>
+                return (
+                  <RenderItem
+                    key={key}
+                    itemHeight={itemHeight}
+                    itemProps={d}
+                    itemGap={gap}
+                    component={children}
+                    row={start + i}
+                  />
+                )
+              })}
             </div>
-          </div>
+          </StickyDiv>
         </div>
       </div>
     </SizingDiv>
