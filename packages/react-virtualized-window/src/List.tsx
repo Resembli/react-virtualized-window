@@ -16,9 +16,13 @@ import { useWindowApi } from "./useWindowApi"
 import { useWindowDimensions } from "./useWindowDimensions"
 import { useWindowScroll } from "./useWindowScroll"
 
+interface RowMeta {
+  row: number
+}
+
 export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]
-  children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
+  children: <B extends T>(itemProps: B, style: CSSProperties, rowMeta: RowMeta) => JSX.Element
   defaultRowHeight: number
   rowHeights?: number[]
 }
@@ -124,6 +128,7 @@ export function List<T>({
                       itemProps={d}
                       itemGap={gap}
                       component={children}
+                      row={start + i}
                     />
                   )
                 })}
@@ -141,6 +146,7 @@ type RenderItemsProps<T> = {
   itemGap: ListProps<T>["gap"]
   itemProps: T
   itemHeight: number
+  row: number
 }
 
 const RenderItem = memo(function <T>({
@@ -148,6 +154,7 @@ const RenderItem = memo(function <T>({
   itemGap,
   component,
   itemHeight,
+  row,
 }: RenderItemsProps<T>) {
   const itemStyle = useMemo(() => {
     const verticalMargins = getVerticalMarginStyling(itemGap)
@@ -163,7 +170,9 @@ const RenderItem = memo(function <T>({
     }
   }, [itemGap, itemHeight])
 
-  return component(itemProps, itemStyle)
+  const rowMeta = useMemo<RowMeta>(() => ({ row }), [row])
+
+  return component(itemProps, itemStyle, rowMeta)
 })
 
 RenderItem.displayName = "ListItem"

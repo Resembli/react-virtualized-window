@@ -23,9 +23,14 @@ export interface GridDataRow<T> {
   key?: string | number
 }
 
+interface CellMeta {
+  column: number
+  row: number
+}
+
 export interface GridProps<T> extends VirtualWindowBaseProps {
   data: GridDataRow<T>[]
-  children: <B extends T>(itemProps: B, style: CSSProperties) => JSX.Element
+  children: <B extends T>(itemProps: B, style: CSSProperties, cellMeta: CellMeta) => JSX.Element
   defaultRowHeight: number
   rowHeights?: number[]
   defaultColumnWidth: number
@@ -185,6 +190,8 @@ export function Grid<T>({
                           isLastItem={isLastItem}
                           itemGap={gap}
                           itemProps={cell}
+                          column={horiStart + j}
+                          row={vertStart + i}
                         />
                       )
                     })
@@ -220,6 +227,8 @@ type RenderItemsProps<T> = {
   isLastItem: boolean
   itemProps: T
   itemWidth: number
+  column: number
+  row: number
 }
 
 const RenderItem = memo(function <T>({
@@ -228,6 +237,8 @@ const RenderItem = memo(function <T>({
   isLastItem,
   itemProps,
   itemWidth,
+  column,
+  row,
 }: RenderItemsProps<T>) {
   const itemStyles = useMemo(() => {
     const marginStyling = getHorizontalMarginStyling(itemGap, isLastItem)
@@ -240,7 +251,9 @@ const RenderItem = memo(function <T>({
     }
   }, [isLastItem, itemGap, itemWidth])
 
-  return component(itemProps, itemStyles)
+  const cellMeta = useMemo<CellMeta>(() => ({ row, column }), [column, row])
+
+  return component(itemProps, itemStyles, cellMeta)
 })
 
 RenderItem.displayName = "GridCellItem"

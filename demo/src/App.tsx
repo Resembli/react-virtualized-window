@@ -35,10 +35,6 @@ interface RouteItem {
   Component: () => JSX.Element
 }
 
-// TODO:
-// - Gap does not work properly with RTL
-// - Add index for the currently rendered item
-
 export const App = () => {
   const routes: RouteItem[] = [
     { label: "Basic List", path: "/basic-list", Component: BasicList },
