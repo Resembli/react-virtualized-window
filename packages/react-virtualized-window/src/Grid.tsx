@@ -61,14 +61,10 @@ export function Grid<T>({
   onScroll: userOnScroll,
 }: GridProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
-  const translationRef = useRef<HTMLDivElement>(null)
 
   const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll({
     userOnScroll,
-    translationRef,
     rtl: rtl ?? false,
-    x: true,
-    y: true,
   })
   const [width, height] = useWindowDimensions(windowRef)
 
@@ -159,11 +155,12 @@ export function Grid<T>({
               }}
             >
               <div
-                ref={translationRef}
                 style={{
                   display: "grid",
                   gridTemplateColumns: `${runningWidth}px auto`,
                   gridTemplateRows: `${runningHeight}px auto`,
+                  transform: `translate3d(${!rtl ? -leftOffset : 0}px, ${-topOffset}px, 0)`,
+                  willChange: "transform",
                 }}
               >
                 {/* The first two divs are positioning divs. They ensure the scroll translations work */}
