@@ -82,7 +82,7 @@ export function ListHorizontal<T>({
   const stickyWidth =
     dataWidths.slice(start, end + 1).reduce((a, b) => a + b + gapBetweenItems) +
     runningWidth +
-    gapBetweenItems * 2
+    gapBetweenItems
 
   const items = useMemo(() => {
     return data.slice(start, end + 1)
@@ -139,10 +139,12 @@ export function ListHorizontal<T>({
 
                   const key = start + i
 
+                  const isLastItem = rtl ? start + i === 0 : start + i === data.length - 1
+
                   return (
                     <RenderItem
                       key={key}
-                      isLastItem={start + i === data.length - 1}
+                      isLastItem={isLastItem}
                       itemWidth={itemWidth}
                       component={children}
                       itemProps={d}

@@ -101,7 +101,7 @@ export function List<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ height: innerHeight }}>
+        <div style={{ height: innerHeight + gapBetweenItems }}>
           <div style={{ position: "sticky", top: 0 }}>
             <div style={{ position: "absolute", top: 0, width: "100%" }}>
               <div
