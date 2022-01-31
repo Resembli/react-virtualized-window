@@ -49,16 +49,12 @@ export function List<T>({
   onScroll: userOnScroll,
 }: ListProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
-  const translationRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
 
   const [offset, , onScroll, isScrolling] = useWindowScroll({
     userOnScroll,
     rtl: rtl ?? false,
-    translationRef,
-    x: false,
-    y: true,
   })
 
   const dataHeights = useDataDimension({
@@ -109,7 +105,6 @@ export function List<T>({
           <div style={{ position: "sticky", top: 0 }}>
             <div style={{ position: "absolute", top: 0, width: "100%" }}>
               <div
-                ref={translationRef}
                 style={{
                   transform: `translate3d(0, ${-offset}px, 0)`,
                   willChange: "transform",

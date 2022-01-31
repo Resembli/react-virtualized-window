@@ -50,16 +50,12 @@ export function ListHorizontal<T>({
 }: ListHorizontalProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
   const innerWindowRef = useRef<HTMLDivElement>(null)
-  const translationRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
 
   const [, offset, onScroll, isScrolling] = useWindowScroll({
     userOnScroll,
     rtl: rtl ?? false,
-    translationRef,
-    x: true,
-    y: false,
   })
   const [width] = useWindowDimensions(windowRef)
 
@@ -129,7 +125,6 @@ export function ListHorizontal<T>({
               }}
             >
               <div
-                ref={translationRef}
                 style={{
                   display: "flex",
                   height: innerWindowHeight,

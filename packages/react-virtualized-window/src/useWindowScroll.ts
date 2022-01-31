@@ -1,22 +1,13 @@
-import type { RefObject, UIEventHandler } from "react"
+import type { UIEventHandler } from "react"
 import { useRef } from "react"
 import { useCallback, useState } from "react"
 
 interface UseWindowScrollArgs {
-  translationRef: RefObject<HTMLDivElement>
-  x: boolean
-  y: boolean
   rtl: boolean
   userOnScroll?: UIEventHandler<HTMLElement>
 }
 
-export const useWindowScroll = ({
-  userOnScroll,
-  rtl,
-  translationRef,
-  x,
-  y,
-}: UseWindowScrollArgs) => {
+export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
   const verticalOffsetRef = useRef(0)
   const horizontalOffsetRef = useRef(0)
 
@@ -31,17 +22,10 @@ export const useWindowScroll = ({
 
   const onScroll: UIEventHandler<HTMLElement> = useCallback(
     (event) => {
-      if (!translationRef.current) return
-
       const target = event.currentTarget
 
       const scrollLeft = rtl ? -target.scrollLeft : target.scrollLeft
       const scrollTop = target.scrollTop
-
-      translationRef.current.style.willChange = "transform"
-      translationRef.current.style.transform = `translate3d(${x && !rtl ? -scrollLeft : 0}px, ${
-        y ? -scrollTop : 0
-      }px, 0)`
 
       const verticalOffset = Math.max(0, scrollTop)
       const horizontalOffset = Math.max(0, scrollLeft)
@@ -57,7 +41,7 @@ export const useWindowScroll = ({
       }
       debounceTime.current = requestAnimationFrame(debouncedEnded)
     },
-    [debouncedEnded, rtl, translationRef, userOnScroll, x, y],
+    [debouncedEnded, rtl, userOnScroll],
   )
 
   return [verticalOffsetRef.current, horizontalOffsetRef.current, onScroll, isScrolling] as const
