@@ -14,6 +14,10 @@ export const useWindowDimensions = (windowRef: RefObject<HTMLDivElement>) => {
       if (!windowRef.current || !windowRef.current.parentElement) return
 
       const parentElement = windowRef.current.parentElement
+
+      const scrollTop = windowRef.current.scrollTop
+      const scrollLeft = windowRef.current.scrollLeft
+
       parentElement.replaceChildren(document.createElement("div"))
 
       // When width/height is 100%, resizing the element does not work
@@ -24,6 +28,7 @@ export const useWindowDimensions = (windowRef: RefObject<HTMLDivElement>) => {
       windowHeightRef.current = parentElement.clientHeight - 1
 
       parentElement.replaceChildren(windowRef.current)
+      windowRef.current.scrollBy({ top: scrollTop, left: scrollLeft })
 
       // After all effect calculations are complete, we need to force a re-render as the
       // div for the list will have changed height.
