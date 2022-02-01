@@ -33,3 +33,48 @@ export function BasicHorizontalList() {
     </ListHorizontal>
   )
 }
+
+export function BasicHorizontalListRTL() {
+  return (
+    <ListHorizontal data={data} defaultColumnWidth={50} rtl>
+      {(props, style) => {
+        const clx = itemClass({ odd: props % 2 === 1 })
+        return (
+          <div style={style} className={clx}>
+            {props}
+          </div>
+        )
+      }}
+    </ListHorizontal>
+  )
+}
+
+export function BasicHorizontalListWithGap() {
+  return (
+    <ListHorizontal data={data} defaultColumnWidth={50} gap={20}>
+      {(props, style) => {
+        const clx = itemClass({ odd: props % 2 === 1 })
+        return (
+          <div style={style} className={clx}>
+            {props}
+          </div>
+        )
+      }}
+    </ListHorizontal>
+  )
+}
+
+export function BasicHorizontalListWithGapRTL() {
+  return (
+    <ListHorizontal data={data} defaultColumnWidth={50} gap={20} rtl>
+      {(props, style) => {
+        const clx = itemClass({ odd: props % 2 === 1 })
+        return (
+          <div style={style} className={clx}>
+            {props}
+          </div>
+        )
+      }}
+    </ListHorizontal>
+  )
+}

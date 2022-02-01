@@ -1,22 +1,25 @@
 import { Redirect, Route, Switch } from "wouter"
 
-import { BasicGrid } from "./components/Grids/BasicGrid"
-import { BasicRTLGrid } from "./components/Grids/BasicRTLGrid"
-import { GridWithGap } from "./components/Grids/GridWithGap"
-import { GridWithGapRTL } from "./components/Grids/GridWithGapRTL"
-import { BasicHorizontalList } from "./components/HorizontalLists/BasicHorizontalList"
-import { BasicHorizontalListRTL } from "./components/HorizontalLists/BasicHorizontalListRTL"
-import { BasicHorizontalListWithGap } from "./components/HorizontalLists/HorizontalListWithGap"
-import { BasicHorizontalListWithGapRTL } from "./components/HorizontalLists/HorizontalListWithGapRTL"
+import { BasicGrid, BasicRTLGrid, GridWithGap, GridWithGapRTL } from "./components/Grids/BasicGrid"
+import {
+  BasicHorizontalList,
+  BasicHorizontalListRTL,
+  BasicHorizontalListWithGap,
+  BasicHorizontalListWithGapRTL,
+} from "./components/HorizontalLists/BasicHorizontalList"
 import { Link } from "./components/Link"
-import { BasicList } from "./components/Lists/BasicList"
-import { BasicListRTL } from "./components/Lists/BasicListRTL"
-import { BasicListWithGap } from "./components/Lists/BasicListWithGap"
-import { BasicListWithGapRTL } from "./components/Lists/BasicListWithGapRTL"
-import { VariableList } from "./components/Lists/VariableList"
-import { VariableListGap } from "./components/Lists/VariableListGap"
-import { VariableListGapRTL } from "./components/Lists/VariableListGapRTL"
-import { VariableListRTL } from "./components/Lists/VariableListRTL"
+import {
+  BasicList,
+  BasicListRTL,
+  BasicListWithGap,
+  BasicListWithGapRTL,
+} from "./components/Lists/BasicList"
+import {
+  VariableList,
+  VariableListGap,
+  VariableListGapRTL,
+  VariableListRTL,
+} from "./components/Lists/VariableList"
 import { Navbar } from "./components/Navbar"
 import { SideNav } from "./components/SideNav"
 import { css } from "./theme/theme"

@@ -37,3 +37,45 @@ export function BasicGrid() {
     </Grid>
   )
 }
+
+export function BasicRTLGrid() {
+  return (
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} rtl>
+      {([row, column], styles) => {
+        return (
+          <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+            {row},{column}
+          </div>
+        )
+      }}
+    </Grid>
+  )
+}
+
+export function GridWithGap() {
+  return (
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} gap={20}>
+      {([row, column], styles) => {
+        return (
+          <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+            {row},{column}
+          </div>
+        )
+      }}
+    </Grid>
+  )
+}
+
+export function GridWithGapRTL() {
+  return (
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} gap={20} rtl>
+      {([row, column], styles) => {
+        return (
+          <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+            {row},{column}
+          </div>
+        )
+      }}
+    </Grid>
+  )
+}
