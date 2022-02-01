@@ -46,6 +46,21 @@ function BaseHList({ cw, rtl }: BaseHListProps) {
   )
 }
 
+const multiCss = css({
+  display: "grid",
+  gridTemplateColumns: "50% 50%",
+  height: "100%",
+})
+
+const MultipleHList = () => {
+  return (
+    <div className={multiCss()}>
+      <HList />
+      <VarHList />
+    </div>
+  )
+}
+
 const HList = () => <BaseHList />
 const ListRTL = () => <BaseHList rtl />
 const ListGap = () => <BaseHList gap={20} />
@@ -80,4 +95,6 @@ export const hListRoutes: RouteItem[] = [
     path: "/h-list-var-width-var-gap-rtl",
     Component: VarHListVarGapRTL,
   },
+
+  { label: "Multiple H Lists", path: "/h-list-multipl", Component: MultipleHList },
 ]
