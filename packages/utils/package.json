@@ -1,0 +1,10 @@
+{
+  "name": "@resembli/utils",
+  "version": "0.0.1",
+  "type": "module",
+  "types": "src/index.ts",
+  "main": "src/index.ts",
+  "peerDependencies": {
+    "react": "^17.0.2"
+  }
+}
