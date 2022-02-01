@@ -36,3 +36,48 @@ export function VariableList() {
     </List>
   )
 }
+
+export function VariableListGap() {
+  return (
+    <List data={data} defaultRowHeight={50} rowHeights={heights} gap={20}>
+      {(props, style) => {
+        const clx = itemClass({ odd: props % 2 === 1 })
+        return (
+          <div style={style} className={clx}>
+            {props}
+          </div>
+        )
+      }}
+    </List>
+  )
+}
+
+export function VariableListGapRTL() {
+  return (
+    <List data={data} defaultRowHeight={50} rowHeights={heights} rtl gap={20}>
+      {(props, style) => {
+        const clx = itemClass({ odd: props % 2 === 1 })
+        return (
+          <div style={style} className={clx}>
+            {props}
+          </div>
+        )
+      }}
+    </List>
+  )
+}
+
+export function VariableListRTL() {
+  return (
+    <List data={data} defaultRowHeight={50} rowHeights={heights} rtl>
+      {(props, style) => {
+        const clx = itemClass({ odd: props % 2 === 1 })
+        return (
+          <div style={style} className={clx}>
+            {props}
+          </div>
+        )
+      }}
+    </List>
+  )
+}

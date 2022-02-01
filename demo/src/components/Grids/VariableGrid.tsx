@@ -12,6 +12,14 @@ const data = Array(1000)
     }
   })
 
+const heights = Array(1000)
+  .fill(0)
+  .map((_, i) => [40, 30, 100, 120, 50][i % 5])
+
+const widths = Array(200)
+  .fill(0)
+  .map((_, i) => [50, 30, 100, 120, 60][i % 5])
+
 const itemClass = css({
   display: "flex",
   alignItems: "center",
@@ -24,9 +32,15 @@ const itemClass = css({
   },
 })
 
-export function BasicGrid() {
+export function VariableGrid() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
+    <Grid
+      data={data}
+      defaultColumnWidth={100}
+      defaultRowHeight={100}
+      columnWidths={widths}
+      rowHeights={heights}
+    >
       {([row, column], styles) => {
         return (
           <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
@@ -38,9 +52,16 @@ export function BasicGrid() {
   )
 }
 
-export function BasicRTLGrid() {
+export function VariableRTLGrid() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} rtl>
+    <Grid
+      data={data}
+      defaultColumnWidth={100}
+      defaultRowHeight={100}
+      rtl
+      columnWidths={widths}
+      rowHeights={heights}
+    >
       {([row, column], styles) => {
         return (
           <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
@@ -52,9 +73,16 @@ export function BasicRTLGrid() {
   )
 }
 
-export function GridWithGap() {
+export function VariableGridWithGap() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} gap={20}>
+    <Grid
+      data={data}
+      defaultColumnWidth={100}
+      defaultRowHeight={100}
+      gap={20}
+      columnWidths={widths}
+      rowHeights={heights}
+    >
       {([row, column], styles) => {
         return (
           <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
@@ -66,9 +94,17 @@ export function GridWithGap() {
   )
 }
 
-export function GridWithGapRTL() {
+export function VariableGridWithGapRTL() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} gap={20} rtl>
+    <Grid
+      data={data}
+      defaultColumnWidth={100}
+      defaultRowHeight={100}
+      gap={20}
+      rtl
+      columnWidths={widths}
+      rowHeights={heights}
+    >
       {([row, column], styles) => {
         return (
           <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>

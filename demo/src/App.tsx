@@ -1,22 +1,37 @@
 import { Redirect, Route, Switch } from "wouter"
 
-import { BasicGrid } from "./components/Grids/BasicGrid"
-import { BasicRTLGrid } from "./components/Grids/BasicRTLGrid"
-import { GridWithGap } from "./components/Grids/GridWithGap"
-import { GridWithGapRTL } from "./components/Grids/GridWithGapRTL"
-import { BasicHorizontalList } from "./components/HorizontalLists/BasicHorizontalList"
-import { BasicHorizontalListRTL } from "./components/HorizontalLists/BasicHorizontalListRTL"
-import { BasicHorizontalListWithGap } from "./components/HorizontalLists/HorizontalListWithGap"
-import { BasicHorizontalListWithGapRTL } from "./components/HorizontalLists/HorizontalListWithGapRTL"
+import { BasicGrid, BasicRTLGrid, GridWithGap, GridWithGapRTL } from "./components/Grids/BasicGrid"
+import {
+  VariableGrid,
+  VariableGridWithGap,
+  VariableGridWithGapRTL,
+  VariableRTLGrid,
+} from "./components/Grids/VariableGrid"
+import {
+  BasicHorizontalList,
+  BasicHorizontalListRTL,
+  BasicHorizontalListWithGap,
+  BasicHorizontalListWithGapRTL,
+} from "./components/HorizontalLists/BasicHorizontalList"
+import {
+  VariableHorizontalList,
+  VariableHorizontalListRTL,
+  VariableHorizontalListWithGap,
+  VariableHorizontalListWithGapRTL,
+} from "./components/HorizontalLists/VariableSizeLists"
 import { Link } from "./components/Link"
-import { BasicList } from "./components/Lists/BasicList"
-import { BasicListRTL } from "./components/Lists/BasicListRTL"
-import { BasicListWithGap } from "./components/Lists/BasicListWithGap"
-import { BasicListWithGapRTL } from "./components/Lists/BasicListWithGapRTL"
-import { VariableList } from "./components/Lists/VariableList"
-import { VariableListGap } from "./components/Lists/VariableListGap"
-import { VariableListGapRTL } from "./components/Lists/VariableListGapRTL"
-import { VariableListRTL } from "./components/Lists/VariableListRTL"
+import {
+  BasicList,
+  BasicListRTL,
+  BasicListWithGap,
+  BasicListWithGapRTL,
+} from "./components/Lists/BasicList"
+import {
+  VariableList,
+  VariableListGap,
+  VariableListGapRTL,
+  VariableListRTL,
+} from "./components/Lists/VariableList"
 import { Navbar } from "./components/Navbar"
 import { SideNav } from "./components/SideNav"
 import { css } from "./theme/theme"
@@ -62,21 +77,42 @@ export const App = () => {
   ]
 
   const listHorizontalRoutes: RouteItem[] = [
-    { label: "List", path: "/horizontal-list", Component: BasicHorizontalList },
+    { label: "Basic", path: "/horizontal-list", Component: BasicHorizontalList },
     {
-      label: "List RTL",
+      label: "RTL",
       path: "/horizontal-list-rtl",
       Component: BasicHorizontalListRTL,
     },
     {
-      label: "List with Gap",
+      label: "With Gap",
       path: "/horizontal-list-gap",
       Component: BasicHorizontalListWithGap,
     },
     {
-      label: "List with Gap RTL",
+      label: "With Gap RTL",
       path: "/horizontal-list-gap-rtl",
       Component: BasicHorizontalListWithGapRTL,
+    },
+
+    {
+      label: "Variable Width ",
+      path: "/variable-horizontal-list",
+      Component: VariableHorizontalList,
+    },
+    {
+      label: "Variable Width RTL",
+      path: "/variable-horizontal-list-rtl",
+      Component: VariableHorizontalListRTL,
+    },
+    {
+      label: "Variable Width Gap",
+      path: "/variable-horizontal-list-gap",
+      Component: VariableHorizontalListWithGap,
+    },
+    {
+      label: "Variable Width Gap RTL",
+      path: "/variable-horizontal-list-gap-rtl",
+      Component: VariableHorizontalListWithGapRTL,
     },
   ]
 
@@ -86,9 +122,16 @@ export const App = () => {
     { label: "Grid with Gap", path: "/grid-with-gap", Component: GridWithGap },
     { label: "Grid with Gap RTL", path: "/grid-with-gap-rlt", Component: GridWithGapRTL },
 
+    { label: "Variable Grid", path: "/variable-grid", Component: VariableGrid },
+    { label: "Variable Grid RTL", path: "/variable-grid-rtl", Component: VariableRTLGrid },
+    { label: "Variable Grid Gap", path: "/variable-grid-gap", Component: VariableGridWithGap },
+    {
+      label: "Variable Grid Gap RTL",
+      path: "/variable-grid-gap-rtl",
+      Component: VariableGridWithGapRTL,
+    },
+
     // TODO: adding the following examples for each component
-    // - Variable examples (with rtl variant)
-    // - Variable with Gap (with rtl variant)
     // - Differing gap for (variable, fixed, and rtl)
     // - More than a single virtual window on the same page
     // - resize changing

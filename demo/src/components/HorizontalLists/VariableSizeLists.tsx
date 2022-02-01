@@ -1,4 +1,4 @@
-import { List } from "@resembli/react-virtualized-window"
+import { ListHorizontal } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
@@ -6,10 +6,15 @@ const data = Array(2000)
   .fill(0)
   .map((_, i) => i)
 
+const widths = Array(2000)
+  .fill(0)
+  .map((_, i) => [50, 30, 100, 120, 60][i % 5])
+
 const itemClass = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  flexDirection: "column",
   backgroundColor: "$blue4",
   variants: {
     odd: {
@@ -18,9 +23,9 @@ const itemClass = css({
   },
 })
 
-export function BasicList() {
+export function VariableHorizontalList() {
   return (
-    <List data={data} defaultRowHeight={50}>
+    <ListHorizontal data={data} defaultColumnWidth={50} columnWidths={widths}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -29,13 +34,13 @@ export function BasicList() {
           </div>
         )
       }}
-    </List>
+    </ListHorizontal>
   )
 }
 
-export function BasicListRTL() {
+export function VariableHorizontalListRTL() {
   return (
-    <List data={data} defaultRowHeight={50} rtl>
+    <ListHorizontal data={data} defaultColumnWidth={50} rtl columnWidths={widths}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -44,13 +49,13 @@ export function BasicListRTL() {
           </div>
         )
       }}
-    </List>
+    </ListHorizontal>
   )
 }
 
-export function BasicListWithGap() {
+export function VariableHorizontalListWithGap() {
   return (
-    <List data={data} defaultRowHeight={50} gap={20}>
+    <ListHorizontal data={data} defaultColumnWidth={50} gap={20} columnWidths={widths}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -59,13 +64,13 @@ export function BasicListWithGap() {
           </div>
         )
       }}
-    </List>
+    </ListHorizontal>
   )
 }
 
-export function BasicListWithGapRTL() {
+export function VariableHorizontalListWithGapRTL() {
   return (
-    <List data={data} defaultRowHeight={50} rtl gap={20}>
+    <ListHorizontal data={data} defaultColumnWidth={50} gap={20} rtl columnWidths={widths}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -74,6 +79,6 @@ export function BasicListWithGapRTL() {
           </div>
         )
       }}
-    </List>
+    </ListHorizontal>
   )
 }
