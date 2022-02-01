@@ -39,6 +39,8 @@ interface RouteItem {
   Component: () => JSX.Element
 }
 
+// TODO: Clean up examples
+
 export const App = () => {
   const listRoutes: RouteItem[] = [
     { label: "Basic", path: "/list", Component: BasicList },
