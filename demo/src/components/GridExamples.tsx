@@ -63,6 +63,21 @@ function BaseGrid({ cw, rh, rtl, gap }: BaseGridProps) {
   )
 }
 
+const multiCss = css({
+  display: "grid",
+  gridTemplateColumns: "50% 50%",
+  height: "100%",
+})
+
+const MultipleGrids = () => {
+  return (
+    <div className={multiCss()}>
+      <BaseGrid />
+      <VGrid />
+    </div>
+  )
+}
+
 const BGrid = () => <BaseGrid />
 const GridRTL = () => <BaseGrid rtl />
 const GridGap = () => <BaseGrid gap={20} />
@@ -95,4 +110,6 @@ export const gridRoutes: RouteItem[] = [
   { label: "Var Gap RTL", path: "/grid-v-gap-rtl", Component: GridVGapRTL },
   { label: "Var Grid Var Gap", path: "/v-grid-v-gap", Component: VGridVGap },
   { label: "Var Grid Var Gap RTL", path: "/v-grid-v-gap-rtl", Component: VGridVGapRTL },
+
+  { label: "Multiple Grids", path: "/grid-multiple", Component: MultipleGrids },
 ]

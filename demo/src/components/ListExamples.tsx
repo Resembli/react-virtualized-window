@@ -45,6 +45,21 @@ function BaseNList({ rh, rtl, gap }: BaseListProps) {
   )
 }
 
+const multiCss = css({
+  display: "grid",
+  gridTemplateColumns: "50% 50%",
+  height: "100%",
+})
+
+const MultipleNList = () => {
+  return (
+    <div className={multiCss()}>
+      <NList />
+      <VarNList />
+    </div>
+  )
+}
+
 const NList = () => <BaseNList />
 const ListRTL = () => <BaseNList rtl />
 const ListGap = () => <BaseNList gap={20} />
@@ -81,4 +96,6 @@ export const listRoutes: RouteItem[] = [
     path: "/list-var-width-var-gap-rtl",
     Component: VarNListVarGapRTL,
   },
+
+  { label: "Multiple Lists", path: "/list-multiple", Component: MultipleNList },
 ]
