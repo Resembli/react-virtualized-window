@@ -28,16 +28,28 @@ interface BaseListProps {
   rh?: ListProps<unknown>["rowHeights"]
   rtl?: boolean
   gap?: ListProps<unknown>["gap"]
+  width?: ListProps<unknown>["width"]
+  height?: ListProps<unknown>["height"]
+  overscan?: ListProps<unknown>["overscan"]
 }
 
-function BaseNList({ rh, rtl, gap }: BaseListProps) {
+function BaseNList({ rh, rtl, gap, overscan, width, height }: BaseListProps) {
   return (
-    <List data={data} defaultRowHeight={50} rowHeights={rh} rtl={rtl} gap={gap}>
+    <List
+      data={data}
+      defaultRowHeight={50}
+      rowHeights={rh}
+      rtl={rtl}
+      gap={gap}
+      width={width}
+      height={height}
+      overscan={overscan}
+    >
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
           <div style={style} className={clx}>
-            {props}
+            {props + 1}
           </div>
         )
       }}
@@ -64,6 +76,10 @@ const NList = () => <BaseNList />
 const ListRTL = () => <BaseNList rtl />
 const ListGap = () => <BaseNList gap={20} />
 const ListGapRTL = () => <BaseNList gap={20} rtl />
+const ListWH = () => <BaseNList gap={20} width="50%" height="50%" />
+const ListWHRTL = () => <BaseNList gap={20} rtl width="50%" height="50%" />
+const ListOverscan = () => <BaseNList overscan width="50%" height="500px" />
+const ListOverscanRTL = () => <BaseNList rtl overscan width="50%" height="50%" />
 
 const VarNList = () => <BaseNList rh={heights} />
 const VarNListRTL = () => <BaseNList rh={heights} rtl />
@@ -82,6 +98,10 @@ export const listRoutes: RouteItem[] = [
   { label: "RTL", path: "/list-rtl", Component: ListRTL },
   { label: "Gap", path: "/list-gap", Component: ListGap },
   { label: "Gap RTL", path: "/list-gap-rtl", Component: ListGapRTL },
+  { label: "WH", path: "/list-wh", Component: ListWH },
+  { label: "WH RTL", path: "/list-wh-rtl", Component: ListWHRTL },
+  { label: "Overscan", path: "/list-overscan", Component: ListOverscan },
+  { label: "Overscan RTL", path: "/list-overscan-rtl", Component: ListOverscanRTL },
 
   { label: "Var Basic", path: "/list-var-basic", Component: VarNList },
   { label: "Var RTL", path: "/list-var-rtl", Component: VarNListRTL },

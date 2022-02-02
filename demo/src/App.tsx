@@ -22,7 +22,6 @@ const appClass = app()
 
 export const App = () => {
   // TODO: adding the following examples for each component
-  // - More than a single virtual window on the same page
   // - resize changing
   // - Custom styling and class name
   // - Onscroll user event handler
@@ -62,7 +61,7 @@ export const App = () => {
           ))}
         </ul>
       </SideNav>
-      <div style={{ margin: 20 }}>
+      <div style={{ margin: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Route path="/">
           <Redirect to={listRoutes[0].path} />
         </Route>

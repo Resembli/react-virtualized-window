@@ -102,7 +102,7 @@ export function Grid<T>({
     offset: topOffset,
     gapBetweenItems: verticalGap,
     windowDimension: height,
-    overscan: overscan ?? false,
+    overscan: overscan ?? 0,
   })
 
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
@@ -110,7 +110,7 @@ export function Grid<T>({
     offset: leftOffset,
     gapBetweenItems: horizontalGap,
     itemDimensions: dataWidths,
-    overscan: overscan ?? false,
+    overscan: overscan ?? 0,
   })
 
   const stickyWidth =

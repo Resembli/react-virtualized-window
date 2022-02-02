@@ -5,7 +5,7 @@ interface UseVerticalIndices {
   gapBetweenItems: number
   windowDimension: number
   offset: number
-  overscan: boolean | number
+  overscan: number
 }
 
 export const useIndicesForDimensions = ({
@@ -15,17 +15,16 @@ export const useIndicesForDimensions = ({
   itemDimensions,
   overscan,
 }: UseVerticalIndices) => {
-  const overscanValue = useMemo(() => {
-    if (typeof overscan === "boolean") return overscan ? Math.max(...itemDimensions) : 0
-
-    return overscan
-  }, [itemDimensions, overscan])
+  const maxDim = useMemo(
+    () => Math.max(...itemDimensions) + gapBetweenItems,
+    [gapBetweenItems, itemDimensions],
+  )
 
   const [start, end, running] = useMemo(() => {
     let start = 0
     let runningTotal = 0
 
-    while (runningTotal < Math.max(0, offset - overscanValue * 2)) {
+    while (runningTotal < Math.max(0, offset - overscan * maxDim - maxDim)) {
       const itemDim = itemDimensions[start] + gapBetweenItems
       if (itemDim + runningTotal > offset) break
 
@@ -36,7 +35,7 @@ export const useIndicesForDimensions = ({
     let end = start
     let endingTotal = runningTotal
 
-    while (endingTotal <= offset + windowDimension + overscanValue) {
+    while (endingTotal < offset + windowDimension + overscan * maxDim) {
       const itemDim = itemDimensions[end] + gapBetweenItems
 
       endingTotal += itemDim
@@ -44,7 +43,7 @@ export const useIndicesForDimensions = ({
     }
 
     return [start, end, runningTotal]
-  }, [offset, overscanValue, windowDimension, itemDimensions, gapBetweenItems])
+  }, [offset, overscan, maxDim, windowDimension, itemDimensions, gapBetweenItems])
 
   return [start, end, running] as const
 }
