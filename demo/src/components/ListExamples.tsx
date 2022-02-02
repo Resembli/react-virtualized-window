@@ -61,6 +61,7 @@ const multiCss = css({
   display: "grid",
   gridTemplateColumns: "50% 50%",
   height: "100%",
+  width: "100%",
 })
 
 const MultipleNList = () => {
@@ -78,8 +79,8 @@ const ListGap = () => <BaseNList gap={20} />
 const ListGapRTL = () => <BaseNList gap={20} rtl />
 const ListWH = () => <BaseNList gap={20} width="50%" height="50%" />
 const ListWHRTL = () => <BaseNList gap={20} rtl width="50%" height="50%" />
-const ListOverscan = () => <BaseNList overscan width="50%" height="500px" />
-const ListOverscanRTL = () => <BaseNList rtl overscan width="50%" height="50%" />
+const ListOverscan = () => <BaseNList overscan={2} width="50%" height="500px" />
+const ListOverscanRTL = () => <BaseNList rtl overscan={2} width="50%" height="50%" />
 
 const VarNList = () => <BaseNList rh={heights} />
 const VarNListRTL = () => <BaseNList rh={heights} rtl />

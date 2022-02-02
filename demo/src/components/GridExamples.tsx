@@ -71,6 +71,7 @@ const multiCss = css({
   display: "grid",
   gridTemplateColumns: "50% 50%",
   height: "100%",
+  width: "100%",
 })
 
 const MultipleGrids = () => {
