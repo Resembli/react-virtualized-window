@@ -1,8 +1,8 @@
 import type { GridProps } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
 
-import { css } from "../theme/theme"
-import type { RouteItem } from "../types"
+import { css } from "../../theme/theme"
+import type { RouteItem } from "../../types"
 
 const data = Array(1000)
   .fill(0)

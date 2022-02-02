@@ -1,8 +1,8 @@
 import { ListHorizontal } from "@resembli/react-virtualized-window"
 import type { ListHorizontalProps } from "@resembli/react-virtualized-window"
 
-import { css } from "../theme/theme"
-import type { RouteItem } from "../types"
+import { css } from "../../theme/theme"
+import type { RouteItem } from "../../types"
 
 const data = Array(2000)
   .fill(0)

@@ -1,9 +1,9 @@
 import { Redirect, Route, Switch } from "wouter"
 
-import { gridRoutes } from "./components/GridExamples"
-import { hListRoutes } from "./components/HorizontalListExamples"
+import { gridRoutes } from "./components/BasicExamples/GridExamples"
+import { hListRoutes } from "./components/BasicExamples/HorizontalListExamples"
+import { listRoutes } from "./components/BasicExamples/ListExamples"
 import { Link } from "./components/Link"
-import { listRoutes } from "./components/ListExamples"
 import { Navbar } from "./components/Navbar"
 import { SideNav } from "./components/SideNav"
 import { css } from "./theme/theme"
