@@ -50,6 +50,8 @@ const multiCss = css({
   display: "grid",
   gridTemplateColumns: "50% 50%",
   height: "100%",
+  gap: 10,
+  width: "90%",
 })
 
 const MultipleHList = () => {

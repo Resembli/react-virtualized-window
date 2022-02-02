@@ -61,7 +61,14 @@ export const App = () => {
           ))}
         </ul>
       </SideNav>
-      <div style={{ margin: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div
+        style={{
+          margin: 20,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Route path="/">
           <Redirect to={listRoutes[0].path} />
         </Route>
