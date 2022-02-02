@@ -6,7 +6,7 @@ export type ItemGap = number | { horizontal?: number; vertical?: number }
 
 export interface VirtualWindowBaseProps {
   tabIndex?: number
-  overscan?: boolean | number
+  overscan?: number
   apiRef?: MutableRefObject<VirtualWindowApi | undefined>
 
   className?: string

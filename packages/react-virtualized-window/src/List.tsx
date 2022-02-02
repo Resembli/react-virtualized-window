@@ -55,10 +55,7 @@ export function List<T>({
 
   useWindowApi(windowRef, apiRef)
 
-  const [offset, , onScroll, isScrolling] = useWindowScroll({
-    userOnScroll,
-    rtl: rtl ?? false,
-  })
+  const [offset, , onScroll, isScrolling] = useWindowScroll({ userOnScroll, rtl: rtl ?? false })
 
   const dataHeights = useDataDimension({
     count: data.length,
@@ -80,7 +77,7 @@ export function List<T>({
     windowDimension: height,
     gapBetweenItems,
     offset,
-    overscan: overscan ?? false,
+    overscan: overscan ?? 0,
   })
 
   const items = useMemo(() => {

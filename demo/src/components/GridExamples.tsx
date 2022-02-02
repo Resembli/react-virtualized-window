@@ -39,9 +39,11 @@ interface BaseGridProps {
   rh?: GridProps<unknown>["rowHeights"]
   gap?: GridProps<unknown>["gap"]
   rtl?: boolean
+  height?: GridProps<unknown>["height"]
+  width?: GridProps<unknown>["width"]
 }
 
-function BaseGrid({ cw, rh, rtl, gap }: BaseGridProps) {
+function BaseGrid({ cw, rh, rtl, gap, height, width }: BaseGridProps) {
   return (
     <Grid
       data={data}
@@ -51,6 +53,8 @@ function BaseGrid({ cw, rh, rtl, gap }: BaseGridProps) {
       rowHeights={rh}
       gap={gap}
       rtl={rtl}
+      height={height}
+      width={width}
     >
       {([row, column], styles) => {
         return (
@@ -82,6 +86,8 @@ const BGrid = () => <BaseGrid />
 const GridRTL = () => <BaseGrid rtl />
 const GridGap = () => <BaseGrid gap={20} />
 const GridGapRTL = () => <BaseGrid rtl gap={20} />
+const GridWH = () => <BaseGrid gap={20} height="50%" width="50%" />
+const GridWHRTL = () => <BaseGrid rtl gap={20} height="50%" width="50%" />
 
 const VGrid = () => <BaseGrid cw={widths} rh={heights} />
 const VGridRTL = () => <BaseGrid cw={widths} rh={heights} rtl />
@@ -100,6 +106,8 @@ export const gridRoutes: RouteItem[] = [
   { label: "RTL", path: "/grid-rtl", Component: GridRTL },
   { label: "Gap", path: "/grid-gap", Component: GridGap },
   { label: "Gap RTL", path: "/grid-gap-rtl", Component: GridGapRTL },
+  { label: "WH", path: "/grid-wh", Component: GridWH },
+  { label: "WH RTL", path: "/grid-wh-rtl", Component: GridWHRTL },
 
   { label: "Var Grid", path: "/vgrid", Component: VGrid },
   { label: "Var Grid RTL", path: "/vgrid-rtl", Component: VGridRTL },

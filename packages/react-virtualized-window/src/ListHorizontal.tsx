@@ -78,7 +78,7 @@ export function ListHorizontal<T>({
     offset,
     gapBetweenItems,
     itemDimensions: dataWidths,
-    overscan: overscan ?? false,
+    overscan: overscan ?? 0,
   })
 
   const stickyWidth =
