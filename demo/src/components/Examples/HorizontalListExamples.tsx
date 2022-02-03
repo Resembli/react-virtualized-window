@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import { ListHorizontal } from "@resembli/react-virtualized-window"
 import type { ListHorizontalProps } from "@resembli/react-virtualized-window"
 
@@ -58,23 +60,6 @@ function BaseHList({ cw, rtl, gap, overscan, width, height }: BaseHListProps) {
   )
 }
 
-const multiCss = css({
-  display: "grid",
-  gridTemplateColumns: "50% 50%",
-  height: "100%",
-  gap: 10,
-  width: "90%",
-})
-
-const MultipleHList = () => {
-  return (
-    <div className={multiCss()}>
-      <HList />
-      <VarHList />
-    </div>
-  )
-}
-
 const HList = () => <BaseHList />
 const ListRTL = () => <BaseHList rtl />
 const ListGap = () => <BaseHList gap={20} />
@@ -132,6 +117,72 @@ export const overscanHLists: RouteItem[] = [
   },
 ]
 
-export const hListRoutes: RouteItem[] = [
+const multiCss = css({
+  display: "grid",
+  gridTemplateColumns: "50% 50%",
+  height: "100%",
+  gap: 10,
+  width: "90%",
+})
+
+const MultipleHList = () => {
+  return (
+    <div className={multiCss()}>
+      <HList />
+      <VarHList />
+    </div>
+  )
+}
+
+export const multipleHLists: RouteItem[] = [
   { label: "Multiple H Lists", path: "/h-list-multipl", Component: MultipleHList },
+]
+
+const sizingCss = css({
+  width: "50%",
+  height: "50%",
+
+  variants: {
+    grow: {
+      true: { width: "80%", height: "80%" },
+    },
+    transition: {
+      true: { transition: "width 1s ease-in, height 1s ease-in" },
+    },
+  },
+})
+
+const BaseSizing = ({
+  gap,
+  transitions,
+  rtl,
+}: {
+  gap?: number
+  transitions?: boolean
+  rtl?: boolean
+}) => {
+  const [toggleSize, setToggle] = useState(false)
+
+  return (
+    <div style={{ height: "100%", width: "100%" }}>
+      <div>
+        <button onClick={() => setToggle(!toggleSize)}>Toggle Size</button>
+      </div>
+      <div className={sizingCss({ grow: toggleSize, transition: transitions })}>
+        <BaseHList gap={gap} rtl={rtl} />
+      </div>
+    </div>
+  )
+}
+
+const SizingHList = () => <BaseSizing />
+const SizingHListGap = () => <BaseSizing gap={20} />
+const SizingHListTransitions = () => <BaseSizing gap={20} transitions />
+const SizingHListRTL = () => <BaseSizing gap={20} transitions rtl />
+
+export const sizingHLists: RouteItem[] = [
+  { label: "Sizing H List", path: "/list-h-sizing", Component: SizingHList },
+  { label: "Gap", path: "/list-h-sizing-gap", Component: SizingHListGap },
+  { label: "Transitions", path: "/list-h-sizing-trans", Component: SizingHListTransitions },
+  { label: "RTL", path: "/list-h-sizing-rtl", Component: SizingHListRTL },
 ]

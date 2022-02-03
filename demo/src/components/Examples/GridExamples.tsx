@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import type { GridProps } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
 
@@ -69,28 +71,10 @@ export function BaseGrid({ cw, rh, rtl, gap, height, width, overscan }: BaseGrid
   )
 }
 
-const multiCss = css({
-  display: "grid",
-  gridTemplateColumns: "50% 50%",
-  height: "100%",
-  width: "100%",
-})
-
-const MultipleGrids = () => {
-  return (
-    <div className={multiCss()}>
-      <BaseGrid />
-      <VGrid />
-    </div>
-  )
-}
-
 const BGrid = () => <BaseGrid />
 const GridRTL = () => <BaseGrid rtl />
 const GridGap = () => <BaseGrid gap={20} />
 const GridGapRTL = () => <BaseGrid rtl gap={20} />
-const GridWH = () => <BaseGrid gap={20} height="50%" width="50%" />
-const GridWHRTL = () => <BaseGrid rtl gap={20} height="50%" width="50%" />
 
 const VGrid = () => <BaseGrid cw={widths} rh={heights} />
 const VGridRTL = () => <BaseGrid cw={widths} rh={heights} rtl />
@@ -144,9 +128,71 @@ export const overscanGrids: RouteItem[] = [
   },
 ]
 
-export const gridRoutes: RouteItem[] = [
-  { label: "WH", path: "/grid-wh", Component: GridWH },
-  { label: "WH RTL", path: "/grid-wh-rtl", Component: GridWHRTL },
+const multiCss = css({
+  display: "grid",
+  gridTemplateColumns: "50% 50%",
+  height: "100%",
+  width: "100%",
+})
 
+const MultipleGrids = () => {
+  return (
+    <div className={multiCss()}>
+      <BaseGrid />
+      <VGrid />
+    </div>
+  )
+}
+
+export const multipleGrids: RouteItem[] = [
   { label: "Multiple Grids", path: "/grid-multiple", Component: MultipleGrids },
+]
+
+const sizingCss = css({
+  width: "50%",
+  height: "50%",
+
+  variants: {
+    grow: {
+      true: { width: "80%", height: "80%" },
+    },
+    transition: {
+      true: { transition: "width 1s ease-in, height 1s ease-in" },
+    },
+  },
+})
+
+const BaseSizing = ({
+  gap,
+  transitions,
+  rtl,
+}: {
+  gap?: number
+  transitions?: boolean
+  rtl?: boolean
+}) => {
+  const [toggleSize, setToggle] = useState(false)
+
+  return (
+    <div style={{ height: "100%", width: "100%" }}>
+      <div>
+        <button onClick={() => setToggle(!toggleSize)}>Toggle Size</button>
+      </div>
+      <div className={sizingCss({ grow: toggleSize, transition: transitions })}>
+        <BaseGrid gap={gap} rtl={rtl} />
+      </div>
+    </div>
+  )
+}
+
+const SizingGrid = () => <BaseSizing />
+const SizingGridGap = () => <BaseSizing gap={20} />
+const SizingGridTransitions = () => <BaseSizing gap={20} transitions />
+const SizingGridRTL = () => <BaseSizing gap={20} transitions rtl />
+
+export const sizingGrids: RouteItem[] = [
+  { label: "Sizing Grid", path: "/grid-sizing", Component: SizingGrid },
+  { label: "Gap", path: "/grid-sizing-gap", Component: SizingGridGap },
+  { label: "Transitions", path: "/grid-sizing-trans", Component: SizingGridTransitions },
+  { label: "RTL", path: "/grid-sizing-rtl", Component: SizingGridRTL },
 ]

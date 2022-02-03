@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import { List } from "@resembli/react-virtualized-window"
 import type { ListProps } from "@resembli/react-virtualized-window"
 
@@ -57,28 +59,10 @@ function BaseNList({ rh, rtl, gap, overscan, width, height }: BaseListProps) {
   )
 }
 
-const multiCss = css({
-  display: "grid",
-  gridTemplateColumns: "50% 50%",
-  height: "100%",
-  width: "100%",
-})
-
-const MultipleNList = () => {
-  return (
-    <div className={multiCss()}>
-      <NList />
-      <VarNList />
-    </div>
-  )
-}
-
 const NList = () => <BaseNList />
 const ListRTL = () => <BaseNList rtl />
 const ListGap = () => <BaseNList gap={20} />
 const ListGapRTL = () => <BaseNList gap={20} rtl />
-const ListWH = () => <BaseNList gap={20} width="50%" height="50%" />
-const ListWHRTL = () => <BaseNList gap={20} rtl width="50%" height="50%" />
 
 const VarNList = () => <BaseNList rh={heights} />
 const VarNListRTL = () => <BaseNList rh={heights} rtl />
@@ -134,9 +118,71 @@ export const overscanLists: RouteItem[] = [
   },
 ]
 
-export const listRoutes: RouteItem[] = [
-  { label: "WH", path: "/list-wh", Component: ListWH },
-  { label: "WH RTL", path: "/list-wh-rtl", Component: ListWHRTL },
+const multiCss = css({
+  display: "grid",
+  gridTemplateColumns: "50% 50%",
+  height: "100%",
+  width: "100%",
+})
 
+const MultipleNList = () => {
+  return (
+    <div className={multiCss()}>
+      <NList />
+      <VarNList />
+    </div>
+  )
+}
+
+export const multipleLists: RouteItem[] = [
   { label: "Multiple Lists", path: "/list-multiple", Component: MultipleNList },
+]
+
+const sizingCss = css({
+  width: "50%",
+  height: "50%",
+
+  variants: {
+    grow: {
+      true: { width: "80%", height: "80%" },
+    },
+    transition: {
+      true: { transition: "width 1s ease-in, height 1s ease-in" },
+    },
+  },
+})
+
+const BaseSizing = ({
+  gap,
+  transitions,
+  rtl,
+}: {
+  gap?: number
+  transitions?: boolean
+  rtl?: boolean
+}) => {
+  const [toggleSize, setToggle] = useState(false)
+
+  return (
+    <div style={{ height: "100%", width: "100%" }}>
+      <div>
+        <button onClick={() => setToggle(!toggleSize)}>Toggle Size</button>
+      </div>
+      <div className={sizingCss({ grow: toggleSize, transition: transitions })}>
+        <BaseNList gap={gap} rtl={rtl} />
+      </div>
+    </div>
+  )
+}
+
+const SizingList = () => <BaseSizing />
+const SizingListGap = () => <BaseSizing gap={20} />
+const SizingListTransitions = () => <BaseSizing gap={20} transitions />
+const SizingListRTL = () => <BaseSizing gap={20} transitions rtl />
+
+export const sizingLists: RouteItem[] = [
+  { label: "Sizing List", path: "/list-sizing", Component: SizingList },
+  { label: "Gap", path: "/list-sizing-gap", Component: SizingListGap },
+  { label: "Transitions", path: "/list-sizing-trans", Component: SizingListTransitions },
+  { label: "RTL", path: "/list-sizing-rtl", Component: SizingListRTL },
 ]

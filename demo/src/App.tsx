@@ -2,7 +2,9 @@ import { Navbar } from "./components/Navbar"
 import { NestedRoutes } from "./components/NestedRoutes"
 import { BasicPage } from "./pages/Basic"
 import { GapPage } from "./pages/Gap"
+import { MultiplePage } from "./pages/Multiple"
 import { OverscanPage } from "./pages/Overscan"
+import { SizingPage } from "./pages/Sizing"
 import { css } from "./theme/theme"
 
 const app = css({
@@ -15,8 +17,6 @@ const app = css({
 })
 
 export const App = () => {
-  // TODO: adding the following examples for each component
-  // - resize changing
   // - Custom styling and class name
   // - Onscroll user event handler
   // - tab index handling
@@ -37,6 +37,12 @@ export const App = () => {
       </NestedRoutes>
       <NestedRoutes base="/overscan">
         <OverscanPage />
+      </NestedRoutes>
+      <NestedRoutes base="/multiple">
+        <MultiplePage />
+      </NestedRoutes>
+      <NestedRoutes base="/sizing">
+        <SizingPage />
       </NestedRoutes>
     </div>
   )
