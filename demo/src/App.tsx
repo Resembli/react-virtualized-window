@@ -3,6 +3,7 @@ import { NestedRoutes } from "./components/NestedRoutes"
 import { BasicPage } from "./pages/Basic"
 import { CustomStylingPage } from "./pages/CustomStyling"
 import { GapPage } from "./pages/Gap"
+import { InfiniteScrollPage } from "./pages/InfiniteScroller"
 import { MultiplePage } from "./pages/Multiple"
 import { OnScrollApiTabIndexPage } from "./pages/OnScrollApiTabIndex"
 import { OverscanPage } from "./pages/Overscan"
@@ -19,14 +20,6 @@ const app = css({
 })
 
 export const App = () => {
-  // - Onscroll user event handler
-  // - tab index handling
-  // - api ref handling
-  // - infinite scrolling example
-  // - auto complete example
-  // - grid search scroll to
-  // - masonry component
-
   return (
     <div className={app()}>
       <Navbar />
@@ -50,6 +43,9 @@ export const App = () => {
       </NestedRoutes>
       <NestedRoutes base="/onscroll-api-tab-index">
         <OnScrollApiTabIndexPage />
+      </NestedRoutes>
+      <NestedRoutes base="/infinite-scrolling">
+        <InfiniteScrollPage />
       </NestedRoutes>
     </div>
   )

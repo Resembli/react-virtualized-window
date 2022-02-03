@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 
 import { List } from "@resembli/react-virtualized-window"
 import type { ListProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
@@ -244,4 +244,47 @@ export const onScrollApiTabIndexLists: RouteItem[] = [
   { label: "On Scroll", path: "/list-on-scroll", Component: OnScroll },
   { label: "Api", path: "/list-api", Component: Api },
   { label: "Tab Index", path: "/list-index", Component: TabIndex },
+]
+
+function debounce(method: { (): void; _tId?: ReturnType<typeof setTimeout> }, delay: number) {
+  method._tId && clearTimeout(method._tId)
+  method._tId = setTimeout(function () {
+    method()
+  }, delay)
+}
+
+const InfiniteScrolling = () => {
+  const [data, setData] = useState(Array(50).fill(0))
+
+  const updateData = useCallback(() => setData((prev) => [...prev, ...Array(50).fill(0)]), [])
+
+  const handleScroll: ListProps<unknown>["onScroll"] = (e) => {
+    const totalSpace = e.currentTarget.scrollHeight - e.currentTarget.offsetHeight - 100
+    const offset = e.currentTarget.scrollTop
+
+    if (offset > totalSpace) {
+      debounce(updateData, 500)
+    }
+  }
+
+  return (
+    <div>
+      <div style={{ height: 500, width: 500 }}>
+        <List data={data} defaultRowHeight={50} onScroll={handleScroll}>
+          {(_, style, { row }) => {
+            const clx = itemClass({ odd: row % 2 === 1 })
+            return (
+              <div style={style} className={clx}>
+                {row}
+              </div>
+            )
+          }}
+        </List>
+      </div>
+    </div>
+  )
+}
+
+export const infiniteScrollLists: RouteItem[] = [
+  { label: "List Infinite Scroll", path: "/list-infinite-scroll", Component: InfiniteScrolling },
 ]

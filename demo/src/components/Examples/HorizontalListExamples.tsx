@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 
 import { ListHorizontal } from "@resembli/react-virtualized-window"
 import type { ListHorizontalProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
@@ -244,4 +244,53 @@ export const onScrollApiTabIndexHLists: RouteItem[] = [
   { label: "On Scroll", path: "/h-list-on-scroll", Component: OnScroll },
   { label: "Api", path: "/h-list-api", Component: Api },
   { label: "Tab Index", path: "/h-list-index", Component: TabIndex },
+]
+
+function debounce(method: { (): void; _tId?: ReturnType<typeof setTimeout> }, delay: number) {
+  method._tId && clearTimeout(method._tId)
+  method._tId = setTimeout(function () {
+    method()
+  }, delay)
+}
+
+const InfiniteScrolling = () => {
+  const [data, setData] = useState(Array(10).fill(0))
+
+  const updateData = useCallback(() => setData((prev) => [...prev, ...Array(10).fill(0)]), [])
+
+  const handleScroll: ListHorizontalProps<unknown>["onScroll"] = (e) => {
+    const totalSpace = e.currentTarget.scrollWidth - e.currentTarget.offsetWidth - 100
+    const offset = e.currentTarget.scrollLeft
+
+    if (offset > totalSpace) {
+      debounce(updateData, 500)
+    }
+  }
+
+  console.log(data)
+
+  return (
+    <div>
+      <div style={{ height: 500, width: 500 }}>
+        <ListHorizontal data={data} defaultColumnWidth={100} onScroll={handleScroll}>
+          {(_, style, { column }) => {
+            const clx = itemClass({ odd: column % 2 === 1 })
+            return (
+              <div style={style} className={clx}>
+                {column}
+              </div>
+            )
+          }}
+        </ListHorizontal>
+      </div>
+    </div>
+  )
+}
+
+export const infiniteScrollHLists: RouteItem[] = [
+  {
+    label: "H List Infinite Scroll",
+    path: "/h-list-infinite-scroll",
+    Component: InfiniteScrolling,
+  },
 ]
