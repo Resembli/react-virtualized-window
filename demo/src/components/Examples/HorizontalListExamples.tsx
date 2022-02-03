@@ -29,11 +29,23 @@ interface BaseHListProps {
   cw?: ListHorizontalProps<unknown>["columnWidths"]
   gap?: ListHorizontalProps<unknown>["gap"]
   rtl?: boolean
+  overscan?: ListHorizontalProps<unknown>["overscan"]
+  width?: ListHorizontalProps<unknown>["width"]
+  height?: ListHorizontalProps<unknown>["height"]
 }
 
-function BaseHList({ cw, rtl }: BaseHListProps) {
+function BaseHList({ cw, rtl, gap, overscan, width, height }: BaseHListProps) {
   return (
-    <ListHorizontal data={data} defaultColumnWidth={50} columnWidths={cw} rtl={rtl}>
+    <ListHorizontal
+      data={data}
+      defaultColumnWidth={50}
+      columnWidths={cw}
+      rtl={rtl}
+      gap={gap}
+      overscan={overscan}
+      width={width}
+      height={height}
+    >
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -78,6 +90,14 @@ const HListVarGapRTL = () => <BaseHList gap={{ horizontal: 40, vertical: 10 }} r
 const VarHListVarGap = () => <BaseHList gap={{ horizontal: 40, vertical: 10 }} cw={widths} />
 const VarHListVarGapRTL = () => <BaseHList gap={{ horizontal: 40, vertical: 10 }} cw={widths} rtl />
 
+const OverscanBasic = () => <BaseHList overscan={5} width="50%" height="50%" />
+const OverscanGap = () => <BaseHList overscan={5} gap={20} width="50%" height="50%" />
+const OverscanRTL = () => <BaseHList overscan={5} rtl width="50%" height="50%" />
+const OverscanVariable = () => <BaseHList overscan={5} cw={widths} width="50%" height="50%" />
+const OverscanVariableGap = () => (
+  <BaseHList overscan={5} cw={widths} gap={20} width="50%" height="50%" />
+)
+
 export const basicHLists: RouteItem[] = [
   { label: "Basic", path: "/h-list", Component: HList },
   { label: "RTL", path: "/h-list-rtl", Component: ListRTL },
@@ -97,6 +117,18 @@ export const gapHLists: RouteItem[] = [
     label: "Var W Var Gap RTL",
     path: "/h-list-var-width-var-gap-rtl",
     Component: VarHListVarGapRTL,
+  },
+]
+
+export const overscanHLists: RouteItem[] = [
+  { label: "Overscan Basic", path: "/h-list-overscan", Component: OverscanBasic },
+  { label: "Overscan Gap", path: "/h-list-overscan-gap", Component: OverscanGap },
+  { label: "Overscan RTL", path: "/h-list-overscan-rtl", Component: OverscanRTL },
+  { label: "Overscan Variable", path: "/h-list-overscan-variable", Component: OverscanVariable },
+  {
+    label: "Overscan Variable Gap",
+    path: "/h-list-overscan-variable-gap",
+    Component: OverscanVariableGap,
   },
 ]
 

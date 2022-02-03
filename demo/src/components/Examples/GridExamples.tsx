@@ -41,9 +41,10 @@ interface BaseGridProps {
   rtl?: boolean
   height?: GridProps<unknown>["height"]
   width?: GridProps<unknown>["width"]
+  overscan?: GridProps<unknown>["overscan"]
 }
 
-export function BaseGrid({ cw, rh, rtl, gap, height, width }: BaseGridProps) {
+export function BaseGrid({ cw, rh, rtl, gap, height, width, overscan }: BaseGridProps) {
   return (
     <Grid
       data={data}
@@ -51,6 +52,7 @@ export function BaseGrid({ cw, rh, rtl, gap, height, width }: BaseGridProps) {
       defaultRowHeight={100}
       columnWidths={cw}
       rowHeights={rh}
+      overscan={overscan}
       gap={gap}
       rtl={rtl}
       height={height}
@@ -102,6 +104,16 @@ const VGridVGapRTL = () => (
   <BaseGrid gap={{ horizontal: 40, vertical: 10 }} rtl cw={widths} rh={heights} />
 )
 
+const OverscanBasic = () => <BaseGrid overscan={5} width="50%" height="50%" />
+const OverscanRTL = () => <BaseGrid overscan={5} rtl width="50%" height="50%" />
+const OverscanGap = () => <BaseGrid overscan={5} gap={20} width="50%" height="50%" />
+const OverscanVariable = () => (
+  <BaseGrid overscan={5} cw={widths} rh={heights} width="50%" height="50%" />
+)
+const OverscanVariableGap = () => (
+  <BaseGrid overscan={5} cw={widths} rh={heights} gap={20} width="50%" height="50%" />
+)
+
 export const basicGrids: RouteItem[] = [
   { label: "Grid", path: "/grid", Component: BGrid },
   { label: "RTL", path: "/grid-rtl", Component: GridRTL },
@@ -118,6 +130,18 @@ export const gapGrids: RouteItem[] = [
   { label: "Var Gap RTL", path: "/grid-v-gap-rtl", Component: GridVGapRTL },
   { label: "Var WH Grid Var Gap", path: "/v-grid-v-gap", Component: VGridVGap },
   { label: "Var WH Grid Var Gap RTL", path: "/v-grid-v-gap-rtl", Component: VGridVGapRTL },
+]
+
+export const overscanGrids: RouteItem[] = [
+  { label: "Overscan", path: "/grid-overscan", Component: OverscanBasic },
+  { label: "Overscan RTL", path: "/grid-overscan-rtl", Component: OverscanRTL },
+  { label: "Overscan Gap", path: "/grid-overscan-gap", Component: OverscanGap },
+  { label: "Overscan Variable", path: "/grid-overscan-variable", Component: OverscanVariable },
+  {
+    label: "Overscan Variable Gap",
+    path: "/grid-overscan-variable-gap",
+    Component: OverscanVariableGap,
+  },
 ]
 
 export const gridRoutes: RouteItem[] = [

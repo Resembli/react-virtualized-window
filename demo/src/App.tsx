@@ -1,9 +1,8 @@
-import { Route, Switch } from "wouter"
-
 import { Navbar } from "./components/Navbar"
 import { NestedRoutes } from "./components/NestedRoutes"
 import { BasicPage } from "./pages/Basic"
 import { GapPage } from "./pages/Gap"
+import { OverscanPage } from "./pages/Overscan"
 import { css } from "./theme/theme"
 
 const app = css({
@@ -12,7 +11,6 @@ const app = css({
   height: "100%",
   width: "100%",
   backgroundColor: "$appBg",
-
   color: "$textPrimary",
 })
 
@@ -36,6 +34,9 @@ export const App = () => {
       </NestedRoutes>
       <NestedRoutes base="/gap">
         <GapPage />
+      </NestedRoutes>
+      <NestedRoutes base="/overscan">
+        <OverscanPage />
       </NestedRoutes>
     </div>
   )

@@ -79,8 +79,6 @@ const ListGap = () => <BaseNList gap={20} />
 const ListGapRTL = () => <BaseNList gap={20} rtl />
 const ListWH = () => <BaseNList gap={20} width="50%" height="50%" />
 const ListWHRTL = () => <BaseNList gap={20} rtl width="50%" height="50%" />
-const ListOverscan = () => <BaseNList overscan={2} width="50%" height="500px" />
-const ListOverscanRTL = () => <BaseNList rtl overscan={2} width="50%" height="50%" />
 
 const VarNList = () => <BaseNList rh={heights} />
 const VarNListRTL = () => <BaseNList rh={heights} rtl />
@@ -92,6 +90,14 @@ const NListVarGapRTL = () => <BaseNList gap={{ horizontal: 10, vertical: 40 }} r
 const VarNListVarGap = () => <BaseNList gap={{ horizontal: 10, vertical: 40 }} rh={heights} />
 const VarNListVarGapRTL = () => (
   <BaseNList gap={{ horizontal: 10, vertical: 40 }} rh={heights} rtl />
+)
+
+const Overscan = () => <BaseNList overscan={5} width="50%" height="50%" />
+const OverscanGap = () => <BaseNList overscan={5} width="50%" height="50%" gap={20} />
+const OverscanRTL = () => <BaseNList overscan={5} width="50%" height="50%" rtl />
+const OverscanVariable = () => <BaseNList overscan={5} width="50%" height="50%" rh={heights} />
+const OverscanVariableGap = () => (
+  <BaseNList overscan={5} width="50%" height="50%" rh={heights} gap={20} />
 )
 
 export const basicLists: RouteItem[] = [
@@ -116,11 +122,21 @@ export const gapLists: RouteItem[] = [
   },
 ]
 
+export const overscanLists: RouteItem[] = [
+  { label: "Overscan", path: "/list-overscan", Component: Overscan },
+  { label: "Overscan Gap", path: "/list-overscan-gap", Component: OverscanGap },
+  { label: "Overscan RTL", path: "/list-overscan-rtl", Component: OverscanRTL },
+  { label: "Overscan Variable", path: "/list-overscan-variable", Component: OverscanVariable },
+  {
+    label: "Overscan Variable Gap",
+    path: "/list-overscan-variable-gap",
+    Component: OverscanVariableGap,
+  },
+]
+
 export const listRoutes: RouteItem[] = [
   { label: "WH", path: "/list-wh", Component: ListWH },
   { label: "WH RTL", path: "/list-wh-rtl", Component: ListWHRTL },
-  { label: "Overscan", path: "/list-overscan", Component: ListOverscan },
-  { label: "Overscan RTL", path: "/list-overscan-rtl", Component: ListOverscanRTL },
 
   { label: "Multiple Lists", path: "/list-multiple", Component: MultipleNList },
 ]
