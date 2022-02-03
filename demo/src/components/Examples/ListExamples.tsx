@@ -288,3 +288,13 @@ const InfiniteScrolling = () => {
 export const infiniteScrollLists: RouteItem[] = [
   { label: "List Infinite Scroll", path: "/list-infinite-scroll", Component: InfiniteScrolling },
 ]
+
+const StickyDisabledList = () => <BaseNList disableSticky />
+
+export const stickyDisabledList: RouteItem[] = [
+  {
+    label: "Sticky Disabled",
+    path: "/list-sticky-disabled",
+    Component: StickyDisabledList,
+  },
+]

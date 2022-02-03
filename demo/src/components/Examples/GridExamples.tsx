@@ -344,3 +344,9 @@ const InfiniteScrolling = () => {
 export const infiniteScrollGrids: RouteItem[] = [
   { label: "Grid Infinite Scroll", path: "/grid-infinite-scroll", Component: InfiniteScrolling },
 ]
+
+const StickyDisabledGrid = () => <BaseGrid disableSticky />
+
+export const stickyDisabledGrids: RouteItem[] = [
+  { label: "Grid Sticky Disabled", path: "/grid-sticky-disabled", Component: StickyDisabledGrid },
+]
