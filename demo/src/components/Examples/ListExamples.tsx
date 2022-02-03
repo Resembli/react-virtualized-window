@@ -94,29 +94,33 @@ const VarNListVarGapRTL = () => (
   <BaseNList gap={{ horizontal: 10, vertical: 40 }} rh={heights} rtl />
 )
 
-export const listRoutes: RouteItem[] = [
+export const basicLists: RouteItem[] = [
   { label: "Basic", path: "/list", Component: NList },
   { label: "RTL", path: "/list-rtl", Component: ListRTL },
+  { label: "Var Basic", path: "/list-var-basic", Component: VarNList },
+  { label: "Var RTL", path: "/list-var-rtl", Component: VarNListRTL },
+]
+
+export const gapLists: RouteItem[] = [
   { label: "Gap", path: "/list-gap", Component: ListGap },
   { label: "Gap RTL", path: "/list-gap-rtl", Component: ListGapRTL },
+  { label: "Var H Gap", path: "/list-var-height-gap", Component: VarNListGap },
+  { label: "Var H Gap RTL", path: "/list-var-height-gap-rtl", Component: VarNListGapRTL },
+  { label: "Var Gap", path: "/list-basic-var-gap", Component: NListVarGap },
+  { label: "Var Gap RTL", path: "/list-var-gap-rtl", Component: NListVarGapRTL },
+  { label: "Var H Var Gap", path: "/list-var-height-var-gap", Component: VarNListVarGap },
+  {
+    label: "Var H Var Gap RTL",
+    path: "/list-var-height-var-gap-rtl",
+    Component: VarNListVarGapRTL,
+  },
+]
+
+export const listRoutes: RouteItem[] = [
   { label: "WH", path: "/list-wh", Component: ListWH },
   { label: "WH RTL", path: "/list-wh-rtl", Component: ListWHRTL },
   { label: "Overscan", path: "/list-overscan", Component: ListOverscan },
   { label: "Overscan RTL", path: "/list-overscan-rtl", Component: ListOverscanRTL },
-
-  { label: "Var Basic", path: "/list-var-basic", Component: VarNList },
-  { label: "Var RTL", path: "/list-var-rtl", Component: VarNListRTL },
-  { label: "Var Width Gap", path: "/list-var-width-gap", Component: VarNListGap },
-  { label: "Var Width Gap RTL", path: "/list-var-width-gap-rtl", Component: VarNListGapRTL },
-
-  { label: "Basic Var Gap", path: "/list-basic-var-gap", Component: NListVarGap },
-  { label: "Var Gap RTL", path: "/list-var-gap-rtl", Component: NListVarGapRTL },
-  { label: "Var Width Var Gap", path: "/list-var-width-var-gap", Component: VarNListVarGap },
-  {
-    label: "Var Width Var Gap RTL",
-    path: "/list-var-width-var-gap-rtl",
-    Component: VarNListVarGapRTL,
-  },
 
   { label: "Multiple Lists", path: "/list-multiple", Component: MultipleNList },
 ]

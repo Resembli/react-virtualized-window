@@ -78,25 +78,28 @@ const HListVarGapRTL = () => <BaseHList gap={{ horizontal: 40, vertical: 10 }} r
 const VarHListVarGap = () => <BaseHList gap={{ horizontal: 40, vertical: 10 }} cw={widths} />
 const VarHListVarGapRTL = () => <BaseHList gap={{ horizontal: 40, vertical: 10 }} cw={widths} rtl />
 
-export const hListRoutes: RouteItem[] = [
+export const basicHLists: RouteItem[] = [
   { label: "Basic", path: "/h-list", Component: HList },
   { label: "RTL", path: "/h-list-rtl", Component: ListRTL },
-  { label: "Gap", path: "/h-list-gap", Component: ListGap },
-  { label: "Gap RTL", path: "/h-list-gap-rtl", Component: ListGapRTL },
-
   { label: "Var Basic", path: "/h-list-var-basic", Component: VarHList },
   { label: "Var RTL", path: "/h-list-var-rtl", Component: VarHListRTL },
-  { label: "Var Width Gap", path: "/h-list-var-width-gap", Component: VarHListGap },
-  { label: "Var Width Gap RTL", path: "/h-list-var-width-gap-rtl", Component: VarHListGapRTL },
+]
 
-  { label: "Basic Var Gap", path: "/h-list-basic-var-gap", Component: HListVarGap },
+export const gapHLists: RouteItem[] = [
+  { label: "Gap", path: "/h-list-gap", Component: ListGap },
+  { label: "Gap RTL", path: "/h-list-gap-rtl", Component: ListGapRTL },
+  { label: "Var W Gap", path: "/h-list-var-width-gap", Component: VarHListGap },
+  { label: "Var W Gap RTL", path: "/h-list-var-width-gap-rtl", Component: VarHListGapRTL },
+  { label: "Var Gap", path: "/h-list-basic-var-gap", Component: HListVarGap },
   { label: "Var Gap RTL", path: "/h-list-var-gap-rtl", Component: HListVarGapRTL },
-  { label: "Var Width Var Gap", path: "/h-list-var-width-var-gap", Component: VarHListVarGap },
+  { label: "Var W Var Gap", path: "/h-list-var-width-var-gap", Component: VarHListVarGap },
   {
-    label: "Var Width Var Gap RTL",
+    label: "Var W Var Gap RTL",
     path: "/h-list-var-width-var-gap-rtl",
     Component: VarHListVarGapRTL,
   },
+]
 
+export const hListRoutes: RouteItem[] = [
   { label: "Multiple H Lists", path: "/h-list-multipl", Component: MultipleHList },
 ]

@@ -5,7 +5,7 @@ import type { CSS } from "../theme/theme"
 import { css } from "../theme/theme"
 
 const navbarStyles = css({
-  margin: "0px 20px",
+  padding: "0px 30px",
   display: "flex",
   alignItems: "center",
   gap: 20,
@@ -40,10 +40,11 @@ function NavLink({ to, children }: PropsWithChildren<NavLinkProps>) {
 export function Navbar({ css }: NavbarProps) {
   return (
     <div className={navbarStyles({ css })}>
-      <NavLink to="/basic">Basic Examples</NavLink>
-      <NavLink to="/overscan">Overscan Examples</NavLink>
-      <NavLink to="/sizing">Sizing Examples</NavLink>
-      <NavLink to="/multiple">Multiple Examples</NavLink>
+      <NavLink to="/basic">Basic</NavLink>
+      <NavLink to="/gap">Gap</NavLink>
+      <NavLink to="/overscan">Overscan</NavLink>
+      <NavLink to="/sizing">Sizing</NavLink>
+      <NavLink to="/multiple">Multiple</NavLink>
     </div>
   )
 }

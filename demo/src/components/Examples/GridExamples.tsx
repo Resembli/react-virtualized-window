@@ -43,7 +43,7 @@ interface BaseGridProps {
   width?: GridProps<unknown>["width"]
 }
 
-function BaseGrid({ cw, rh, rtl, gap, height, width }: BaseGridProps) {
+export function BaseGrid({ cw, rh, rtl, gap, height, width }: BaseGridProps) {
   return (
     <Grid
       data={data}
@@ -102,23 +102,27 @@ const VGridVGapRTL = () => (
   <BaseGrid gap={{ horizontal: 40, vertical: 10 }} rtl cw={widths} rh={heights} />
 )
 
-export const gridRoutes: RouteItem[] = [
+export const basicGrids: RouteItem[] = [
   { label: "Grid", path: "/grid", Component: BGrid },
   { label: "RTL", path: "/grid-rtl", Component: GridRTL },
-  { label: "Gap", path: "/grid-gap", Component: GridGap },
-  { label: "Gap RTL", path: "/grid-gap-rtl", Component: GridGapRTL },
-  { label: "WH", path: "/grid-wh", Component: GridWH },
-  { label: "WH RTL", path: "/grid-wh-rtl", Component: GridWHRTL },
-
   { label: "Var Grid", path: "/vgrid", Component: VGrid },
   { label: "Var Grid RTL", path: "/vgrid-rtl", Component: VGridRTL },
-  { label: "Var Grid Gap", path: "/vgrid-gap", Component: VGridGap },
-  { label: "Var Grid Gap RTL", path: "/vgrid-gap-rtl", Component: VGridGapRTL },
+]
 
+export const gapGrids: RouteItem[] = [
+  { label: "Gap", path: "/grid-gap", Component: GridGap },
+  { label: "Gap RTL", path: "/grid-gap-rtl", Component: GridGapRTL },
+  { label: "Var WH Grid Gap", path: "/vgrid-gap", Component: VGridGap },
+  { label: "Var WH Grid Gap RTL", path: "/vgrid-gap-rtl", Component: VGridGapRTL },
   { label: "Var Gap", path: "/grid-v-gap", Component: GridVGap },
   { label: "Var Gap RTL", path: "/grid-v-gap-rtl", Component: GridVGapRTL },
-  { label: "Var Grid Var Gap", path: "/v-grid-v-gap", Component: VGridVGap },
-  { label: "Var Grid Var Gap RTL", path: "/v-grid-v-gap-rtl", Component: VGridVGapRTL },
+  { label: "Var WH Grid Var Gap", path: "/v-grid-v-gap", Component: VGridVGap },
+  { label: "Var WH Grid Var Gap RTL", path: "/v-grid-v-gap-rtl", Component: VGridVGapRTL },
+]
+
+export const gridRoutes: RouteItem[] = [
+  { label: "WH", path: "/grid-wh", Component: GridWH },
+  { label: "WH RTL", path: "/grid-wh-rtl", Component: GridWHRTL },
 
   { label: "Multiple Grids", path: "/grid-multiple", Component: MultipleGrids },
 ]
