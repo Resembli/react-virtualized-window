@@ -44,9 +44,21 @@ interface BaseGridProps {
   height?: GridProps<unknown>["height"]
   width?: GridProps<unknown>["width"]
   overscan?: GridProps<unknown>["overscan"]
+  className?: GridProps<unknown>["className"]
+  style?: GridProps<unknown>["style"]
 }
 
-export function BaseGrid({ cw, rh, rtl, gap, height, width, overscan }: BaseGridProps) {
+export function BaseGrid({
+  cw,
+  rh,
+  rtl,
+  gap,
+  height,
+  width,
+  overscan,
+  style,
+  className,
+}: BaseGridProps) {
   return (
     <Grid
       data={data}
@@ -56,6 +68,8 @@ export function BaseGrid({ cw, rh, rtl, gap, height, width, overscan }: BaseGrid
       rowHeights={rh}
       overscan={overscan}
       gap={gap}
+      className={className}
+      style={style}
       rtl={rtl}
       height={height}
       width={width}
@@ -195,4 +209,22 @@ export const sizingGrids: RouteItem[] = [
   { label: "Gap", path: "/grid-sizing-gap", Component: SizingGridGap },
   { label: "Transitions", path: "/grid-sizing-trans", Component: SizingGridTransitions },
   { label: "RTL", path: "/grid-sizing-rtl", Component: SizingGridRTL },
+]
+
+const customStyle = css({
+  border: "20px solid blue",
+  margin: 20,
+})
+
+const style = {
+  border: "20px solid red",
+  margin: 20,
+}
+
+const ClassNameGrid = () => <BaseGrid className={customStyle()} width="50%" height="50%" />
+const StyleGrid = () => <BaseGrid style={style} width="50%" height="50%" />
+
+export const stylingGrids: RouteItem[] = [
+  { label: "Class Name Grid", path: "/grid-classname", Component: ClassNameGrid },
+  { label: "Style Grid", path: "/grid-style", Component: StyleGrid },
 ]
