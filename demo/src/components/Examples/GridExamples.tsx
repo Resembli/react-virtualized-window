@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 
-import type { GridProps } from "@resembli/react-virtualized-window"
+import type { GridProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
@@ -207,4 +207,76 @@ const StyleGrid = () => <BaseGrid style={style} width="50%" height="50%" />
 export const stylingGrids: RouteItem[] = [
   { label: "Class Name Grid", path: "/grid-classname", Component: ClassNameGrid },
   { label: "Style Grid", path: "/grid-style", Component: StyleGrid },
+]
+
+const OnScroll = () => {
+  const [offsetTop, setOffsetTop] = useState(0)
+  const [offsetLeft, setOffsetLeft] = useState(0)
+
+  return (
+    <div>
+      <div>
+        <h3>Offset Top: {offsetTop}</h3>
+        <h3>Offset Left: {offsetLeft}</h3>
+      </div>
+      <div style={{ height: 200, width: 500 }}>
+        <BaseGrid
+          onScroll={(e) => {
+            setOffsetTop(e.currentTarget.scrollTop)
+            setOffsetLeft(e.currentTarget.scrollLeft)
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
+const Api = () => {
+  const apiRef = useRef<VirtualWindowApi>()
+
+  const handleTopScrollBy1000 = () => {
+    if (!apiRef.current) return
+
+    apiRef.current.scrollBy({ top: 1000 })
+  }
+  const handleLeftScrollBy1000 = () => {
+    if (!apiRef.current) return
+
+    apiRef.current.scrollBy({ left: 1000 })
+  }
+
+  const handleToTop = () => {
+    if (!apiRef.current) return
+
+    apiRef.current.scrollTo({ top: 0 })
+  }
+
+  const handleToLeft = () => {
+    if (!apiRef.current) return
+
+    apiRef.current.scrollTo({ left: 0 })
+  }
+
+  return (
+    <div>
+      <div>
+        <h3>Api Controls</h3>
+        <button onClick={handleTopScrollBy1000}>Scroll By Top 1,000</button>
+        <button onClick={handleLeftScrollBy1000}>Scroll By Left 1,000</button>
+        <button onClick={handleToTop}>Scroll To Top</button>
+        <button onClick={handleToLeft}>Scroll To Left</button>
+      </div>
+      <div style={{ height: 200, width: 500 }}>
+        <BaseGrid apiRef={apiRef} />
+      </div>
+    </div>
+  )
+}
+
+const TabIndex = () => <BaseGrid tabIndex={0} />
+
+export const onScrollApiTabIndexGrids: RouteItem[] = [
+  { label: "On Scroll", path: "/grid-on-scroll", Component: OnScroll },
+  { label: "Api", path: "/grid-api", Component: Api },
+  { label: "Tab Index", path: "/grid-index", Component: TabIndex },
 ]

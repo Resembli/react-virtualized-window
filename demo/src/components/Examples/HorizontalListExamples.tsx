@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 import { ListHorizontal } from "@resembli/react-virtualized-window"
-import type { ListHorizontalProps } from "@resembli/react-virtualized-window"
+import type { ListHorizontalProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 import type { RouteItem } from "../../types"
@@ -192,4 +192,56 @@ const StyleHList = () => <BaseHList style={style} width="50%" height="50%" />
 export const stylingHLists: RouteItem[] = [
   { label: "Class Name H List", path: "/h-list-classname", Component: ClassNameHList },
   { label: "Style H List", path: "/h-list-style", Component: StyleHList },
+]
+
+const OnScroll = () => {
+  const [offset, setOffset] = useState(0)
+
+  return (
+    <div>
+      <div>
+        <h3>Offset: {offset}</h3>
+      </div>
+      <div style={{ height: 200, width: 500 }}>
+        <BaseHList onScroll={(e) => setOffset(e.currentTarget.scrollLeft)} />
+      </div>
+    </div>
+  )
+}
+
+const Api = () => {
+  const apiRef = useRef<VirtualWindowApi>()
+
+  const handleClick = () => {
+    if (!apiRef.current) return
+
+    apiRef.current.scrollBy({ left: 1000 })
+  }
+
+  const handleToTop = () => {
+    if (!apiRef.current) return
+
+    apiRef.current.scrollTo({ left: 0 })
+  }
+
+  return (
+    <div>
+      <div>
+        <h3>Api Controls</h3>
+        <button onClick={handleClick}>Scroll By 1,000</button>
+        <button onClick={handleToTop}>Scroll To Left</button>
+      </div>
+      <div style={{ height: 200, width: 500 }}>
+        <BaseHList apiRef={apiRef} />
+      </div>
+    </div>
+  )
+}
+
+const TabIndex = () => <BaseHList tabIndex={0} />
+
+export const onScrollApiTabIndexHLists: RouteItem[] = [
+  { label: "On Scroll", path: "/h-list-on-scroll", Component: OnScroll },
+  { label: "Api", path: "/h-list-api", Component: Api },
+  { label: "Tab Index", path: "/h-list-index", Component: TabIndex },
 ]

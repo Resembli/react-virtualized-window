@@ -4,6 +4,7 @@ import { BasicPage } from "./pages/Basic"
 import { CustomStylingPage } from "./pages/CustomStyling"
 import { GapPage } from "./pages/Gap"
 import { MultiplePage } from "./pages/Multiple"
+import { OnScrollApiTabIndexPage } from "./pages/OnScrollApiTabIndex"
 import { OverscanPage } from "./pages/Overscan"
 import { SizingPage } from "./pages/Sizing"
 import { css } from "./theme/theme"
@@ -46,6 +47,9 @@ export const App = () => {
       </NestedRoutes>
       <NestedRoutes base="/custom-styling">
         <CustomStylingPage />
+      </NestedRoutes>
+      <NestedRoutes base="/onscroll-api-tab-index">
+        <OnScrollApiTabIndexPage />
       </NestedRoutes>
     </div>
   )
