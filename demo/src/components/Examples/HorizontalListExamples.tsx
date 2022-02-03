@@ -34,14 +34,18 @@ interface BaseHListProps {
   overscan?: ListHorizontalProps<unknown>["overscan"]
   width?: ListHorizontalProps<unknown>["width"]
   height?: ListHorizontalProps<unknown>["height"]
+  className?: ListHorizontalProps<unknown>["className"]
+  style?: ListHorizontalProps<unknown>["style"]
 }
 
-function BaseHList({ cw, rtl, gap, overscan, width, height }: BaseHListProps) {
+function BaseHList({ cw, rtl, gap, className, style, overscan, width, height }: BaseHListProps) {
   return (
     <ListHorizontal
       data={data}
       defaultColumnWidth={50}
       columnWidths={cw}
+      className={className}
+      style={style}
       rtl={rtl}
       gap={gap}
       overscan={overscan}
@@ -185,4 +189,22 @@ export const sizingHLists: RouteItem[] = [
   { label: "Gap", path: "/list-h-sizing-gap", Component: SizingHListGap },
   { label: "Transitions", path: "/list-h-sizing-trans", Component: SizingHListTransitions },
   { label: "RTL", path: "/list-h-sizing-rtl", Component: SizingHListRTL },
+]
+
+const customStyle = css({
+  border: "20px solid blue",
+  margin: 20,
+})
+
+const style = {
+  border: "20px solid red",
+  margin: 20,
+}
+
+const ClassNameHList = () => <BaseHList className={customStyle()} width="50%" height="50%" />
+const StyleHList = () => <BaseHList style={style} width="50%" height="50%" />
+
+export const stylingHLists: RouteItem[] = [
+  { label: "Class Name H List", path: "/h-list-classname", Component: ClassNameHList },
+  { label: "Style H List", path: "/h-list-style", Component: StyleHList },
 ]

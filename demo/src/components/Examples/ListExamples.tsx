@@ -33,9 +33,11 @@ interface BaseListProps {
   width?: ListProps<unknown>["width"]
   height?: ListProps<unknown>["height"]
   overscan?: ListProps<unknown>["overscan"]
+  className?: ListProps<unknown>["className"]
+  style?: ListProps<unknown>["style"]
 }
 
-function BaseNList({ rh, rtl, gap, overscan, width, height }: BaseListProps) {
+function BaseNList({ rh, rtl, gap, overscan, className, style, width, height }: BaseListProps) {
   return (
     <List
       data={data}
@@ -43,6 +45,8 @@ function BaseNList({ rh, rtl, gap, overscan, width, height }: BaseListProps) {
       rowHeights={rh}
       rtl={rtl}
       gap={gap}
+      className={className}
+      style={style}
       width={width}
       height={height}
       overscan={overscan}
@@ -185,4 +189,22 @@ export const sizingLists: RouteItem[] = [
   { label: "Gap", path: "/list-sizing-gap", Component: SizingListGap },
   { label: "Transitions", path: "/list-sizing-trans", Component: SizingListTransitions },
   { label: "RTL", path: "/list-sizing-rtl", Component: SizingListRTL },
+]
+
+const customStyle = css({
+  border: "20px solid blue",
+  margin: 20,
+})
+
+const style = {
+  border: "20px solid red",
+  margin: 20,
+}
+
+const ClassNameList = () => <BaseNList className={customStyle()} width="50%" height="50%" />
+const StyleList = () => <BaseNList style={style} width="50%" height="50%" />
+
+export const stylingLists: RouteItem[] = [
+  { label: "Class Name List", path: "/list-classname", Component: ClassNameList },
+  { label: "Style List", path: "/list-style", Component: StyleList },
 ]

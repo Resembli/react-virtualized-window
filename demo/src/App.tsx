@@ -1,6 +1,7 @@
 import { Navbar } from "./components/Navbar"
 import { NestedRoutes } from "./components/NestedRoutes"
 import { BasicPage } from "./pages/Basic"
+import { CustomStylingPage } from "./pages/CustomStyling"
 import { GapPage } from "./pages/Gap"
 import { MultiplePage } from "./pages/Multiple"
 import { OverscanPage } from "./pages/Overscan"
@@ -17,7 +18,6 @@ const app = css({
 })
 
 export const App = () => {
-  // - Custom styling and class name
   // - Onscroll user event handler
   // - tab index handling
   // - api ref handling
@@ -43,6 +43,9 @@ export const App = () => {
       </NestedRoutes>
       <NestedRoutes base="/sizing">
         <SizingPage />
+      </NestedRoutes>
+      <NestedRoutes base="/custom-styling">
+        <CustomStylingPage />
       </NestedRoutes>
     </div>
   )
