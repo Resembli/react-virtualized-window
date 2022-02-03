@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 
 import type { GridProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
@@ -279,4 +279,68 @@ export const onScrollApiTabIndexGrids: RouteItem[] = [
   { label: "On Scroll", path: "/grid-on-scroll", Component: OnScroll },
   { label: "Api", path: "/grid-api", Component: Api },
   { label: "Tab Index", path: "/grid-index", Component: TabIndex },
+]
+
+function debounce(method: { (): void; _tId?: ReturnType<typeof setTimeout> }, delay: number) {
+  method._tId && clearTimeout(method._tId)
+  method._tId = setTimeout(function () {
+    method()
+  }, delay)
+}
+
+const createData = () =>
+  Array(50)
+    .fill(0)
+    .map(() => ({ cells: Array(20).fill(0) }))
+
+const InfiniteScrolling = () => {
+  const [data, setData] = useState(createData())
+
+  const updateData = useCallback(() => setData((prev) => [...prev, ...createData()]), [])
+  const updateWidths = useCallback(() => {
+    setData((prev) => {
+      const newData = prev.map((row) => {
+        const newCells = Array(row.cells.length + 20).fill(0)
+        return { cells: newCells }
+      })
+
+      return newData
+    })
+  }, [])
+
+  const handleScroll: GridProps<unknown>["onScroll"] = (e) => {
+    const totalSpace = e.currentTarget.scrollHeight - e.currentTarget.offsetHeight - 100
+    const offset = e.currentTarget.scrollTop
+
+    if (offset > totalSpace) {
+      debounce(updateData, 500)
+    }
+
+    const totalWidth = e.currentTarget.scrollWidth - e.currentTarget.offsetWidth - 100
+    const offsetLeft = e.currentTarget.scrollLeft
+
+    if (offsetLeft > totalWidth) {
+      debounce(updateWidths, 500)
+    }
+  }
+
+  return (
+    <div>
+      <div style={{ height: 500, width: 500 }}>
+        <Grid defaultColumnWidth={50} data={data} defaultRowHeight={50} onScroll={handleScroll}>
+          {(_, styles, { column, row }) => {
+            return (
+              <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+                {row},{column}
+              </div>
+            )
+          }}
+        </Grid>
+      </div>
+    </div>
+  )
+}
+
+export const infiniteScrollGrids: RouteItem[] = [
+  { label: "Grid Infinite Scroll", path: "/grid-infinite-scroll", Component: InfiniteScrolling },
 ]
