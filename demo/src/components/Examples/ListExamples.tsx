@@ -26,31 +26,16 @@ const itemClass = css({
   },
 })
 
-interface BaseListProps {
+type BaseListProps = Omit<
+  ListProps<unknown>,
+  "data" | "defaultRowHeight" | "rowHeights" | "children"
+> & {
   rh?: ListProps<unknown>["rowHeights"]
-  rtl?: boolean
-  gap?: ListProps<unknown>["gap"]
-  width?: ListProps<unknown>["width"]
-  height?: ListProps<unknown>["height"]
-  overscan?: ListProps<unknown>["overscan"]
-  className?: ListProps<unknown>["className"]
-  style?: ListProps<unknown>["style"]
 }
 
-function BaseNList({ rh, rtl, gap, overscan, className, style, width, height }: BaseListProps) {
+function BaseNList({ rh, ...otherProps }: BaseListProps) {
   return (
-    <List
-      data={data}
-      defaultRowHeight={50}
-      rowHeights={rh}
-      rtl={rtl}
-      gap={gap}
-      className={className}
-      style={style}
-      width={width}
-      height={height}
-      overscan={overscan}
-    >
+    <List data={data} defaultRowHeight={50} rowHeights={rh} {...otherProps}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (

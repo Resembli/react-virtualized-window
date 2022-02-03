@@ -27,31 +27,16 @@ const itemClass = css({
   },
 })
 
-interface BaseHListProps {
+type BaseHListProps = Omit<
+  ListHorizontalProps<unknown>,
+  "data" | "defaultColumnWidth" | "columnWidths" | "children"
+> & {
   cw?: ListHorizontalProps<unknown>["columnWidths"]
-  gap?: ListHorizontalProps<unknown>["gap"]
-  rtl?: boolean
-  overscan?: ListHorizontalProps<unknown>["overscan"]
-  width?: ListHorizontalProps<unknown>["width"]
-  height?: ListHorizontalProps<unknown>["height"]
-  className?: ListHorizontalProps<unknown>["className"]
-  style?: ListHorizontalProps<unknown>["style"]
 }
 
-function BaseHList({ cw, rtl, gap, className, style, overscan, width, height }: BaseHListProps) {
+function BaseHList({ cw, ...otherProps }: BaseHListProps) {
   return (
-    <ListHorizontal
-      data={data}
-      defaultColumnWidth={50}
-      columnWidths={cw}
-      className={className}
-      style={style}
-      rtl={rtl}
-      gap={gap}
-      overscan={overscan}
-      width={width}
-      height={height}
-    >
+    <ListHorizontal data={data} defaultColumnWidth={50} columnWidths={cw} {...otherProps}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (

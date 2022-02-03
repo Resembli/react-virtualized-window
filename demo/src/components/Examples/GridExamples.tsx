@@ -36,29 +36,15 @@ const itemClass = css({
   },
 })
 
-interface BaseGridProps {
+type BaseGridProps = Omit<
+  GridProps<unknown>,
+  "data" | "defaultColumnWidth" | "defaultRowHeight" | "columnWidths" | "rowHeights" | "children"
+> & {
   cw?: GridProps<unknown>["columnWidths"]
   rh?: GridProps<unknown>["rowHeights"]
-  gap?: GridProps<unknown>["gap"]
-  rtl?: boolean
-  height?: GridProps<unknown>["height"]
-  width?: GridProps<unknown>["width"]
-  overscan?: GridProps<unknown>["overscan"]
-  className?: GridProps<unknown>["className"]
-  style?: GridProps<unknown>["style"]
 }
 
-export function BaseGrid({
-  cw,
-  rh,
-  rtl,
-  gap,
-  height,
-  width,
-  overscan,
-  style,
-  className,
-}: BaseGridProps) {
+export function BaseGrid({ cw, rh, ...otherProps }: BaseGridProps) {
   return (
     <Grid
       data={data}
@@ -66,13 +52,7 @@ export function BaseGrid({
       defaultRowHeight={100}
       columnWidths={cw}
       rowHeights={rh}
-      overscan={overscan}
-      gap={gap}
-      className={className}
-      style={style}
-      rtl={rtl}
-      height={height}
-      width={width}
+      {...otherProps}
     >
       {([row, column], styles) => {
         return (

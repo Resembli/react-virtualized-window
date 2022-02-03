@@ -56,8 +56,7 @@ export function Navbar({ css }: NavbarProps) {
       <NavLink to="/sizing">Sizing</NavLink>
       <NavLink to="/multiple">Multiple</NavLink>
       <NavLink to="/custom-styling">Custom Styling</NavLink>
-      <NavLink to="/onscroll-cb">Onscroll Callbacks</NavLink>
-      <NavLink to="/tab-index">Tab Index Handling</NavLink>
+      <NavLink to="/onscroll-api-tab-index">Onscroll, Api, Tab Index</NavLink>
       <NavLink to="/infinite-scrolling" noBorder>
         Infinite Scrolling Handling
       </NavLink>
