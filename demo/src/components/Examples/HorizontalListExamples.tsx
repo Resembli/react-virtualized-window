@@ -294,3 +294,13 @@ export const infiniteScrollHLists: RouteItem[] = [
     Component: InfiniteScrolling,
   },
 ]
+
+const StickyDisabledHList = () => <BaseHList disableSticky />
+
+export const stickyDisabledHList: RouteItem[] = [
+  {
+    label: "Sticky Disabled",
+    path: "/h-list-sticky-disabled",
+    Component: StickyDisabledHList,
+  },
+]

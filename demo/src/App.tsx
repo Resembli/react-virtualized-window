@@ -8,6 +8,7 @@ import { MultiplePage } from "./pages/Multiple"
 import { OnScrollApiTabIndexPage } from "./pages/OnScrollApiTabIndex"
 import { OverscanPage } from "./pages/Overscan"
 import { SizingPage } from "./pages/Sizing"
+import { StickyDisablePage } from "./pages/StickyDisabled"
 import { css } from "./theme/theme"
 
 const app = css({
@@ -18,6 +19,11 @@ const app = css({
   backgroundColor: "$appBg",
   color: "$textPrimary",
 })
+
+// TODO:
+//   - Add percentage item dimensions
+//   - Add disable sticky examples
+//   - Add percentage examples
 
 export const App = () => {
   return (
@@ -43,6 +49,9 @@ export const App = () => {
       </NestedRoutes>
       <NestedRoutes base="/onscroll-api-tab-index">
         <OnScrollApiTabIndexPage />
+      </NestedRoutes>
+      <NestedRoutes base="/sticky-disabled">
+        <StickyDisablePage />
       </NestedRoutes>
       <NestedRoutes base="/infinite-scrolling">
         <InfiniteScrollPage />
