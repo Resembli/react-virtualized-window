@@ -32,11 +32,17 @@ type BaseHListProps = Omit<
   "data" | "defaultColumnWidth" | "columnWidths" | "children"
 > & {
   cw?: ListHorizontalProps<unknown>["columnWidths"]
+  defaultColumnWidth?: ListHorizontalProps<unknown>["defaultColumnWidth"]
 }
 
-function BaseHList({ cw, ...otherProps }: BaseHListProps) {
+function BaseHList({ cw, defaultColumnWidth = 50, ...otherProps }: BaseHListProps) {
   return (
-    <ListHorizontal data={data} defaultColumnWidth={50} columnWidths={cw} {...otherProps}>
+    <ListHorizontal
+      data={data}
+      defaultColumnWidth={defaultColumnWidth}
+      columnWidths={cw}
+      {...otherProps}
+    >
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -302,5 +308,31 @@ export const stickyDisabledHList: RouteItem[] = [
     label: "Sticky Disabled",
     path: "/h-list-sticky-disabled",
     Component: StickyDisabledHList,
+  },
+]
+
+const widthsPercentage = Array(2000)
+  .fill(0)
+  .map((_, i) => (["10%", "20%", "5%"] as const)[i % 3])
+
+const ListPercentage = () => <BaseHList defaultColumnWidth="10%" />
+const ListPercentageGap = () => <BaseHList defaultColumnWidth="10%" gap={10} />
+const ListPercentageVariable = () => <BaseHList defaultColumnWidth="10%" cw={widthsPercentage} />
+const ListPercentageVariableGap = () => (
+  <BaseHList defaultColumnWidth="10%" cw={widthsPercentage} gap={25} />
+)
+
+export const percentageHList: RouteItem[] = [
+  { label: "Percentage", path: "/h-list-percentage", Component: ListPercentage },
+  { label: "Percentage Gap", path: "/h-list-percentage-gap", Component: ListPercentageGap },
+  {
+    label: "Percentage Variable",
+    path: "/h-list-percentage-variable",
+    Component: ListPercentageVariable,
+  },
+  {
+    label: "Percentage Variable Gap",
+    path: "/h-list-percentage-variable-gap",
+    Component: ListPercentageVariableGap,
   },
 ]

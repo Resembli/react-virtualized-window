@@ -31,11 +31,12 @@ type BaseListProps = Omit<
   "data" | "defaultRowHeight" | "rowHeights" | "children"
 > & {
   rh?: ListProps<unknown>["rowHeights"]
+  defaultRowHeight?: ListProps<unknown>["defaultRowHeight"]
 }
 
-function BaseNList({ rh, ...otherProps }: BaseListProps) {
+function BaseNList({ rh, defaultRowHeight = 50, ...otherProps }: BaseListProps) {
   return (
-    <List data={data} defaultRowHeight={50} rowHeights={rh} {...otherProps}>
+    <List data={data} defaultRowHeight={defaultRowHeight} rowHeights={rh} {...otherProps}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -296,5 +297,31 @@ export const stickyDisabledList: RouteItem[] = [
     label: "Sticky Disabled",
     path: "/list-sticky-disabled",
     Component: StickyDisabledList,
+  },
+]
+
+const heightsPercentage = Array(2000)
+  .fill(0)
+  .map((_, i) => (["10%", "20%", "5%"] as const)[i % 3])
+
+const ListPercentage = () => <BaseNList defaultRowHeight="10%" />
+const ListPercentageGap = () => <BaseNList defaultRowHeight="10%" gap={10} />
+const ListPercentageVariable = () => <BaseNList defaultRowHeight="10%" rh={heightsPercentage} />
+const ListPercentageVariableGap = () => (
+  <BaseNList defaultRowHeight="10%" rh={heightsPercentage} gap={25} />
+)
+
+export const percentageList: RouteItem[] = [
+  { label: "Percentage", path: "/list-percentage", Component: ListPercentage },
+  { label: "Percentage Gap", path: "/list-percentage-gap", Component: ListPercentageGap },
+  {
+    label: "Percentage Variable",
+    path: "/list-percentage-variable",
+    Component: ListPercentageVariable,
+  },
+  {
+    label: "Percentage Variable Gap",
+    path: "/list-percentage-variable-gap",
+    Component: ListPercentageVariableGap,
   },
 ]

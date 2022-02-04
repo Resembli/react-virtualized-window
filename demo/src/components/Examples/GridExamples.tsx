@@ -42,14 +42,22 @@ type BaseGridProps = Omit<
 > & {
   cw?: GridProps<unknown>["columnWidths"]
   rh?: GridProps<unknown>["rowHeights"]
+  defaultColumnWidth?: GridProps<unknown>["defaultColumnWidth"]
+  defaultRowHeight?: GridProps<unknown>["defaultRowHeight"]
 }
 
-export function BaseGrid({ cw, rh, ...otherProps }: BaseGridProps) {
+export function BaseGrid({
+  cw,
+  rh,
+  defaultColumnWidth = 100,
+  defaultRowHeight = 100,
+  ...otherProps
+}: BaseGridProps) {
   return (
     <Grid
       data={data}
-      defaultColumnWidth={100}
-      defaultRowHeight={100}
+      defaultColumnWidth={defaultColumnWidth}
+      defaultRowHeight={defaultRowHeight}
       columnWidths={cw}
       rowHeights={rh}
       {...otherProps}
@@ -349,4 +357,36 @@ const StickyDisabledGrid = () => <BaseGrid disableSticky />
 
 export const stickyDisabledGrids: RouteItem[] = [
   { label: "Grid Sticky Disabled", path: "/grid-sticky-disabled", Component: StickyDisabledGrid },
+]
+
+const heightsPercentage = Array(1000)
+  .fill(0)
+  .map((_, i) => (["10%", "20%", "10%", "5%", "12%"] as const)[i % 5])
+
+const widthsPercentage = Array(200)
+  .fill(0)
+  .map((_, i) => (["20%", "10%", "5%", "2%", "10%"] as const)[i % 5])
+
+const GridPercentage = () => <BaseGrid defaultColumnWidth="10%" defaultRowHeight="10%" />
+const GridPercentageGap = () => (
+  <BaseGrid defaultColumnWidth="10%" defaultRowHeight="10%" gap={20} />
+)
+const GridPercentageVariable = () => <BaseGrid cw={widthsPercentage} rh={heightsPercentage} />
+const GridPercentageVariableGap = () => (
+  <BaseGrid cw={widthsPercentage} rh={heightsPercentage} gap={20} />
+)
+
+export const percentageSizeGrids: RouteItem[] = [
+  { label: "Percentage", path: "/grid-percentage", Component: GridPercentage },
+  { label: "Grid Percentage Gap", path: "/grid-percentage-gap", Component: GridPercentageGap },
+  {
+    label: "Percentage Variable",
+    path: "/grid-percentage-variable",
+    Component: GridPercentageVariable,
+  },
+  {
+    label: "Percentage Variable Gap",
+    path: "/grid-percentage-variable-gap",
+    Component: GridPercentageVariableGap,
+  },
 ]
