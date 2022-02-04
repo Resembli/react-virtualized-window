@@ -6,7 +6,7 @@ interface UseDataHeightsArgs {
   count: number
   defaultDimension: NumberOrPercent
   windowDim: number
-  dimensions?: number[]
+  dimensions?: NumberOrPercent[]
 }
 
 function percentToNumber(percent: string) {

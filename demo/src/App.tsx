@@ -24,8 +24,6 @@ const app = css({
 })
 
 // TODO:
-//   - Add percentage item dimensions
-//   - Add disable sticky examples
 //   - Add percentage examples
 
 export const App = () => {

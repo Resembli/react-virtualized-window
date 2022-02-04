@@ -25,7 +25,7 @@ export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]
   children: <B extends T>(itemProps: B, style: CSSProperties, rowMeta: RowMeta) => JSX.Element
   defaultRowHeight: NumberOrPercent
-  rowHeights?: number[]
+  rowHeights?: NumberOrPercent[]
 }
 
 export function List<T>({

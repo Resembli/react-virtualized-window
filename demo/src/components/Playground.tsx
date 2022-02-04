@@ -1,4 +1,4 @@
-import { List } from "@resembli/react-virtualized-window"
+import { Grid } from "@resembli/react-virtualized-window"
 
 import { css } from "../theme/theme"
 
@@ -10,6 +10,24 @@ const playgroundCss = css({
   boxSizing: "border-box",
   border: "1px solid white",
 })
+
+const data = Array(1000)
+  .fill(0)
+  .map((_, i) => {
+    return {
+      cells: Array(200)
+        .fill(0)
+        .map((_, j) => [i, j]),
+    }
+  })
+
+const heights = Array(1000)
+  .fill(0)
+  .map((_, i) => ([40, 30, 100, "20%", "40%"] as const)[i % 5])
+
+const widths = Array(200)
+  .fill(0)
+  .map((_, i) => (["5%", "10%", "20%", "12%", "11%"] as const)[i % 5])
 
 const itemClass = css({
   display: "flex",
@@ -23,23 +41,24 @@ const itemClass = css({
   },
 })
 
-const data = Array(2000)
-  .fill(0)
-  .map((_, i) => i)
-
 export function Playground() {
   return (
     <div className={playgroundCss()}>
-      <List data={data} defaultRowHeight={"12%"}>
-        {(props, style) => {
-          const clx = itemClass({ odd: props % 2 === 1 })
+      <Grid
+        data={data}
+        defaultColumnWidth={"10%"}
+        defaultRowHeight={"10%"}
+        columnWidths={widths}
+        rowHeights={heights}
+      >
+        {([row, column], styles) => {
           return (
-            <div style={style} className={clx}>
-              {props + 1}
+            <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+              {row},{column}
             </div>
           )
         }}
-      </List>
+      </Grid>
     </div>
   )
 }

@@ -11,7 +11,7 @@ import {
   getVerticalGap,
   getVerticalMarginStyling,
 } from "../itemGapUtilities"
-import type { VirtualWindowBaseProps } from "../types"
+import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
 import { useInnerDimension } from "../useInnerDimensions"
@@ -32,10 +32,10 @@ interface CellMeta {
 export interface GridProps<T> extends VirtualWindowBaseProps {
   data: GridDataRow<T>[]
   children: <B extends T>(itemProps: B, style: CSSProperties, cellMeta: CellMeta) => JSX.Element
-  defaultRowHeight: number
-  rowHeights?: number[]
-  defaultColumnWidth: number
-  columnWidths?: number[]
+  defaultRowHeight: NumberOrPercent
+  rowHeights?: NumberOrPercent[]
+  defaultColumnWidth: NumberOrPercent
+  columnWidths?: NumberOrPercent[]
 }
 
 export function Grid<T>({
