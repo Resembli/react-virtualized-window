@@ -3,21 +3,21 @@ import { useMemo } from "react"
 import { memo } from "react"
 import { useRef } from "react"
 
-import { SizingDiv } from "./SizingDiv"
-import { StickyDiv } from "./StickyDiv"
+import { SizingDiv } from "../SizingDiv"
+import { StickyDiv } from "../StickyDiv"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
   getVerticalGap,
   getVerticalMarginStyling,
-} from "./itemGapUtilities"
-import type { VirtualWindowBaseProps } from "./types"
-import { useDataDimension } from "./useDataDimension"
-import { useIndicesForDimensions } from "./useDimensionIndices"
-import { useInnerDimension } from "./useInnerDimensions"
-import { useWindowApi } from "./useWindowApi"
-import { useWindowDimensions } from "./useWindowDimensions"
-import { useWindowScroll } from "./useWindowScroll"
+} from "../itemGapUtilities"
+import type { VirtualWindowBaseProps } from "../types"
+import { useDataDimension } from "../useDataDimension"
+import { useIndicesForDimensions } from "../useDimensionIndices"
+import { useInnerDimension } from "../useInnerDimensions"
+import { useWindowApi } from "../useWindowApi"
+import { useWindowDimensions } from "../useWindowDimensions"
+import { useWindowScroll } from "../useWindowScroll"
 
 export interface GridDataRow<T> {
   cells: T[]
