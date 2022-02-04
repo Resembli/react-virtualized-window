@@ -2,20 +2,20 @@ import type { CSSProperties } from "react"
 import { memo, useMemo } from "react"
 import { useRef } from "react"
 
-import { SizingDiv } from "./SizingDiv"
-import { StickyDiv } from "./StickyDiv"
+import { SizingDiv } from "../SizingDiv"
+import { StickyDiv } from "../StickyDiv"
 import {
   getHorizontalMarginStyling,
   getVerticalGap,
   getVerticalMarginStyling,
-} from "./itemGapUtilities"
-import type { VirtualWindowBaseProps } from "./types"
-import { useDataDimension } from "./useDataDimension"
-import { useIndicesForDimensions } from "./useDimensionIndices"
-import { useInnerDimension } from "./useInnerDimensions"
-import { useWindowApi } from "./useWindowApi"
-import { useWindowDimensions } from "./useWindowDimensions"
-import { useWindowScroll } from "./useWindowScroll"
+} from "../itemGapUtilities"
+import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
+import { useDataDimension } from "../useDataDimension"
+import { useIndicesForDimensions } from "../useDimensionIndices"
+import { useInnerDimension } from "../useInnerDimensions"
+import { useWindowApi } from "../useWindowApi"
+import { useWindowDimensions } from "../useWindowDimensions"
+import { useWindowScroll } from "../useWindowScroll"
 
 interface RowMeta {
   row: number
@@ -24,8 +24,8 @@ interface RowMeta {
 export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]
   children: <B extends T>(itemProps: B, style: CSSProperties, rowMeta: RowMeta) => JSX.Element
-  defaultRowHeight: number
-  rowHeights?: number[]
+  defaultRowHeight: NumberOrPercent
+  rowHeights?: NumberOrPercent[]
 }
 
 export function List<T>({
@@ -57,9 +57,12 @@ export function List<T>({
 
   const [offset, , onScroll, isScrolling] = useWindowScroll({ userOnScroll, rtl: rtl ?? false })
 
+  const [width, height] = useWindowDimensions(windowRef)
+
   const dataHeights = useDataDimension({
     count: data.length,
     defaultDimension: defaultRowHeight,
+    windowDim: height,
     dimensions: rowHeights,
   })
 
@@ -69,8 +72,6 @@ export function List<T>({
     dataDimensions: dataHeights,
     gapBetweenItems,
   })
-
-  const [width, height] = useWindowDimensions(windowRef)
 
   const [start, end, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,

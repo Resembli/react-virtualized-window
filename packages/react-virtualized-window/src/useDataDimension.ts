@@ -1,20 +1,42 @@
 import { useMemo } from "react"
 
+import type { NumberOrPercent } from "./types"
+
 interface UseDataHeightsArgs {
   count: number
-  defaultDimension: number
-  dimensions?: number[]
+  defaultDimension: NumberOrPercent
+  windowDim: number
+  dimensions?: NumberOrPercent[]
 }
 
-export const useDataDimension = ({ count, defaultDimension, dimensions }: UseDataHeightsArgs) => {
+function percentToNumber(percent: string) {
+  return parseFloat(percent) / 100.0
+}
+
+export const useDataDimension = ({
+  count,
+  defaultDimension,
+  windowDim,
+  dimensions,
+}: UseDataHeightsArgs) => {
   const dataDimensions = useMemo(() => {
     const draftDimensions = []
 
+    const dimDefault =
+      typeof defaultDimension === "string"
+        ? percentToNumber(defaultDimension) * windowDim
+        : defaultDimension
+
     for (let i = 0; i < count; i++) {
-      draftDimensions.push((dimensions && dimensions[i]) ?? defaultDimension)
+      const dimToUse = (dimensions && dimensions[i]) || dimDefault
+
+      const dimAsNum =
+        typeof dimToUse === "string" ? percentToNumber(dimToUse) * windowDim : dimToUse
+
+      draftDimensions.push(dimAsNum)
     }
     return draftDimensions
-  }, [count, defaultDimension, dimensions])
+  }, [count, defaultDimension, dimensions, windowDim])
 
   return dataDimensions
 }
