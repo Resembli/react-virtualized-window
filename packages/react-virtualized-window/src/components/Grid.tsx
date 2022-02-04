@@ -75,12 +75,14 @@ export function Grid<T>({
   const dataHeights = useDataDimension({
     count: data.length,
     defaultDimension: defaultRowHeight,
+    windowDim: height,
     dimensions: rowHeights,
   })
 
   const dataWidths = useDataDimension({
     count: data[0].cells.length ?? 0,
     defaultDimension: defaultColumnWidth,
+    windowDim: width,
     dimensions: columnWidths,
   })
 

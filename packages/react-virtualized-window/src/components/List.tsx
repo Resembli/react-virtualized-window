@@ -9,7 +9,7 @@ import {
   getVerticalGap,
   getVerticalMarginStyling,
 } from "../itemGapUtilities"
-import type { VirtualWindowBaseProps } from "../types"
+import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
 import { useInnerDimension } from "../useInnerDimensions"
@@ -24,7 +24,7 @@ interface RowMeta {
 export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]
   children: <B extends T>(itemProps: B, style: CSSProperties, rowMeta: RowMeta) => JSX.Element
-  defaultRowHeight: number
+  defaultRowHeight: NumberOrPercent
   rowHeights?: number[]
 }
 
@@ -62,6 +62,7 @@ export function List<T>({
   const dataHeights = useDataDimension({
     count: data.length,
     defaultDimension: defaultRowHeight,
+    windowDim: height,
     dimensions: rowHeights,
   })
 

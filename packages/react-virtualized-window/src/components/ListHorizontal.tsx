@@ -64,6 +64,7 @@ export function ListHorizontal<T>({
   const dataWidths = useDataDimension({
     count: data.length,
     defaultDimension: defaultColumnWidth,
+    windowDim: width,
     dimensions: columnWidths,
   })
 

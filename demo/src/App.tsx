@@ -1,5 +1,8 @@
+import { Route } from "wouter"
+
 import { Navbar } from "./components/Navbar"
 import { NestedRoutes } from "./components/NestedRoutes"
+import { Playground } from "./components/Playground"
 import { BasicPage } from "./pages/Basic"
 import { CustomStylingPage } from "./pages/CustomStyling"
 import { GapPage } from "./pages/Gap"
@@ -29,6 +32,9 @@ export const App = () => {
   return (
     <div className={app()}>
       <Navbar />
+      <Route path="/">
+        <Playground />
+      </Route>
       <NestedRoutes base="/basic">
         <BasicPage />
       </NestedRoutes>
