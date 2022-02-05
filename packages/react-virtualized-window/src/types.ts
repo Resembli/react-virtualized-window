@@ -22,4 +22,6 @@ export interface VirtualWindowBaseProps {
 
   width?: CSSProperties["width"]
   height?: CSSProperties["height"]
+
+  "data-testid"?: string
 }

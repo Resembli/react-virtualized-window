@@ -50,7 +50,7 @@ function BaseNList({ rh, defaultRowHeight = 50, ...otherProps }: BaseListProps) 
   )
 }
 
-const NList = () => <BaseNList />
+const NList = () => <BaseNList data-testid="basic-list" />
 const ListRTL = () => <BaseNList rtl />
 const ListGap = () => <BaseNList gap={20} />
 const ListGapRTL = () => <BaseNList gap={20} rtl />

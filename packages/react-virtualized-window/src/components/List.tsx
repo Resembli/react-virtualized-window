@@ -41,6 +41,8 @@ export function List<T>({
   overscan,
   apiRef,
 
+  "data-testid": testId,
+
   className,
   style,
   gap,
@@ -91,7 +93,7 @@ export function List<T>({
   }, [data, end, start])
 
   return (
-    <SizingDiv width={sizingWidth} height={sizingHeight}>
+    <SizingDiv width={sizingWidth} height={sizingHeight} testId={testId}>
       <div
         tabIndex={tabIndex}
         ref={windowRef}

@@ -4,9 +4,15 @@ export function SizingDiv({
   children,
   width,
   height,
+  testId,
 }: PropsWithChildren<{
   height: CSSProperties["height"]
   width: CSSProperties["width"]
+  testId?: string
 }>) {
-  return <div style={{ width: width ?? "100%", height: height ?? "100%" }}>{children}</div>
+  return (
+    <div data-testid={testId} style={{ width: width ?? "100%", height: height ?? "100%" }}>
+      {children}
+    </div>
+  )
 }
