@@ -5,11 +5,9 @@ import { css } from "../../theme/theme"
 const data = Array(1000)
   .fill(0)
   .map((_, i) => {
-    return {
-      cells: Array(200)
-        .fill(0)
-        .map((_, j) => [i, j]),
-    }
+    return Array(200)
+      .fill(0)
+      .map((_, j) => [i, j])
   })
 
 const heights = Array(1000)

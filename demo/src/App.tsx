@@ -1,5 +1,3 @@
-import { Route } from "wouter"
-
 import { Navbar } from "./components/Navbar"
 import { NestedRoutes } from "./components/NestedRoutes"
 import { BasicPage } from "./pages/Basic"

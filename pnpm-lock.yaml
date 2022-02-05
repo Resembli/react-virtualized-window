@@ -99,6 +99,9 @@ importers:
   packages/react-virtualized-window:
     specifiers: {}
 
+  packages/utils:
+    specifiers: {}
+
 packages:
 
   /@algolia/autocomplete-core/1.5.0:
