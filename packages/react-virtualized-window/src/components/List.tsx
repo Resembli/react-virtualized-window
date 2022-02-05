@@ -13,6 +13,7 @@ import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
 import { useInnerDimension } from "../useInnerDimensions"
+import { useMaxOffset } from "../useMaxOffset"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
@@ -54,9 +55,6 @@ export function List<T>({
   const windowRef = useRef<HTMLDivElement>(null)
 
   useWindowApi(windowRef, apiRef)
-
-  const [offset, , onScroll, isScrolling] = useWindowScroll({ userOnScroll, rtl: rtl ?? false })
-
   const [width, height] = useWindowDimensions(windowRef)
 
   const dataHeights = useDataDimension({
@@ -72,6 +70,13 @@ export function List<T>({
     dataDimensions: dataHeights,
     gapBetweenItems,
   })
+
+  const [scrollOffset, , onScroll, isScrolling] = useWindowScroll({
+    userOnScroll,
+    rtl: rtl ?? false,
+  })
+
+  const offset = useMaxOffset(scrollOffset, innerHeight - height)
 
   const [start, end, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,

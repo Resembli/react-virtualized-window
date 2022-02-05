@@ -1,11 +1,5 @@
-import type { UIEventHandler } from "react"
-import { useCallback, useState } from "react"
-import { useEffect, useRef } from "react"
-
-import type { VirtualWindowApi } from "@resembli/react-virtualized-window"
 import { List } from "@resembli/react-virtualized-window"
 
-import { debounce } from "../../debouce"
 import { css } from "../../theme/theme"
 
 const itemClass = css({
@@ -20,35 +14,13 @@ const itemClass = css({
   },
 })
 
-const createData = () =>
-  Array(1000)
-    .fill(0)
-    .map(() => performance.now().toFixed(2))
+const data = Array(2000)
+  .fill(0)
+  .map((_, i) => i)
 
 export function ListPlayground() {
-  const apiRef = useRef<VirtualWindowApi>()
-
-  useEffect(() => {
-    apiRef.current?.scrollTo({ top: 5000 })
-  }, [])
-
-  const [data, setData] = useState(createData())
-
-  const updateData = useCallback(() => {
-    setData((prev) => [...createData(), ...prev])
-    apiRef.current?.scrollTo({ top: 5000 })
-  }, [])
-
-  const handleOnScroll: UIEventHandler<HTMLElement> = (e) => {
-    const offset = e.currentTarget.scrollTop
-
-    if (offset < 1000) {
-      debounce(updateData, 10_000)
-    }
-  }
-
   return (
-    <List data={data} defaultRowHeight={50} apiRef={apiRef} onScroll={handleOnScroll}>
+    <List data={data} defaultRowHeight={50}>
       {(props, style, { row }) => {
         const clx = itemClass({ odd: row % 2 === 1 })
         return (

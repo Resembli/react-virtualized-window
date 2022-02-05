@@ -23,7 +23,6 @@ const app = css({
 })
 
 // TODO: Add playwright testing
-// TODO: Add scroll offset maximum values
 
 export const App = () => {
   return (

@@ -15,6 +15,7 @@ import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
 import { useInnerDimension } from "../useInnerDimensions"
+import { useMaxOffset } from "../useMaxOffset"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
@@ -59,7 +60,7 @@ export function Grid<T>({
 }: GridProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
 
-  const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll({
+  const [scrollTopOffset, scrollLeftOffset, onScroll, isScrolling] = useWindowScroll({
     userOnScroll,
     rtl: rtl ?? false,
   })
@@ -94,6 +95,9 @@ export function Grid<T>({
     gapBetweenItems: horizontalGap,
   })
 
+  const topOffset = useMaxOffset(scrollTopOffset, innerHeight - height)
+  const leftOffset = useMaxOffset(scrollLeftOffset, innerWidth - width)
+
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     offset: topOffset,
@@ -111,7 +115,7 @@ export function Grid<T>({
   })
 
   const stickyWidth =
-    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGap) +
+    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGap, 0) +
     runningWidth +
     horizontalGap * (rtl ? 1 : 2)
 

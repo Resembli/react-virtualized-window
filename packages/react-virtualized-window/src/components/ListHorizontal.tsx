@@ -13,6 +13,7 @@ import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
 import { useInnerDimension } from "../useInnerDimensions"
+import { useMaxOffset } from "../useMaxOffset"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
@@ -55,10 +56,6 @@ export function ListHorizontal<T>({
 
   useWindowApi(windowRef, apiRef)
 
-  const [, offset, onScroll, isScrolling] = useWindowScroll({
-    userOnScroll,
-    rtl: rtl ?? false,
-  })
   const [width] = useWindowDimensions(windowRef)
 
   const dataWidths = useDataDimension({
@@ -74,6 +71,13 @@ export function ListHorizontal<T>({
     gapBetweenItems,
   })
 
+  const [, scrollOffset, onScroll, isScrolling] = useWindowScroll({
+    userOnScroll,
+    rtl: rtl ?? false,
+  })
+
+  const offset = useMaxOffset(scrollOffset, innerWidth - width)
+
   const [start, end, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset,
@@ -83,7 +87,7 @@ export function ListHorizontal<T>({
   })
 
   const stickyWidth =
-    dataWidths.slice(start, end + 1).reduce((a, b) => a + b + gapBetweenItems) +
+    dataWidths.slice(start, end + 1).reduce((a, b) => a + b + gapBetweenItems, 0) +
     runningWidth +
     gapBetweenItems
 
