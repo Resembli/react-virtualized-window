@@ -6,9 +6,9 @@ const data = Array(2000)
   .fill(0)
   .map((_, i) => i)
 
-const widths = Array(2000)
-  .fill(0)
-  .map((_, i) => [40, 30, 100, 120, 50][i % 5])
+// const widths = Array(2000)
+//   .fill(0)
+//   .map((_, i) => [40, 30, 100, 120, 50][i % 5])
 
 const itemClass = css({
   display: "flex",
@@ -24,7 +24,7 @@ const itemClass = css({
 
 export function HListPlayground() {
   return (
-    <ListHorizontal data={data} defaultColumnWidth={50} columnWidths={widths}>
+    <ListHorizontal data={data} defaultColumnWidth={50}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
