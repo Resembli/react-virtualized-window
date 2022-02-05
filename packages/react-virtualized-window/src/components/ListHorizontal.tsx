@@ -44,6 +44,8 @@ export function ListHorizontal<T>({
   style,
   gap,
 
+  "data-testid": testId,
+
   rtl,
 
   width: sizingWidth,
@@ -98,7 +100,7 @@ export function ListHorizontal<T>({
   const innerWindowHeight = innerWindowRef.current?.clientHeight
 
   return (
-    <SizingDiv width={sizingWidth} height={sizingHeight}>
+    <SizingDiv width={sizingWidth} height={sizingHeight} testId={testId}>
       <div
         ref={windowRef}
         onScroll={onScroll}

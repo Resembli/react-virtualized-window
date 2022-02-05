@@ -46,6 +46,7 @@ export function Grid<T>({
   overscan,
   apiRef,
   disableSticky,
+  "data-testid": testId,
 
   className,
   style,
@@ -122,7 +123,7 @@ export function Grid<T>({
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 
   return (
-    <SizingDiv width={sizingWidth} height={sizingHeight}>
+    <SizingDiv width={sizingWidth} height={sizingHeight} testId={testId}>
       <div
         ref={windowRef}
         className={className}

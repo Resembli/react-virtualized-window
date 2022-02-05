@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vite build && playwright test",
+    "test:debug": "PWDEBUG=1 playwright test --project=chrome"
   },
   "dependencies": {
     "@radix-ui/colors": "^0.1.8",
@@ -17,6 +19,7 @@
     "wouter": "^2.8.0-alpha.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.18.1",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
     "@vitejs/plugin-react": "^1.0.7",
