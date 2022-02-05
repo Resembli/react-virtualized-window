@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from "react"
 import type { GridProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
 
+import { debounce } from "../../debouce"
 import { css } from "../../theme/theme"
 import type { RouteItem } from "../../types"
 
@@ -286,13 +287,6 @@ export const onScrollApiTabIndexGrids: RouteItem[] = [
   { label: "Api", path: "/grid-api", Component: Api },
   { label: "Tab Index", path: "/grid-index", Component: TabIndex },
 ]
-
-function debounce(method: { (): void; _tId?: ReturnType<typeof setTimeout> }, delay: number) {
-  method._tId && clearTimeout(method._tId)
-  method._tId = setTimeout(function () {
-    method()
-  }, delay)
-}
 
 const createData = () =>
   Array(50)

@@ -22,8 +22,6 @@ const app = css({
   color: "$textPrimary",
 })
 
-// TODO: Improve Grid Cell props
-// TODO: Add infinite scrolling both ways
 // TODO: Add playwright testing
 // TODO: Add scroll offset maximum values
 

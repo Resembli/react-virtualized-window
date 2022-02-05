@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from "react"
 import { List } from "@resembli/react-virtualized-window"
 import type { ListProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 
+import { debounce } from "../../debouce"
 import { css } from "../../theme/theme"
 import type { RouteItem } from "../../types"
 
@@ -246,13 +247,6 @@ export const onScrollApiTabIndexLists: RouteItem[] = [
   { label: "Api", path: "/list-api", Component: Api },
   { label: "Tab Index", path: "/list-index", Component: TabIndex },
 ]
-
-function debounce(method: { (): void; _tId?: ReturnType<typeof setTimeout> }, delay: number) {
-  method._tId && clearTimeout(method._tId)
-  method._tId = setTimeout(function () {
-    method()
-  }, delay)
-}
 
 const InfiniteScrolling = () => {
   const [data, setData] = useState(Array(50).fill(0))
