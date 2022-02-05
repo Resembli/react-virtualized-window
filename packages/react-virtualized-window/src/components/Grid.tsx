@@ -19,18 +19,13 @@ import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 
-export interface GridDataRow<T> {
-  cells: T[]
-  key?: string | number
-}
-
 interface CellMeta {
   column: number
   row: number
 }
 
 export interface GridProps<T> extends VirtualWindowBaseProps {
-  data: GridDataRow<T>[]
+  data: T[][]
   children: <B extends T>(itemProps: B, style: CSSProperties, cellMeta: CellMeta) => JSX.Element
   defaultRowHeight: NumberOrPercent
   rowHeights?: NumberOrPercent[]
@@ -80,7 +75,7 @@ export function Grid<T>({
   })
 
   const dataWidths = useDataDimension({
-    count: data[0].cells.length ?? 0,
+    count: data[0].length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: width,
     dimensions: columnWidths,
@@ -157,16 +152,14 @@ export function Grid<T>({
               <div />
               <div>
                 {data.slice(vertStart, vertEnd).map((row, i) => {
-                  const rowKey = row.key ?? i + vertStart
+                  const rowKey = i + vertStart
                   const itemHeight = dataHeights[vertStart + i]
 
-                  const rowChildren = row.cells.slice(horiStart, horiEnd).map((cell, j) => {
+                  const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
                     const cellKey = horiStart + j
                     const itemWidth = dataWidths[horiStart + j]
 
-                    const isLastItem = rtl
-                      ? horiStart + j === 0
-                      : horiStart + j === row.cells.length - 1
+                    const isLastItem = rtl ? horiStart + j === 0 : horiStart + j === row.length - 1
 
                     return (
                       <RenderItem

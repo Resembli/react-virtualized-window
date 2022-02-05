@@ -9,11 +9,9 @@ import type { RouteItem } from "../../types"
 const data = Array(1000)
   .fill(0)
   .map((_, i) => {
-    return {
-      cells: Array(200)
-        .fill(0)
-        .map((_, j) => [i, j]),
-    }
+    return Array(200)
+      .fill(0)
+      .map((_, j) => [i, j])
   })
 
 const heights = Array(1000)
@@ -299,7 +297,7 @@ function debounce(method: { (): void; _tId?: ReturnType<typeof setTimeout> }, de
 const createData = () =>
   Array(50)
     .fill(0)
-    .map(() => ({ cells: Array(20).fill(0) }))
+    .map(() => Array(20).fill(0))
 
 const InfiniteScrolling = () => {
   const [data, setData] = useState(createData())
@@ -308,8 +306,8 @@ const InfiniteScrolling = () => {
   const updateWidths = useCallback(() => {
     setData((prev) => {
       const newData = prev.map((row) => {
-        const newCells = Array(row.cells.length + 20).fill(0)
-        return { cells: newCells }
+        const newCells = Array(row.length + 20).fill(0)
+        return newCells
       })
 
       return newData
