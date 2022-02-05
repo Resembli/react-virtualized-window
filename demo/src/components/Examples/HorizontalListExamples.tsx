@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from "react"
 import { ListHorizontal } from "@resembli/react-virtualized-window"
 import type { ListHorizontalProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 
+import { debounce } from "../../debouce"
 import { css } from "../../theme/theme"
 import type { RouteItem } from "../../types"
 
@@ -252,13 +253,6 @@ export const onScrollApiTabIndexHLists: RouteItem[] = [
   { label: "Tab Index", path: "/h-list-index", Component: TabIndex },
 ]
 
-function debounce(method: { (): void; _tId?: ReturnType<typeof setTimeout> }, delay: number) {
-  method._tId && clearTimeout(method._tId)
-  method._tId = setTimeout(function () {
-    method()
-  }, delay)
-}
-
 const InfiniteScrolling = () => {
   const [data, setData] = useState(Array(10).fill(0))
 
@@ -272,8 +266,6 @@ const InfiniteScrolling = () => {
       debounce(updateData, 500)
     }
   }
-
-  console.log(data)
 
   return (
     <div>
