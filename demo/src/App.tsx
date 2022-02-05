@@ -2,7 +2,6 @@ import { Route } from "wouter"
 
 import { Navbar } from "./components/Navbar"
 import { NestedRoutes } from "./components/NestedRoutes"
-import { Playground } from "./components/Playground"
 import { BasicPage } from "./pages/Basic"
 import { CustomStylingPage } from "./pages/CustomStyling"
 import { GapPage } from "./pages/Gap"
@@ -11,6 +10,7 @@ import { MultiplePage } from "./pages/Multiple"
 import { OnScrollApiTabIndexPage } from "./pages/OnScrollApiTabIndex"
 import { OverscanPage } from "./pages/Overscan"
 import { PercentagesPage } from "./pages/Percentages"
+import { Playground } from "./pages/Playground"
 import { SizingPage } from "./pages/Sizing"
 import { StickyDisablePage } from "./pages/StickyDisabled"
 import { css } from "./theme/theme"
@@ -24,13 +24,18 @@ const app = css({
   color: "$textPrimary",
 })
 
+// TODO: Improve Grid Cell props
+// TODO: Add infinite scrolling both ways
+// TODO: Add playwright testing
+// TODO: Add scroll offset maximum values
+
 export const App = () => {
   return (
     <div className={app()}>
       <Navbar />
-      <Route path="/">
+      <NestedRoutes base="/playground">
         <Playground />
-      </Route>
+      </NestedRoutes>
       <NestedRoutes base="/basic">
         <BasicPage />
       </NestedRoutes>

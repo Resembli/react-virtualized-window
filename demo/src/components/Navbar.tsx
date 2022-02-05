@@ -50,6 +50,7 @@ function NavLink({ to, children, noBorder }: PropsWithChildren<NavLinkProps>) {
 export function Navbar({ css }: NavbarProps) {
   return (
     <div className={navbarStyles({ css })}>
+      <NavLink to="/playground">Playground</NavLink>
       <NavLink to="/basic">Basic</NavLink>
       <NavLink to="/gap">Gap</NavLink>
       <NavLink to="/overscan">Overscan</NavLink>
