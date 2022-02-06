@@ -22,7 +22,7 @@ export function StickyDiv({
 }: PropsWithChildren<StickyDivProps>) {
   if (disabled) return <>{children}</>
   return (
-    <div style={{ position: "sticky", top: 0, left: 0, display, height, width }}>
+    <div style={{ position: "sticky", top: 0, left: 0, display, height, width, background: "red" }}>
       <div
         style={{
           position: "absolute",

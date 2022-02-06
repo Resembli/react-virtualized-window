@@ -5,6 +5,7 @@ import { useRef } from "react"
 
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
+import { getScrollbarWidth } from "../getScrollbarWidth"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
@@ -14,7 +15,6 @@ import {
 import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
-import { useMaxOffset } from "../useMaxOffset"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
@@ -59,23 +59,22 @@ export function Grid<T>({
   onScroll: userOnScroll,
 }: GridProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
+  useWindowApi(windowRef, apiRef)
 
-  const [scrollTopOffset, scrollLeftOffset, onScroll, isScrolling] = useWindowScroll({
+  const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll({
     userOnScroll,
     rtl: rtl ?? false,
   })
   const [width, height] = useWindowDimensions(windowRef)
 
-  useWindowApi(windowRef, apiRef)
-
-  const [dataHeights, innerHeight, trueWindowHeight] = useDataDimension({
+  const [dataHeights, innerHeight] = useDataDimension({
     count: data.length,
     defaultDimension: defaultRowHeight,
     windowDim: height,
     dimensions: rowHeights,
   })
 
-  const [dataWidths, innerWidth, trueWindowWidth] = useDataDimension({
+  const [dataWidths, innerWidth] = useDataDimension({
     count: data[0].length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: width,
@@ -84,9 +83,6 @@ export function Grid<T>({
 
   const verticalGap = getVerticalGap(gap)
   const horizontalGap = getHorizontalGap(gap)
-
-  const topOffset = useMaxOffset(scrollTopOffset, innerHeight - trueWindowHeight)
-  const leftOffset = useMaxOffset(scrollLeftOffset, innerWidth - trueWindowWidth)
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
@@ -128,8 +124,8 @@ export function Grid<T>({
             disabled={disableSticky ?? false}
             topOffset={topOffset}
             leftOffset={leftOffset}
-            height={trueWindowHeight}
-            width={trueWindowWidth}
+            height={height - getScrollbarWidth()}
+            width={width - getScrollbarWidth()}
           >
             <div style={{ height: runningHeight }} />
             {data.slice(vertStart, vertEnd).map((row, i) => {
