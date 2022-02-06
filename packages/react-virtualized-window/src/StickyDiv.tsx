@@ -7,6 +7,7 @@ interface StickyDivProps {
   height?: CSSProperties["height"]
   topOffset?: number
   leftOffset?: number
+  rtl?: boolean
   disabled: boolean
 }
 
@@ -16,9 +17,10 @@ export function StickyDiv({
   topOffset = 0,
   leftOffset = 0,
   children,
-  disabled,
   width,
   height,
+  rtl,
+  disabled,
 }: PropsWithChildren<StickyDivProps>) {
   if (disabled) return <>{children}</>
   return (
@@ -28,7 +30,7 @@ export function StickyDiv({
           position: "absolute",
           display: absDisplay,
           height: "100%",
-          transform: `translate3d(${-leftOffset}px, ${-topOffset}px, 0)`,
+          transform: `translate3d(${rtl ? 0 : -leftOffset}px, ${-topOffset}px, 0)`,
           willChange: "transform",
         }}
       >
