@@ -65,6 +65,10 @@ export function Grid<T>({
     userOnScroll,
     rtl: rtl ?? false,
   })
+
+  const verticalGap = getVerticalGap(gap)
+  const horizontalGap = getHorizontalGap(gap)
+
   const [width, height] = useWindowDimensions(windowRef)
 
   const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
@@ -82,6 +86,7 @@ export function Grid<T>({
     count: data.length,
     defaultDimension: defaultRowHeight,
     windowDim: adjustedHeight,
+    gap: verticalGap,
     dimensions: rowHeights,
   })
 
@@ -89,11 +94,9 @@ export function Grid<T>({
     count: data[0].length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
+    gap: horizontalGap,
     dimensions: columnWidths,
   })
-
-  const verticalGap = getVerticalGap(gap)
-  const horizontalGap = getHorizontalGap(gap)
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
@@ -130,7 +133,7 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: innerHeight + verticalGap }}>
+        <div style={{ width: innerWidth, height: innerHeight }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             topOffset={topOffset}

@@ -24,7 +24,7 @@ const itemClass = css({
 
 export function HListPlayground() {
   return (
-    <ListHorizontal data={data} defaultColumnWidth={100}>
+    <ListHorizontal data={data} defaultColumnWidth={100} gap={20}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (

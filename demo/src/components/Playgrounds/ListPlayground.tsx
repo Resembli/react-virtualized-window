@@ -14,13 +14,13 @@ const itemClass = css({
   },
 })
 
-const data = Array(1000)
+const data = Array(100)
   .fill(0)
   .map((_, i) => i)
 
 export function ListPlayground() {
   return (
-    <List data={data} defaultRowHeight={50}>
+    <List data={data} defaultRowHeight={50} gap={20}>
       {(props, style, { row }) => {
         const clx = itemClass({ odd: row % 2 === 1 })
         return (
