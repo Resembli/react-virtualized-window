@@ -146,7 +146,7 @@ export function Grid<T>({
             <div style={{ height: runningHeight }} />
             {data.slice(vertStart, vertEnd).map((row, i) => {
               const rowKey = i + vertStart
-              const itemHeight = rowHeights?.[vertStart + i] ?? defaultRowHeight
+              const itemHeight = dataHeights[vertStart + i]
 
               const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
                 const cellKey = horiStart + j

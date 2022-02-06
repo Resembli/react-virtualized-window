@@ -18,9 +18,13 @@ const data = Array(100)
   .fill(0)
   .map((_, i) => i)
 
+const heights = Array(100)
+  .fill(0)
+  .map((_, i) => [100, 200, 50, 20][i % 4])
+
 export function ListPlayground() {
   return (
-    <List data={data} defaultRowHeight={50} gap={20}>
+    <List data={data} defaultRowHeight={50} gap={20} rowHeights={heights}>
       {(props, style, { row }) => {
         const clx = itemClass({ odd: row % 2 === 1 })
         return (
