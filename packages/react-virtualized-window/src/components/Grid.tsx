@@ -14,13 +14,12 @@ import {
 import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
-import { useInnerDimension } from "../useInnerDimensions"
-import { useMaxOffset } from "../useMaxOffset"
+import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 
-interface CellMeta {
+export interface CellMeta {
   column: number
   row: number
 }
@@ -60,44 +59,41 @@ export function Grid<T>({
   onScroll: userOnScroll,
 }: GridProps<T>) {
   const windowRef = useRef<HTMLDivElement>(null)
+  useWindowApi(windowRef, apiRef)
 
-  const [scrollTopOffset, scrollLeftOffset, onScroll, isScrolling] = useWindowScroll({
+  const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll({
     userOnScroll,
     rtl: rtl ?? false,
   })
   const [width, height] = useWindowDimensions(windowRef)
 
-  useWindowApi(windowRef, apiRef)
+  const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
+    height,
+    width,
+    rowHeight: defaultRowHeight,
+    columnWidth: defaultColumnWidth,
+    columnWidths,
+    rowHeights,
+    rowCount: data.length,
+    columnCount: data[0].length ?? 0,
+  })
 
-  const dataHeights = useDataDimension({
+  const [dataHeights, innerHeight] = useDataDimension({
     count: data.length,
     defaultDimension: defaultRowHeight,
-    windowDim: height,
+    windowDim: adjustedHeight,
     dimensions: rowHeights,
   })
 
-  const dataWidths = useDataDimension({
+  const [dataWidths, innerWidth] = useDataDimension({
     count: data[0].length ?? 0,
     defaultDimension: defaultColumnWidth,
-    windowDim: width,
+    windowDim: adjustedWidth,
     dimensions: columnWidths,
   })
 
   const verticalGap = getVerticalGap(gap)
-  const innerHeight = useInnerDimension({
-    dataDimensions: dataHeights,
-    gapBetweenItems: verticalGap,
-  })
-
   const horizontalGap = getHorizontalGap(gap)
-
-  const innerWidth = useInnerDimension({
-    dataDimensions: dataWidths,
-    gapBetweenItems: horizontalGap,
-  })
-
-  const topOffset = useMaxOffset(scrollTopOffset, innerHeight - height)
-  const leftOffset = useMaxOffset(scrollLeftOffset, innerWidth - width)
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
@@ -114,11 +110,6 @@ export function Grid<T>({
     itemDimensions: dataWidths,
     overscan: overscan ?? 0,
   })
-
-  const stickyWidth =
-    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGap, 0) +
-    runningWidth +
-    horizontalGap * (rtl ? 1 : 2)
 
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 
@@ -140,63 +131,54 @@ export function Grid<T>({
         }}
       >
         <div style={{ width: innerWidth, height: innerHeight + verticalGap }}>
-          <StickyDiv disabled={disableSticky ?? false} display="table" width={stickyWidth}>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: `${runningWidth}px auto`,
-                gridTemplateRows: `${runningHeight}px auto`,
-                transform: disableSticky
-                  ? undefined
-                  : `translate3d(${!rtl ? -leftOffset : 0}px, ${-topOffset}px, 0)`,
-                willChange: "transform",
-              }}
-            >
-              {/* The first two divs are positioning divs. They ensure the scroll translations work */}
-              <div style={{ gridColumnStart: 1, gridColumnEnd: 3 }} />
-              <div />
-              <div>
-                {data.slice(vertStart, vertEnd).map((row, i) => {
-                  const rowKey = i + vertStart
-                  const itemHeight = dataHeights[vertStart + i]
+          <StickyDiv
+            disabled={disableSticky ?? false}
+            topOffset={topOffset}
+            leftOffset={leftOffset}
+            height={adjustedHeight}
+            width={adjustedWidth}
+          >
+            <div style={{ height: runningHeight }} />
+            {data.slice(vertStart, vertEnd).map((row, i) => {
+              const rowKey = i + vertStart
+              const itemHeight = rowHeights?.[vertStart + i] ?? defaultRowHeight
 
-                  const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
-                    const cellKey = horiStart + j
-                    const itemWidth = dataWidths[horiStart + j]
+              const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
+                const cellKey = horiStart + j
+                const itemWidth = dataWidths[horiStart + j]
 
-                    const isLastItem = rtl ? horiStart + j === 0 : horiStart + j === row.length - 1
+                const isLastItem = rtl ? horiStart + j === 0 : horiStart + j === row.length - 1
 
-                    return (
-                      <RenderItem
-                        key={cellKey}
-                        itemWidth={itemWidth}
-                        component={children}
-                        isLastItem={isLastItem}
-                        itemGap={gap}
-                        itemProps={cell}
-                        column={horiStart + j}
-                        row={vertStart + i}
-                      />
-                    )
-                  })
+                return (
+                  <RenderItem
+                    key={cellKey}
+                    itemWidth={itemWidth}
+                    component={children}
+                    isLastItem={isLastItem}
+                    itemGap={gap}
+                    itemProps={cell}
+                    column={horiStart + j}
+                    row={vertStart + i}
+                  />
+                )
+              })
 
-                  return (
-                    <div
-                      key={rowKey}
-                      style={{
-                        display: "flex",
-                        height: itemHeight,
-                        minHeight: itemHeight,
-                        maxHeight: itemHeight,
-                        ...verticalMarginStyles,
-                      }}
-                    >
-                      {rowChildren}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+              return (
+                <div
+                  key={rowKey}
+                  style={{
+                    display: "flex",
+                    height: itemHeight,
+                    minHeight: itemHeight,
+                    maxHeight: itemHeight,
+                    ...verticalMarginStyles,
+                  }}
+                >
+                  <div style={{ width: runningWidth }} />
+                  {rowChildren}
+                </div>
+              )
+            })}
           </StickyDiv>
         </div>
       </div>

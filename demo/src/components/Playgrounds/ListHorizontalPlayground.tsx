@@ -2,7 +2,7 @@ import { ListHorizontal } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
-const data = Array(2000)
+const data = Array(5000)
   .fill(0)
   .map((_, i) => i)
 
@@ -24,7 +24,7 @@ const itemClass = css({
 
 export function HListPlayground() {
   return (
-    <ListHorizontal data={data} defaultColumnWidth={50}>
+    <ListHorizontal data={data} defaultColumnWidth={100}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (

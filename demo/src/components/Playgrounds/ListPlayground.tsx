@@ -14,7 +14,7 @@ const itemClass = css({
   },
 })
 
-const data = Array(2000)
+const data = Array(1000)
   .fill(0)
   .map((_, i) => i)
 
