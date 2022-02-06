@@ -2,13 +2,13 @@ import { ListHorizontal } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
-const data = Array(5000)
+const data = Array(100)
   .fill(0)
   .map((_, i) => i)
 
-// const widths = Array(2000)
-//   .fill(0)
-//   .map((_, i) => [40, 30, 100, 120, 50][i % 5])
+const widths = Array(200)
+  .fill(0)
+  .map((_, i) => [40, 30, 100, 120, 50][i % 5])
 
 const itemClass = css({
   display: "flex",
@@ -24,7 +24,7 @@ const itemClass = css({
 
 export function HListPlayground() {
   return (
-    <ListHorizontal data={data} defaultColumnWidth={100}>
+    <ListHorizontal data={data} defaultColumnWidth={100} gap={20} columnWidths={widths}>
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
