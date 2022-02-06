@@ -12,7 +12,13 @@ export interface ListProps<T> extends VirtualWindowBaseProps {
   rowHeights?: NumberOrPercent[]
 }
 
-export function List<T>({ data, children, defaultRowHeight, rowHeights }: ListProps<T>) {
+export function List<T>({
+  data,
+  children,
+  defaultRowHeight,
+  rowHeights,
+  ...otherProps
+}: ListProps<T>) {
   const gridData = useMemo(() => data.map((d) => [d]), [data])
 
   return (
@@ -21,6 +27,7 @@ export function List<T>({ data, children, defaultRowHeight, rowHeights }: ListPr
       rowHeights={rowHeights}
       defaultRowHeight={defaultRowHeight}
       defaultColumnWidth="100%"
+      {...otherProps}
     >
       {children}
     </Grid>
