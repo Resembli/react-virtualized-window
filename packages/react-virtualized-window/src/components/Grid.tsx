@@ -5,7 +5,6 @@ import { useRef } from "react"
 
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
-import { getScrollbarWidth } from "../getScrollbarWidth"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
@@ -70,14 +69,14 @@ export function Grid<T>({
 
   useWindowApi(windowRef, apiRef)
 
-  const dataHeights = useDataDimension({
+  const [dataHeights, innerHeight] = useDataDimension({
     count: data.length,
     defaultDimension: defaultRowHeight,
     windowDim: height,
     dimensions: rowHeights,
   })
 
-  const dataWidths = useDataDimension({
+  const [dataWidths, innerWidth] = useDataDimension({
     count: data[0].length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: width,
@@ -85,17 +84,7 @@ export function Grid<T>({
   })
 
   const verticalGap = getVerticalGap(gap)
-  const innerHeight = useInnerDimension({
-    dataDimensions: dataHeights,
-    gapBetweenItems: verticalGap,
-  })
-
   const horizontalGap = getHorizontalGap(gap)
-
-  const innerWidth = useInnerDimension({
-    dataDimensions: dataWidths,
-    gapBetweenItems: horizontalGap,
-  })
 
   const topOffset = useMaxOffset(scrollTopOffset, innerHeight - height)
   const leftOffset = useMaxOffset(scrollLeftOffset, innerWidth - width)
@@ -118,9 +107,6 @@ export function Grid<T>({
 
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 
-  const trueInnerHeight =
-    innerHeight - height <= 0 ? innerHeight - getScrollbarWidth() : innerHeight
-
   return (
     <SizingDiv width={sizingWidth} height={sizingHeight} testId={testId}>
       <div
@@ -138,14 +124,12 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: trueInnerHeight + verticalGap }}>
+        <div style={{ width: innerWidth, height: innerHeight + verticalGap }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             topOffset={topOffset}
             leftOffset={leftOffset}
-            height={
-              innerHeight - height <= getScrollbarWidth() ? height - getScrollbarWidth() : height
-            }
+            height={height}
             width={width}
           >
             <div style={{ height: runningHeight }} />
