@@ -2,7 +2,7 @@ import { Grid } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
-const data = Array(1000)
+const data = Array(2000)
   .fill(0)
   .map((_, i) => {
     return Array(200)
@@ -10,13 +10,13 @@ const data = Array(1000)
       .map((_, j) => [i, j])
   })
 
-const heights = Array(1000)
-  .fill(0)
-  .map((_, i) => ([40, 30, 100, "20%", "40%"] as const)[i % 5])
+// const heights = Array(1)
+//   .fill(0)
+//   .map((_, i) => ([40, 30, 100, "20%", "40%"] as const)[i % 5])
 
-const widths = Array(200)
-  .fill(0)
-  .map((_, i) => (["5%", "10%", "20%", "12%", "11%"] as const)[i % 5])
+// const widths = Array(200)
+//   .fill(0)
+//   .map((_, i) => (["5%", "10%", "20%", "12%", "11%"] as const)[i % 5])
 
 const itemClass = css({
   display: "flex",
@@ -32,13 +32,7 @@ const itemClass = css({
 
 export function GridPlayground() {
   return (
-    <Grid
-      data={data}
-      defaultColumnWidth={"10%"}
-      defaultRowHeight={"10%"}
-      columnWidths={widths}
-      rowHeights={heights}
-    >
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
       {([row, column], styles) => {
         return (
           <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>

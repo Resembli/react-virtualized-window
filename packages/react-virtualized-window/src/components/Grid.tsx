@@ -5,6 +5,7 @@ import { useRef } from "react"
 
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
+import { getScrollbarWidth } from "../getScrollbarWidth"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
@@ -20,7 +21,7 @@ import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 
-interface CellMeta {
+export interface CellMeta {
   column: number
   row: number
 }
@@ -115,12 +116,10 @@ export function Grid<T>({
     overscan: overscan ?? 0,
   })
 
-  const stickyWidth =
-    dataWidths.slice(horiStart, horiEnd + 1).reduce((a, b) => a + b + horizontalGap, 0) +
-    runningWidth +
-    horizontalGap * (rtl ? 1 : 2)
-
   const verticalMarginStyles = getVerticalMarginStyling(gap)
+
+  const trueInnerHeight =
+    innerHeight - height <= 0 ? innerHeight - getScrollbarWidth() : innerHeight
 
   return (
     <SizingDiv width={sizingWidth} height={sizingHeight} testId={testId}>
@@ -139,64 +138,57 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: innerHeight + verticalGap }}>
-          <StickyDiv disabled={disableSticky ?? false} display="table" width={stickyWidth}>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: `${runningWidth}px auto`,
-                gridTemplateRows: `${runningHeight}px auto`,
-                transform: disableSticky
-                  ? undefined
-                  : `translate3d(${!rtl ? -leftOffset : 0}px, ${-topOffset}px, 0)`,
-                willChange: "transform",
-              }}
-            >
-              {/* The first two divs are positioning divs. They ensure the scroll translations work */}
-              <div style={{ gridColumnStart: 1, gridColumnEnd: 3 }} />
-              <div />
-              <div>
-                {data.slice(vertStart, vertEnd).map((row, i) => {
-                  const rowKey = i + vertStart
-                  const itemHeight = dataHeights[vertStart + i]
+        <div style={{ width: innerWidth, height: trueInnerHeight + verticalGap }}>
+          <StickyDiv
+            disabled={disableSticky ?? false}
+            topOffset={topOffset}
+            leftOffset={leftOffset}
+            height={
+              innerHeight - height <= getScrollbarWidth() ? height - getScrollbarWidth() : height
+            }
+            width={width}
+          >
+            <div style={{ height: runningHeight }} />
+            {data.slice(vertStart, vertEnd).map((row, i) => {
+              const rowKey = i + vertStart
+              const itemHeight = rowHeights?.[vertStart + i] ?? defaultRowHeight
 
-                  const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
-                    const cellKey = horiStart + j
-                    const itemWidth = dataWidths[horiStart + j]
+              const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
+                const cellKey = horiStart + j
+                const itemWidth = dataWidths[horiStart + j]
 
-                    const isLastItem = rtl ? horiStart + j === 0 : horiStart + j === row.length - 1
+                const isLastItem = rtl ? horiStart + j === 0 : horiStart + j === row.length - 1
 
-                    return (
-                      <RenderItem
-                        key={cellKey}
-                        itemWidth={itemWidth}
-                        component={children}
-                        isLastItem={isLastItem}
-                        itemGap={gap}
-                        itemProps={cell}
-                        column={horiStart + j}
-                        row={vertStart + i}
-                      />
-                    )
-                  })
+                return (
+                  <RenderItem
+                    key={cellKey}
+                    itemWidth={itemWidth}
+                    component={children}
+                    isLastItem={isLastItem}
+                    itemGap={gap}
+                    itemProps={cell}
+                    column={horiStart + j}
+                    row={vertStart + i}
+                  />
+                )
+              })
 
-                  return (
-                    <div
-                      key={rowKey}
-                      style={{
-                        display: "flex",
-                        height: itemHeight,
-                        minHeight: itemHeight,
-                        maxHeight: itemHeight,
-                        ...verticalMarginStyles,
-                      }}
-                    >
-                      {rowChildren}
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
+              return (
+                <div
+                  key={rowKey}
+                  style={{
+                    display: "flex",
+                    height: itemHeight,
+                    minHeight: itemHeight,
+                    maxHeight: itemHeight,
+                    ...verticalMarginStyles,
+                  }}
+                >
+                  <div style={{ width: runningWidth }} />
+                  {rowChildren}
+                </div>
+              )
+            })}
           </StickyDiv>
         </div>
       </div>
