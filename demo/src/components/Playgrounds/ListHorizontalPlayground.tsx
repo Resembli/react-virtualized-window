@@ -2,7 +2,7 @@ import { ListHorizontal } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
-const data = Array(5000)
+const data = Array(100)
   .fill(0)
   .map((_, i) => i)
 

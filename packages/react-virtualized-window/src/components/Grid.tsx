@@ -74,6 +74,8 @@ export function Grid<T>({
   const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
     height,
     width,
+    verticalGap,
+    horizontalGap,
     rowHeight: defaultRowHeight,
     columnWidth: defaultColumnWidth,
     columnWidths,

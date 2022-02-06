@@ -32,7 +32,7 @@ const itemClass = css({
 
 export function GridPlayground() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} gap={20}>
       {([row, column], styles) => {
         return (
           <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
