@@ -5,7 +5,6 @@ import { useRef } from "react"
 
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
-import { getScrollbarWidth } from "../getScrollbarWidth"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
@@ -15,6 +14,7 @@ import {
 import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
+import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
@@ -67,17 +67,28 @@ export function Grid<T>({
   })
   const [width, height] = useWindowDimensions(windowRef)
 
+  const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
+    height,
+    width,
+    rowHeight: defaultRowHeight,
+    columnWidth: defaultColumnWidth,
+    columnWidths,
+    rowHeights,
+    rowCount: data.length,
+    columnCount: data[0].length ?? 0,
+  })
+
   const [dataHeights, innerHeight] = useDataDimension({
     count: data.length,
     defaultDimension: defaultRowHeight,
-    windowDim: height,
+    windowDim: adjustedHeight,
     dimensions: rowHeights,
   })
 
   const [dataWidths, innerWidth] = useDataDimension({
     count: data[0].length ?? 0,
     defaultDimension: defaultColumnWidth,
-    windowDim: width,
+    windowDim: adjustedWidth,
     dimensions: columnWidths,
   })
 
@@ -124,8 +135,8 @@ export function Grid<T>({
             disabled={disableSticky ?? false}
             topOffset={topOffset}
             leftOffset={leftOffset}
-            height={height - getScrollbarWidth()}
-            width={width - getScrollbarWidth()}
+            height={adjustedHeight}
+            width={adjustedWidth}
           >
             <div style={{ height: runningHeight }} />
             {data.slice(vertStart, vertEnd).map((row, i) => {
