@@ -142,6 +142,7 @@ export function Grid<T>({
             leftOffset={leftOffset}
             height={adjustedHeight}
             width={adjustedWidth}
+            rtl={rtl}
           >
             <div style={{ height: runningHeight }} />
             {data.slice(vertStart, vertEnd).map((row, i) => {
@@ -152,14 +153,12 @@ export function Grid<T>({
                 const cellKey = horiStart + j
                 const itemWidth = dataWidths[horiStart + j]
 
-                const isLastItem = rtl ? horiStart + j === 0 : horiStart + j === row.length - 1
-
                 return (
                   <RenderItem
                     key={cellKey}
                     itemWidth={itemWidth}
                     component={children}
-                    isLastItem={isLastItem}
+                    rtl={rtl}
                     itemGap={gap}
                     itemProps={cell}
                     column={horiStart + j}
@@ -194,24 +193,24 @@ export function Grid<T>({
 type RenderItemsProps<T> = {
   component: GridProps<T>["children"]
   itemGap: GridProps<T>["gap"]
-  isLastItem: boolean
   itemProps: T
   itemWidth: number
   column: number
   row: number
+  rtl?: boolean
 }
 
 const RenderItem = memo(function <T>({
   component,
   itemGap,
-  isLastItem,
+  rtl,
   itemProps,
   itemWidth,
   column,
   row,
 }: RenderItemsProps<T>) {
   const itemStyles = useMemo(() => {
-    const marginStyling = getHorizontalMarginStyling(itemGap, isLastItem)
+    const marginStyling = getHorizontalMarginStyling(itemGap, rtl)
     return {
       width: itemWidth,
       minWidth: itemWidth,
@@ -219,7 +218,7 @@ const RenderItem = memo(function <T>({
       height: "100%",
       ...marginStyling,
     }
-  }, [isLastItem, itemGap, itemWidth])
+  }, [rtl, itemGap, itemWidth])
 
   const cellMeta = useMemo<CellMeta>(() => ({ row, column }), [column, row])
 

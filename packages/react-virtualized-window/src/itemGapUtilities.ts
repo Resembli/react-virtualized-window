@@ -8,14 +8,14 @@ export function getVerticalMarginStyling(itemGap?: ItemGap) {
   return { marginTop: gap, marginBottom: gap }
 }
 
-export function getHorizontalMarginStyling(itemGap?: ItemGap, isLastItem?: boolean) {
+export function getHorizontalMarginStyling(itemGap?: ItemGap, rtl?: boolean) {
   if (!itemGap) return { marginLeft: 0, marginRight: 0 }
 
   const gap = getHorizontalGap(itemGap)
 
   return {
-    marginLeft: gap,
-    marginRight: isLastItem ? gap : 0,
+    marginLeft: rtl ? 0 : gap,
+    marginRight: rtl ? gap : 0,
   }
 }
 
