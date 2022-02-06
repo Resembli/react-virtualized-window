@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import { getScrollbarWidth } from "./getScrollbarWidth"
 import type { NumberOrPercent } from "./types"
 
-interface UseDataHeightsArgs {
+interface UseDataDimensionArgs {
   count: number
   defaultDimension: NumberOrPercent
   windowDim: number
@@ -14,44 +14,51 @@ function percentToNumber(percent: string) {
   return parseFloat(percent) / 100.0
 }
 
-export const useDataDimension = ({
-  count,
-  defaultDimension,
+function checkForScrollBar({
   windowDim,
+  defaultDimension,
+  count,
   dimensions,
-}: UseDataHeightsArgs) => {
-  const [dataDimensions, dimTotal, hasScrollBar] = useMemo(() => {
-    let draftDimensions = []
+}: UseDataDimensionArgs) {
+  let runningTotal = 0
+  for (let i = 0; i < count; i++) {
+    const dimToUse = (dimensions && dimensions[i]) || defaultDimension
+    const dimAsNum = typeof dimToUse === "string" ? percentToNumber(dimToUse) * windowDim : dimToUse
+
+    runningTotal += dimAsNum
+    if (runningTotal >= windowDim) return true
+  }
+  return false
+}
+
+export const useDataDimension = (args: UseDataDimensionArgs) => {
+  const hasScrollBar = checkForScrollBar(args)
+
+  const windowDim = hasScrollBar ? args.windowDim - getScrollbarWidth() : args.windowDim
+
+  const [dataDimensions, dimTotal] = useMemo(() => {
+    const { count, defaultDimension, dimensions } = args
+    const draftDimensions = []
 
     const dimDefault =
       typeof defaultDimension === "string"
         ? percentToNumber(defaultDimension) * windowDim
         : defaultDimension
 
-    let hasScrollBar = false
     let runningTotal = 0
 
     for (let i = 0; i < count; i++) {
       const dimToUse = (dimensions && dimensions[i]) || dimDefault
 
-      const wideDim = windowDim - (hasScrollBar ? getScrollbarWidth() : 0)
       const dimAsNum =
-        typeof dimToUse === "string" ? percentToNumber(dimToUse) * (windowDim - wideDim) : dimToUse
+        typeof dimToUse === "string" ? percentToNumber(dimToUse) * windowDim : dimToUse
 
       runningTotal += dimAsNum
-
-      if (runningTotal > windowDim && !hasScrollBar) {
-        hasScrollBar = true
-        runningTotal = 0
-        i = -1
-        draftDimensions = []
-      }
-
       draftDimensions.push(dimAsNum)
     }
 
-    return [draftDimensions, runningTotal, hasScrollBar]
-  }, [count, defaultDimension, dimensions, windowDim])
+    return [draftDimensions, runningTotal]
+  }, [args, windowDim])
 
-  return [dataDimensions, dimTotal, hasScrollBar] as const
+  return [dataDimensions, dimTotal, windowDim] as const
 }

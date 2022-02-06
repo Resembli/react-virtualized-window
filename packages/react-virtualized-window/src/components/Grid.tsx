@@ -14,7 +14,6 @@ import {
 import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
-import { useInnerDimension } from "../useInnerDimensions"
 import { useMaxOffset } from "../useMaxOffset"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
@@ -69,14 +68,14 @@ export function Grid<T>({
 
   useWindowApi(windowRef, apiRef)
 
-  const [dataHeights, innerHeight] = useDataDimension({
+  const [dataHeights, innerHeight, trueWindowHeight] = useDataDimension({
     count: data.length,
     defaultDimension: defaultRowHeight,
     windowDim: height,
     dimensions: rowHeights,
   })
 
-  const [dataWidths, innerWidth] = useDataDimension({
+  const [dataWidths, innerWidth, trueWindowWidth] = useDataDimension({
     count: data[0].length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: width,
@@ -86,8 +85,8 @@ export function Grid<T>({
   const verticalGap = getVerticalGap(gap)
   const horizontalGap = getHorizontalGap(gap)
 
-  const topOffset = useMaxOffset(scrollTopOffset, innerHeight - height)
-  const leftOffset = useMaxOffset(scrollLeftOffset, innerWidth - width)
+  const topOffset = useMaxOffset(scrollTopOffset, innerHeight - trueWindowHeight)
+  const leftOffset = useMaxOffset(scrollLeftOffset, innerWidth - trueWindowWidth)
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
@@ -129,8 +128,8 @@ export function Grid<T>({
             disabled={disableSticky ?? false}
             topOffset={topOffset}
             leftOffset={leftOffset}
-            height={height}
-            width={width}
+            height={trueWindowHeight}
+            width={trueWindowWidth}
           >
             <div style={{ height: runningHeight }} />
             {data.slice(vertStart, vertEnd).map((row, i) => {
