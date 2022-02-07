@@ -26,7 +26,10 @@ export const useIndicesForDimensions = ({
 
     while (runningTotal < Math.max(0, offset - overscan * maxDim - maxDim)) {
       const itemDim = itemDimensions[start] + gapBetweenItems
-      if (itemDim + runningTotal > offset) break
+
+      // If the itemDim is less than zero then the window calculations are not complete. To
+      // avoid creating a NaN value, we simply break out of the loop.
+      if (itemDim + runningTotal > offset || itemDim < 0) break
 
       start++
       runningTotal += itemDim
