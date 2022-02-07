@@ -1,14 +1,13 @@
 import type { Locator, Page } from "@playwright/test"
 import { expect } from "@playwright/test"
 
-export class ListPO {
+export class GridPO {
   readonly page: Page
   readonly listWrapper: Locator
   readonly list: Locator
   readonly innerWindow: Locator
   readonly stickyDiv: Locator
   readonly absoluteDiv: Locator
-  readonly translationDiv: Locator
   readonly offsetDiv: Locator
 
   constructor(page: Page, dataTestId: string) {
@@ -18,26 +17,37 @@ export class ListPO {
     this.innerWindow = this.list.locator("div >> nth=0")
     this.stickyDiv = this.innerWindow.locator("div >> nth=0")
     this.absoluteDiv = this.stickyDiv.locator("div >> nth=0")
-    this.translationDiv = this.absoluteDiv.locator("div >> nth=0")
-    this.offsetDiv = this.translationDiv.locator("div >> nth=0")
+    this.offsetDiv = this.absoluteDiv.locator("div >> nth=0")
+  }
+
+  async getScrollHeight() {
+    return await this.innerWindow.evaluate((node) => node.scrollHeight)
+  }
+
+  async getScrollWidth() {
+    return await this.innerWindow.evaluate((node) => node.scrollWidth)
   }
 
   async isVisible() {
     expect(await this.listWrapper.isVisible()).toBeTruthy()
   }
 
-  async getRenderedRows() {
-    const rowsLocator = this.translationDiv.locator("div")
-
-    return await rowsLocator.allTextContents()
+  async getRenderedRowCount() {
+    // Minus 1 because of the offset div.
+    return await this.absoluteDiv.evaluate((node) => node.children.length - 1)
   }
 
-  async scroll(delta: number) {
-    const { x, y, width, height } = await this.list.boundingBox()
+  getCellLocator(n: number, m: number) {
+    const rows = this.absoluteDiv.locator("> div")
+    const row = rows.nth(n + 1)
+    const cells = row.locator("> div")
+    const cell = cells.nth(m + 1)
 
-    // Move the mouse to the middle of the list.
-    await this.page.mouse.move(x + width / 2, y + height / 2)
-    await this.page.mouse.wheel(0, delta)
+    return cell
+  }
+
+  async scroll(top: number, left: number) {
+    await this.list.evaluate((node, { left, top }) => node.scrollBy({ top, left }), { top, left })
   }
 
   async getWindowHeight() {

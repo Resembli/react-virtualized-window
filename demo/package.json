@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "playwright test --project=chrome",
+    "test": "playwright test",
     "test:chrome": "playwright test --project=chrome",
     "test:firefox": "playwright test --project=firefox",
     "test:safari": "playwright test --project=safari",
