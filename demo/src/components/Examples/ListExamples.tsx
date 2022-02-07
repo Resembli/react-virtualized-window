@@ -3,17 +3,18 @@ import { useCallback, useRef, useState } from "react"
 import { List } from "@resembli/react-virtualized-window"
 import type { ListProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 
+import { DEFAULT_HEIGHT_ARRAY, DEFAULT_ITEM_COUNT, DEFAULT_ROW_HEIGHT } from "../../constants"
 import { debounce } from "../../debouce"
 import { css } from "../../theme/theme"
 import type { RouteItem } from "../../types"
 
-const data = Array(2000)
+const data = Array(DEFAULT_ITEM_COUNT)
   .fill(0)
   .map((_, i) => i)
 
-const heights = Array(2000)
+const heights = Array(DEFAULT_ITEM_COUNT)
   .fill(0)
-  .map((_, i) => [40, 30, 100, 120, 50][i % 5])
+  .map((_, i) => DEFAULT_HEIGHT_ARRAY[i % DEFAULT_HEIGHT_ARRAY.length])
 
 const itemClass = css({
   display: "flex",
@@ -35,9 +36,20 @@ type BaseListProps = Omit<
   defaultRowHeight?: ListProps<unknown>["defaultRowHeight"]
 }
 
-function BaseNList({ rh, defaultRowHeight = 50, ...otherProps }: BaseListProps) {
+function BaseNList({
+  rh,
+  defaultRowHeight = DEFAULT_ROW_HEIGHT,
+  "data-testid": dataId = "list",
+  ...otherProps
+}: BaseListProps) {
   return (
-    <List data={data} defaultRowHeight={defaultRowHeight} rowHeights={rh} {...otherProps}>
+    <List
+      data={data}
+      defaultRowHeight={defaultRowHeight}
+      rowHeights={rh}
+      data-testid={dataId}
+      {...otherProps}
+    >
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
@@ -50,7 +62,7 @@ function BaseNList({ rh, defaultRowHeight = 50, ...otherProps }: BaseListProps) 
   )
 }
 
-const NList = () => <BaseNList data-testid="basic-list" />
+const NList = () => <BaseNList />
 const ListRTL = () => <BaseNList rtl />
 const ListGap = () => <BaseNList gap={20} />
 const ListGapRTL = () => <BaseNList gap={20} rtl />

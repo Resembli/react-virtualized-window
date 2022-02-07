@@ -22,9 +22,6 @@ const app = css({
   color: "$textPrimary",
 })
 
-// TODO: Add playwright testing
-// TODO: Fix NaN height bug
-
 export const App = () => {
   return (
     <div className={app()}>
