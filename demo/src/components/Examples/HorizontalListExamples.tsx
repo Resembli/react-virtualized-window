@@ -3,17 +3,18 @@ import { useCallback, useRef, useState } from "react"
 import { ListHorizontal } from "@resembli/react-virtualized-window"
 import type { ListHorizontalProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 
+import { DEFAULT_COLUMN_WIDTH, DEFAULT_ITEM_COUNT, DEFAULT_WIDTH_ARRAY } from "../../constants"
 import { debounce } from "../../debouce"
 import { css } from "../../theme/theme"
 import type { RouteItem } from "../../types"
 
-const data = Array(2000)
+const data = Array(DEFAULT_ITEM_COUNT)
   .fill(0)
   .map((_, i) => i)
 
-const widths = Array(2000)
+const widths = Array(DEFAULT_ITEM_COUNT)
   .fill(0)
-  .map((_, i) => [50, 30, 100, 120, 60][i % 5])
+  .map((_, i) => DEFAULT_WIDTH_ARRAY[i % DEFAULT_WIDTH_ARRAY.length])
 
 const itemClass = css({
   display: "flex",
@@ -36,19 +37,25 @@ type BaseHListProps = Omit<
   defaultColumnWidth?: ListHorizontalProps<unknown>["defaultColumnWidth"]
 }
 
-function BaseHList({ cw, defaultColumnWidth = 50, ...otherProps }: BaseHListProps) {
+function BaseHList({
+  cw,
+  "data-testid": dataId = "list",
+  defaultColumnWidth = DEFAULT_COLUMN_WIDTH,
+  ...otherProps
+}: BaseHListProps) {
   return (
     <ListHorizontal
       data={data}
       defaultColumnWidth={defaultColumnWidth}
       columnWidths={cw}
+      data-testid={dataId}
       {...otherProps}
     >
       {(props, style) => {
         const clx = itemClass({ odd: props % 2 === 1 })
         return (
           <div style={style} className={clx}>
-            {props}
+            {props + 1}
           </div>
         )
       }}
