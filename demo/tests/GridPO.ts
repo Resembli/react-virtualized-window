@@ -37,6 +37,18 @@ export class GridPO {
     return await this.absoluteDiv.evaluate((node) => node.children.length - 1)
   }
 
+  async getRenderedCellCountForRow(n: number) {
+    const row = this.absoluteDiv.locator("> div").nth(n + 1)
+
+    return await row.evaluate((node) => node.children.length - 1)
+  }
+
+  getOffsetDivForRow(n: number) {
+    const row = this.absoluteDiv.locator("> div").nth(n + 1)
+
+    return row.locator("div").nth(0)
+  }
+
   getCellLocator(n: number, m: number) {
     const rows = this.absoluteDiv.locator("> div")
     const row = rows.nth(n + 1)
@@ -53,5 +65,11 @@ export class GridPO {
   async getWindowHeight() {
     const boundingBox = await this.list.boundingBox()
     return boundingBox.height
+  }
+
+  async getWindowWidth() {
+    const boundingBox = await this.list.boundingBox()
+
+    return boundingBox.width
   }
 }

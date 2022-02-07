@@ -29,6 +29,9 @@ test("List Basic", async ({ page }) => {
   const expectedNumberOfChildren = Math.ceil(windowHeight / DEFAULT_ROW_HEIGHT)
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
 
+  // There shouldn't be a bottom scrollbar.
+  expect(await po.getScrollWidth()).toEqual(await po.getWindowWidth())
+
   // We expect the first row to be "1". This is because we have setup so that each
   // row renders its index.
   expect(po.getCellLocator(0, 0)).toHaveText("1")
@@ -51,7 +54,7 @@ test("List Basic", async ({ page }) => {
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
   await expect(po.getCellLocator(0, 0)).toHaveText("2")
 
-  await po.scroll(DEFAULT_ROW_HEIGHT * DEFAULT_ITEM_COUNT, 0)
+  await po.scroll(await po.getScrollHeight(), 0)
 
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
   await expect(po.getCellLocator((await po.getRenderedRowCount()) - 1, 0)).toHaveText("1000")
@@ -79,6 +82,9 @@ test("List Basic RTL", async ({ page }) => {
   const expectedNumberOfChildren = Math.ceil(windowHeight / DEFAULT_ROW_HEIGHT)
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
 
+  // There shouldn't be a bottom scrollbar.
+  expect(await po.getScrollWidth()).toEqual(await po.getWindowWidth())
+
   // We expect the first row to be "1". This is because we have setup so that each
   // row renders its index.
   expect(po.getCellLocator(0, 0)).toHaveText("1")
@@ -101,7 +107,7 @@ test("List Basic RTL", async ({ page }) => {
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
   await expect(po.getCellLocator(0, 0)).toHaveText("2")
 
-  await po.scroll(DEFAULT_ROW_HEIGHT * DEFAULT_ITEM_COUNT, 0)
+  await po.scroll(await po.getScrollHeight(), 0)
 
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
   await expect(po.getCellLocator((await po.getRenderedRowCount()) - 1, 0)).toHaveText("1000")
@@ -127,6 +133,9 @@ test("List Basic Variable Heights", async ({ page }) => {
   const expectedNumberOfChildren = Math.ceil((windowHeight / heightPerSet) * itemsPerSet + 1)
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
 
+  // There shouldn't be a bottom scrollbar.
+  expect(await po.getScrollWidth()).toEqual(await po.getWindowWidth())
+
   // We expect the first row to be "1". This is because we have setup so that each
   // row renders its index.
   expect(po.getCellLocator(0, 0)).toHaveText("1")
@@ -150,7 +159,7 @@ test("List Basic Variable Heights", async ({ page }) => {
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
   await expect(po.getCellLocator(0, 0)).toHaveText("2")
 
-  await po.scroll(heightPerSet * numberOfSets, 0)
+  await po.scroll(await po.getScrollHeight(), 0)
 
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
   await expect(po.getCellLocator((await po.getRenderedRowCount()) - 1, 0)).toHaveText("1000")
@@ -172,6 +181,9 @@ test("List Basic Variable Heights RTL", async ({ page }) => {
 
   await expect(po.offsetDiv).toHaveCSS("height", "0px")
   await expect(po.list).toHaveCSS("direction", "rtl")
+
+  // There shouldn't be a bottom scrollbar.
+  expect(await po.getScrollWidth()).toEqual(await po.getWindowWidth())
 
   // With variable heights we render an extra child.
   const expectedNumberOfChildren = Math.ceil((windowHeight / heightPerSet) * itemsPerSet + 1)
@@ -200,7 +212,7 @@ test("List Basic Variable Heights RTL", async ({ page }) => {
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
   await expect(po.getCellLocator(0, 0)).toHaveText("2")
 
-  await po.scroll(heightPerSet * numberOfSets, 0)
+  await po.scroll(await po.getScrollHeight(), 0)
 
   expect(await po.getRenderedRowCount()).toEqual(expectedNumberOfChildren)
   await expect(po.getCellLocator((await po.getRenderedRowCount()) - 1, 0)).toHaveText("1000")
