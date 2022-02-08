@@ -20,12 +20,13 @@ async function overscanAssertions(
   expectedRows: number,
   expectedColumns: number,
   rtl: boolean,
+  maxVariation = 6,
 ) {
   let rowCount = await po.getRenderedRowCount()
-  expect(expectedRows - rowCount).toBeLessThanOrEqual(2)
+  expect(expectedRows - rowCount).toBeLessThanOrEqual(maxVariation)
 
   let columnCount = await po.getRenderedCellCountForRow(0)
-  expect(expectedColumns - columnCount).toBeLessThanOrEqual(2)
+  expect(expectedColumns - columnCount).toBeLessThanOrEqual(maxVariation)
 
   const scrollLeft = (await po.getScrollWidth()) / 2
   const scrollTop = (await po.getScrollHeight()) / 2
@@ -35,8 +36,8 @@ async function overscanAssertions(
   rowCount = await po.getRenderedRowCount()
   columnCount = await po.getRenderedCellCountForRow(0)
 
-  expect(expectedRows + DEFAULT_OVERSCAN - rowCount).toBeLessThanOrEqual(2)
-  expect(expectedColumns + DEFAULT_OVERSCAN - columnCount).toBeLessThanOrEqual(2)
+  expect(expectedRows + DEFAULT_OVERSCAN - rowCount).toBeLessThanOrEqual(maxVariation)
+  expect(expectedColumns + DEFAULT_OVERSCAN - columnCount).toBeLessThanOrEqual(maxVariation)
 }
 
 test("Grid Overscan", async ({ page }) => {
@@ -94,15 +95,15 @@ test("Grid Overscan Variable", async ({ page }) => {
   const rowsPerSet = DEFAULT_HEIGHT_ARRAY.length
 
   const windowHeight = await po.getWindowHeight()
-  const expectedRows = Math.ceil((windowHeight / heightPerSet) * rowsPerSet + 1)
+  const expectedRows = Math.ceil((windowHeight / heightPerSet) * rowsPerSet + 1) + DEFAULT_OVERSCAN
 
   const widthPerSet = DEFAULT_WIDTH_ARRAY.reduce((a, b) => a + b)
   const cellsPerSet = DEFAULT_WIDTH_ARRAY.length
 
   const windowWidth = await po.getWindowWidth()
-  const expectedColumns = Math.ceil((windowWidth / widthPerSet) * cellsPerSet)
+  const expectedColumns = Math.ceil((windowWidth / widthPerSet) * cellsPerSet) + DEFAULT_OVERSCAN
 
-  await overscanAssertions(po, expectedRows, expectedColumns, false)
+  await overscanAssertions(po, expectedRows, expectedColumns, false, 10)
 })
 
 test("Grid Overscan Variable Gap", async ({ page }) => {
@@ -115,13 +116,13 @@ test("Grid Overscan Variable Gap", async ({ page }) => {
   const rowsPerSet = DEFAULT_HEIGHT_ARRAY.length
 
   const windowHeight = await po.getWindowHeight()
-  const expectedRows = Math.ceil((windowHeight / heightPerSet) * rowsPerSet + 1)
+  const expectedRows = Math.ceil((windowHeight / heightPerSet) * rowsPerSet + 1) + DEFAULT_OVERSCAN
 
   const widthPerSet = DEFAULT_WIDTH_ARRAY.reduce((a, b) => a + b)
   const cellsPerSet = DEFAULT_WIDTH_ARRAY.length
 
   const windowWidth = await po.getWindowWidth()
-  const expectedColumns = Math.ceil((windowWidth / widthPerSet) * cellsPerSet)
+  const expectedColumns = Math.ceil((windowWidth / widthPerSet) * cellsPerSet) + DEFAULT_OVERSCAN
 
-  await overscanAssertions(po, expectedRows, expectedColumns, false)
+  await overscanAssertions(po, expectedRows, expectedColumns, false, 10)
 })

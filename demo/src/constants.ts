@@ -9,3 +9,5 @@ export const DEFAULT_VARIABLE_GAP = { horizontal: 40, vertical: 10 }
 export const DEFAULT_HEIGHT_ARRAY = [50, 100, 50, 150, 50]
 export const DEFAULT_WIDTH_ARRAY = [50, 30, 100, 120, 60]
 export const DEFAULT_OVERSCAN = 5
+export const DEFAULT_SIZE = 400
+export const DEFAULT_SIZE_LARGE = 800
