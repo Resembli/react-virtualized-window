@@ -3,25 +3,32 @@ import { useCallback, useRef, useState } from "react"
 import type { GridProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
 
+import {
+  DEFAULT_CELL_COUNT,
+  DEFAULT_GRID_CELL_DIM,
+  DEFAULT_HEIGHT_ARRAY,
+  DEFAULT_ROW_COUNT,
+  DEFAULT_WIDTH_ARRAY,
+} from "../../constants"
 import { debounce } from "../../debouce"
 import { css } from "../../theme/theme"
 import type { RouteItem } from "../../types"
 
-const data = Array(1000)
+const data = Array(DEFAULT_ROW_COUNT)
   .fill(0)
   .map((_, i) => {
-    return Array(200)
+    return Array(DEFAULT_CELL_COUNT)
       .fill(0)
       .map((_, j) => [i, j])
   })
 
-const heights = Array(1000)
+const heights = Array(DEFAULT_ROW_COUNT)
   .fill(0)
-  .map((_, i) => [40, 30, 100, 120, 50][i % 5])
+  .map((_, i) => DEFAULT_HEIGHT_ARRAY[i % DEFAULT_HEIGHT_ARRAY.length])
 
-const widths = Array(200)
+const widths = Array(DEFAULT_CELL_COUNT)
   .fill(0)
-  .map((_, i) => [50, 30, 100, 120, 60][i % 5])
+  .map((_, i) => DEFAULT_WIDTH_ARRAY[i % DEFAULT_WIDTH_ARRAY.length])
 
 const itemClass = css({
   display: "flex",
@@ -48,8 +55,9 @@ type BaseGridProps = Omit<
 export function BaseGrid({
   cw,
   rh,
-  defaultColumnWidth = 100,
-  defaultRowHeight = 100,
+  "data-testid": testId = "grid",
+  defaultColumnWidth = DEFAULT_GRID_CELL_DIM,
+  defaultRowHeight = DEFAULT_GRID_CELL_DIM,
   ...otherProps
 }: BaseGridProps) {
   return (
@@ -59,6 +67,7 @@ export function BaseGrid({
       defaultRowHeight={defaultRowHeight}
       columnWidths={cw}
       rowHeights={rh}
+      data-testid={testId}
       {...otherProps}
     >
       {([row, column], styles) => {
