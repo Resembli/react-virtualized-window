@@ -5,9 +5,11 @@ import { Grid } from "@resembli/react-virtualized-window"
 
 import {
   DEFAULT_CELL_COUNT,
+  DEFAULT_GAP,
   DEFAULT_GRID_CELL_DIM,
   DEFAULT_HEIGHT_ARRAY,
   DEFAULT_ROW_COUNT,
+  DEFAULT_VARIABLE_GAP,
   DEFAULT_WIDTH_ARRAY,
 } from "../../constants"
 import { debounce } from "../../debouce"
@@ -83,29 +85,27 @@ export function BaseGrid({
 
 const BGrid = () => <BaseGrid />
 const GridRTL = () => <BaseGrid rtl />
-const GridGap = () => <BaseGrid gap={20} />
-const GridGapRTL = () => <BaseGrid rtl gap={20} />
+const GridGap = () => <BaseGrid gap={DEFAULT_GAP} />
+const GridGapRTL = () => <BaseGrid rtl gap={DEFAULT_GAP} />
 
 const VGrid = () => <BaseGrid cw={widths} rh={heights} />
 const VGridRTL = () => <BaseGrid cw={widths} rh={heights} rtl />
-const VGridGap = () => <BaseGrid cw={widths} rh={heights} rtl gap={20} />
-const VGridGapRTL = () => <BaseGrid cw={widths} rh={heights} rtl gap={20} />
+const VGridGap = () => <BaseGrid cw={widths} rh={heights} gap={DEFAULT_GAP} />
+const VGridGapRTL = () => <BaseGrid cw={widths} rh={heights} rtl gap={DEFAULT_GAP} />
 
-const GridVGap = () => <BaseGrid gap={{ horizontal: 40, vertical: 10 }} />
-const GridVGapRTL = () => <BaseGrid gap={{ horizontal: 40, vertical: 10 }} rtl />
-const VGridVGap = () => <BaseGrid gap={{ horizontal: 40, vertical: 10 }} cw={widths} rh={heights} />
-const VGridVGapRTL = () => (
-  <BaseGrid gap={{ horizontal: 40, vertical: 10 }} rtl cw={widths} rh={heights} />
-)
+const GridVGap = () => <BaseGrid gap={DEFAULT_VARIABLE_GAP} />
+const GridVGapRTL = () => <BaseGrid gap={DEFAULT_VARIABLE_GAP} rtl />
+const VGridVGap = () => <BaseGrid gap={DEFAULT_VARIABLE_GAP} cw={widths} rh={heights} />
+const VGridVGapRTL = () => <BaseGrid gap={DEFAULT_VARIABLE_GAP} rtl cw={widths} rh={heights} />
 
 const OverscanBasic = () => <BaseGrid overscan={5} width="50%" height="50%" />
 const OverscanRTL = () => <BaseGrid overscan={5} rtl width="50%" height="50%" />
-const OverscanGap = () => <BaseGrid overscan={5} gap={20} width="50%" height="50%" />
+const OverscanGap = () => <BaseGrid overscan={5} gap={DEFAULT_GAP} width="50%" height="50%" />
 const OverscanVariable = () => (
   <BaseGrid overscan={5} cw={widths} rh={heights} width="50%" height="50%" />
 )
 const OverscanVariableGap = () => (
-  <BaseGrid overscan={5} cw={widths} rh={heights} gap={20} width="50%" height="50%" />
+  <BaseGrid overscan={5} cw={widths} rh={heights} gap={DEFAULT_GAP} width="50%" height="50%" />
 )
 
 export const basicGrids: RouteItem[] = [
@@ -196,9 +196,9 @@ const BaseSizing = ({
 }
 
 const SizingGrid = () => <BaseSizing />
-const SizingGridGap = () => <BaseSizing gap={20} />
-const SizingGridTransitions = () => <BaseSizing gap={20} transitions />
-const SizingGridRTL = () => <BaseSizing gap={20} transitions rtl />
+const SizingGridGap = () => <BaseSizing gap={DEFAULT_GAP} />
+const SizingGridTransitions = () => <BaseSizing gap={DEFAULT_GAP} transitions />
+const SizingGridRTL = () => <BaseSizing gap={DEFAULT_GAP} transitions rtl />
 
 export const sizingGrids: RouteItem[] = [
   { label: "Sizing Grid", path: "/grid-sizing", Component: SizingGrid },
@@ -370,11 +370,11 @@ const widthsPercentage = Array(200)
 
 const GridPercentage = () => <BaseGrid defaultColumnWidth="10%" defaultRowHeight="10%" />
 const GridPercentageGap = () => (
-  <BaseGrid defaultColumnWidth="10%" defaultRowHeight="10%" gap={20} />
+  <BaseGrid defaultColumnWidth="10%" defaultRowHeight="10%" gap={DEFAULT_GAP} />
 )
 const GridPercentageVariable = () => <BaseGrid cw={widthsPercentage} rh={heightsPercentage} />
 const GridPercentageVariableGap = () => (
-  <BaseGrid cw={widthsPercentage} rh={heightsPercentage} gap={20} />
+  <BaseGrid cw={widthsPercentage} rh={heightsPercentage} gap={DEFAULT_GAP} />
 )
 
 export const percentageSizeGrids: RouteItem[] = [
