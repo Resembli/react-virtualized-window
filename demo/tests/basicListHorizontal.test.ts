@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test"
 
 import {
   DEFAULT_COLUMN_WIDTH,
-  DEFAULT_ITEM_COUNT,
+  DEFAULT_ROW_COUNT,
   DEFAULT_WIDTH_ARRAY,
   TITLE_REGEX,
 } from "../src/constants"
@@ -20,21 +20,21 @@ test("List Horizontal Basic", async ({ page }) => {
   const po = new GridPO(page, "list")
   await po.isVisible()
 
-  expect(await po.getScrollWidth()).toEqual(DEFAULT_ITEM_COUNT * DEFAULT_COLUMN_WIDTH)
-
-  const windowWidth = await po.getWindowWidth()
+  expect(await po.getScrollWidth()).toEqual(DEFAULT_ROW_COUNT * DEFAULT_COLUMN_WIDTH)
 
   await expect(po.offsetDiv).toHaveCSS("height", "0px")
+
+  const windowWidth = await po.getWindowWidth()
 
   // We should have a single row
   expect(await po.getRenderedRowCount()).toEqual(1)
 
-  const expectedNumberOfChildren = Math.ceil(windowWidth / DEFAULT_COLUMN_WIDTH)
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  const expectNumColumns = Math.ceil(windowWidth / DEFAULT_COLUMN_WIDTH)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
 
   // We expect the first row to be "1". This is because we have setup so that each
   // row renders its index.
-  expect(po.getCellLocator(0, 0)).toHaveText("1")
+  await expect(po.getCellLocator(0, 0)).toHaveText("1")
 
   await po.scroll(0, 8)
 
@@ -51,12 +51,12 @@ test("List Horizontal Basic", async ({ page }) => {
   await po.scroll(0, DEFAULT_COLUMN_WIDTH)
   await expect(po.getOffsetDivForRow(0)).toHaveCSS("width", `${DEFAULT_COLUMN_WIDTH}px`)
 
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
   await expect(po.getCellLocator(0, 0)).toHaveText("2")
 
   await po.scroll(0, await po.getScrollWidth())
 
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
   await expect(po.getCellLocator(0, (await po.getRenderedCellCountForRow(0)) - 1)).toHaveText(
     "1000",
   )
@@ -68,22 +68,22 @@ test("List Horizontal Basic RTL", async ({ page }) => {
   const po = new GridPO(page, "list")
   await po.isVisible()
 
-  expect(await po.getScrollWidth()).toEqual(DEFAULT_ITEM_COUNT * DEFAULT_COLUMN_WIDTH)
-
-  const windowWidth = await po.getWindowWidth()
+  expect(await po.getScrollWidth()).toEqual(DEFAULT_ROW_COUNT * DEFAULT_COLUMN_WIDTH)
 
   await expect(po.offsetDiv).toHaveCSS("height", "0px")
   await expect(po.list).toHaveCSS("direction", "rtl")
 
+  const windowWidth = await po.getWindowWidth()
+
   // We should have a single row
   expect(await po.getRenderedRowCount()).toEqual(1)
 
-  const expectedNumberOfChildren = Math.ceil(windowWidth / DEFAULT_COLUMN_WIDTH)
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  const expectNumColumns = Math.ceil(windowWidth / DEFAULT_COLUMN_WIDTH)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
 
   // We expect the first row to be "1". This is because we have setup so that each
   // row renders its index.
-  expect(po.getCellLocator(0, 0)).toHaveText("1")
+  await expect(po.getCellLocator(0, 0)).toHaveText("1")
 
   await po.scroll(0, -8)
 
@@ -100,12 +100,12 @@ test("List Horizontal Basic RTL", async ({ page }) => {
   await po.scroll(0, -DEFAULT_COLUMN_WIDTH)
   await expect(po.getOffsetDivForRow(0)).toHaveCSS("width", `${DEFAULT_COLUMN_WIDTH}px`)
 
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
   await expect(po.getCellLocator(0, 0)).toHaveText("2")
 
   await po.scroll(0, -(await po.getScrollWidth()))
 
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
   await expect(po.getCellLocator(0, (await po.getRenderedCellCountForRow(0)) - 1)).toHaveText(
     "1000",
   )
@@ -119,23 +119,23 @@ test("List Horizontal Variable Basic", async ({ page }) => {
 
   const widthPerSet = DEFAULT_WIDTH_ARRAY.reduce((a, b) => a + b)
   const itemsPerSet = DEFAULT_WIDTH_ARRAY.length
-  const numberOfSets = DEFAULT_ITEM_COUNT / itemsPerSet
+  const numberOfSets = DEFAULT_ROW_COUNT / itemsPerSet
 
   expect(await po.getScrollWidth()).toEqual(widthPerSet * numberOfSets)
 
-  const windowWidth = await po.getWindowWidth()
-
   await expect(po.offsetDiv).toHaveCSS("height", "0px")
+
+  const windowWidth = await po.getWindowWidth()
 
   // We should have a single row
   expect(await po.getRenderedRowCount()).toEqual(1)
 
-  const expectedNumberOfChildren = Math.ceil((windowWidth / widthPerSet) * itemsPerSet)
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  const expectNumColumns = Math.ceil((windowWidth / widthPerSet) * itemsPerSet)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
 
   // We expect the first row to be "1". This is because we have setup so that each
   // row renders its index.
-  expect(po.getCellLocator(0, 0)).toHaveText("1")
+  await expect(po.getCellLocator(0, 0)).toHaveText("1")
 
   await po.scroll(0, 8)
 
@@ -152,12 +152,12 @@ test("List Horizontal Variable Basic", async ({ page }) => {
   await po.scroll(0, maxItem)
   await expect(po.getOffsetDivForRow(0)).toHaveCSS("width", `${DEFAULT_WIDTH_ARRAY[0]}px`)
 
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
   await expect(po.getCellLocator(0, 0)).toHaveText("2")
 
   await po.scroll(0, await po.getScrollWidth())
 
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
   await expect(po.getCellLocator(0, (await po.getRenderedCellCountForRow(0)) - 1)).toHaveText(
     "1000",
   )
@@ -171,24 +171,24 @@ test("List Horizontal Variable Basic RTL", async ({ page }) => {
 
   const widthPerSet = DEFAULT_WIDTH_ARRAY.reduce((a, b) => a + b)
   const itemsPerSet = DEFAULT_WIDTH_ARRAY.length
-  const numberOfSets = DEFAULT_ITEM_COUNT / itemsPerSet
+  const numberOfSets = DEFAULT_ROW_COUNT / itemsPerSet
+
+  await expect(po.offsetDiv).toHaveCSS("height", "0px")
+  await expect(po.list).toHaveCSS("direction", "rtl")
 
   expect(await po.getScrollWidth()).toEqual(widthPerSet * numberOfSets)
 
   const windowWidth = await po.getWindowWidth()
 
-  await expect(po.offsetDiv).toHaveCSS("height", "0px")
-  await expect(po.list).toHaveCSS("direction", "rtl")
-
   // We should have a single row
   expect(await po.getRenderedRowCount()).toEqual(1)
 
-  const expectedNumberOfChildren = Math.ceil((windowWidth / widthPerSet) * itemsPerSet)
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  const expectNumColumns = Math.ceil((windowWidth / widthPerSet) * itemsPerSet)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
 
   // We expect the first row to be "1". This is because we have setup so that each
   // row renders its index.
-  expect(po.getCellLocator(0, 0)).toHaveText("1")
+  await expect(po.getCellLocator(0, 0)).toHaveText("1")
 
   await po.scroll(0, -8)
 
@@ -206,12 +206,12 @@ test("List Horizontal Variable Basic RTL", async ({ page }) => {
   await po.scroll(0, -maxItem)
   await expect(po.getOffsetDivForRow(0)).toHaveCSS("width", `${DEFAULT_WIDTH_ARRAY[0]}px`)
 
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
   await expect(po.getCellLocator(0, 0)).toHaveText("2")
 
   await po.scroll(0, -(await po.getScrollWidth()))
 
-  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectedNumberOfChildren)
+  expect(await po.getRenderedCellCountForRow(0)).toEqual(expectNumColumns)
   await expect(po.getCellLocator(0, (await po.getRenderedCellCountForRow(0)) - 1)).toHaveText(
     "1000",
   )

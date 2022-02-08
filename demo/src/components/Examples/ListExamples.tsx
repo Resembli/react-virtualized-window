@@ -3,16 +3,16 @@ import { useCallback, useRef, useState } from "react"
 import { List } from "@resembli/react-virtualized-window"
 import type { ListProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 
-import { DEFAULT_HEIGHT_ARRAY, DEFAULT_ITEM_COUNT, DEFAULT_ROW_HEIGHT } from "../../constants"
+import { DEFAULT_HEIGHT_ARRAY, DEFAULT_ROW_COUNT, DEFAULT_ROW_HEIGHT } from "../../constants"
 import { debounce } from "../../debouce"
 import { css } from "../../theme/theme"
 import type { RouteItem } from "../../types"
 
-const data = Array(DEFAULT_ITEM_COUNT)
+const data = Array(DEFAULT_ROW_COUNT)
   .fill(0)
   .map((_, i) => i)
 
-const heights = Array(DEFAULT_ITEM_COUNT)
+const heights = Array(DEFAULT_ROW_COUNT)
   .fill(0)
   .map((_, i) => DEFAULT_HEIGHT_ARRAY[i % DEFAULT_HEIGHT_ARRAY.length])
 
