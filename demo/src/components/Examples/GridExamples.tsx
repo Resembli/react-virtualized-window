@@ -8,6 +8,7 @@ import {
   DEFAULT_GAP,
   DEFAULT_GRID_CELL_DIM,
   DEFAULT_HEIGHT_ARRAY,
+  DEFAULT_OVERSCAN,
   DEFAULT_ROW_COUNT,
   DEFAULT_VARIABLE_GAP,
   DEFAULT_WIDTH_ARRAY,
@@ -98,14 +99,23 @@ const GridVGapRTL = () => <BaseGrid gap={DEFAULT_VARIABLE_GAP} rtl />
 const VGridVGap = () => <BaseGrid gap={DEFAULT_VARIABLE_GAP} cw={widths} rh={heights} />
 const VGridVGapRTL = () => <BaseGrid gap={DEFAULT_VARIABLE_GAP} rtl cw={widths} rh={heights} />
 
-const OverscanBasic = () => <BaseGrid overscan={5} width="50%" height="50%" />
-const OverscanRTL = () => <BaseGrid overscan={5} rtl width="50%" height="50%" />
-const OverscanGap = () => <BaseGrid overscan={5} gap={DEFAULT_GAP} width="50%" height="50%" />
+const OverscanBasic = () => <BaseGrid overscan={DEFAULT_OVERSCAN} width="50%" height="50%" />
+const OverscanRTL = () => <BaseGrid overscan={DEFAULT_OVERSCAN} rtl width="50%" height="50%" />
+const OverscanGap = () => (
+  <BaseGrid overscan={DEFAULT_OVERSCAN} gap={DEFAULT_GAP} width="50%" height="50%" />
+)
 const OverscanVariable = () => (
-  <BaseGrid overscan={5} cw={widths} rh={heights} width="50%" height="50%" />
+  <BaseGrid overscan={DEFAULT_OVERSCAN} cw={widths} rh={heights} width="50%" height="50%" />
 )
 const OverscanVariableGap = () => (
-  <BaseGrid overscan={5} cw={widths} rh={heights} gap={DEFAULT_GAP} width="50%" height="50%" />
+  <BaseGrid
+    overscan={DEFAULT_OVERSCAN}
+    cw={widths}
+    rh={heights}
+    gap={DEFAULT_GAP}
+    width="50%"
+    height="50%"
+  />
 )
 
 export const basicGrids: RouteItem[] = [
