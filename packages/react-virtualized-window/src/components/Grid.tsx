@@ -61,7 +61,7 @@ export function Grid<T>({
   const windowRef = useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
 
-  const [topOffset, leftOffset, onScroll, isScrolling] = useWindowScroll({
+  const [topOffset, leftOffset, onScroll] = useWindowScroll({
     userOnScroll,
     rtl: rtl ?? false,
   })
@@ -131,7 +131,6 @@ export function Grid<T>({
           width,
           position: "relative",
           overflow: "auto",
-          pointerEvents: isScrolling ? "none" : "all",
           direction: rtl ? "rtl" : "ltr",
         }}
       >
