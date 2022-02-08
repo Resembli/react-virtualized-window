@@ -10,6 +10,8 @@ import {
   DEFAULT_HEIGHT_ARRAY,
   DEFAULT_OVERSCAN,
   DEFAULT_ROW_COUNT,
+  DEFAULT_SIZE,
+  DEFAULT_SIZE_LARGE,
   DEFAULT_VARIABLE_GAP,
   DEFAULT_WIDTH_ARRAY,
 } from "../../constants"
@@ -169,12 +171,12 @@ export const multipleGrids: RouteItem[] = [
 ]
 
 const sizingCss = css({
-  width: "50%",
-  height: "50%",
+  width: DEFAULT_SIZE,
+  height: DEFAULT_SIZE,
 
   variants: {
     grow: {
-      true: { width: "80%", height: "80%" },
+      true: { width: DEFAULT_SIZE_LARGE, height: DEFAULT_SIZE_LARGE },
     },
     transition: {
       true: { transition: "width 1s ease-in, height 1s ease-in" },
@@ -208,7 +210,7 @@ const BaseSizing = ({
 const SizingGrid = () => <BaseSizing />
 const SizingGridGap = () => <BaseSizing gap={DEFAULT_GAP} />
 const SizingGridTransitions = () => <BaseSizing gap={DEFAULT_GAP} transitions />
-const SizingGridRTL = () => <BaseSizing gap={DEFAULT_GAP} transitions rtl />
+const SizingGridRTL = () => <BaseSizing gap={DEFAULT_GAP} rtl />
 
 export const sizingGrids: RouteItem[] = [
   { label: "Sizing Grid", path: "/grid-sizing", Component: SizingGrid },
