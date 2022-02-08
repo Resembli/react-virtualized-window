@@ -1,6 +1,6 @@
 import type { UIEventHandler } from "react"
-import { useRef } from "react"
-import { useCallback, useState } from "react"
+import { useState } from "react"
+import { useCallback } from "react"
 
 interface UseWindowScrollArgs {
   rtl: boolean
@@ -8,17 +8,8 @@ interface UseWindowScrollArgs {
 }
 
 export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
-  const verticalOffsetRef = useRef(0)
-  const horizontalOffsetRef = useRef(0)
-
-  const [isScrolling, setIsScrolling] = useState(false)
-
-  const debounceTime = useRef<number | null>(null)
-
-  const debouncedEnded = useCallback(() => {
-    debounceTime.current = null
-    setIsScrolling(false)
-  }, [])
+  const [vOffset, setVerticalOffset] = useState(0)
+  const [hOffset, setHorizontalOffset] = useState(0)
 
   const onScroll: UIEventHandler<HTMLElement> = useCallback(
     (event) => {
@@ -30,19 +21,13 @@ export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
       const verticalOffset = Math.max(0, scrollTop)
       const horizontalOffset = Math.max(0, scrollLeft)
 
-      horizontalOffsetRef.current = horizontalOffset
-      verticalOffsetRef.current = verticalOffset
+      setHorizontalOffset(horizontalOffset)
+      setVerticalOffset(verticalOffset)
 
       userOnScroll?.(event)
-
-      setIsScrolling(true)
-      if (debounceTime.current) {
-        cancelAnimationFrame(debounceTime.current)
-      }
-      debounceTime.current = requestAnimationFrame(debouncedEnded)
     },
-    [debouncedEnded, rtl, userOnScroll],
+    [rtl, userOnScroll],
   )
 
-  return [verticalOffsetRef.current, horizontalOffsetRef.current, onScroll, isScrolling] as const
+  return [vOffset, hOffset, onScroll] as const
 }
