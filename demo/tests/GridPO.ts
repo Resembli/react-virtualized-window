@@ -49,9 +49,15 @@ export class GridPO {
     return row.locator("div").nth(0)
   }
 
-  getCellLocator(n: number, m: number) {
+  getRowLocator(n: number) {
     const rows = this.absoluteDiv.locator("> div")
     const row = rows.nth(n + 1)
+
+    return row
+  }
+
+  getCellLocator(n: number, m: number) {
+    const row = this.getRowLocator(n)
     const cells = row.locator("> div")
     const cell = cells.nth(m + 1)
 
