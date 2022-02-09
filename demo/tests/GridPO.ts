@@ -28,6 +28,14 @@ export class GridPO {
     return await this.innerWindow.evaluate((node) => node.scrollWidth)
   }
 
+  async getScrollTop() {
+    return await this.list.evaluate((node) => node.scrollTop)
+  }
+
+  async getScrollLeft() {
+    return await this.list.evaluate((node) => node.scrollLeft)
+  }
+
   async isVisible() {
     expect(await this.listWrapper.isVisible()).toBeTruthy()
   }
