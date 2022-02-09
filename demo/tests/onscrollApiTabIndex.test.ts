@@ -40,7 +40,7 @@ test("Api", async ({ page }) => {
   expect(await po.getScrollLeft()).toEqual(0)
 })
 
-test.only("Tab Index", async ({ page }) => {
+test("Tab Index", async ({ page }) => {
   await page.locator('[href="/onscroll-api-tab-index/grid-index"]').click()
 
   const po = new GridPO(page, "grid")
