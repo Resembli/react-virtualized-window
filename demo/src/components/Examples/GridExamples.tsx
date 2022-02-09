@@ -160,8 +160,8 @@ const multiCss = css({
 const MultipleGrids = () => {
   return (
     <div className={multiCss()}>
-      <BaseGrid />
-      <VGrid />
+      <BaseGrid data-testid="grid-1" />
+      <BaseGrid data-testid="grid-2" />
     </div>
   )
 }
