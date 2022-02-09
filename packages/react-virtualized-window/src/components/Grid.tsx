@@ -118,22 +118,25 @@ export function Grid<T>({
 
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 
+  const windowStyle = useMemo(() => {
+    return {
+      height,
+      width,
+      position: "relative",
+      overflow: "auto",
+      direction: rtl ? "rtl" : "ltr",
+    } as const
+  }, [height, rtl, width])
+
   return (
-    <SizingDiv width={sizingWidth} height={sizingHeight} testId={testId}>
-      <div
-        ref={windowRef}
-        className={className}
-        tabIndex={tabIndex}
-        onScroll={onScroll}
-        style={{
-          ...style,
-          height,
-          width,
-          position: "relative",
-          overflow: "auto",
-          direction: rtl ? "rtl" : "ltr",
-        }}
-      >
+    <SizingDiv
+      width={sizingWidth}
+      height={sizingHeight}
+      testId={testId}
+      className={className}
+      userStyle={style}
+    >
+      <div ref={windowRef} tabIndex={tabIndex} onScroll={onScroll} style={windowStyle}>
         <div style={{ width: innerWidth, height: innerHeight }}>
           <StickyDiv
             disabled={disableSticky ?? false}
