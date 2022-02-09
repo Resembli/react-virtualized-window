@@ -1,3 +1,4 @@
+import * as React from "react"
 import type { CSSProperties } from "react"
 import { useMemo } from "react"
 import { memo } from "react"

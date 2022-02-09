@@ -23,7 +23,6 @@ module.exports = {
   ],
   rules: {
     "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off",
     "react/no-unescaped-entities": "off",
 
     "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -37,6 +36,12 @@ module.exports = {
       files: ["*.js", "*.jsx", "*.cjs"],
       rules: {
         "@typescript-eslint/no-var-requires": "off",
+      },
+    },
+    {
+      files: ["./packages/*.tsx"],
+      rules: {
+        "react/react-in-jsx-scope": "error",
       },
     },
   ],
