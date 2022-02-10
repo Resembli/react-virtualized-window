@@ -1,8 +1,6 @@
-import * as React from "react"
 import type { CSSProperties } from "react"
-import { useMemo } from "react"
-import { memo } from "react"
 import { useRef } from "react"
+import { memo, useMemo } from "react"
 
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"

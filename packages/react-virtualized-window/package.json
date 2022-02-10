@@ -1,7 +1,6 @@
 {
   "name": "@resembli/react-virtualized-window",
   "version": "0.0.1",
-  "type": "module",
   "types": "src/index.ts",
   "main": "src/index.ts",
   "publishConfig": {
