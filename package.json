@@ -14,6 +14,7 @@
   },
   "homepage": "https://github.com/Resembli/ui#readme",
   "devDependencies": {
+    "@changesets/cli": "^2.20.0",
     "@swc/cli": "^0.1.55",
     "@swc/core": "^1.2.138",
     "@trivago/prettier-plugin-sort-imports": "^3.1.1",
@@ -33,6 +34,9 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint . --ext .ts --ext .tsx --ext .js --ext .jsx --ignore-path .gitignore --max-warnings=0",
-    "prettier": "prettier --check *"
+    "prettier": "prettier --check *",
+    "build-packages": "pnpm run build --stream --parallel --filter \"{packages}\"",
+    "ci:version": "pnpm changeset version",
+    "ci:publish": "pnpm -r --filter \"{packages}\" publish --access=public"
   }
 }
