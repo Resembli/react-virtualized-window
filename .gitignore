@@ -37,3 +37,6 @@ yarn-error.log*
 .pnp.*
 
 .swc
+
+# Changeset git workflow will use this.
+.pnpm-store
