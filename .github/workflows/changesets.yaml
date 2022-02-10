@@ -7,10 +7,12 @@ on:
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  HUSKY: 0
 jobs:
   version:
     timeout-minutes: 15
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: checkout code repository
         uses: actions/checkout@v2
@@ -32,10 +34,8 @@ jobs:
         uses: changesets/action@v1
         with:
           version: pnpm ci:version
-          commit: '"[VERSION]: update versions."'
+          commit: "[VERSION]: update versions."
           title: "Version Packages"
           publish: pnpm ci:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          HUSKY: 0
