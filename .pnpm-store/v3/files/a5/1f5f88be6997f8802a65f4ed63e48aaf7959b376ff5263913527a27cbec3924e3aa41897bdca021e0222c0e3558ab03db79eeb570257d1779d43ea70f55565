@@ -1,0 +1,538 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.htmlReportFolder = htmlReportFolder;
+exports.showHTMLReport = showHTMLReport;
+exports.startHtmlReportServer = startHtmlReportServer;
+exports.default = void 0;
+
+var _safe = _interopRequireDefault(require("colors/safe"));
+
+var _fs = _interopRequireDefault(require("fs"));
+
+var _open = _interopRequireDefault(require("open"));
+
+var _path = _interopRequireDefault(require("path"));
+
+var _stream = require("stream");
+
+var _httpServer = require("playwright-core/lib/utils/httpServer");
+
+var _utils = require("playwright-core/lib/utils/utils");
+
+var _raw = _interopRequireDefault(require("./raw"));
+
+var _assert = _interopRequireDefault(require("assert"));
+
+var _yazl = _interopRequireDefault(require("yazl"));
+
+var _base = require("./base");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Copyright (c) Microsoft Corporation.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+const kMissingContentType = 'x-playwright/missing';
+
+class HtmlReporter {
+  constructor(options = {}) {
+    this.config = void 0;
+    this.suite = void 0;
+    this._outputFolder = void 0;
+    this._open = void 0;
+    // TODO: resolve relative to config.
+    this._outputFolder = options.outputFolder;
+    this._open = options.open || 'on-failure';
+  }
+
+  printsToStdio() {
+    return false;
+  }
+
+  onBegin(config, suite) {
+    this.config = config;
+    this.suite = suite;
+  }
+
+  async onEnd() {
+    const projectSuites = this.suite.suites;
+    const reports = projectSuites.map(suite => {
+      const rawReporter = new _raw.default();
+      const report = rawReporter.generateProjectReport(this.config, suite);
+      return report;
+    });
+    const reportFolder = htmlReportFolder(this._outputFolder);
+    await (0, _utils.removeFolders)([reportFolder]);
+    const builder = new HtmlBuilder(reportFolder);
+    const {
+      ok,
+      singleTestId
+    } = await builder.build(reports);
+    if (process.env.PWTEST_SKIP_TEST_OUTPUT || process.env.CI) return;
+    const shouldOpen = this._open === 'always' || !ok && this._open === 'on-failure';
+
+    if (shouldOpen) {
+      await showHTMLReport(reportFolder, singleTestId);
+    } else {
+      const outputFolderPath = htmlReportFolder(this._outputFolder) === defaultReportFolder() ? '' : ' ' + _path.default.relative(process.cwd(), htmlReportFolder(this._outputFolder));
+      console.log('');
+      console.log('To open last HTML report run:');
+      console.log(_safe.default.cyan(`
+  npx playwright show-report${outputFolderPath}
+`));
+    }
+  }
+
+}
+
+function htmlReportFolder(outputFolder) {
+  if (process.env[`PLAYWRIGHT_HTML_REPORT`]) return _path.default.resolve(process.cwd(), process.env[`PLAYWRIGHT_HTML_REPORT`]);
+  if (outputFolder) return outputFolder;
+  return defaultReportFolder();
+}
+
+function defaultReportFolder() {
+  return _path.default.resolve(process.cwd(), 'playwright-report');
+}
+
+async function showHTMLReport(reportFolder, testId) {
+  const folder = reportFolder || htmlReportFolder();
+
+  try {
+    (0, _assert.default)(_fs.default.statSync(folder).isDirectory());
+  } catch (e) {
+    console.log(_safe.default.red(`No report found at "${folder}"`));
+    process.exit(1);
+    return;
+  }
+
+  const server = startHtmlReportServer(folder);
+  let url = await server.start(9323);
+  console.log('');
+  console.log(_safe.default.cyan(`  Serving HTML report at ${url}. Press Ctrl+C to quit.`));
+  if (testId) url += `#?testId=${testId}`;
+  (0, _open.default)(url);
+  await new Promise(() => {});
+}
+
+function startHtmlReportServer(folder) {
+  const server = new _httpServer.HttpServer();
+  server.routePrefix('/', (request, response) => {
+    let relativePath = new URL('http://localhost' + request.url).pathname;
+
+    if (relativePath.startsWith('/trace/file')) {
+      const url = new URL('http://localhost' + request.url);
+
+      try {
+        return server.serveFile(request, response, url.searchParams.get('path'));
+      } catch (e) {
+        return false;
+      }
+    }
+
+    if (relativePath === '/') relativePath = '/index.html';
+
+    const absolutePath = _path.default.join(folder, ...relativePath.split('/'));
+
+    return server.serveFile(request, response, absolutePath);
+  });
+  return server;
+}
+
+class HtmlBuilder {
+  constructor(outputDir) {
+    this._reportFolder = void 0;
+    this._tests = new Map();
+    this._testPath = new Map();
+    this._dataZipFile = void 0;
+    this._hasTraces = false;
+    this._reportFolder = _path.default.resolve(process.cwd(), outputDir);
+
+    _fs.default.mkdirSync(this._reportFolder, {
+      recursive: true
+    });
+
+    this._dataZipFile = new _yazl.default.ZipFile();
+  }
+
+  async build(rawReports) {
+    const data = new Map();
+
+    for (const projectJson of rawReports) {
+      for (const file of projectJson.suites) {
+        const fileName = file.location.file;
+        const fileId = file.fileId;
+        let fileEntry = data.get(fileId);
+
+        if (!fileEntry) {
+          fileEntry = {
+            testFile: {
+              fileId,
+              fileName,
+              tests: [],
+              hooks: []
+            },
+            testFileSummary: {
+              fileId,
+              fileName,
+              tests: [],
+              hooks: [],
+              stats: emptyStats()
+            }
+          };
+          data.set(fileId, fileEntry);
+        }
+
+        const {
+          testFile,
+          testFileSummary
+        } = fileEntry;
+        const testEntries = [];
+        const hookEntries = [];
+
+        this._processJsonSuite(file, fileId, projectJson.project.name, [], testEntries, hookEntries);
+
+        for (const test of testEntries) {
+          testFile.tests.push(test.testCase);
+          testFileSummary.tests.push(test.testCaseSummary);
+        }
+
+        for (const hook of hookEntries) {
+          testFile.hooks.push(hook.testCase);
+          testFileSummary.hooks.push(hook.testCaseSummary);
+        }
+      }
+    }
+
+    let ok = true;
+
+    for (const [fileId, {
+      testFile,
+      testFileSummary
+    }] of data) {
+      const stats = testFileSummary.stats;
+
+      for (const test of testFileSummary.tests) {
+        if (test.outcome === 'expected') ++stats.expected;
+        if (test.outcome === 'skipped') ++stats.skipped;
+        if (test.outcome === 'unexpected') ++stats.unexpected;
+        if (test.outcome === 'flaky') ++stats.flaky;
+        ++stats.total;
+        stats.duration += test.duration;
+      }
+
+      stats.ok = stats.unexpected + stats.flaky === 0;
+      if (!stats.ok) ok = false;
+
+      const testCaseSummaryComparator = (t1, t2) => {
+        const w1 = (t1.outcome === 'unexpected' ? 1000 : 0) + (t1.outcome === 'flaky' ? 1 : 0);
+        const w2 = (t2.outcome === 'unexpected' ? 1000 : 0) + (t2.outcome === 'flaky' ? 1 : 0);
+        if (w2 - w1) return w2 - w1;
+        return t1.location.line - t2.location.line;
+      };
+
+      testFileSummary.tests.sort(testCaseSummaryComparator);
+      testFileSummary.hooks.sort(testCaseSummaryComparator);
+
+      this._addDataFile(fileId + '.json', testFile);
+    }
+
+    const htmlReport = {
+      files: [...data.values()].map(e => e.testFileSummary),
+      projectNames: rawReports.map(r => r.project.name),
+      stats: [...data.values()].reduce((a, e) => addStats(a, e.testFileSummary.stats), emptyStats())
+    };
+    htmlReport.files.sort((f1, f2) => {
+      const w1 = f1.stats.unexpected * 1000 + f1.stats.flaky;
+      const w2 = f2.stats.unexpected * 1000 + f2.stats.flaky;
+      return w2 - w1;
+    });
+
+    this._addDataFile('report.json', htmlReport); // Copy app.
+
+
+    const appFolder = _path.default.join(require.resolve('playwright-core'), '..', 'lib', 'webpack', 'htmlReport');
+
+    _fs.default.copyFileSync(_path.default.join(appFolder, 'index.html'), _path.default.join(this._reportFolder, 'index.html')); // Copy trace viewer.
+
+
+    if (this._hasTraces) {
+      const traceViewerFolder = _path.default.join(require.resolve('playwright-core'), '..', 'lib', 'webpack', 'traceViewer');
+
+      const traceViewerTargetFolder = _path.default.join(this._reportFolder, 'trace');
+
+      _fs.default.mkdirSync(traceViewerTargetFolder, {
+        recursive: true
+      });
+
+      for (const file of _fs.default.readdirSync(traceViewerFolder)) {
+        if (file.endsWith('.map')) continue;
+
+        _fs.default.copyFileSync(_path.default.join(traceViewerFolder, file), _path.default.join(traceViewerTargetFolder, file));
+      }
+    } // Inline report data.
+
+
+    const indexFile = _path.default.join(this._reportFolder, 'index.html');
+
+    _fs.default.appendFileSync(indexFile, '<script>\nwindow.playwrightReportBase64 = "data:application/zip;base64,');
+
+    await new Promise(f => {
+      this._dataZipFile.end(undefined, () => {
+        this._dataZipFile.outputStream.pipe(new Base64Encoder()).pipe(_fs.default.createWriteStream(indexFile, {
+          flags: 'a'
+        })).on('close', f);
+      });
+    });
+
+    _fs.default.appendFileSync(indexFile, '";</script>');
+
+    let singleTestId;
+
+    if (htmlReport.stats.total === 1) {
+      const testFile = data.values().next().value.testFile;
+      singleTestId = testFile.tests[0].testId;
+    }
+
+    return {
+      ok,
+      singleTestId
+    };
+  }
+
+  _addDataFile(fileName, data) {
+    this._dataZipFile.addBuffer(Buffer.from(JSON.stringify(data)), fileName);
+  }
+
+  _processJsonSuite(suite, fileId, projectName, path, outTests, outHooks) {
+    const newPath = [...path, suite.title];
+    suite.suites.map(s => this._processJsonSuite(s, fileId, projectName, newPath, outTests, outHooks));
+    suite.tests.forEach(t => outTests.push(this._createTestEntry(t, projectName, newPath)));
+    suite.hooks.forEach(t => outHooks.push(this._createTestEntry(t, projectName, newPath)));
+  }
+
+  _createTestEntry(test, projectName, path) {
+    const duration = test.results.reduce((a, r) => a + r.duration, 0);
+
+    this._tests.set(test.testId, test);
+
+    const location = test.location;
+    path = [...path.slice(1)];
+
+    this._testPath.set(test.testId, path);
+
+    return {
+      testCase: {
+        testId: test.testId,
+        title: test.title,
+        projectName,
+        location,
+        duration,
+        annotations: test.annotations,
+        outcome: test.outcome,
+        path,
+        results: test.results.map(r => this._createTestResult(r)),
+        ok: test.outcome === 'expected' || test.outcome === 'flaky'
+      },
+      testCaseSummary: {
+        testId: test.testId,
+        title: test.title,
+        projectName,
+        location,
+        duration,
+        annotations: test.annotations,
+        outcome: test.outcome,
+        path,
+        ok: test.outcome === 'expected' || test.outcome === 'flaky'
+      }
+    };
+  }
+
+  _createTestResult(result) {
+    let lastAttachment;
+    return {
+      duration: result.duration,
+      startTime: result.startTime,
+      retry: result.retry,
+      steps: result.steps.map(s => this._createTestStep(s)),
+      error: result.error,
+      status: result.status,
+      attachments: result.attachments.map(a => {
+        if (a.name === 'trace') this._hasTraces = true;
+
+        if ((a.name === 'stdout' || a.name === 'stderr') && a.contentType === 'text/plain') {
+          if (lastAttachment && lastAttachment.name === a.name && lastAttachment.contentType === a.contentType) {
+            lastAttachment.body += (0, _base.stripAnsiEscapes)(a.body);
+            return null;
+          }
+
+          a.body = (0, _base.stripAnsiEscapes)(a.body);
+          lastAttachment = a;
+          return a;
+        }
+
+        if (a.path) {
+          let fileName = a.path;
+
+          try {
+            const buffer = _fs.default.readFileSync(a.path);
+
+            const sha1 = (0, _utils.calculateSha1)(buffer) + _path.default.extname(a.path);
+
+            fileName = 'data/' + sha1;
+
+            _fs.default.mkdirSync(_path.default.join(this._reportFolder, 'data'), {
+              recursive: true
+            });
+
+            _fs.default.writeFileSync(_path.default.join(this._reportFolder, 'data', sha1), buffer);
+          } catch (e) {
+            return {
+              name: `Missing attachment "${a.name}"`,
+              contentType: kMissingContentType,
+              body: `Attachment file ${fileName} is missing`
+            };
+          }
+
+          return {
+            name: a.name,
+            contentType: a.contentType,
+            path: fileName,
+            body: a.body
+          };
+        }
+
+        if (a.body instanceof Buffer) {
+          if (isTextContentType(a.contentType)) {
+            var _a$contentType$match;
+
+            // Content type is like this: "text/html; charset=UTF-8"
+            const charset = (_a$contentType$match = a.contentType.match(/charset=(.*)/)) === null || _a$contentType$match === void 0 ? void 0 : _a$contentType$match[1];
+
+            try {
+              const body = a.body.toString(charset || 'utf-8');
+              return {
+                name: a.name,
+                contentType: a.contentType,
+                body
+              };
+            } catch (e) {// Invalid encoding, fall through and save to file.
+            }
+          }
+
+          _fs.default.mkdirSync(_path.default.join(this._reportFolder, 'data'), {
+            recursive: true
+          });
+
+          const sha1 = (0, _utils.calculateSha1)(a.body) + '.dat';
+
+          _fs.default.writeFileSync(_path.default.join(this._reportFolder, 'data', sha1), a.body);
+
+          return {
+            name: a.name,
+            contentType: a.contentType,
+            path: 'data/' + sha1,
+            body: a.body
+          };
+        } // string
+
+
+        return {
+          name: a.name,
+          contentType: a.contentType,
+          body: a.body
+        };
+      }).filter(Boolean)
+    };
+  }
+
+  _createTestStep(step) {
+    return {
+      title: step.title,
+      startTime: step.startTime,
+      duration: step.duration,
+      snippet: step.snippet,
+      steps: step.steps.map(s => this._createTestStep(s)),
+      location: step.location,
+      error: step.error,
+      count: step.count
+    };
+  }
+
+}
+
+const emptyStats = () => {
+  return {
+    total: 0,
+    expected: 0,
+    unexpected: 0,
+    flaky: 0,
+    skipped: 0,
+    ok: true,
+    duration: 0
+  };
+};
+
+const addStats = (stats, delta) => {
+  stats.total += delta.total;
+  stats.skipped += delta.skipped;
+  stats.expected += delta.expected;
+  stats.unexpected += delta.unexpected;
+  stats.flaky += delta.flaky;
+  stats.ok = stats.ok && delta.ok;
+  stats.duration += delta.duration;
+  return stats;
+};
+
+class Base64Encoder extends _stream.Transform {
+  constructor(...args) {
+    super(...args);
+    this._remainder = void 0;
+  }
+
+  _transform(chunk, encoding, callback) {
+    if (this._remainder) {
+      chunk = Buffer.concat([this._remainder, chunk]);
+      this._remainder = undefined;
+    }
+
+    const remaining = chunk.length % 3;
+
+    if (remaining) {
+      this._remainder = chunk.slice(chunk.length - remaining);
+      chunk = chunk.slice(0, chunk.length - remaining);
+    }
+
+    chunk = chunk.toString('base64');
+    this.push(Buffer.from(chunk));
+    callback();
+  }
+
+  _flush(callback) {
+    if (this._remainder) this.push(Buffer.from(this._remainder.toString('base64')));
+    callback();
+  }
+
+}
+
+function isTextContentType(contentType) {
+  return contentType.startsWith('text/') || contentType.startsWith('application/json');
+}
+
+var _default = HtmlReporter;
+exports.default = _default;

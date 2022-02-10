@@ -1,0 +1,74 @@
+{
+  "name": "@philpl/buble",
+  "version": "0.19.7",
+  "description": "The blazing fast, batteries-included ES2015 compiler",
+  "main": "dist/buble.js",
+  "module": "dist/buble.es.js",
+  "source": "src/index.js",
+  "files": [
+    "bin",
+    "src",
+    "dist",
+    "register.js",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "microbundle --compress --external none",
+    "test": "mocha test/test.js",
+    "pretest": "npm run build",
+    "test:register": "echo '\"use strict\";' | cat - src/program/Node.js | sed 's/export default/module.exports =/' | node -r ./register.js",
+    "test:full": "npm run test && npm run test:register && npm run lint",
+    "test:bundlers": "npm run test:bundlers:rollup && npm run test:bundlers:webpack && npm run test:bundlers:parcel",
+    "test:bundlers:rollup": "test \"$(npx rollup -c test/bundlers/rollup.config.js | node)\" = 'var x = 4'",
+    "test:bundlers:webpack": "cd test/bundlers && mkdir -p node_modules && npm i webpack && node webpack.js && test \"$(node dist/main.js)\" = 'var x = 4'",
+    "test:bundlers:parcel": "cd test/bundlers && mkdir -p node_modules && npm i parcel && npx parcel build index.js --no-cache && test \"$(node dist/index.js)\" = 'var x = 4'",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint bin/ src/ test/test.js test/utils/ register.js rollup.*.js scripts/"
+  },
+  "bin": {
+    "buble": "./bin/buble"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bublejs/buble.git"
+  },
+  "keywords": [
+    "javascript",
+    "transpilation",
+    "compilation",
+    "esnext",
+    "es2015",
+    "es2017",
+    "es6",
+    "es7"
+  ],
+  "author": "Rich Harris",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bublejs/buble/issues"
+  },
+  "homepage": "https://github.com/bublejs/buble#README",
+  "devDependencies": {
+    "console-group": "^0.3.3",
+    "eslint": "^4.19.1",
+    "glob": "^7.1.3",
+    "microbundle": "^0.11.0",
+    "mocha": "^5.2.0",
+    "rimraf": "^2.6.3",
+    "source-map": "^0.6.1",
+    "source-map-support": "^0.5.10",
+    "test262": "git+https://github.com/tc39/test262.git#4f1155c566a222238fd86f179c6635ecb4c289bb",
+    "test262-stream": "^1.2.0"
+  },
+  "dependencies": {
+    "acorn": "^6.1.1",
+    "acorn-class-fields": "^0.2.1",
+    "acorn-dynamic-import": "^4.0.0",
+    "acorn-jsx": "^5.0.1",
+    "chalk": "^2.4.2",
+    "magic-string": "^0.25.2",
+    "minimist": "^1.2.0",
+    "os-homedir": "^1.0.1",
+    "regexpu-core": "^4.5.4"
+  }
+}

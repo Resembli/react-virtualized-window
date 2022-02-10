@@ -1,0 +1,147 @@
+{
+  "name": "wouter",
+  "version": "2.8.0-alpha.2",
+  "description": "A minimalistic routing for React and Preact. Nothing extra, just HOOKS.",
+  "keywords": [
+    "react",
+    "preact",
+    "router",
+    "tiny",
+    "routing",
+    "hooks",
+    "useLocation"
+  ],
+  "files": [
+    "*.js",
+    "types/**/*.d.ts",
+    "types/*.d.ts",
+    "preact",
+    "cjs"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./cjs/index.js",
+      "default": "./index.js"
+    },
+    "./use-location": {
+      "require": "./cjs/use-location.js",
+      "default": "./use-location.js"
+    },
+    "./matcher": {
+      "require": "./cjs/matcher.js",
+      "default": "./matcher.js"
+    },
+    "./static-location": {
+      "require": "./cjs/static-location.js",
+      "default": "./static-location.js"
+    }
+  },
+  "main": "cjs/index.js",
+  "module": "index.js",
+  "types": "types/ts3.9.4/index.d.ts",
+  "typesVersions": {
+    ">=4.1": {
+      "types/ts3.9.4/index.d.ts": [
+        "types/ts4.1/index.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "fix:p": "prettier --write './**/*.js{x,}'",
+    "test": "jest --verbose --coverage",
+    "size": "size-limit",
+    "build": "npm run bundle",
+    "clean": "rimraf cjs && rimraf preact/cjs",
+    "lint": "eslint *.js preact/",
+    "lint-types": "npm run lint-types-react && npm run lint-types-preact",
+    "lint-types-react": "dtslint types/ts4.1 --localTs ./node_modules/typescript/lib && dtslint types/ts3.9.4 --localTs ./node_modules/typescript-3.9.4/lib",
+    "lint-types-preact": "npm run preact && npm run types-preact && dtslint preact/types/ts4.1 --localTs ./node_modules/typescript/lib && dtslint preact/types/ts3.9.4 --localTs ./node_modules/typescript-3.9.4/lib",
+    "preact": "copyfiles -f {index,matcher,use-location,static-location}.js preact/",
+    "types-preact": "copyfiles -f types/{matcher,use-location,static-location}.d.ts preact/types",
+    "bundle": "rollup -e react,preact -f cjs --exports named --preserveModules -d ${DIR}cjs ${DIR}*.js && rollup -f cjs --exports auto -d ${DIR}cjs ${DIR}static-location.js && echo '{\"type\": \"commonjs\"}' > ${DIR}cjs/package.json",
+    "prepublishOnly": "npm run clean && npm run preact && npm run types-preact && npm run bundle && DIR=./preact/ npm run bundle"
+  },
+  "author": "Alexey Taktarov <molefrog@gmail.com>",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "repository": "molefrog/wouter",
+  "size-limit": [
+    {
+      "path": "index.js",
+      "limit": "1500 B"
+    },
+    {
+      "path": "use-location.js",
+      "limit": "500 B"
+    }
+  ],
+  "husky": {
+    "hooks": {
+      "commit-msg": "npm run fix:p"
+    }
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "env": {
+      "browser": true,
+      "node": true,
+      "jest": true
+    },
+    "rules": {
+      "no-unused-vars": [
+        "error",
+        {
+          "varsIgnorePattern": "^_",
+          "argsIgnorePattern": "^_"
+        }
+      ],
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    },
+    "plugins": [
+      "react-hooks"
+    ],
+    "ignorePatterns": [
+      "types/**"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "transform": {
+      "\\.js$": "jest-esm-jsx-transform"
+    }
+  },
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^6.0.4",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/react-hooks": "^5.0.3",
+    "@types/react": "^17.0.1",
+    "copyfiles": "^2.4.1",
+    "dtslint": "^3.4.2",
+    "eslint": "^7.19.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.3.0",
+    "jest": "^27.3.1",
+    "jest-esm-jsx-transform": "^1.0.0",
+    "preact": "^10.0.0",
+    "prettier": "^2.4.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-test-renderer": "^17.0.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.59.0",
+    "size-limit": "^6.0.4",
+    "typescript": "4.4.2",
+    "typescript-3.9.4": "npm:typescript@3.9.4"
+  }
+}

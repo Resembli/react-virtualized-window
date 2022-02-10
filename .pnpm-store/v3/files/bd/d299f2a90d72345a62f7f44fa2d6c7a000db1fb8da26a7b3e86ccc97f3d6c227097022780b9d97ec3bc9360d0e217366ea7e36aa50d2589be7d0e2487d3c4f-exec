@@ -1,0 +1,44 @@
+{
+    "name": "@types/react-router-config",
+    "version": "5.0.3",
+    "description": "TypeScript definitions for react-router-config",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-router-config",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "François Nguyen",
+            "url": "https://github.com/lith-light-g",
+            "githubUsername": "lith-light-g"
+        },
+        {
+            "name": "John Reilly",
+            "url": "https://github.com/johnnyreilly",
+            "githubUsername": "johnnyreilly"
+        },
+        {
+            "name": "Phoenix He",
+            "url": "https://github.com/NullMDR",
+            "githubUsername": "NullMDR"
+        },
+        {
+            "name": "Mathieu TUDISCO",
+            "url": "https://github.com/mathieutu",
+            "githubUsername": "mathieutu"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/react-router-config"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/history": "*",
+        "@types/react": "*",
+        "@types/react-router": "*"
+    },
+    "typesPublisherContentHash": "b57740acb230f845627d33a9cdb9c5e0bc2657d245844b1b101f5c43d05eca65",
+    "typeScriptVersion": "3.6"
+}

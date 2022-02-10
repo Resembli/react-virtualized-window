@@ -1,0 +1,27 @@
+{
+  "name": "@docusaurus/types",
+  "version": "2.0.0-beta.14",
+  "description": "Common types for Docusaurus packages.",
+  "types": "./src/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/facebook/docusaurus.git",
+    "directory": "packages/docusaurus-types"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "tsc -p ."
+  },
+  "dependencies": {
+    "commander": "^5.1.0",
+    "joi": "^17.4.2",
+    "querystring": "0.2.0",
+    "utility-types": "^3.10.0",
+    "webpack": "^5.61.0",
+    "webpack-merge": "^5.8.0"
+  },
+  "gitHead": "c4824a8937d8f1aa0806667749cbc74058e2b294"
+}
