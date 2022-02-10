@@ -13,6 +13,8 @@ export function getScrollbarWidth() {
 
   document.body.appendChild(outer)
 
+  console.log("Blah")
+
   // Creating inner element and placing it in the container
   const inner = document.createElement("div")
   outer.appendChild(inner)
