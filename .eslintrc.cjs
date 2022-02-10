@@ -23,14 +23,13 @@ module.exports = {
   ],
   rules: {
     "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off",
     "react/no-unescaped-entities": "off",
+    "react/react-in-jsx-scope": "off",
+    "react-hooks/exhaustive-deps": "error",
 
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
-
-    "react-hooks/exhaustive-deps": "error",
   },
   overrides: [
     {

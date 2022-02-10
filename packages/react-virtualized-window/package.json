@@ -1,9 +1,17 @@
 {
   "name": "@resembli/react-virtualized-window",
   "version": "0.0.1",
-  "type": "module",
   "types": "src/index.ts",
   "main": "src/index.ts",
+  "publishConfig": {
+    "main": "dist/index.js",
+    "types": "dist/types/index.d.ts"
+  },
+  "scripts": {
+    "build": "swc ./src -d dist && tsc",
+    "clean": "rimraf dist",
+    "clean:build": "rimraf dist && swc ./src -d dist && tsc"
+  },
   "peerDependencies": {
     "react": "^17.0.2"
   }
