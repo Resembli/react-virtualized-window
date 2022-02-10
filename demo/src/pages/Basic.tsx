@@ -8,6 +8,5 @@ export const BasicPage = () => {
   const hlist = basicHLists
   const list = basicLists
 
-  console.log("Testing github action")
   return <Layout routes={{ grid, hlist, list }} />
 }
