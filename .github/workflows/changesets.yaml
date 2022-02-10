@@ -31,7 +31,7 @@ jobs:
       - name: build packages
         run: pnpm build-packages
       - name: create and publish versions
-        uses: changesets/actions@master
+        uses: changesets/action@master
         with:
           version: pnpm ci:version
           commit: "[VERSION]: update versions."
