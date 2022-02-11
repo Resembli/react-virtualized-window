@@ -8,11 +8,13 @@ export function getScrollbarWidth() {
   // Creating invisible container
   const outer = document.createElement("div")
   outer.style.visibility = "hidden"
-  outer.style.overflow = "scroll" // forcing scrollbar to appear
 
+  outer.style.overflow = "scroll"
+
+  // needed for WinJS apps
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  outer.style.msOverflowStyle = "scrollbar" // needed for WinJS apps
+  outer.style.msOverflowStyle = "scrollbar"
 
   document.body.appendChild(outer)
 

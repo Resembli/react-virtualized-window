@@ -1,17 +1,15 @@
-import type { UIEventHandler } from "react"
-import { useState } from "react"
-import { useCallback } from "react"
+import * as React from "react"
 
 interface UseWindowScrollArgs {
   rtl: boolean
-  userOnScroll?: UIEventHandler<HTMLElement>
+  userOnScroll?: React.UIEventHandler<HTMLElement>
 }
 
 export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
-  const [vOffset, setVerticalOffset] = useState(0)
-  const [hOffset, setHorizontalOffset] = useState(0)
+  const [vOffset, setVerticalOffset] = React.useState(0)
+  const [hOffset, setHorizontalOffset] = React.useState(0)
 
-  const onScroll: UIEventHandler<HTMLElement> = useCallback(
+  const onScroll: React.UIEventHandler<HTMLElement> = React.useCallback(
     (event) => {
       const target = event.currentTarget
 

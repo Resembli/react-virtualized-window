@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import * as React from "react"
 
 import type { NumberOrPercent } from "./types.js"
 
@@ -25,12 +25,12 @@ export const useDataDimension = ({
   gap,
   defaultDimension,
 }: UseDataDimensionArgs) => {
-  const defaultAsNumber = useMemo(
+  const defaultAsNumber = React.useMemo(
     () => dimToNumber(defaultDimension, windowDim),
     [defaultDimension, windowDim],
   )
 
-  const [dataDimensions, dimTotal] = useMemo(() => {
+  const [dataDimensions, dimTotal] = React.useMemo(() => {
     const draftDimensions = []
 
     let runningTotal = 0

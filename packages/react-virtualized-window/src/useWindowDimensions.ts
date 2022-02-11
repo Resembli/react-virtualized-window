@@ -1,13 +1,12 @@
-import type { RefObject } from "react"
-import { useEffect, useReducer, useRef } from "react"
+import * as React from "react"
 
-export const useWindowDimensions = (windowRef: RefObject<HTMLDivElement>) => {
-  const windowHeightRef = useRef(0)
-  const windowWidthRef = useRef(0)
+export const useWindowDimensions = (windowRef: React.RefObject<HTMLDivElement>) => {
+  const windowHeightRef = React.useRef(0)
+  const windowWidthRef = React.useRef(0)
 
-  const [, forceUpdate] = useReducer((x) => (x + 1) % 10, 0)
+  const [, forceUpdate] = React.useReducer((x) => (x + 1) % 10, 0)
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!windowRef.current || !windowRef.current.parentElement) return
 
     const resizeObserver = new ResizeObserver(() => {

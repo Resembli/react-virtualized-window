@@ -1,10 +1,8 @@
-import type { CSSProperties, PropsWithChildren } from "react"
-
 interface StickyDivProps {
-  display?: CSSProperties["display"]
-  absDisplay?: CSSProperties["display"]
-  width?: CSSProperties["width"]
-  height?: CSSProperties["height"]
+  display?: React.CSSProperties["display"]
+  absDisplay?: React.CSSProperties["display"]
+  width?: React.CSSProperties["width"]
+  height?: React.CSSProperties["height"]
   topOffset?: number
   leftOffset?: number
   rtl?: boolean
@@ -21,7 +19,7 @@ export function StickyDiv({
   height,
   rtl,
   disabled,
-}: PropsWithChildren<StickyDivProps>) {
+}: React.PropsWithChildren<StickyDivProps>) {
   if (disabled) return <>{children}</>
   return (
     <div style={{ position: "sticky", top: 0, left: 0, display, height, width }}>

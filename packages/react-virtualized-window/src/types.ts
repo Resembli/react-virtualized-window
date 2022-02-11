@@ -1,4 +1,4 @@
-import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
+import type * as React from "react"
 
 import type { VirtualWindowApi } from "./useWindowApi.js"
 
@@ -9,19 +9,19 @@ export type NumberOrPercent = number | `${number}%`
 export interface VirtualWindowBaseProps {
   tabIndex?: number
   overscan?: number
-  apiRef?: MutableRefObject<VirtualWindowApi | undefined>
+  apiRef?: React.MutableRefObject<VirtualWindowApi | undefined>
 
   className?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
   gap?: ItemGap
   disableSticky?: boolean
 
   rtl?: boolean
 
-  onScroll?: UIEventHandler<HTMLElement>
+  onScroll?: React.UIEventHandler<HTMLElement>
 
-  width?: CSSProperties["width"]
-  height?: CSSProperties["height"]
+  width?: React.CSSProperties["width"]
+  height?: React.CSSProperties["height"]
 
   "data-testid"?: string
 }

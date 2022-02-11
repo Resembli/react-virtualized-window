@@ -1,5 +1,4 @@
-import type { CSSProperties } from "react"
-import { useMemo } from "react"
+import * as React from "react"
 
 import type { NumberOrPercent, VirtualWindowBaseProps } from "../types.js"
 import type { CellMeta } from "./Grid.js"
@@ -8,7 +7,11 @@ import { Grid } from "./Grid.js"
 export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]
   defaultRowHeight: NumberOrPercent
-  children: <B extends T>(itemProps: B, style: CSSProperties, cellMeta: CellMeta) => JSX.Element
+  children: <B extends T>(
+    itemProps: B,
+    style: React.CSSProperties,
+    cellMeta: CellMeta,
+  ) => JSX.Element
   rowHeights?: NumberOrPercent[]
 }
 
@@ -19,7 +22,7 @@ export function List<T>({
   rowHeights,
   ...otherProps
 }: ListProps<T>) {
-  const gridData = useMemo(() => data.map((d) => [d]), [data])
+  const gridData = React.useMemo(() => data.map((d) => [d]), [data])
 
   return (
     <Grid
