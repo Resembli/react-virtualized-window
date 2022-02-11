@@ -1,6 +1,6 @@
-import { getScrollbarWidth } from "./getScrollbarWidth"
-import type { NumberOrPercent } from "./types"
-import { dimToNumber } from "./utils"
+import { getScrollbarWidth } from "./getScrollbarWidth.js"
+import type { NumberOrPercent } from "./types.js"
+import { dimToNumber } from "./utils.js"
 
 interface UseScrollAdjustedWindowDimsArgs {
   height: number

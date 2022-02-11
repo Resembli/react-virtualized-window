@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "types": "src/index.ts",
   "main": "src/index.ts",
+  "type": "module",
   "publishConfig": {
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts"

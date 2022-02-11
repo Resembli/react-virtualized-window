@@ -1,6 +1,6 @@
 import type { CSSProperties, MutableRefObject, UIEventHandler } from "react"
 
-import type { VirtualWindowApi } from "./useWindowApi"
+import type { VirtualWindowApi } from "./useWindowApi.js"
 
 export type ItemGap = number | { horizontal?: number; vertical?: number }
 

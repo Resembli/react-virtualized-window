@@ -1,4 +1,3 @@
-import * as React from "react"
 import type { CSSProperties, PropsWithChildren } from "react"
 
 interface StickyDivProps {

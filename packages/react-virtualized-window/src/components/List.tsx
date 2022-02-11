@@ -1,9 +1,9 @@
 import type { CSSProperties } from "react"
 import { useMemo } from "react"
 
-import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
-import type { CellMeta } from "./Grid"
-import { Grid } from "./Grid"
+import type { NumberOrPercent, VirtualWindowBaseProps } from "../types.js"
+import type { CellMeta } from "./Grid.js"
+import { Grid } from "./Grid.js"
 
 export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]

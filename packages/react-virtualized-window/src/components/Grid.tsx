@@ -2,21 +2,21 @@ import type { CSSProperties } from "react"
 import { useRef } from "react"
 import { memo, useMemo } from "react"
 
-import { SizingDiv } from "../SizingDiv"
-import { StickyDiv } from "../StickyDiv"
+import { SizingDiv } from "../SizingDiv.js"
+import { StickyDiv } from "../StickyDiv.js"
 import {
   getHorizontalGap,
   getHorizontalMarginStyling,
   getVerticalGap,
   getVerticalMarginStyling,
-} from "../itemGapUtilities"
-import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
-import { useDataDimension } from "../useDataDimension"
-import { useIndicesForDimensions } from "../useDimensionIndices"
-import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
-import { useWindowApi } from "../useWindowApi"
-import { useWindowDimensions } from "../useWindowDimensions"
-import { useWindowScroll } from "../useWindowScroll"
+} from "../itemGapUtilities.js"
+import type { NumberOrPercent, VirtualWindowBaseProps } from "../types.js"
+import { useDataDimension } from "../useDataDimension.js"
+import { useIndicesForDimensions } from "../useDimensionIndices.js"
+import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim.js"
+import { useWindowApi } from "../useWindowApi.js"
+import { useWindowDimensions } from "../useWindowDimensions.js"
+import { useWindowScroll } from "../useWindowScroll.js"
 
 export interface CellMeta {
   column: number

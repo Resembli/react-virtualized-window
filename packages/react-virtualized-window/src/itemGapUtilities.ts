@@ -1,4 +1,4 @@
-import type { ItemGap } from "./types"
+import type { ItemGap } from "./types.js"
 
 export function getVerticalMarginStyling(itemGap?: ItemGap) {
   if (!itemGap) return { marginTop: 0, marginBottom: 0 }
