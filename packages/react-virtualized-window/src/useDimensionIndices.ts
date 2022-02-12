@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import * as React from "react"
 
 interface UseVerticalIndices {
   itemDimensions: number[]
@@ -15,12 +15,12 @@ export const useIndicesForDimensions = ({
   itemDimensions,
   overscan,
 }: UseVerticalIndices) => {
-  const maxDim = useMemo(
+  const maxDim = React.useMemo(
     () => Math.max(...itemDimensions) + gapBetweenItems,
     [gapBetweenItems, itemDimensions],
   )
 
-  const [start, end, running] = useMemo(() => {
+  const [start, end, running] = React.useMemo(() => {
     let start = 0
     let runningTotal = 0
 

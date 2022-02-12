@@ -1,6 +1,4 @@
-import type { CSSProperties } from "react"
-import { useRef } from "react"
-import { memo, useMemo } from "react"
+import * as React from "react"
 
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
@@ -25,7 +23,11 @@ export interface CellMeta {
 
 export interface GridProps<T> extends VirtualWindowBaseProps {
   data: T[][]
-  children: <B extends T>(itemProps: B, style: CSSProperties, cellMeta: CellMeta) => JSX.Element
+  children: <B extends T>(
+    itemProps: B,
+    style: React.CSSProperties,
+    cellMeta: CellMeta,
+  ) => JSX.Element
   defaultRowHeight: NumberOrPercent
   rowHeights?: NumberOrPercent[]
   defaultColumnWidth: NumberOrPercent
@@ -57,7 +59,7 @@ export function Grid<T>({
 
   onScroll: userOnScroll,
 }: GridProps<T>) {
-  const windowRef = useRef<HTMLDivElement>(null)
+  const windowRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
 
   const [topOffset, leftOffset, onScroll] = useWindowScroll({
@@ -117,7 +119,7 @@ export function Grid<T>({
 
   const verticalMarginStyles = getVerticalMarginStyling(gap)
 
-  const windowStyle = useMemo(() => {
+  const windowStyle = React.useMemo(() => {
     return {
       height,
       width,
@@ -201,7 +203,7 @@ type RenderItemsProps<T> = {
   rtl?: boolean
 }
 
-const RenderItem = memo(function <T>({
+const RenderItem = React.memo(function <T>({
   component,
   itemGap,
   rtl,
@@ -210,7 +212,7 @@ const RenderItem = memo(function <T>({
   column,
   row,
 }: RenderItemsProps<T>) {
-  const itemStyles = useMemo(() => {
+  const itemStyles = React.useMemo(() => {
     const marginStyling = getHorizontalMarginStyling(itemGap, rtl)
     return {
       width: itemWidth,
@@ -221,7 +223,7 @@ const RenderItem = memo(function <T>({
     }
   }, [rtl, itemGap, itemWidth])
 
-  const cellMeta = useMemo<CellMeta>(() => ({ row, column }), [column, row])
+  const cellMeta = React.useMemo<CellMeta>(() => ({ row, column }), [column, row])
 
   return component(itemProps, itemStyles, cellMeta)
 })

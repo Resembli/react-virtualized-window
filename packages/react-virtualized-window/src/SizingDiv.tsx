@@ -1,5 +1,4 @@
-import type { CSSProperties, PropsWithChildren } from "react"
-import { useMemo } from "react"
+import * as React from "react"
 
 export function SizingDiv({
   children,
@@ -8,14 +7,14 @@ export function SizingDiv({
   className,
   userStyle,
   testId,
-}: PropsWithChildren<{
-  height: CSSProperties["height"]
-  width: CSSProperties["width"]
-  userStyle?: CSSProperties
+}: React.PropsWithChildren<{
+  height: React.CSSProperties["height"]
+  width: React.CSSProperties["width"]
+  userStyle?: React.CSSProperties
   className?: string
   testId?: string
 }>) {
-  const style = useMemo(() => {
+  const style = React.useMemo(() => {
     return { ...userStyle, width: width ?? "100%", height: height ?? "100%" }
   }, [height, userStyle, width])
 
