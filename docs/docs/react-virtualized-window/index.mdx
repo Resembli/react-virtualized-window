@@ -90,14 +90,12 @@ sized container setup for the window components:
 
 ```jsx
 <div style={{ display: "grid", gridTemplateColumns: "400px, 800px", gridTemplateRows: 400 }}>
-  <div style={{ width: "50%", height: "50%" }}>
-    <Grid />
-  </div>
+  <Grid width="50%" height="50%" />
 </div>
 ```
 
 In the above sizing container, the `<Grid/>` window is rendered in the first column of the first row. The first column is `400px` wide and `400px`
-tall. Our sizing container specifies the `<Grid/>` should take up `50%` of the width and height, hence the `<Grid/>` component will be `200px` wide
+tall. We specify the `<Grid/>` should take up `50%` of the width and height, hence the `<Grid/>` component will be `200px` wide
 and tall.
 :::
 
@@ -115,7 +113,16 @@ function RenderItem(props) {
   const style = props.style // The CSSProperties we need to pass to our item
 
   return (
-    <div style={style}>
+    <div
+      style={{
+        border: "1px solid gray",
+        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        ...style,
+      }}
+    >
       {row},{column}
     </div>
   )
@@ -169,11 +176,21 @@ function RenderItem(props) {
   const style = props.style // The CSSProperties we need to pass to our item
 
   return (
-    <div style={style}>
+    <div
+      style={{
+        border: "1px solid gray",
+        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        ...style,
+      }}
+    >
       {row},{column}
     </div>
   )
 }
+
 function MyGrid() {
   return (
     <div style={{ height: 400, width: 400 }}>
@@ -196,3 +213,11 @@ import { MyGrid } from "./_components/WalkthoughGrid.js"
 - [List](./list)
 - [ListHorizontal](./list-horizontal)
 - [Grid](./grid)
+
+## Basic Concepts
+
+TODO: Add concepts on `NumberOrPercent`
+TODO: Sticky position logic
+TODO: Resizing logic
+TODO: Tab Index
+TODO: Command F search

@@ -10,7 +10,16 @@ function RenderItem(props) {
   const style = props.style // The CSSProperties we need to pass to our item
 
   return (
-    <div style={style}>
+    <div
+      style={{
+        border: "1px solid gray",
+        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        ...style,
+      }}
+    >
       {row},{column}
     </div>
   )

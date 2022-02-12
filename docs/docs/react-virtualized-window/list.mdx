@@ -86,3 +86,31 @@ export function BasicListExample() {
 
 </TabItem>
 </Tabs>
+
+## Props
+
+### Required
+
+| Property Name      | Type              | Description                                                                                                                               |
+| ------------------ | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`             | `T[]`             | An array of data items. Individual items can be any type.                                                                                 |
+| `defaultRowHeight` | `NumberOrPercent` | The `px` height per row item, or the `percent` height per row item. Percent height is based on window height less any gap height applied. |
+| `children`         | `RenderItem`      | The component for rendering each item. Should accept a property called `style` of type `CSSProperties`.                                   |
+
+### Optional
+
+| Property Name   | Type                      | Description                                                                                               |
+| --------------- | ------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `rowHeights`    | `NumberOrPercent[]`       | An array of heights to use for individual items. Used to support variable height items.                   |
+| `tabIndex`      | `number`                  | Tab index for the containing window `div`.                                                                |
+| `overscan`      | `number`                  | How many items out of view to overscan, useful when sticky position is disabled, or tab index is enabled. |
+| `apiRef`        | `MutableRefObject`        | A `ref` object to capture the window api for imperative actions.                                          |
+| `className`     | `string`                  | ClassName to apply to containing window `div`.                                                            |
+| `style`         | `CSSProperties`           | CSSProperties style object.                                                                               |
+| `gap`           | `ItemGap`                 | The vertical and horizontal gap to apply to items.                                                        |
+| `disableSticky` | `boolean`                 | Disables the sticky `div` handling, which means content may flash in when the user scrolls quickly.       |
+| `rtl`           | `boolean`                 | Use `rtl` direction for item content.                                                                     |
+| `onScroll`      | `UIEventHandler`          | User provided onScroll callback.                                                                          |
+| `width`         | `CSSProperties['Width']`  | Width value to use for sizing the component.                                                              |
+| `height`        | `CSSProperties['Height']` | Height value to use for sizing the component.                                                             |
+| `data-testid`   | `string`                  | A string for finding the window when testing.                                                             |
