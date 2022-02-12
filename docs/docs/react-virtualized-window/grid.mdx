@@ -1,3 +1,100 @@
 ---
 title: Grid
 ---
+
+## Grid Quickstart
+
+import TabItem from "@theme/TabItem"
+import Tabs from "@theme/Tabs"
+
+import { BasicGridExample } from "./_components/BasicGridExample.tsx"
+
+<BasicGridExample />
+
+<Tabs>
+<TabItem value="js" label="JavaScript">
+
+```jsx
+import { Grid } from "@resembli/react-virtualized-window"
+
+const data = Array(2000)
+  .fill(0)
+  .map((_, i) => {
+    return Array(200)
+      .fill(0)
+      .map((_, j) => [i, j])
+  })
+
+const CellItem = ({ style, data: [row, column] }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: (row + column) % 2 === 1 ? "black" : "white",
+        color: (row + column) % 2 === 1 ? "white" : "black",
+        ...style,
+      }}
+    >
+      {row},{column}
+    </div>
+  )
+}
+
+export function BasicGridExample() {
+  return (
+    <div style={{ width: "100%", height: 500 }}>
+      <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
+        {CellItem}
+      </Grid>
+    </div>
+  )
+}
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```tsx
+import type { RenderItem } from "@resembli/react-virtualized-window"
+import { Grid } from "@resembli/react-virtualized-window"
+
+const data = Array(2000)
+  .fill(0)
+  .map((_, i) => {
+    return Array(200)
+      .fill(0)
+      .map((_, j) => [i, j])
+  })
+
+const CellItem: RenderItem<number[]> = ({ style, data: [row, column] }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: (row + column) % 2 === 1 ? "black" : "white",
+        color: (row + column) % 2 === 1 ? "white" : "black",
+        ...style,
+      }}
+    >
+      {row},{column}
+    </div>
+  )
+}
+
+export function BasicGridExample() {
+  return (
+    <div style={{ width: "100%", height: 500 }}>
+      <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
+        {CellItem}
+      </Grid>
+    </div>
+  )
+}
+```
+
+</TabItem>
+</Tabs>

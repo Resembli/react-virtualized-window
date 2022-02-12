@@ -1,3 +1,88 @@
 ---
 title: ListHorizontal
 ---
+
+## ListHorizontal Quickstart
+
+import TabItem from "@theme/TabItem"
+import Tabs from "@theme/Tabs"
+
+import { BasicListHorizontal } from "./_components/BasicListHorizontalExample.tsx"
+
+<BasicListHorizontal />
+
+<Tabs>
+<TabItem value="js" label="JavaScript">
+
+```jsx
+import { ListHorizontal } from "@resembli/react-virtualized-window"
+
+const sampleData = Array.from({ length: 5000 }, (_, i) => i)
+
+const Row = ({ data, style }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: data % 2 ? "black" : "white",
+        color: data % 2 ? "white" : "black",
+        ...style, // Important you spread the style object
+      }}
+    >
+      {data}
+    </div>
+  )
+}
+
+export function BasicListHorizontal() {
+  return (
+    <div style={{ width: "100%", height: 400 }}>
+      <ListHorizontal defaultColumnWidth={50} data={sampleData}>
+        {Row}
+      </ListHorizontal>
+    </div>
+  )
+}
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```tsx
+import type { RenderItem } from "@resembli/react-virtualized-window"
+import { ListHorizontal } from "@resembli/react-virtualized-window"
+
+const sampleData = Array.from({ length: 5000 }, (_, i) => i)
+
+const Row: RenderItem<number> = ({ data, style }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: data % 2 ? "black" : "white",
+        color: data % 2 ? "white" : "black",
+        ...style, // Important you spread the style object
+      }}
+    >
+      {data}
+    </div>
+  )
+}
+
+export function BasicListHorizontal() {
+  return (
+    <div style={{ width: "100%", height: 400 }}>
+      <ListHorizontal defaultColumnWidth={50} data={sampleData}>
+        {Row}
+      </ListHorizontal>
+    </div>
+  )
+}
+```
+
+</TabItem>
+</Tabs>

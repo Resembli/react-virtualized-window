@@ -15,7 +15,7 @@ pnpm-lock.yaml
 local/
 
 LICENSE
-*.md
+
 # Dependencies
 /node_modules
 

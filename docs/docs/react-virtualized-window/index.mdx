@@ -4,8 +4,27 @@ title: React Virtualized Window
 
 ## What is Virtualized Window
 
-The window is a React component for creating virtualized views. A virtualized view is an element that renders only what is visible to the user.
-It is a necessary performance optimization when we want to render a large number of items in the browser.
+A virtualized window is a React component for creating views on data where only the data items visible to the user are rendered.
+
+For example, imagine you had an autocomplete dropdown that could potentially have 1000s of choices. Rendering 1000s of `div`
+elements in the browser can become a performance bottleneck. Furthermore it's uncessary, since at any given time only a handful of the
+items will be visible to the user.
+
+`@resembli/react-virtualized-window` provides components that solve this problem by rendering only what is visible to the user into the dom.
+This keeps your website responsive and performant.
+
+### What does `@resembli/react-virtualized-window` support?
+
+The following features are supported:
+
+- Row virtualization
+- Column virtualization
+- RTL direction fully supported
+- React 18 concurrent mode ready
+- TypeScript typings
+- Variable width and height data items
+- Automatic window sizing out the box, with resize handling
+- and much more...
 
 ## Installation
 
@@ -44,11 +63,136 @@ yarn add @resembli/react-virtualized-window
 | [ListHorizontal](/docs/react-virtualized-window/list-horizontal) | Useful for rendering a horizontal list of items. The ListHorizontal component horizontally virtualizes the view |
 | [Grid](/docs/react-virtualized-window/grid)                      | Useful for rendering tabular data. The Grid component horizontally and vertically virtualizes the view          |
 
-### Examples
+## Basic Walkthrough
 
-- [Fixed Size List](/docs/react-virtualized-window/examples/fixed-size-list)
-- [Variable Size List](/docs/react-virtualized-window/examples/variable-size-list)
-- [Horizontally Fixed Size List](/docs/react-virtualized-window/examples/horizontally-fixed-size-list)
-- [Horizontally Variable Size List](/docs/react-virtualized-window/examples/horizontally-variable-size-list)
-- [Fixed Size Grid](/docs/react-virtualized-window/examples/fixed-size-grid)
-- [Variable Size Grid](/docs/react-virtualized-window/examples/variable-size-grid)
+### Step 1: Creating a Sized Container
+
+The virtualized components all work the same way, and share the same base implementation. The first thing you need to do is created a sized container.
+A **sized** container must have a width and height even when it is empty. It should also not grow as the contents rendered inside it grow. The simplested
+and most straight forward way is to create a `div` with some height and width, e.g:
+
+```jsx
+import { Grid } from "@resembli/react-virtualized-window"
+
+function MyGrid() {
+  return <div style={{ height: 400, width: 400 }}>{/* To be filled in soon */}</div>
+}
+```
+
+:::info
+We are using the `<Grid/>` component here which virtualizes horizontally and vertically and hence requires both width and height to be sized.
+In the case of the `<List/>` and `<ListHorizontal/>` only the height or width is required to be sized respectively.
+:::
+
+:::tip
+You can use percentage sizing as well but you need to ensure the parent itself resolves to a size. For example, the following is a valid
+sized container setup for the window components:
+
+```jsx
+<div style={{ display: "grid", gridTemplateColumns: "400px, 800px", gridTemplateRows: 400 }}>
+  <div style={{ width: "50%", height: "50%" }}>
+    <Grid />
+  </div>
+</div>
+```
+
+In the above sizing container, the `<Grid/>` window is rendered in the first column of the first row. The first column is `400px` wide and `400px`
+tall. Our sizing container specifies the `<Grid/>` should take up `50%` of the width and height, hence the `<Grid/>` component will be `200px` wide
+and tall.
+:::
+
+### Step 2: Creating a Render Component
+
+Next we need to create a React component that we can use to render our individual items. The window components will use the component to render
+the items. For each data item the window component will pass the data for the that item, styles we need to apply to the item, and some meta data
+about the item's position in the grid. The metadata is not necessary for rendering items. We now have
+
+```jsx
+import { Grid } from "@resembli/react-virtualized-window"
+
+function RenderItem(props) {
+  const [row, column] = props.data // The piece of data for this item.
+  const style = props.style // The CSSProperties we need to pass to our item
+
+  return (
+    <div style={style}>
+      {row},{column}
+    </div>
+  )
+}
+
+function MyGrid() {
+  return <div style={{ height: 400, width: 400 }}>{/* To be filled in soon */}</div>
+}
+```
+
+Notice this just a regular React component. It's important that we apply the style passed as a prop to our component.
+
+:::caution
+
+The `style` prop passed to our `RenderItem` component contains styles relevant to the sizing of the component. In particular
+it sets the `width` and `height` values, and the `margin` values.
+
+It's important these dimensions remain unchanged and items need to have known widths and heights for the virtualization to work
+correctly.
+
+A common mistake is to apply a border to our `RenderItem`, e.g.
+
+```jsx
+<div style={{ border: "1px solid black", ...style }}>...</div>
+```
+
+However this changes the dimension of the `div` the `box-sizing` style is `content-box`, which is the default. The correct way to
+give a virtualized item a border to set the `box-sizing` style as well:
+
+```jsx
+<div style={{ border: "1px solid black", boxSizing: "border-box", ...style }}>...</div>
+```
+
+:::
+
+### Step 3: Render the Window Component with our Data
+
+We can now render the componet by passing our data to the grid. It's important we pass our `RenderItem` as a value, and not as a `JSX` object.
+We are rendering the `<Grid>` component here so the data we pass should be a matrix.
+
+```jsx
+import { Grid } from "@resembli/react-virtualized-window"
+
+// Create a 1000x100 matrix
+const dummyData = Array.from({ length: 1000 }, (_, row) =>
+  Array.from({ length: 100 }, (_, column) => [row, column]),
+)
+
+function RenderItem(props) {
+  const [row, column] = props.data // The piece of data for this item.
+  const style = props.style // The CSSProperties we need to pass to our item
+
+  return (
+    <div style={style}>
+      {row},{column}
+    </div>
+  )
+}
+function MyGrid() {
+  return (
+    <div style={{ height: 400, width: 400 }}>
+      <Grid defaultRowHeight={50} defaultColumnWidth={100} data={dummyData}>
+        {RenderItem}
+      </Grid>
+    </div>
+  )
+}
+```
+
+The end result:
+
+import { MyGrid } from "./_components/WalkthoughGrid.js"
+
+<MyGrid />
+
+## See the Docs for the individual components
+
+- [List](./list)
+- [ListHorizontal](./list-horizontal)
+- [Grid](./grid)
