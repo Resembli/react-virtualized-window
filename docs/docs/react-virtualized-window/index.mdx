@@ -216,12 +216,80 @@ import { MyGrid } from "./_components/WalkthoughGrid.js"
 
 ## Basic Concepts
 
-TODO: Add concepts on `NumberOrPercent`
+### The `NumberOrPercent` Type
 
-TODO: Sticky position logic
+The different window components accept `columnWidths` and `rowHeights` properties, as well as their corresponding defaults (`defaultColumnWidth` and `defaultRowHeight`).
+The value provided to these components can either be number or a percent string. For example:
 
-TODO: Resizing logic
+```jsx
+// the default row height is assumed to be 40
+<List defaultRowHeight={40}>...</List>
 
-TODO: Tab Index
+// or the default row height is assumed to be 10% of the window height
+<List defaultRowHeight="10%">...</List>
+```
 
-TODO: Command F search
+The `number` value is straight forward, `40 === 40px`. However, percent values are not the same as the `CSS` percent value representation.
+Row height percent values are based on the `window` height. Colum width percent values are based on the the `window` width. Specify, for example,
+a default value of `"10%"`, would mean we want 10 items to be visible.
+
+:::caution
+
+If the component has a `gap` value set, this will not be included as part of the percentage calcuation, so the items width or height will be the
+`percentage px value + gap px value`.
+
+:::
+
+### The `sticky` div
+
+On most browsers scrolling happens on a separate thread. Virtualization calculations happen on the main thread. This means it's possible for the user
+to scroll before the window has determined what are next items to render and what position they should be in. This leads to content flashing in. This issue
+is present in all virtualization libaries and inherent to the way browsers work. This is [execellent article for those looking to understand more](https://blogs.windows.com/msedgedev/2017/03/08/scrolling-on-the-web/)
+
+Despite the explanation given above, you may notice that when you scroll quickly the contents within the window do not flashing in and out and the checkboarding
+pattern is not present. This is due to a `sticky` positioning div that keeps the window in place and in view even as the user scrolls. For example, if we compare
+the rendering of the `FixedSizedGrid` from [react-window](https://react-window.vercel.app/#/examples/list/fixed-size) to a fixed sized grid example
+from `react-virtualized-window`, we can see checkboarding vs no checkboarding in effect:
+
+:::info
+
+This is **NOT** a performance comparison, or even a comparison of `react-window` to `@resembli/react-virtualized-window`. This is a demonstration of
+the checkboarding effect present in other `virtualization` frameworks, which is not present in `react-virtualized-window` (unless you disable the stick `div`).
+
+The grids below have the following characteristics:
+
+- Heigth and Width of `800px`
+- Column width of `100px`
+- Row height of `30px`
+
+:::
+
+- `react-window`:
+
+  ![react window grid example](/react-window-opt.gif)
+
+- `@resembli/react-virtualized-window`
+
+  ![react virtualized window grid example](/react-virtualized-opt.gif)
+
+### Tab Index
+
+It's possible to give individual items rendered into the window components a tab index - but this is not recommended. If you do give individual items a tab index
+be sure to set the `overscan` property to something greater than 1. This is necessary to allow the browser to tab to items that are out of view.
+
+:::caution
+
+The window components are intended to render large number of items (10,000+ in many cases). If the individual items have tab indices set, its possible the user
+can get stuck tabbing through all the items. For this reason we do not recommend adding a tab index to the individual items.
+
+You should add a value to the `tabIndex` property available on the window componets. This will allow the user to tab to the list and control it with the other
+keyboard keys (up, down, page-up, page-down, etc).
+
+:::
+
+### Searching for text
+
+Browsers provide the ability for users to search for a string of text by pressing `Ctrl-F` (or `Cmd-F` on a Mac). This functionality relies on text content being
+rendered to the dom. Virtualization is the process of rendering only what is visible to the dom. Hence, items that are out of view will not be searchable by the
+browser. The common workaround for this issue is to build your own search logic - which is able to the scoll to the desired item. You can do this with the imperative
+`VirtualizedWindowApi`.
