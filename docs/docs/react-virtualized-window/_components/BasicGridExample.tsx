@@ -33,9 +33,16 @@ const CellItem: RenderItem<number[]> = ({ style, data: [row, column] }) => {
 }
 
 export function BasicGridExample() {
+  const innerWidth = globalThis.innerWidth ?? 1280
+
   return (
     <div style={{ width: "100%", height: 500 }}>
-      <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
+      <Grid
+        data={data}
+        defaultColumnWidth={100}
+        defaultRowHeight={100}
+        disableSticky={innerWidth < 800}
+      >
         {CellItem}
       </Grid>
     </div>
