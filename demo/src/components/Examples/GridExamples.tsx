@@ -75,9 +75,9 @@ export function BaseGrid({
       data-testid={testId}
       {...otherProps}
     >
-      {([row, column], styles) => {
+      {({ style, data: [row, column] }) => {
         return (
-          <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+          <div style={style} className={itemClass({ odd: (row + column) % 2 === 1 })}>
             {row},{column}
           </div>
         )
@@ -349,9 +349,9 @@ const InfiniteScrolling = () => {
     <div>
       <div style={{ height: 500, width: 500 }}>
         <Grid defaultColumnWidth={50} data={data} defaultRowHeight={50} onScroll={handleScroll}>
-          {(_, styles, { column, row }) => {
+          {({ style, cellMeta: { row, column } }) => {
             return (
-              <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+              <div style={style} className={itemClass({ odd: (row + column) % 2 === 1 })}>
                 {row},{column}
               </div>
             )

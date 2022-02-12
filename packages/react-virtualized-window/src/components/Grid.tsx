@@ -23,16 +23,18 @@ export interface CellMeta {
 
 export interface GridProps<T> extends VirtualWindowBaseProps {
   data: T[][]
-  children: <B extends T>(
-    itemProps: B,
-    style: React.CSSProperties,
-    cellMeta: CellMeta,
-  ) => JSX.Element
+  children: <B extends T>(props: {
+    data: B
+    style: React.CSSProperties
+    cellMeta: CellMeta
+  }) => JSX.Element
   defaultRowHeight: NumberOrPercent
   rowHeights?: NumberOrPercent[]
   defaultColumnWidth: NumberOrPercent
   columnWidths?: NumberOrPercent[]
 }
+
+export type RenderItem<T> = GridProps<T>["children"]
 
 export function Grid<T>({
   data,
@@ -160,7 +162,7 @@ export function Grid<T>({
                   <RenderItem
                     key={cellKey}
                     itemWidth={itemWidth}
-                    component={children}
+                    Component={children}
                     rtl={rtl}
                     itemGap={gap}
                     itemProps={cell}
@@ -194,7 +196,7 @@ export function Grid<T>({
 }
 
 type RenderItemsProps<T> = {
-  component: GridProps<T>["children"]
+  Component: GridProps<T>["children"]
   itemGap: GridProps<T>["gap"]
   itemProps: T
   itemWidth: number
@@ -204,7 +206,7 @@ type RenderItemsProps<T> = {
 }
 
 const RenderItem = React.memo(function <T>({
-  component,
+  Component,
   itemGap,
   rtl,
   itemProps,
@@ -225,7 +227,7 @@ const RenderItem = React.memo(function <T>({
 
   const cellMeta = React.useMemo<CellMeta>(() => ({ row, column }), [column, row])
 
-  return component(itemProps, itemStyles, cellMeta)
+  return <Component data={itemProps} style={itemStyles} cellMeta={cellMeta} />
 })
 
 RenderItem.displayName = "GridCellItem"

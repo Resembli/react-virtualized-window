@@ -18,7 +18,7 @@ export const FixedSizeDocsExample = () => {
   return (
     <div style={{ height: 500, border: "1px solid black", marginBottom: "10px" }}>
       <List data={listData} defaultRowHeight={50}>
-        {({ index }, style) => {
+        {({ style, data: { index } }) => {
           const darkRow = isDarkTheme ? "black" : "grey"
           const lightRow = isDarkTheme ? "grey" : "white"
 
@@ -48,7 +48,7 @@ export const VariableSizeDocsExample = () => {
   return (
     <div style={{ height: 500, border: "1px solid black", marginBottom: "10px" }}>
       <List data={listData} defaultRowHeight={50} rowHeights={listHeights}>
-        {({ index }, style) => {
+        {({ data: { index }, style }) => {
           const darkRow = isDarkTheme ? "black" : "grey"
           const lightRow = isDarkTheme ? "grey" : "white"
 

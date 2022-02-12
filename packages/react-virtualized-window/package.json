@@ -1,5 +1,8 @@
 {
   "name": "@resembli/react-virtualized-window",
+  "description": "React virtualized window components for rendering massive lists or grids",
+  "private": false,
+  "author": "Lee Beydoun",
   "version": "0.3.0",
   "types": "src/index.ts",
   "main": "src/index.ts",
@@ -7,15 +10,30 @@
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts"
   },
+  "keywords": [
+    "react",
+    "reactjs",
+    "react-components",
+    "virtualized",
+    "virtual",
+    "window",
+    "virtualized-window",
+    "list",
+    "scrolling",
+    "infinite-scrolling",
+    "grid",
+    "table"
+  ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Resembli/ui.git"
+    "url": "git+https://github.com/Resembli/ui.git",
+    "directory": "packages/react-virtualized-window"
   },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Resembli/ui/issues"
   },
-  "homepage": "https://github.com/Resembli/ui/tree/main/packages/react-virtualized-window",
+  "homepage": "https://www.resembli.com/docs/react-virtualized-window/",
   "scripts": {
     "build": "swc ./src -d dist && tsc",
     "clean": "rimraf dist",

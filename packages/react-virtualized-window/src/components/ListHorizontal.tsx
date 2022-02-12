@@ -6,11 +6,11 @@ import { Grid } from "./Grid"
 
 export interface ListHorizontalProps<T> extends VirtualWindowBaseProps {
   data: T[]
-  children: <B extends T>(
-    itemProps: B,
-    style: React.CSSProperties,
-    columnMeta: CellMeta,
-  ) => JSX.Element
+  children: <B extends T>(props: {
+    data: B
+    style: React.CSSProperties
+    cellMeta: CellMeta
+  }) => JSX.Element
   defaultColumnWidth: NumberOrPercent
   columnWidths?: NumberOrPercent[]
 }

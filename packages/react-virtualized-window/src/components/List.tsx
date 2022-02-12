@@ -7,11 +7,11 @@ import { Grid } from "./Grid"
 export interface ListProps<T> extends VirtualWindowBaseProps {
   data: T[]
   defaultRowHeight: NumberOrPercent
-  children: <B extends T>(
-    itemProps: B,
-    style: React.CSSProperties,
-    cellMeta: CellMeta,
-  ) => JSX.Element
+  children: <B extends T>(props: {
+    data: B
+    style: React.CSSProperties
+    cellMeta: CellMeta
+  }) => JSX.Element
   rowHeights?: NumberOrPercent[]
 }
 
