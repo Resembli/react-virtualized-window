@@ -1,6 +1,6 @@
 {
   "jsc": {
-    "target": "es2022",
+    "target": "es2021",
     "parser": {
       "syntax": "typescript",
       "tsx": true
@@ -9,5 +9,8 @@
   "module": {
     "type": "es6",
     "strict": true
+  },
+  "env": {
+    "targets": ["defaults", "not IE 11", "maintained node versions"]
   }
 }
