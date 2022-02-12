@@ -1,3 +1,116 @@
 ---
 title: ListHorizontal
 ---
+
+## ListHorizontal Quickstart
+
+import TabItem from "@theme/TabItem"
+import Tabs from "@theme/Tabs"
+
+import { BasicListHorizontal } from "./_components/BasicListHorizontalExample.tsx"
+
+<BasicListHorizontal />
+
+<Tabs>
+<TabItem value="js" label="JavaScript">
+
+```jsx
+import { ListHorizontal } from "@resembli/react-virtualized-window"
+
+const sampleData = Array.from({ length: 5000 }, (_, i) => i)
+
+const Row = ({ data, style }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: data % 2 ? "black" : "white",
+        color: data % 2 ? "white" : "black",
+        ...style, // Important you spread the style object
+      }}
+    >
+      {data}
+    </div>
+  )
+}
+
+export function BasicListHorizontal() {
+  return (
+    <div style={{ width: "100%", height: 400 }}>
+      <ListHorizontal defaultColumnWidth={50} data={sampleData}>
+        {Row}
+      </ListHorizontal>
+    </div>
+  )
+}
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```tsx
+import type { RenderItem } from "@resembli/react-virtualized-window"
+import { ListHorizontal } from "@resembli/react-virtualized-window"
+
+const sampleData = Array.from({ length: 5000 }, (_, i) => i)
+
+const Row: RenderItem<number> = ({ data, style }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: data % 2 ? "black" : "white",
+        color: data % 2 ? "white" : "black",
+        ...style, // Important you spread the style object
+      }}
+    >
+      {data}
+    </div>
+  )
+}
+
+export function BasicListHorizontal() {
+  return (
+    <div style={{ width: "100%", height: 400 }}>
+      <ListHorizontal defaultColumnWidth={50} data={sampleData}>
+        {Row}
+      </ListHorizontal>
+    </div>
+  )
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Props
+
+### Required
+
+| Property Name        | Type              | Description                                                                                                                             |
+| -------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `data`               | `T[]`             | An array of data items. Individual items can be any type.                                                                               |
+| `defaultColumnWidth` | `NumberOrPercent` | The `px` width per column item, or the `percent` width per row item. Percent width is based on window width less any gap width applied. |
+| `children`           | `RenderItem`      | The component for rendering each item. Should accept a property called `style` of type `CSSProperties`.                                 |
+
+### Optional
+
+| Property Name   | Type                      | Description                                                                                               |
+| --------------- | ------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `columnWidths`  | `NumberOrPercent[]`       | An array of widths to use for individual items. Used to support variable width items.                     |
+| `tabIndex`      | `number`                  | Tab index for the containing window `div`.                                                                |
+| `overscan`      | `number`                  | How many items out of view to overscan, useful when sticky position is disabled, or tab index is enabled. |
+| `apiRef`        | `MutableRefObject`        | A `ref` object to capture the window api for imperative actions.                                          |
+| `className`     | `string`                  | ClassName to apply to containing window `div`.                                                            |
+| `style`         | `CSSProperties`           | CSSProperties style object.                                                                               |
+| `gap`           | `ItemGap`                 | The vertical and horizontal gap to apply to items.                                                        |
+| `disableSticky` | `boolean`                 | Disables the sticky `div` handling, which means content may flash in when the user scrolls quickly.       |
+| `rtl`           | `boolean`                 | Use `rtl` direction for item content.                                                                     |
+| `onScroll`      | `UIEventHandler`          | User provided onScroll callback.                                                                          |
+| `width`         | `CSSProperties['Width']`  | Width value to use for sizing the component.                                                              |
+| `height`        | `CSSProperties['Height']` | Height value to use for sizing the component.                                                             |
+| `data-testid`   | `string`                  | A string for finding the window when testing.                                                             |

@@ -8,34 +8,15 @@ const sidebars = {
       type: "category",
       label: "React Virtualized Window",
       items: [
+        "react-virtualized-window/list",
+        "react-virtualized-window/list-horizontal",
+        "react-virtualized-window/grid",
         {
           type: "category",
-          label: "List",
-          items: [
-            "react-virtualized-window/examples/fixed-size-list",
-            "react-virtualized-window/examples/variable-size-list",
-          ],
-          link: { type: "doc", id: "react-virtualized-window/list" },
+          label: "Recipes (WIP)",
+          collapsed: false,
+          items: ["react-virtualized-window/recipes/infinite-scrolling"],
         },
-        {
-          type: "category",
-          label: "ListHorizontal",
-          items: [
-            "react-virtualized-window/examples/horizontally-fixed-size-list",
-            "react-virtualized-window/examples/horizontally-variable-size-list",
-          ],
-          link: { type: "doc", id: "react-virtualized-window/list-horizontal" },
-        },
-        {
-          type: "category",
-          label: "Grid",
-          link: { type: "doc", id: "react-virtualized-window/grid" },
-          items: [
-            "react-virtualized-window/examples/fixed-size-grid",
-            "react-virtualized-window/examples/variable-size-grid",
-          ],
-        },
-        "react-virtualized-window/implementation",
       ],
       link: {
         type: "doc",

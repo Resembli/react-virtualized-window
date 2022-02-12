@@ -4,8 +4,27 @@ title: React Virtualized Window
 
 ## What is Virtualized Window
 
-The window is a React component for creating virtualized views. A virtualized view is an element that renders only what is visible to the user.
-It is a necessary performance optimization when we want to render a large number of items in the browser.
+A virtualized window is a React component for creating views on data where only the data items visible to the user are rendered.
+
+For example, imagine you had an autocomplete dropdown that could potentially have 1000s of choices. Rendering 1000s of `div`
+elements in the browser can become a performance bottleneck. Furthermore it's uncessary, since at any given time only a handful of the
+items will be visible to the user.
+
+`@resembli/react-virtualized-window` provides components that solve this problem by rendering only what is visible to the user into the dom.
+This keeps your website responsive and performant.
+
+### What does `@resembli/react-virtualized-window` support?
+
+The following features are supported:
+
+- Row virtualization
+- Column virtualization
+- RTL direction fully supported
+- React 18 concurrent mode ready
+- TypeScript typings
+- Variable width and height data items
+- Automatic window sizing out the box, with resize handling
+- and much more...
 
 ## Installation
 
@@ -44,11 +63,233 @@ yarn add @resembli/react-virtualized-window
 | [ListHorizontal](/docs/react-virtualized-window/list-horizontal) | Useful for rendering a horizontal list of items. The ListHorizontal component horizontally virtualizes the view |
 | [Grid](/docs/react-virtualized-window/grid)                      | Useful for rendering tabular data. The Grid component horizontally and vertically virtualizes the view          |
 
-### Examples
+## Basic Walkthrough
 
-- [Fixed Size List](/docs/react-virtualized-window/examples/fixed-size-list)
-- [Variable Size List](/docs/react-virtualized-window/examples/variable-size-list)
-- [Horizontally Fixed Size List](/docs/react-virtualized-window/examples/horizontally-fixed-size-list)
-- [Horizontally Variable Size List](/docs/react-virtualized-window/examples/horizontally-variable-size-list)
-- [Fixed Size Grid](/docs/react-virtualized-window/examples/fixed-size-grid)
-- [Variable Size Grid](/docs/react-virtualized-window/examples/variable-size-grid)
+### Step 1: Creating a Sized Container
+
+The virtualized components all work the same way, and share the same base implementation. The first thing you need to do is created a sized container.
+A **sized** container must have a width and height even when it is empty. It should also not grow as the contents rendered inside it grow. The simplested
+and most straight forward way is to create a `div` with some height and width, e.g:
+
+```jsx
+import { Grid } from "@resembli/react-virtualized-window"
+
+function MyGrid() {
+  return <div style={{ height: 400, width: 400 }}>{/* To be filled in soon */}</div>
+}
+```
+
+:::info
+We are using the `<Grid/>` component here which virtualizes horizontally and vertically and hence requires both width and height to be sized.
+In the case of the `<List/>` and `<ListHorizontal/>` only the height or width is required to be sized respectively.
+:::
+
+:::tip
+You can use percentage sizing as well but you need to ensure the parent itself resolves to a size. For example, the following is a valid
+sized container setup for the window components:
+
+```jsx
+<div style={{ display: "grid", gridTemplateColumns: "400px, 800px", gridTemplateRows: 400 }}>
+  <Grid width="50%" height="50%" />
+</div>
+```
+
+In the above sizing container, the `<Grid/>` window is rendered in the first column of the first row. The first column is `400px` wide and `400px`
+tall. We specify the `<Grid/>` should take up `50%` of the width and height, hence the `<Grid/>` component will be `200px` wide
+and tall.
+:::
+
+### Step 2: Creating a Render Component
+
+Next we need to create a React component that we can use to render our individual items. The window components will use the component to render
+the items. For each data item the window component will pass the data for the that item, styles we need to apply to the item, and some meta data
+about the item's position in the grid. The metadata is not necessary for rendering items. We now have
+
+```jsx
+import { Grid } from "@resembli/react-virtualized-window"
+
+function RenderItem(props) {
+  const [row, column] = props.data // The piece of data for this item.
+  const style = props.style // The CSSProperties we need to pass to our item
+
+  return (
+    <div
+      style={{
+        border: "1px solid gray",
+        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        ...style,
+      }}
+    >
+      {row},{column}
+    </div>
+  )
+}
+
+function MyGrid() {
+  return <div style={{ height: 400, width: 400 }}>{/* To be filled in soon */}</div>
+}
+```
+
+Notice this just a regular React component. It's important that we apply the style passed as a prop to our component.
+
+:::caution
+
+The `style` prop passed to our `RenderItem` component contains styles relevant to the sizing of the component. In particular
+it sets the `width` and `height` values, and the `margin` values.
+
+It's important these dimensions remain unchanged and items need to have known widths and heights for the virtualization to work
+correctly.
+
+A common mistake is to apply a border to our `RenderItem`, e.g.
+
+```jsx
+<div style={{ border: "1px solid black", ...style }}>...</div>
+```
+
+However this changes the dimension of the `div` the `box-sizing` style is `content-box`, which is the default. The correct way to
+give a virtualized item a border to set the `box-sizing` style as well:
+
+```jsx
+<div style={{ border: "1px solid black", boxSizing: "border-box", ...style }}>...</div>
+```
+
+:::
+
+### Step 3: Render the Window Component with our Data
+
+We can now render the componet by passing our data to the grid. It's important we pass our `RenderItem` as a value, and not as a `JSX` object.
+We are rendering the `<Grid>` component here so the data we pass should be a matrix.
+
+```jsx
+import { Grid } from "@resembli/react-virtualized-window"
+
+// Create a 1000x100 matrix
+const dummyData = Array.from({ length: 1000 }, (_, row) =>
+  Array.from({ length: 100 }, (_, column) => [row, column]),
+)
+
+function RenderItem(props) {
+  const [row, column] = props.data // The piece of data for this item.
+  const style = props.style // The CSSProperties we need to pass to our item
+
+  return (
+    <div
+      style={{
+        border: "1px solid gray",
+        boxSizing: "border-box",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        ...style,
+      }}
+    >
+      {row},{column}
+    </div>
+  )
+}
+
+function MyGrid() {
+  return (
+    <div style={{ height: 400, width: 400 }}>
+      <Grid defaultRowHeight={50} defaultColumnWidth={100} data={dummyData}>
+        {RenderItem}
+      </Grid>
+    </div>
+  )
+}
+```
+
+The end result:
+
+import { MyGrid } from "./_components/WalkthoughGrid.js"
+
+<MyGrid />
+
+## See the Docs for the individual components
+
+- [List](./list)
+- [ListHorizontal](./list-horizontal)
+- [Grid](./grid)
+
+## Basic Concepts
+
+### The `NumberOrPercent` Type
+
+The different window components accept `columnWidths` and `rowHeights` properties, as well as their corresponding defaults (`defaultColumnWidth` and `defaultRowHeight`).
+The value provided to these components can either be number or a percent string. For example:
+
+```jsx
+// the default row height is assumed to be 40
+<List defaultRowHeight={40}>...</List>
+
+// or the default row height is assumed to be 10% of the window height
+<List defaultRowHeight="10%">...</List>
+```
+
+The `number` value is straight forward, `40 === 40px`. However, percent values are not the same as the `CSS` percent value representation.
+Row height percent values are based on the `window` height. Colum width percent values are based on the the `window` width. Specify, for example,
+a default value of `"10%"`, would mean we want 10 items to be visible.
+
+:::caution
+
+If the component has a `gap` value set, this will not be included as part of the percentage calcuation, so the items width or height will be the
+`percentage px value + gap px value`.
+
+:::
+
+### The `sticky` div
+
+On most browsers scrolling happens on a separate thread. Virtualization calculations happen on the main thread. This means it's possible for the user
+to scroll before the window has determined what are next items to render and what position they should be in. This leads to content flashing in. This issue
+is present in all virtualization libaries and inherent to the way browsers work. This is [execellent article for those looking to understand more](https://blogs.windows.com/msedgedev/2017/03/08/scrolling-on-the-web/)
+
+Despite the explanation given above, you may notice that when you scroll quickly the contents within the window do not flashing in and out and the checkboarding
+pattern is not present. This is due to a `sticky` positioning div that keeps the window in place and in view even as the user scrolls. For example, if we compare
+the rendering of the `FixedSizedGrid` from [react-window](https://react-window.vercel.app/#/examples/list/fixed-size) to a fixed sized grid example
+from `react-virtualized-window`, we can see checkboarding vs no checkboarding in effect:
+
+:::info
+
+This is **NOT** a performance comparison, or even a comparison of `react-window` to `@resembli/react-virtualized-window`. This is a demonstration of
+the checkboarding effect present in other `virtualization` frameworks, which is not present in `react-virtualized-window` (unless you disable the stick `div`).
+
+The grids below have the following characteristics:
+
+- Heigth and Width of `800px`
+- Column width of `100px`
+- Row height of `30px`
+
+:::
+
+- `react-window`:
+
+  ![react window grid example](/react-window-opt.gif)
+
+- `@resembli/react-virtualized-window`
+
+  ![react virtualized window grid example](/react-virtualized-opt.gif)
+
+### Tab Index
+
+It's possible to give individual items rendered into the window components a tab index - but this is not recommended. If you do give individual items a tab index
+be sure to set the `overscan` property to something greater than 1. This is necessary to allow the browser to tab to items that are out of view.
+
+:::caution
+
+The window components are intended to render large number of items (10,000+ in many cases). If the individual items have tab indices set, its possible the user
+can get stuck tabbing through all the items. For this reason we do not recommend adding a tab index to the individual items.
+
+You should add a value to the `tabIndex` property available on the window componets. This will allow the user to tab to the list and control it with the other
+keyboard keys (up, down, page-up, page-down, etc).
+
+:::
+
+### Searching for text
+
+Browsers provide the ability for users to search for a string of text by pressing `Ctrl-F` (or `Cmd-F` on a Mac). This functionality relies on text content being
+rendered to the dom. Virtualization is the process of rendering only what is visible to the dom. Hence, items that are out of view will not be searchable by the
+browser. The common workaround for this issue is to build your own search logic - which is able to the scoll to the desired item. You can do this with the imperative
+`VirtualizedWindowApi`.
