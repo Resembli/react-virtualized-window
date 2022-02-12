@@ -7,7 +7,6 @@ on:
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
-  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   HUSKY: 0
 jobs:
   version:
@@ -39,3 +38,4 @@ jobs:
           publish: pnpm ci:publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

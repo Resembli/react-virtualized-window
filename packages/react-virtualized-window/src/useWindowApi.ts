@@ -1,5 +1,4 @@
-import type { MutableRefObject, RefObject } from "react"
-import { useEffect } from "react"
+import * as React from "react"
 
 export interface VirtualWindowApi {
   scroll: HTMLDivElement["scroll"]
@@ -10,10 +9,10 @@ export interface VirtualWindowApi {
 }
 
 export const useWindowApi = (
-  windowRef: RefObject<HTMLDivElement>,
-  windowApiRef?: MutableRefObject<VirtualWindowApi | undefined>,
+  windowRef: React.RefObject<HTMLDivElement>,
+  windowApiRef?: React.MutableRefObject<VirtualWindowApi | undefined>,
 ) => {
-  useEffect(() => {
+  React.useEffect(() => {
     if (!windowRef.current || !windowApiRef) return
 
     // We need to bind the scroll functions to the window element to avoid illegal invocation errors
