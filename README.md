@@ -23,4 +23,3 @@ yarn add @resembli/react-virtualized-window
 ```sh
 pnpm i @resembli/react-virtualized-window
 ```
-
