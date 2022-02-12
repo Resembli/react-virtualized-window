@@ -1,14 +1,22 @@
-name: pr-checks
+name: changeset-check
 on: [pull_request]
 jobs:
   changeset-check:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF})"
+        id: extract_branch
       - uses: actions/checkout@v2
-      - uses: pnpm/action-setup@v2.0.1
-        with:
-          version: ^6.24.1
-          run_install:
-            - args: --frozen-lockfile
-      - run: git status
-      - run: pnpm changeset status --since=main
+      - run: git fetch
+      - run: echo ${{ steps.extract_branch.outputs.branch }}
+      # - run: git status
+      # - run: git branch
+      # - uses: pnpm/action-setup@v2.0.1
+      #   with:
+      #     version: ^6.24.1
+      #     run_install: |
+      #       - recursive: true
+      #         args: [--frozen-lockfile, --strict-peer-dependencies]
+      # - run: pnpm changeset status --since=main
