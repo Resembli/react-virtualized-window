@@ -1,5 +1,11 @@
 # @resembli/react-virtualized-window
 
+## 0.3.0
+
+### Minor Changes
+
+- [#129](https://github.com/Resembli/ui/pull/129) [`b2ebb3c`](https://github.com/Resembli/ui/commit/b2ebb3cf1c6b297fc628157fabb1c16107a29929) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Updated build process to use browserlists.
+
 ## 0.2.0
 
 ### Minor Changes
