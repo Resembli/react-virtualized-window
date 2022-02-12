@@ -3,12 +3,12 @@
 Welcome to the Resembli UI Monorepo. This repo contains the open source projects that the Resembli organization is actively
 working on and maintaining.
 
+**Checkout the full docs at [resembli.com](https://resembli.com)**
+
 ## [`@resembli/react-virtualized-window`](./packages/react-virtualized-window/)
 [![license](https://img.shields.io/github/license/Resembli/ui?style=flat&colorA=000000&colorB=000000)](./LICENSE) 
 [![bundle-size](https://img.shields.io/bundlephobia/minzip/@resembli/react-virtualized-window?style=flat&colorA=000000&colorB=000000)](https://bundlephobia.com/package/@resembli/react-virtualized-window)
 [![npm](https://img.shields.io/npm/v/@resembli/react-virtualized-window?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@resembli/react-virtualized-window)
-
-
 
 `@resembli/react-virtualized-window` provides basic components for creating virtualized views. Virtualization is a rendering method
 where only the dom element visible to the user are rendered. Using the components in this package it's possible to render lists or
@@ -20,7 +20,7 @@ npm install @resembli/react-virtualized-window
 ```sh
 yarn add @resembli/react-virtualized-window
 ```
-```
+```sh
 pnpm i @resembli/react-virtualized-window
 ```
 
