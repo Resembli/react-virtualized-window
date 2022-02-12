@@ -13,6 +13,7 @@ importers:
       '@types/react': ^17.0.37
       '@typescript-eslint/eslint-plugin': ^5.7.0
       '@typescript-eslint/parser': ^5.7.0
+      browserslist: ^4.19.1
       eslint: ^8.5.0
       eslint-plugin-react: ^7.27.1
       eslint-plugin-react-hooks: ^4.3.0
@@ -31,6 +32,7 @@ importers:
       '@types/react': 17.0.37
       '@typescript-eslint/eslint-plugin': 5.7.0_a6f6159640504abdd3de077f8bcadb33
       '@typescript-eslint/parser': 5.7.0_eslint@8.5.0+typescript@4.5.4
+      browserslist: 4.19.1
       eslint: 8.5.0
       eslint-plugin-react: 7.27.1_eslint@8.5.0
       eslint-plugin-react-hooks: 4.3.0_eslint@8.5.0
@@ -7216,7 +7218,7 @@ packages:
   /jsonfile/4.0.0:
     resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
     dev: true
 
   /jsonfile/6.1.0:
@@ -7280,7 +7282,7 @@ packages:
     resolution: {integrity: sha512-OfCBkGEw4nN6JLtgRidPX6QxjBQGQf72q3si2uvqyFEMbycSFFHwAZeXx6cJgFM9wmLrf9zBwCP3Ivqa+LLZPw==}
     engines: {node: '>=6'}
     dependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
       js-yaml: 3.14.1
       pify: 4.0.1
       strip-bom: 3.0.0

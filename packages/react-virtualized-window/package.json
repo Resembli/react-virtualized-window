@@ -7,6 +7,15 @@
     "main": "dist/index.js",
     "types": "dist/types/index.d.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Resembli/ui.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Resembli/ui/issues"
+  },
+  "homepage": "https://github.com/Resembli/ui/tree/main/packages/react-virtualized-window",
   "scripts": {
     "build": "swc ./src -d dist && tsc",
     "clean": "rimraf dist",
