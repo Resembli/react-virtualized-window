@@ -25,11 +25,11 @@ const itemClass = css({
 export function HListPlayground() {
   return (
     <ListHorizontal data={data} defaultColumnWidth={100} gap={20} columnWidths={widths}>
-      {(props, style) => {
-        const clx = itemClass({ odd: props % 2 === 1 })
+      {({ style, data }) => {
+        const clx = itemClass({ odd: data % 2 === 1 })
         return (
           <div style={style} className={clx}>
-            {props + 1}
+            {data + 1}
           </div>
         )
       }}

@@ -1,3 +1,4 @@
+import type { RenderItem } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
@@ -30,6 +31,14 @@ const itemClass = css({
   },
 })
 
+const GridItem: RenderItem<number[]> = ({ style, data: [row, column] }) => {
+  return (
+    <div style={style} className={itemClass({ odd: (row + column) % 2 === 1 })}>
+      {row},{column}
+    </div>
+  )
+}
+
 export function GridPlayground() {
   return (
     <Grid
@@ -40,13 +49,7 @@ export function GridPlayground() {
       columnWidths={widths}
       rowHeights={heights}
     >
-      {([row, column], styles) => {
-        return (
-          <div style={{ ...styles }} className={itemClass({ odd: (row + column) % 2 === 1 })}>
-            {row},{column}
-          </div>
-        )
-      }}
+      {GridItem}
     </Grid>
   )
 }

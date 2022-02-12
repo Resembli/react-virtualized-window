@@ -25,11 +25,11 @@ const heights = Array(100)
 export function ListPlayground() {
   return (
     <List data={data} defaultRowHeight={50} gap={20} rowHeights={heights}>
-      {(props, style, { row }) => {
+      {({ data, style, cellMeta: { row } }) => {
         const clx = itemClass({ odd: row % 2 === 1 })
         return (
           <div style={style} className={clx}>
-            {props + 1}
+            {data + 1}
           </div>
         )
       }}

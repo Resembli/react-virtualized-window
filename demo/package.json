@@ -6,12 +6,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "playwright test",
-    "test:chrome": "playwright test --project=chrome",
-    "test:firefox": "playwright test --project=firefox",
-    "test:safari": "playwright test --project=safari",
-    "test:build": "vite build && playwright test",
-    "test:debug": "PWDEBUG=1 playwright test --project=chrome"
+    "test": "npx playwright test",
+    "test:chrome": "npx playwright test --project=chrome",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:safari": "npx playwright test --project=safari",
+    "test:build": "vite build && npx playwright test",
+    "test:debug": "PWDEBUG=1 npx playwright test --project=chrome"
   },
   "dependencies": {
     "@radix-ui/colors": "^0.1.8",

@@ -51,11 +51,11 @@ function BaseHList({
       data-testid={dataId}
       {...otherProps}
     >
-      {(props, style) => {
-        const clx = itemClass({ odd: props % 2 === 1 })
+      {({ style, data }) => {
+        const clx = itemClass({ odd: data % 2 === 1 })
         return (
           <div style={style} className={clx}>
-            {props + 1}
+            {data + 1}
           </div>
         )
       }}
@@ -278,7 +278,7 @@ const InfiniteScrolling = () => {
     <div>
       <div style={{ height: 500, width: 500 }}>
         <ListHorizontal data={data} defaultColumnWidth={100} onScroll={handleScroll}>
-          {(_, style, { column }) => {
+          {({ style, cellMeta: { column } }) => {
             const clx = itemClass({ odd: column % 2 === 1 })
             return (
               <div style={style} className={clx}>
