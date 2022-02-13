@@ -1,6 +1,6 @@
 import BrowserOnly from "@docusaurus/BrowserOnly"
+import { usePrismTheme } from "@docusaurus/theme-common"
 import useIsBrowser from "@docusaurus/useIsBrowser"
-import usePrismTheme from "@theme/hooks/usePrismTheme"
 import { LiveEditor, LiveError, LivePreview, LiveProvider } from "react-live"
 
 import styles from "./styles.module.css"

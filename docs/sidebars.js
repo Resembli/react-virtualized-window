@@ -9,7 +9,6 @@ const sidebars = {
       label: "React Virtualized Window",
       items: [
         "react-virtualized-window/list",
-        "react-virtualized-window/list-horizontal",
         "react-virtualized-window/grid",
         {
           type: "category",
