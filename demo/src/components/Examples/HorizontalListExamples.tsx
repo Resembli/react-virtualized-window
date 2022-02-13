@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from "react"
 
-import { ListHorizontal } from "@resembli/react-virtualized-window"
-import type { ListHorizontalProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
+import { List } from "@resembli/react-virtualized-window"
+import type { ListProps, VirtualWindowApi } from "@resembli/react-virtualized-window"
 
 import { DEFAULT_COLUMN_WIDTH, DEFAULT_ROW_COUNT, DEFAULT_WIDTH_ARRAY } from "../../constants"
 import { debounce } from "../../debouce"
@@ -29,27 +29,25 @@ const itemClass = css({
   },
 })
 
-type BaseHListProps = Omit<
-  ListHorizontalProps<unknown>,
-  "data" | "defaultColumnWidth" | "columnWidths" | "children"
-> & {
-  cw?: ListHorizontalProps<unknown>["columnWidths"]
-  defaultColumnWidth?: ListHorizontalProps<unknown>["defaultColumnWidth"]
+type BaseHListProps = Omit<ListProps<unknown>, "data" | "sizes" | "defaultSize" | "children"> & {
+  cw?: ListProps<unknown>["sizes"]
+  defaultSize?: ListProps<unknown>["defaultSize"]
 }
 
 function BaseHList({
   cw,
   "data-testid": dataId = "list",
-  defaultColumnWidth = DEFAULT_COLUMN_WIDTH,
+  defaultSize = DEFAULT_COLUMN_WIDTH,
   ...otherProps
 }: BaseHListProps) {
   return (
-    <ListHorizontal
+    <List
       data={data}
-      defaultColumnWidth={defaultColumnWidth}
-      columnWidths={cw}
+      defaultSize={defaultSize}
+      sizes={cw}
       data-testid={dataId}
       {...otherProps}
+      layout="horizontal"
     >
       {({ style, data }) => {
         const clx = itemClass({ odd: data % 2 === 1 })
@@ -59,7 +57,7 @@ function BaseHList({
           </div>
         )
       }}
-    </ListHorizontal>
+    </List>
   )
 }
 
@@ -265,7 +263,7 @@ const InfiniteScrolling = () => {
 
   const updateData = useCallback(() => setData((prev) => [...prev, ...Array(10).fill(0)]), [])
 
-  const handleScroll: ListHorizontalProps<unknown>["onScroll"] = (e) => {
+  const handleScroll: ListProps<unknown>["onScroll"] = (e) => {
     const totalSpace = e.currentTarget.scrollWidth - e.currentTarget.offsetWidth - 100
     const offset = e.currentTarget.scrollLeft
 
@@ -277,7 +275,7 @@ const InfiniteScrolling = () => {
   return (
     <div>
       <div style={{ height: 500, width: 500 }}>
-        <ListHorizontal data={data} defaultColumnWidth={100} onScroll={handleScroll}>
+        <List data={data} defaultSize={100} onScroll={handleScroll} layout="horizontal">
           {({ style, cellMeta: { column } }) => {
             const clx = itemClass({ odd: column % 2 === 1 })
             return (
@@ -286,7 +284,7 @@ const InfiniteScrolling = () => {
               </div>
             )
           }}
-        </ListHorizontal>
+        </List>
       </div>
     </div>
   )
@@ -314,11 +312,11 @@ const widthsPercentage = Array(2000)
   .fill(0)
   .map((_, i) => (["10%", "20%", "5%"] as const)[i % 3])
 
-const ListPercentage = () => <BaseHList defaultColumnWidth="10%" />
-const ListPercentageGap = () => <BaseHList defaultColumnWidth="10%" gap={10} />
-const ListPercentageVariable = () => <BaseHList defaultColumnWidth="10%" cw={widthsPercentage} />
+const ListPercentage = () => <BaseHList defaultSize="10%" />
+const ListPercentageGap = () => <BaseHList defaultSize="10%" gap={10} />
+const ListPercentageVariable = () => <BaseHList defaultSize="10%" cw={widthsPercentage} />
 const ListPercentageVariableGap = () => (
-  <BaseHList defaultColumnWidth="10%" cw={widthsPercentage} gap={25} />
+  <BaseHList defaultSize="10%" cw={widthsPercentage} gap={25} />
 )
 
 export const percentageHList: RouteItem[] = [

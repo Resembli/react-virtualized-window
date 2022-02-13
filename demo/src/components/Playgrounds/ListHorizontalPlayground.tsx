@@ -1,4 +1,4 @@
-import { ListHorizontal } from "@resembli/react-virtualized-window"
+import { List } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
@@ -24,7 +24,7 @@ const itemClass = css({
 
 export function HListPlayground() {
   return (
-    <ListHorizontal data={data} defaultColumnWidth={100} gap={20} columnWidths={widths}>
+    <List data={data} defaultSize={100} gap={20} sizes={widths} layout="horizontal">
       {({ style, data }) => {
         const clx = itemClass({ odd: data % 2 === 1 })
         return (
@@ -33,6 +33,6 @@ export function HListPlayground() {
           </div>
         )
       }}
-    </ListHorizontal>
+    </List>
   )
 }
