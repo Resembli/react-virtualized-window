@@ -4,10 +4,11 @@ export type ItemGap = number | { horizontal?: number; vertical?: number }
 
 export type NumberOrPercent = number | `${number}%`
 
-export interface VirtualWindowBaseProps {
+export interface VirtualWindowBaseProps<T> {
   tabIndex?: number
   overscan?: number
   apiRef?: React.MutableRefObject<VirtualWindowApi | undefined>
+  getKey?: (data: T) => string
 
   className?: string
   style?: React.CSSProperties

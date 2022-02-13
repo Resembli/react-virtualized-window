@@ -4,7 +4,7 @@ import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import type { CellMeta } from "./Grid"
 import { Grid } from "./Grid"
 
-export interface ListProps<T> extends VirtualWindowBaseProps {
+export interface ListProps<T> extends VirtualWindowBaseProps<T> {
   data: T[]
   defaultRowHeight: NumberOrPercent
   children: <B extends T>(props: {
