@@ -1,4 +1,4 @@
-import useThemeContext from "@theme/hooks/useThemeContext"
+import { useColorMode } from "@docusaurus/theme-common"
 
 import type { RenderItem } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
@@ -12,7 +12,7 @@ const data = Array(2000)
   })
 
 const CellItem: RenderItem<number[]> = ({ style, data: [row, column] }) => {
-  const { isDarkTheme } = useThemeContext()
+  const { isDarkTheme } = useColorMode()
 
   const darkCell = isDarkTheme ? "black" : "grey"
   const lightCell = isDarkTheme ? "grey" : "white"

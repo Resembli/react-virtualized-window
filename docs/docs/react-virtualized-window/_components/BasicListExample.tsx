@@ -1,4 +1,4 @@
-import useThemeContext from "@theme/hooks/useThemeContext"
+import { useColorMode } from "@docusaurus/theme-common"
 
 import type { RenderItem } from "@resembli/react-virtualized-window"
 import { List } from "@resembli/react-virtualized-window"
@@ -6,7 +6,7 @@ import { List } from "@resembli/react-virtualized-window"
 const sampleData = Array.from({ length: 5000 }, (_, i) => i)
 
 const Row: RenderItem<number> = ({ data, style }) => {
-  const { isDarkTheme } = useThemeContext()
+  const { isDarkTheme } = useColorMode()
 
   const darkRow = isDarkTheme ? "black" : "grey"
   const lightRow = isDarkTheme ? "grey" : "white"
@@ -31,7 +31,7 @@ export function BasicListExample() {
   const innerWidth = globalThis.innerWidth ?? 1280
   return (
     <div style={{ width: "100%", height: 400 }}>
-      <List defaultRowHeight={50} data={sampleData} disableSticky={innerWidth < 800}>
+      <List defaultSize={50} data={sampleData} disableSticky={innerWidth < 800}>
         {Row}
       </List>
     </div>

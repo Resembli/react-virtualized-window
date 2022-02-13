@@ -21,7 +21,7 @@ export interface CellMeta {
   row: number
 }
 
-export interface GridProps<T> extends VirtualWindowBaseProps {
+export interface GridProps<T> extends VirtualWindowBaseProps<T> {
   data: T[][]
   children: <B extends T>(props: {
     data: B
@@ -50,6 +50,7 @@ export function Grid<T>({
   disableSticky,
   "data-testid": testId,
 
+  getKey,
   className,
   style,
   gap,
@@ -119,7 +120,7 @@ export function Grid<T>({
     overscan: overscan ?? 0,
   })
 
-  const verticalMarginStyles = getVerticalMarginStyling(gap)
+  const verticalMarginStyles = React.useMemo(() => getVerticalMarginStyling(gap), [gap])
 
   const windowStyle = React.useMemo(() => {
     return {
@@ -155,7 +156,7 @@ export function Grid<T>({
               const itemHeight = dataHeights[vertStart + i]
 
               const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
-                const cellKey = horiStart + j
+                const cellKey = getKey?.(cell) ?? horiStart + j
                 const itemWidth = dataWidths[horiStart + j]
 
                 return (

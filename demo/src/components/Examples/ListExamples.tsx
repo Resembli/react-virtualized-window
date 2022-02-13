@@ -28,28 +28,19 @@ const itemClass = css({
   },
 })
 
-type BaseListProps = Omit<
-  ListProps<unknown>,
-  "data" | "defaultRowHeight" | "rowHeights" | "children"
-> & {
-  rh?: ListProps<unknown>["rowHeights"]
-  defaultRowHeight?: ListProps<unknown>["defaultRowHeight"]
+type BaseListProps = Omit<ListProps<unknown>, "data" | "defaultSize" | "sizes" | "children"> & {
+  rh?: ListProps<unknown>["sizes"]
+  defaultSize?: ListProps<unknown>["defaultSize"]
 }
 
 function BaseNList({
   rh,
-  defaultRowHeight = DEFAULT_ROW_HEIGHT,
+  defaultSize = DEFAULT_ROW_HEIGHT,
   "data-testid": dataId = "list",
   ...otherProps
 }: BaseListProps) {
   return (
-    <List
-      data={data}
-      defaultRowHeight={defaultRowHeight}
-      rowHeights={rh}
-      data-testid={dataId}
-      {...otherProps}
-    >
+    <List data={data} defaultSize={defaultSize} sizes={rh} data-testid={dataId} {...otherProps}>
       {({ data, style }) => {
         const clx = itemClass({ odd: data % 2 === 1 })
         return (
@@ -277,7 +268,7 @@ const InfiniteScrolling = () => {
   return (
     <div>
       <div style={{ height: 500, width: 500 }}>
-        <List data={data} defaultRowHeight={50} onScroll={handleScroll}>
+        <List data={data} defaultSize={50} onScroll={handleScroll}>
           {({ style, cellMeta: { row } }) => {
             const clx = itemClass({ odd: row % 2 === 1 })
             return (
@@ -310,11 +301,11 @@ const heightsPercentage = Array(2000)
   .fill(0)
   .map((_, i) => (["10%", "20%", "5%"] as const)[i % 3])
 
-const ListPercentage = () => <BaseNList defaultRowHeight="10%" />
-const ListPercentageGap = () => <BaseNList defaultRowHeight="10%" gap={10} />
-const ListPercentageVariable = () => <BaseNList defaultRowHeight="10%" rh={heightsPercentage} />
+const ListPercentage = () => <BaseNList defaultSize="10%" />
+const ListPercentageGap = () => <BaseNList defaultSize="10%" gap={10} />
+const ListPercentageVariable = () => <BaseNList defaultSize="10%" rh={heightsPercentage} />
 const ListPercentageVariableGap = () => (
-  <BaseNList defaultRowHeight="10%" rh={heightsPercentage} gap={25} />
+  <BaseNList defaultSize="10%" rh={heightsPercentage} gap={25} />
 )
 
 export const percentageList: RouteItem[] = [

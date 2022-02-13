@@ -17,7 +17,6 @@ const config = {
   organizationName: "Resembli",
   projectName: "Resembli UI",
 
-  themes: ["@docusaurus/theme-live-codeblock"],
   presets: [
     [
       "classic",

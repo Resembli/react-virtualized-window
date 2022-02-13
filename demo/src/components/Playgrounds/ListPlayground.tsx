@@ -24,7 +24,7 @@ const heights = Array(100)
 
 export function ListPlayground() {
   return (
-    <List data={data} defaultRowHeight={50} gap={20} rowHeights={heights}>
+    <List data={data} defaultSize={50} gap={20} sizes={heights}>
       {({ data, style, cellMeta: { row } }) => {
         const clx = itemClass({ odd: row % 2 === 1 })
         return (
