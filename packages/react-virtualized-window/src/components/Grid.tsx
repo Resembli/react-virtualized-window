@@ -85,7 +85,7 @@ export function Grid<T>({
     columnWidths,
     rowHeights,
     rowCount: data.length,
-    columnCount: data[0].length ?? 0,
+    columnCount: data[0]?.length ?? 0,
   })
 
   const [dataHeights, innerHeight] = useDataDimension({
@@ -97,7 +97,7 @@ export function Grid<T>({
   })
 
   const [dataWidths, innerWidth] = useDataDimension({
-    count: data[0].length ?? 0,
+    count: data[0]?.length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
     gap: horizontalGap,
