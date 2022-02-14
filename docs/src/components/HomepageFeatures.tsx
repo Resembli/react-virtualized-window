@@ -30,13 +30,13 @@ export default function HomepageFeatures(): JSX.Element {
                   <span style={{ paddingRight: "0.5rem" }}>🚀</span> React 18 Concurrent Mode
                 </div>
                 <div>
-                  <span style={{ paddingRight: "0.5rem" }}>🎥</span>SSR Supported
+                  <span style={{ paddingRight: "0.5rem" }}>🎥</span>SSR Ready
                 </div>
                 <div>
-                  <span style={{ paddingRight: "0.5rem" }}>🛠</span> TypeScript Ready
+                  <span style={{ paddingRight: "0.5rem" }}>🛠</span> TypeScript Support
                 </div>
                 <div>
-                  <span style={{ paddingRight: "0.5rem" }}>🔥</span>60 FPS virtualized scrolling
+                  <span style={{ paddingRight: "0.5rem" }}>🔥</span>60 FPS Virtualized Scrolling
                 </div>
               </div>
               <CodeBlock metastring="bash">
