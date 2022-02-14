@@ -42,6 +42,7 @@ const config = {
         apiKey: "259fbd7acef20a9273cb6f13ebcd63f3",
         indexName: "ui",
       },
+      defaultMode: "dark",
       navbar: {
         title: "Resembli UI",
         logo: {
