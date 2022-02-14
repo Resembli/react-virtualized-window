@@ -1,5 +1,17 @@
 # @resembli/react-virtualized-window
 
+## 0.5.0
+
+### Minor Changes
+
+- [#135](https://github.com/Resembli/ui/pull/135) [`c84c807`](https://github.com/Resembli/ui/commit/c84c80768de9da077a371d553a2e15156fa84006) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Added getKey property to allow custom keys be set on individual window items. Default is the cell index.
+
+* [#135](https://github.com/Resembli/ui/pull/135) [`c84c807`](https://github.com/Resembli/ui/commit/c84c80768de9da077a371d553a2e15156fa84006) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Removed the separate ListHorizontalComponent in favor of a List component with a layout property
+
+### Patch Changes
+
+- [#139](https://github.com/Resembli/ui/pull/139) [`e878741`](https://github.com/Resembli/ui/commit/e878741bd3c2e47bc68dad4031e7853685f2eb05) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Fixed type error exception when an empty array is passed as data to the window components."
+
 ## 0.4.0
 
 ### Minor Changes
