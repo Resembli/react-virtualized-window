@@ -39,8 +39,8 @@ const config = {
     {
       algolia: {
         appId: "PZCG2I7O2N",
-        apiKey: "259fbd7acef20a9273cb6f13ebcd63f3",
-        indexName: "ui",
+        apiKey: "b3f137f34026b6a169c4cfb67459553b",
+        indexName: "le-ui",
       },
       defaultMode: "dark",
       navbar: {
