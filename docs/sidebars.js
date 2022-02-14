@@ -12,7 +12,7 @@ const sidebars = {
         "react-virtualized-window/grid",
         {
           type: "category",
-          label: "Recipes (WIP)",
+          label: "Recipes",
           collapsed: false,
           items: [
             "react-virtualized-window/recipes/infinite-scrolling",
