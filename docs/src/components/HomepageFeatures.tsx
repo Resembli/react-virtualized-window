@@ -25,6 +25,20 @@ export default function HomepageFeatures(): JSX.Element {
                 React virtualization for performant rendering of large lists or massive amounts of
                 tabular data.
               </p>
+              <div className={styles.fourFeatureGrid}>
+                <div>
+                  <span style={{ paddingRight: "0.5rem" }}>🚀</span> React 18 Concurrent Mode
+                </div>
+                <div>
+                  <span style={{ paddingRight: "0.5rem" }}>🎥</span>SSR Ready
+                </div>
+                <div>
+                  <span style={{ paddingRight: "0.5rem" }}>🛠</span> TypeScript Support
+                </div>
+                <div>
+                  <span style={{ paddingRight: "0.5rem" }}>🔥</span>60 FPS Virtualized Scrolling
+                </div>
+              </div>
               <CodeBlock metastring="bash">
                 npm install @resembli/react-virtualized-window
               </CodeBlock>

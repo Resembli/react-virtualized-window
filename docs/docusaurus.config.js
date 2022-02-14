@@ -6,7 +6,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula")
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "UI",
+  title: "Resembli UI",
   tagline: "Build interactive, accessible, and data dense applications quickly",
   url: "https://resembli.com",
   baseUrl: "/",
@@ -42,6 +42,7 @@ const config = {
         apiKey: "259fbd7acef20a9273cb6f13ebcd63f3",
         indexName: "ui",
       },
+      defaultMode: "dark",
       navbar: {
         title: "Resembli UI",
         logo: {

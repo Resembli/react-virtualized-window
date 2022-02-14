@@ -10,18 +10,16 @@ const sidebars = {
       items: [
         "react-virtualized-window/list",
         "react-virtualized-window/grid",
+        "react-virtualized-window/api",
         {
           type: "category",
-          label: "Recipes (WIP)",
+          label: "Recipes",
           collapsed: false,
           items: [
             "react-virtualized-window/recipes/infinite-scrolling",
-            "react-virtualized-window/recipes/auto-complete-dropdown",
+            "react-virtualized-window/recipes/combo-box",
             "react-virtualized-window/recipes/chat-channel",
-            "react-virtualized-window/recipes/grid-search",
             "react-virtualized-window/recipes/virtualized-masonry",
-            "react-virtualized-window/recipes/keyboard-navigatable-grid",
-            "react-virtualized-window/recipes/game-of-life",
           ],
         },
       ],

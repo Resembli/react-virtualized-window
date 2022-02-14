@@ -1,0 +1,139 @@
+---
+title: Virtualized Window Api
+---
+
+The `VirtualizedWindowApi` provides a way to imperatively interact with the one of the window components. You can get a
+handle to the api using a ref object and passing it to the `apiRef` prop on the `<List/>` or `<Grid/>` components.
+
+## Api quickstart
+
+import { BasicApiExample } from "./_components/ApiExample.tsx"
+
+<BasicApiExample />
+
+import TabItem from "@theme/TabItem"
+import Tabs from "@theme/Tabs"
+
+<Tabs>
+<TabItem value="js" label="JavaScript">
+
+```jsx
+import { useRef } from "react"
+
+import { List } from "@resembli/react-virtualized-window"
+
+const sampleData = Array.from({ length: 5000 }, (_, i) => i)
+
+const Row = ({ data, style }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: data % 2 ? "black" : "white",
+        color: isDarkTheme ? "white" : "black",
+        ...style,
+      }}
+    >
+      {data}
+    </div>
+  )
+}
+
+export function BasicApiExample() {
+  const apiRef = useRef()
+
+  return (
+    <div>
+      <div style={{ margin: 20 }}>
+        <button
+          className="button button--secondary"
+          onClick={() => apiRef.current?.scrollBy({ top: 1000 })}
+        >
+          Scroll by 1000
+        </button>
+      </div>
+      <div style={{ width: "100%", height: 400 }}>
+        <List defaultSize={50} data={sampleData} apiRef={apiRef}>
+          {Row}
+        </List>
+      </div>
+    </div>
+  )
+}
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```tsx
+import { useRef } from "react"
+
+import type { RenderItem, VirtualWindowApi } from "@resembli/react-virtualized-window"
+import { List } from "@resembli/react-virtualized-window"
+
+const sampleData = Array.from({ length: 5000 }, (_, i) => i)
+
+const Row: RenderItem<number> = ({ data, style }) => {
+  return (
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: data % 2 ? "black" : "white",
+        color: isDarkTheme ? "white" : "black",
+        ...style,
+      }}
+    >
+      {data}
+    </div>
+  )
+}
+
+export function BasicApiExample() {
+  const apiRef = useRef<VirtualWindowApi>()
+
+  return (
+    <div>
+      <div style={{ margin: 20 }}>
+        <button
+          className="button button--secondary"
+          onClick={() => apiRef.current?.scrollBy({ top: 1000 })}
+        >
+          Scroll by 1000
+        </button>
+      </div>
+      <div style={{ width: "100%", height: 400 }}>
+        <List defaultSize={50} data={sampleData} apiRef={apiRef}>
+          {Row}
+        </List>
+      </div>
+    </div>
+  )
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Api props
+
+If you are using TypeScript, be sure to type your ref object:
+
+```tsx
+import type { VirtualWindowApi } from "@resembli/react-virtualized-window"
+
+const apiRef = useRef<VirtualWindowApi>()
+```
+
+The API is simply a wrapper around the HTML scroll api methods. The complete list is given below:
+
+| Prop       | Description                    |
+| ---------- | ------------------------------ |
+| scroll     | `HTMLDivElement["scroll"]`     |
+| scrollTo   | `HTMLDivElement["scrollTo"]`   |
+| scrollBy   | `HTMLDivElement["scrollBy"]`   |
+| scrollTop  | `HTMLDivElement["scrollTop"]`  |
+| scrollLeft | `HTMLDivElement["scrollLeft"]` |

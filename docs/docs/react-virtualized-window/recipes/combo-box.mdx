@@ -1,0 +1,206 @@
+---
+title: Combobox
+---
+
+Comboboxes are useful for providing a searchable select component. This is useful in cases where users have to select an option
+from a large list of choices, e.g. choosing the country or selecting from a list of stock symbols.
+
+## How does it work?
+
+We are using [downshift](https://www.downshift-js.com/) to create this basic example. Following their basic example, we
+create an `<input/>` that accepts a search term, and a button to open the dropdown. Our dropdown is wrapped in a `ul` for
+accessibility purposes. We then render our `<List/>` component within a `div` inside of the `ul` item. To ensure the Combobox
+remains accessible by screen readers, each item in our `<List/>` is rendered as an `li` item. Checkout the full demo and code
+below.
+
+## The demo
+
+import { DropdownCombobox } from "./_components/Combobox.tsx"
+
+<DropdownCombobox />
+
+:::caution
+
+The above demo is an example of how we can use the `<List/>` component to virtualize the item list of a combobox.
+It is not intended to be a complete example of building a fully accessible combobox that works well on all devices,
+in particular on mobile devices (since it will not use the native select).
+
+:::
+
+## The code
+
+import TabItem from "@theme/TabItem"
+import Tabs from "@theme/Tabs"
+
+<Tabs>
+<TabItem value="js" label="JavaScript">
+
+```jsx
+import { useCombobox } from "downshift"
+import { useState } from "react"
+
+import { List } from "@resembli/react-virtualized-window"
+
+// Just an array of strings, e.g. ['apple', 'result', ...]
+import { words } from "./words"
+
+const centerStyles = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+}
+
+export function DropdownCombobox() {
+  const [inputItems, setInputItems] = useState(words)
+  const {
+    isOpen,
+    getToggleButtonProps,
+    getLabelProps,
+    getMenuProps,
+    getInputProps,
+    getComboboxProps,
+    highlightedIndex,
+    getItemProps,
+  } = useCombobox({
+    items: inputItems,
+    onInputValueChange: ({ inputValue }) => {
+      setInputItems(words.filter((item) => item.toLowerCase().startsWith(inputValue.toLowerCase())))
+    },
+  })
+  return (
+    <div>
+      <label {...getLabelProps()}>Choose an element:</label>
+      <div {...getComboboxProps()}>
+        <input {...getInputProps()} style={{ width: 180 }} />
+        <button
+          type="button"
+          {...getToggleButtonProps()}
+          aria-label="toggle menu"
+          style={{ width: 20 }}
+        >
+          &#8595;
+        </button>
+      </div>
+      <ul {...getMenuProps()} style={{ padding: 0, listStyle: "none", position: "relative" }}>
+        {isOpen && (
+          <div
+            style={{
+              height: 300,
+              width: 200,
+              border: "1px solid grey",
+              position: "absolute",
+              backgroundColor: "white",
+            }}
+          >
+            <List data={inputItems} defaultSize={25}>
+              {({ data, style, cellMeta: { row } }) => {
+                return (
+                  <li
+                    style={
+                      highlightedIndex === row
+                        ? { backgroundColor: "#317bb1", ...centerStyles, ...style }
+                        : { ...centerStyles, ...style }
+                    }
+                    key={`${data}${row}`}
+                    {...getItemProps({ item: data, index: row })}
+                  >
+                    {data}
+                  </li>
+                )
+              }}
+            </List>
+          </div>
+        )}
+      </ul>
+    </div>
+  )
+}
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```tsx
+import { useCombobox } from "downshift"
+import { useState } from "react"
+
+import { List } from "@resembli/react-virtualized-window"
+
+// Just an array of strings, e.g. ['apple', 'result', ...]
+import { words } from "./words"
+
+const centerStyles = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+}
+
+export function DropdownCombobox() {
+  const [inputItems, setInputItems] = useState(words)
+  const {
+    isOpen,
+    getToggleButtonProps,
+    getLabelProps,
+    getMenuProps,
+    getInputProps,
+    getComboboxProps,
+    highlightedIndex,
+    getItemProps,
+  } = useCombobox({
+    items: inputItems,
+    onInputValueChange: ({ inputValue }) => {
+      setInputItems(words.filter((item) => item.toLowerCase().startsWith(inputValue.toLowerCase())))
+    },
+  })
+  return (
+    <div>
+      <label {...getLabelProps()}>Choose an element:</label>
+      <div {...getComboboxProps()}>
+        <input {...getInputProps()} style={{ width: 180 }} />
+        <button
+          type="button"
+          {...getToggleButtonProps()}
+          aria-label="toggle menu"
+          style={{ width: 20 }}
+        >
+          &#8595;
+        </button>
+      </div>
+      <ul {...getMenuProps()} style={{ padding: 0, listStyle: "none", position: "relative" }}>
+        {isOpen && (
+          <div
+            style={{
+              height: 300,
+              width: 200,
+              border: "1px solid grey",
+              position: "absolute",
+              backgroundColor: "white",
+            }}
+          >
+            <List data={inputItems} defaultSize={25}>
+              {({ data, style, cellMeta: { row } }) => {
+                return (
+                  <li
+                    style={
+                      highlightedIndex === row
+                        ? { backgroundColor: "#317bb1", ...centerStyles, ...style }
+                        : { ...centerStyles, ...style }
+                    }
+                    key={`${data}${row}`}
+                    {...getItemProps({ item: data, index: row })}
+                  >
+                    {data}
+                  </li>
+                )
+              }}
+            </List>
+          </div>
+        )}
+      </ul>
+    </div>
+  )
+}
+```
+
+</TabItem>
+</Tabs>
