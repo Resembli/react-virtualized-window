@@ -86,6 +86,7 @@ importers:
       '@tsconfig/docusaurus': ^1.0.4
       clsx: ^1.1.1
       downshift: ^6.1.7
+      lorem-ipsum: ^2.0.4
       prism-react-renderer: ^1.2.1
       react: ^17.0.2
       react-dom: ^17.0.2
@@ -101,6 +102,7 @@ importers:
       '@resembli/react-virtualized-window': link:../packages/react-virtualized-window
       clsx: 1.1.1
       downshift: 6.1.7_react@17.0.2
+      lorem-ipsum: 2.0.4
       prism-react-renderer: 1.2.1_react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -7292,6 +7294,14 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+
+  /lorem-ipsum/2.0.4:
+    resolution: {integrity: sha512-TD+ERYfxjYiUfOyaKU6OH4euumNVeKoo3BxIhokb7bGmoCULsME48onF9NVxYK3CU1z9L5ALnkDkW8lIkHvMNQ==}
+    engines: {node: '>= 8.x', npm: '>= 5.x'}
+    hasBin: true
+    dependencies:
+      commander: 2.20.3
+    dev: false
 
   /lower-case/2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}

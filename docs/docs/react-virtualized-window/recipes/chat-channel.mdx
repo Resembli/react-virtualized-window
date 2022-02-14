@@ -1,3 +1,166 @@
 ---
 title: Chat Channel
 ---
+
+A chat channel is used in places where your users can send message to and receives message from each other.
+Since the message history could potentially be large we can use a virtualized list to improve performance.
+
+## How does it work?
+
+In our example we create a `<List/>` component with variable sized rows based on the number of sentences in
+each chat bubble. We then render chat bubble items with the row and position them left or right dependent
+on a `isLeft` piece of data.
+
+## The demo
+
+import { ChatChannel } from "./_components/ChatChannel.tsx"
+
+<ChatChannel />
+
+## The code
+
+import TabItem from "@theme/TabItem"
+import Tabs from "@theme/Tabs"
+
+<Tabs>
+<TabItem value="js" label="JavaScript">
+
+```jsx
+import { List } from "@resembli/react-virtualized-window"
+
+import "./ChatChannel.css"
+import { chatData } from "./chatData"
+
+export function ChatChannel() {
+  const sizes = chatData.map((d) => d.numberOfSentences * 30)
+
+  return (
+    <List
+      height={500}
+      data={chatData}
+      defaultSize={100}
+      sizes={sizes}
+      gap={10}
+      style={{ border: "1px solid grey" }}
+    >
+      {({ data, style }) => {
+        const bubblePosition = data.isLeft ? "bubble-bottom-left" : "bubble-bottom-right"
+
+        return (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: data.isLeft ? "flex-start" : "flex-end",
+              alignItems: "center",
+              ...style,
+            }}
+          >
+            <div className={`bubble ${bubblePosition}`}>{data.message}</div>
+          </div>
+        )
+      }}
+    </List>
+  )
+}
+```
+
+</TabItem>
+<TabItem value="ts" label="TypeScript">
+
+```tsx
+import { List } from "@resembli/react-virtualized-window"
+
+import "./ChatChannel.css"
+import { chatData } from "./chatData"
+
+export function ChatChannel() {
+  const sizes = chatData.map((d) => d.numberOfSentences * 30)
+
+  return (
+    <List
+      height={500}
+      data={chatData}
+      defaultSize={100}
+      sizes={sizes}
+      gap={10}
+      style={{ border: "1px solid grey" }}
+    >
+      {({ data, style }) => {
+        const bubblePosition = data.isLeft ? "bubble-bottom-left" : "bubble-bottom-right"
+
+        return (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: data.isLeft ? "flex-start" : "flex-end",
+              alignItems: "center",
+              ...style,
+            }}
+          >
+            <div className={`bubble ${bubblePosition}`}>{data.message}</div>
+          </div>
+        )
+      }}
+    </List>
+  )
+}
+```
+
+</TabItem>
+</Tabs>
+
+### `./chatData` and `./ChatChannel.css`
+
+:::info
+
+We are using [lorem-ipsum.js](https://github.com/knicklabs/lorem-ipsum.js) to generate fake strings to use
+in our chat data example.
+
+:::
+
+```ts title="chatData.js"
+import { LoremIpsum } from "lorem-ipsum"
+
+const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 4,
+    min: 2,
+  },
+  wordsPerSentence: {
+    max: 10,
+    min: 3,
+  },
+})
+
+export const chatData = Array.from({ length: 1000 }, () => {
+  const isLeft = Math.random() < 0.5
+
+  const numberOfSentences = Math.floor(Math.random() * 4) + 1
+
+  return {
+    message: lorem.generateSentences(Math.max(1, numberOfSentences - 1)),
+    isLeft,
+    numberOfSentences,
+  }
+})
+```
+
+```css title=ChatChannel.css
+.bubble {
+  position: relative;
+  font-family: sans-serif;
+  font-size: 12px;
+  width: 80%;
+  max-height: 100%;
+  max-width: 800px;
+  background: rgb(161, 150, 150);
+  border-radius: 40px;
+  padding: 5px;
+  text-align: center;
+  color: #000;
+}
+
+.bubble-bottom-right {
+  background-color: aliceblue;
+}
+```

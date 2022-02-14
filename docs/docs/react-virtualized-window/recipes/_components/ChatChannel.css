@@ -1,0 +1,17 @@
+.bubble {
+  position: relative;
+  font-family: sans-serif;
+  font-size: 12px;
+  width: 80%;
+  max-height: 100%;
+  max-width: 800px;
+  background: rgb(161, 150, 150);
+  border-radius: 40px;
+  padding: 5px;
+  text-align: center;
+  color: #000;
+}
+
+.bubble-bottom-right {
+  background-color: aliceblue;
+}
