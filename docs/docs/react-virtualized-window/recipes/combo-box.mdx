@@ -22,7 +22,7 @@ import { DropdownCombobox } from "./_components/Combobox.tsx"
 :::caution
 
 The above demo is an example of how we can use the `<List/>` component to virtualize the item list of a combobox.
-It is not intended to be a complete example of building a fully accessible combobox that works well in all environments,
+It is not intended to be a complete example of building a fully accessible combobox that works well on all devices,
 in particular on mobile devices (since it will not use the native select).
 
 :::
@@ -81,9 +81,17 @@ export function DropdownCombobox() {
           &#8595;
         </button>
       </div>
-      <ul {...getMenuProps()} style={{ padding: 0, listStyle: "none" }}>
+      <ul {...getMenuProps()} style={{ padding: 0, listStyle: "none", position: "relative" }}>
         {isOpen && (
-          <div style={{ height: 300, width: 200, border: "1px solid grey" }}>
+          <div
+            style={{
+              height: 300,
+              width: 200,
+              border: "1px solid grey",
+              position: "absolute",
+              backgroundColor: "white",
+            }}
+          >
             <List data={inputItems} defaultSize={25}>
               {({ data, style, cellMeta: { row } }) => {
                 return (
@@ -158,9 +166,17 @@ export function DropdownCombobox() {
           &#8595;
         </button>
       </div>
-      <ul {...getMenuProps()} style={{ padding: 0, listStyle: "none" }}>
+      <ul {...getMenuProps()} style={{ padding: 0, listStyle: "none", position: "relative" }}>
         {isOpen && (
-          <div style={{ height: 300, width: 200, border: "1px solid grey" }}>
+          <div
+            style={{
+              height: 300,
+              width: 200,
+              border: "1px solid grey",
+              position: "absolute",
+              backgroundColor: "white",
+            }}
+          >
             <List data={inputItems} defaultSize={25}>
               {({ data, style, cellMeta: { row } }) => {
                 return (

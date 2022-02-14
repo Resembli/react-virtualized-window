@@ -1,3 +1,4 @@
+import { useColorMode } from "@docusaurus/theme-common"
 import { useCombobox } from "downshift"
 import { useState } from "react"
 
@@ -12,6 +13,7 @@ const centerStyles = {
 }
 
 export function DropdownCombobox() {
+  const { isDarkTheme } = useColorMode()
   const [inputItems, setInputItems] = useState(words)
   const {
     isOpen,
@@ -42,9 +44,17 @@ export function DropdownCombobox() {
           &#8595;
         </button>
       </div>
-      <ul {...getMenuProps()} style={{ padding: 0, listStyle: "none" }}>
+      <ul {...getMenuProps()} style={{ padding: 0, listStyle: "none", position: "relative" }}>
         {isOpen && (
-          <div style={{ height: 300, width: 200, border: "1px solid grey" }}>
+          <div
+            style={{
+              height: 300,
+              width: 200,
+              border: "1px solid grey",
+              position: "absolute",
+              background: isDarkTheme ? "black" : "white",
+            }}
+          >
             <List data={inputItems} defaultSize={25}>
               {({ data, style, cellMeta: { row } }) => {
                 return (
