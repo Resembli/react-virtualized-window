@@ -18,7 +18,7 @@ to npm but breaking changes will still be published as patch revisions.
 Any package with a version `1.0.0` or greater can be considered production ready.
 :::
 
-### High Level road map
+### High level road map
 
 | Module Name                                                                | Description                                                                                               | Status             |
 | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ------------------ |
