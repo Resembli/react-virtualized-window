@@ -27,3 +27,5 @@ build
 .cache-loader
 
 .pnp.*
+
+CODE_OF_CONDUCT.md
