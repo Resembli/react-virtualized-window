@@ -22,8 +22,8 @@ export default function HomepageFeatures(): JSX.Element {
             >
               <h3>React Virtualized Window</h3>
               <p>
-                React virtualization for performant rendering of large lists or massive amounts of
-                tabular data.
+                Create performant views on your data by virtualizing the DOM with{" "}
+                <code>@resembli/react-virtualized-window</code>
               </p>
               <div className={styles.fourFeatureGrid}>
                 <div>
@@ -43,7 +43,7 @@ export default function HomepageFeatures(): JSX.Element {
                 npm install @resembli/react-virtualized-window
               </CodeBlock>
               <Link className="button button--primary" to="/docs/react-virtualized-window/">
-                Getting Started and Docs
+                See the documentation
               </Link>
             </div>
           </div>
