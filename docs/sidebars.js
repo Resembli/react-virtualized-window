@@ -10,6 +10,7 @@ const sidebars = {
       items: [
         "react-virtualized-window/list",
         "react-virtualized-window/grid",
+        "react-virtualized-window/api",
         {
           type: "category",
           label: "Recipes",
