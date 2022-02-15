@@ -1,7 +1,6 @@
 import * as React from "react"
 
 interface StickyDivProps {
-  display?: React.CSSProperties["display"]
   absDisplay?: React.CSSProperties["display"]
   width?: React.CSSProperties["width"]
   height?: React.CSSProperties["height"]
@@ -12,7 +11,6 @@ interface StickyDivProps {
 }
 
 export function StickyDiv({
-  display,
   absDisplay,
   topOffset = 0,
   leftOffset = 0,
@@ -27,18 +25,41 @@ export function StickyDiv({
     : `translate3d(${rtl ? 0 : -leftOffset}px, ${-topOffset}px, 0)`
 
   return (
-    <DivWithSticky width={width} height={height} disabled={disabled} display={display}>
+    <DivWithSticky width={width} height={height} disabled={disabled}>
       <div
         style={{
           position: "absolute",
           display: absDisplay,
           height: "100%",
+          left: 100,
+          top: 100,
           transform,
           willChange: "transform",
         }}
       >
         {children}
       </div>
+      <div
+        style={{
+          height: 100,
+          width: "100%",
+          background: "red",
+          position: "absolute",
+        }}
+      ></div>
+      <div
+        style={{
+          height: 100,
+          width: "100%",
+          background: "red",
+          bottom: 0,
+          position: "absolute",
+        }}
+      ></div>
+      <div style={{ height: "100%", width: 100, position: "absolute", background: "red" }}></div>
+      <div
+        style={{ height: "100%", width: 100, right: 0, position: "absolute", background: "red" }}
+      ></div>
     </DivWithSticky>
   )
 }
@@ -48,11 +69,20 @@ function DivWithSticky({
   disabled,
   height,
   width,
-  display,
 }: React.PropsWithChildren<StickyDivProps>) {
   if (disabled) return <>{children}</>
 
   return (
-    <div style={{ position: "sticky", top: 0, left: 0, display, height, width }}>{children}</div>
+    <div
+      style={{
+        position: "sticky",
+        top: 0,
+        left: 0,
+        height,
+        width,
+      }}
+    >
+      {children}
+    </div>
   )
 }

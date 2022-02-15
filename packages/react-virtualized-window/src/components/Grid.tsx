@@ -141,7 +141,7 @@ export function Grid<T>({
       userStyle={style}
     >
       <div ref={windowRef} tabIndex={tabIndex} onScroll={onScroll} style={windowStyle}>
-        <div style={{ width: innerWidth, height: innerHeight }}>
+        <div style={{ width: innerWidth + 200, height: innerHeight + 200 }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             topOffset={topOffset}
