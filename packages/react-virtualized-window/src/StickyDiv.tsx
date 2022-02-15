@@ -22,20 +22,37 @@ export function StickyDiv({
   rtl,
   disabled,
 }: React.PropsWithChildren<StickyDivProps>) {
-  if (disabled) return <>{children}</>
+  const transform = disabled
+    ? undefined
+    : `translate3d(${rtl ? 0 : -leftOffset}px, ${-topOffset}px, 0)`
+
   return (
-    <div style={{ position: "sticky", top: 0, left: 0, display, height, width }}>
+    <DivWithSticky width={width} height={height} disabled={disabled} display={display}>
       <div
         style={{
           position: "absolute",
           display: absDisplay,
           height: "100%",
-          transform: `translate3d(${rtl ? 0 : -leftOffset}px, ${-topOffset}px, 0)`,
+          transform,
           willChange: "transform",
         }}
       >
         {children}
       </div>
-    </div>
+    </DivWithSticky>
+  )
+}
+
+function DivWithSticky({
+  children,
+  disabled,
+  height,
+  width,
+  display,
+}: React.PropsWithChildren<StickyDivProps>) {
+  if (disabled) return <>{children}</>
+
+  return (
+    <div style={{ position: "sticky", top: 0, left: 0, display, height, width }}>{children}</div>
   )
 }
