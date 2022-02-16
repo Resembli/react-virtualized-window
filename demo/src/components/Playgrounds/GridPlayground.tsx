@@ -41,7 +41,7 @@ const GridItem: RenderItem<number[]> = ({ style, data: [row, column] }) => {
 
 export function GridPlayground() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100}>
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} width="50%" height="50%">
       {GridItem}
     </Grid>
   )

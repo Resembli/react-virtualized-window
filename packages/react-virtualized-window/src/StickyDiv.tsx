@@ -3,6 +3,7 @@ import * as React from "react"
 interface StickyDivProps {
   width?: React.CSSProperties["width"]
   height?: React.CSSProperties["height"]
+  rtl: boolean
   disabled: boolean
 }
 
@@ -10,6 +11,7 @@ export function StickyDiv({
   children,
   width,
   height,
+  rtl,
   disabled,
 }: React.PropsWithChildren<StickyDivProps>) {
   if (disabled) return <>{children}</>
@@ -18,9 +20,9 @@ export function StickyDiv({
       style={{
         position: "sticky",
         top: 0,
-        left: 0,
-        right: 0,
-        willChange: "top, left, right",
+        left: rtl ? undefined : 0,
+        right: rtl ? 0 : undefined,
+        willChange: "top, left",
         height,
         width,
       }}
