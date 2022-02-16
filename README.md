@@ -1,5 +1,11 @@
 # Resembli UI Monorepo
 
+<p align="center">
+    <img src="./assets/Robotics.gif" height=500>
+    <br />
+    <a href="https://storyset.com/technology">Technology illustrations by Storyset</a>
+</p>
+
 Welcome to the Resembli UI Monorepo. This repo contains the open source projects that the Resembli organization is actively
 working on and maintaining.
 
