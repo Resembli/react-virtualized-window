@@ -144,51 +144,57 @@ export function Grid<T>({
         <div style={{ width: innerWidth, height: innerHeight }}>
           <StickyDiv
             disabled={disableSticky ?? false}
-            topOffset={topOffset}
-            leftOffset={leftOffset}
             height={adjustedHeight}
             width={adjustedWidth}
-            rtl={rtl}
           >
-            <div style={{ height: runningHeight }} />
-            {data.slice(vertStart, vertEnd).map((row, i) => {
-              const rowKey = i + vertStart
-              const itemHeight = dataHeights[vertStart + i]
+            <div
+              style={{
+                position: "absolute",
+                top: -topOffset,
+                left: -leftOffset,
+                willChange: "left, top",
+              }}
+            >
+              <div style={{ height: runningHeight }}></div>
+              {data.slice(vertStart, vertEnd).map((row, i) => {
+                const rowKey = i + vertStart
+                const itemHeight = dataHeights[vertStart + i]
 
-              const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
-                const cellKey = getKey?.(cell) ?? horiStart + j
-                const itemWidth = dataWidths[horiStart + j]
+                const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
+                  const cellKey = getKey?.(cell) ?? horiStart + j
+                  const itemWidth = dataWidths[horiStart + j]
+
+                  return (
+                    <RenderItem
+                      key={cellKey}
+                      itemWidth={itemWidth}
+                      Component={children}
+                      rtl={rtl}
+                      itemGap={gap}
+                      itemProps={cell}
+                      column={horiStart + j}
+                      row={vertStart + i}
+                    />
+                  )
+                })
 
                 return (
-                  <RenderItem
-                    key={cellKey}
-                    itemWidth={itemWidth}
-                    Component={children}
-                    rtl={rtl}
-                    itemGap={gap}
-                    itemProps={cell}
-                    column={horiStart + j}
-                    row={vertStart + i}
-                  />
+                  <div
+                    key={rowKey}
+                    style={{
+                      display: "flex",
+                      height: itemHeight,
+                      minHeight: itemHeight,
+                      maxHeight: itemHeight,
+                      ...verticalMarginStyles,
+                    }}
+                  >
+                    <div style={{ width: runningWidth }} />
+                    {rowChildren}
+                  </div>
                 )
-              })
-
-              return (
-                <div
-                  key={rowKey}
-                  style={{
-                    display: "flex",
-                    height: itemHeight,
-                    minHeight: itemHeight,
-                    maxHeight: itemHeight,
-                    ...verticalMarginStyles,
-                  }}
-                >
-                  <div style={{ width: runningWidth }} />
-                  {rowChildren}
-                </div>
-              )
-            })}
+              })}
+            </div>
           </StickyDiv>
         </div>
       </div>
