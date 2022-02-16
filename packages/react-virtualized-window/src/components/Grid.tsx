@@ -154,7 +154,7 @@ export function Grid<T>({
                 top: disableSticky ? 0 : -topOffset,
                 left: rtl ? undefined : disableSticky ? 0 : -leftOffset,
                 right: rtl ? (disableSticky ? 0 : -leftOffset) : undefined,
-                willChange: "left, top",
+                willChange: "left, top, right",
               }}
             >
               <div style={{ height: runningHeight }}></div>

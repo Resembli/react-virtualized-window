@@ -15,12 +15,16 @@ test("Sticky Disabled", async ({ page }) => {
   const gridPO = new GridPO(page, "grid")
   await gridPO.isVisible()
 
-  // If there is no sticky div, then the next elements after the innerWindow will be
-  // our offset div and row items.
-  await expect(gridPO.innerWindow.locator("div").nth(0)).toHaveCSS("height", "0px")
-  await expect(gridPO.innerWindow.locator("div").nth(1)).toHaveCSS("display", "flex")
+  // The next div should be absolute position div.
+  await expect(gridPO.innerWindow.locator("div").nth(0)).toHaveCSS("height", "700px")
+  await expect(gridPO.innerWindow.locator("div").nth(0)).toHaveAttribute(
+    "style",
+    "position: absolute; top: 0px; left: 0px; will-change: left, top, right;",
+  )
 
   await gridPO.scroll(DEFAULT_GRID_CELL_DIM + 20, 0)
 
-  await expect(gridPO.innerWindow.locator("div").nth(1).locator("div").nth(1)).toHaveText("1,0")
+  await expect(
+    gridPO.innerWindow.locator("div").nth(0).locator("div").nth(1).locator("div").nth(1),
+  ).toHaveText("1,0")
 })
