@@ -15,13 +15,14 @@ import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
+import { dimToNumber } from "../utils"
 
 export interface CellMeta {
   column: number
   row: number
 }
 
-export interface GridProps<T> extends VirtualWindowBaseProps<T> {
+export interface GridProps<T, L = unknown> extends VirtualWindowBaseProps<T> {
   data: T[][]
   children: <B extends T>(props: {
     data: B
@@ -32,6 +33,8 @@ export interface GridProps<T> extends VirtualWindowBaseProps<T> {
   rowHeights?: NumberOrPercent[]
   defaultColumnWidth: NumberOrPercent
   columnWidths?: NumberOrPercent[]
+
+  pinnedLeft?: L[][]
 }
 
 export type RenderItem<T> = GridProps<T>["children"]
@@ -47,7 +50,7 @@ export function Grid<T>({
   tabIndex,
   overscan,
   apiRef,
-  disableSticky,
+  disableSticky: ds,
   "data-testid": testId,
 
   getKey,
@@ -61,11 +64,13 @@ export function Grid<T>({
   height: sizingHeight,
 
   onScroll: userOnScroll,
+
+  pinnedLeft,
 }: GridProps<T>) {
   const windowRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
 
-  const [topOffset, leftOffset, onScroll] = useWindowScroll({
+  const [tOff, lOff, onScroll] = useWindowScroll({
     userOnScroll,
     rtl: rtl ?? false,
   })
@@ -106,7 +111,7 @@ export function Grid<T>({
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
-    offset: topOffset,
+    offset: tOff,
     gapBetweenItems: verticalGap,
     windowDimension: height,
     overscan: overscan ?? 0,
@@ -114,11 +119,17 @@ export function Grid<T>({
 
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
-    offset: leftOffset,
+    offset: lOff,
     gapBetweenItems: horizontalGap,
     itemDimensions: dataWidths,
     overscan: overscan ?? 0,
   })
+
+  const pinnedWidth = React.useMemo(() => {
+    if (!pinnedLeft) return 0
+
+    return pinnedLeft.length * dimToNumber(defaultColumnWidth, adjustedWidth)
+  }, [adjustedWidth, defaultColumnWidth, pinnedLeft])
 
   const verticalMarginStyles = React.useMemo(() => getVerticalMarginStyling(gap), [gap])
 
@@ -141,54 +152,82 @@ export function Grid<T>({
       userStyle={style}
     >
       <div ref={windowRef} tabIndex={tabIndex} onScroll={onScroll} style={windowStyle}>
-        <div style={{ width: innerWidth + 200, height: innerHeight + 200 }}>
-          <StickyDiv
-            disabled={disableSticky ?? false}
-            topOffset={topOffset}
-            leftOffset={leftOffset}
-            height={adjustedHeight}
-            width={adjustedWidth}
-            rtl={rtl}
-          >
-            <div style={{ height: runningHeight }} />
-            {data.slice(vertStart, vertEnd).map((row, i) => {
-              const rowKey = i + vertStart
-              const itemHeight = dataHeights[vertStart + i]
+        <div style={{ width: innerWidth + pinnedWidth, height: innerHeight }}>
+          <StickyDiv disabled={ds ?? false} height={adjustedHeight} width={adjustedWidth}>
+            <div
+              style={{
+                position: "absolute",
+                height: "100%",
+                left: pinnedWidth,
+                transform: `translate3d(${rtl || ds ? 0 : -lOff}px, ${ds ? 0 : -tOff}px, 0)`,
+                willChange: "transform",
+              }}
+            >
+              <div style={{ height: runningHeight }} />
+              {data.slice(vertStart, vertEnd).map((row, i) => {
+                const rowKey = i + vertStart
+                const itemHeight = dataHeights[vertStart + i]
 
-              const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
-                const cellKey = getKey?.(cell) ?? horiStart + j
-                const itemWidth = dataWidths[horiStart + j]
+                const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
+                  const cellKey = getKey?.(cell) ?? horiStart + j
+                  const itemWidth = dataWidths[horiStart + j]
+
+                  return (
+                    <RenderItem
+                      key={cellKey}
+                      itemWidth={itemWidth}
+                      Component={children}
+                      rtl={rtl}
+                      itemGap={gap}
+                      itemProps={cell}
+                      column={horiStart + j}
+                      row={vertStart + i}
+                    />
+                  )
+                })
 
                 return (
-                  <RenderItem
-                    key={cellKey}
-                    itemWidth={itemWidth}
-                    Component={children}
-                    rtl={rtl}
-                    itemGap={gap}
-                    itemProps={cell}
-                    column={horiStart + j}
-                    row={vertStart + i}
-                  />
+                  <div
+                    key={rowKey}
+                    style={{
+                      display: "flex",
+                      height: itemHeight,
+                      minHeight: itemHeight,
+                      maxHeight: itemHeight,
+                      ...verticalMarginStyles,
+                    }}
+                  >
+                    <div style={{ width: runningWidth }} />
+                    {rowChildren}
+                  </div>
                 )
-              })
-
-              return (
-                <div
-                  key={rowKey}
-                  style={{
-                    display: "flex",
-                    height: itemHeight,
-                    minHeight: itemHeight,
-                    maxHeight: itemHeight,
-                    ...verticalMarginStyles,
-                  }}
-                >
-                  <div style={{ width: runningWidth }} />
-                  {rowChildren}
-                </div>
-              )
-            })}
+              })}
+            </div>
+            <div
+              style={{
+                position: "absolute",
+                background: "red",
+                left: 0,
+                transform: `translate3d(0px, ${ds ? 0 : -tOff}px, 0)`,
+                height: "100%",
+                width: pinnedWidth,
+              }}
+            >
+              {pinnedLeft?.[0].map((data, i) => {
+                return (
+                  <div style={{ height: 100 }} key={i}>
+                    <RenderItem
+                      itemProps={data}
+                      itemGap={0}
+                      itemWidth={100}
+                      column={0}
+                      row={i}
+                      Component={children}
+                    />
+                  </div>
+                )
+              })}
+            </div>
           </StickyDiv>
         </div>
       </div>

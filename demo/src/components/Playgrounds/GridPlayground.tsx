@@ -3,6 +3,8 @@ import { Grid } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
+const pinnedLeft = [Array.from({ length: 100 }, (_, i) => [-1, i])]
+
 const data = Array(100)
   .fill(0)
   .map((_, i) => {
@@ -33,7 +35,14 @@ const GridItem: RenderItem<number[]> = ({ style, data: [row, column] }) => {
 
 export function GridPlayground() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} width="70%" height="70%">
+    <Grid
+      data={data}
+      defaultColumnWidth={100}
+      defaultRowHeight={100}
+      width="70%"
+      height="70%"
+      pinnedLeft={pinnedLeft}
+    >
       {GridItem}
     </Grid>
   )
