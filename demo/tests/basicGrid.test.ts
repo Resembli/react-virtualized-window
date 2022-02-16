@@ -46,7 +46,7 @@ test("Basic Grid", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(-8px, -8px, 0px); will-change: transform;",
+    "position: absolute; top: -8px; left: -8px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -116,7 +116,7 @@ test("Basic Grid RTL", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(0px, -8px, 0px); will-change: transform;",
+    "position: absolute; top: -8px; right: -8px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -193,7 +193,7 @@ test("Basic Grid Variable Heights", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(-8px, -8px, 0px); will-change: transform;",
+    "position: absolute; top: -8px; left: -8px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -274,7 +274,7 @@ test("Basic Grid Variable Heights RTL", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(0px, -8px, 0px); will-change: transform;",
+    "position: absolute; top: -8px; right: -8px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.

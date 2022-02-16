@@ -40,7 +40,7 @@ test("List Basic", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(0px, -8px, 0px); will-change: transform;",
+    "position: absolute; top: -8px; left: 0px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -92,7 +92,7 @@ test("List Basic RTL", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(0px, -8px, 0px); will-change: transform;",
+    "position: absolute; top: -8px; right: 0px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -143,7 +143,7 @@ test("List Basic Variable Heights", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(0px, -8px, 0px); will-change: transform;",
+    "position: absolute; top: -8px; left: 0px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -196,7 +196,7 @@ test("List Basic Variable Heights RTL", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(0px, -8px, 0px); will-change: transform;",
+    "position: absolute; top: -8px; right: 0px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.

@@ -41,7 +41,7 @@ test("List Horizontal Basic", async ({ page }) => {
   // We expect there to be some translation
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(-8px, 0px, 0px); will-change: transform;",
+    "position: absolute; top: 0px; left: -8px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -90,7 +90,7 @@ test("List Horizontal Basic RTL", async ({ page }) => {
   // When RTL is enabled there shouldn't be any horizontal translation.
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(0px, 0px, 0px); will-change: transform;",
+    "position: absolute; top: 0px; right: -8px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -141,7 +141,7 @@ test("List Horizontal Variable Basic", async ({ page }) => {
 
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(-8px, 0px, 0px); will-change: transform;",
+    "position: absolute; top: 0px; left: -8px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
@@ -195,7 +195,7 @@ test("List Horizontal Variable Basic RTL", async ({ page }) => {
   // Shouldn't be any translation when RTL
   await expect(po.absoluteDiv).toHaveAttribute(
     "style",
-    "position: absolute; height: 100%; transform: translate3d(0px, 0px, 0px); will-change: transform;",
+    "position: absolute; top: 0px; right: -8px; will-change: left, top, right;",
   )
 
   // The offset div shouldn't have any height yet, we haven't scrolled elements out of view.
