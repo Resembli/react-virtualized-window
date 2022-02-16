@@ -1,7 +1,7 @@
 # Resembli UI Monorepo
 
 <p align="center">
-    <img src="./assets/Robotics.gif" height=500>
+    <img src="./assets/expanded-robot.gif">
     <br />
     <a href="https://storyset.com/technology">Technology illustrations by Storyset</a>
 </p>
