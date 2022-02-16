@@ -13,5 +13,19 @@ export function StickyDiv({
   disabled,
 }: React.PropsWithChildren<StickyDivProps>) {
   if (disabled) return <>{children}</>
-  return <div style={{ position: "sticky", top: 0, left: 0, height, width }}>{children}</div>
+  return (
+    <div
+      style={{
+        position: "sticky",
+        top: 0,
+        left: 0,
+        right: 0,
+        willChange: "top, left, right",
+        height,
+        width,
+      }}
+    >
+      {children}
+    </div>
+  )
 }

@@ -151,7 +151,7 @@ export function Grid<T>({
               style={{
                 position: "absolute",
                 top: -topOffset,
-                left: -leftOffset,
+                left: rtl ? 0 : -leftOffset,
                 willChange: "left, top",
               }}
             >
