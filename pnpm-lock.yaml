@@ -52,19 +52,19 @@ importers:
       '@types/react': ^17.0.33
       '@types/react-dom': ^17.0.10
       '@vitejs/plugin-react': ^1.0.7
-      react: ^17.0.2
-      react-dom: ^17.0.2
+      react: ^18.0.0-rc.0
+      react-dom: ^18.0.0-rc.0
       typescript: ^4.4.4
       vite: ^2.7.2
       wouter: ^2.8.0-alpha.2
     dependencies:
       '@radix-ui/colors': 0.1.8
-      '@radix-ui/react-icons': 1.0.3_react@17.0.2
+      '@radix-ui/react-icons': 1.0.3_react@18.0.0-rc.0
       '@resembli/react-virtualized-window': link:../packages/react-virtualized-window
       '@stitches/core': 1.2.6
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      wouter: 2.8.0-alpha.2_react@17.0.2
+      react: 18.0.0-rc.0
+      react-dom: 18.0.0-rc.0_react@18.0.0-rc.0
+      wouter: 2.8.0-alpha.2_react@18.0.0-rc.0
     devDependencies:
       '@playwright/test': 1.19.0
       '@types/react': 17.0.37
@@ -3103,12 +3103,12 @@ packages:
     resolution: {integrity: sha512-jwRMXYwC0hUo0mv6wGpuw254Pd9p/R6Td5xsRpOmaWkUHlooNWqVcadgyzlRumMq3xfOTXwJReU0Jv+EIy4Jbw==}
     dev: false
 
-  /@radix-ui/react-icons/1.0.3_react@17.0.2:
+  /@radix-ui/react-icons/1.0.3_react@18.0.0-rc.0:
     resolution: {integrity: sha512-YbPAUZwTsvF/2H7IU35txaLUB+JNSV8GIhnswlqiFODP/P32t5op5keYUvQWsSj9TA0VLF367J24buUjIprn0w==}
     peerDependencies:
       react: ^16.x || ^17.x
     dependencies:
-      react: 17.0.2
+      react: 18.0.0-rc.0
     dev: false
 
   /@rollup/pluginutils/4.1.2:
@@ -8639,6 +8639,17 @@ packages:
       scheduler: 0.20.2
     dev: false
 
+  /react-dom/18.0.0-rc.0_react@18.0.0-rc.0:
+    resolution: {integrity: sha512-tdD1n0svTndHBQvVAq/f2Kx7FgQ30CpSLp87/neQKAHPW5WtdgW1sBSwmFAcMQOrmstTuP0M+zRlH86f9kMX/A==}
+    peerDependencies:
+      react: ^18.0.0-rc.0
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react: 18.0.0-rc.0
+      scheduler: 0.21.0-rc.0-next-fe905f152-20220107
+    dev: false
+
   /react-error-overlay/6.0.10:
     resolution: {integrity: sha512-mKR90fX7Pm5seCOfz8q9F+66VCc1PGsWSBxKbITjfKVQHMNF2zudxHnMdJiB1fRCb+XsbQV9sO9DCkgsMQgBIA==}
 
@@ -8807,6 +8818,14 @@ packages:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
+
+  /react/18.0.0-rc.0:
+    resolution: {integrity: sha512-PawosMBgF8k5Nlc3++ibzjFqPvo1XKv80MNtVYqz3abHHB2w3IpU65sSdSmBd2ooCwVhcp9b1vkx/twqhakNtA==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+    dev: false
 
   /read-pkg-up/7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
@@ -9152,6 +9171,13 @@ packages:
 
   /scheduler/0.20.2:
     resolution: {integrity: sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+    dev: false
+
+  /scheduler/0.21.0-rc.0-next-fe905f152-20220107:
+    resolution: {integrity: sha512-+sY0WajWdMjoxbmHM8P6P1FKGw8sSVKKG/HthqTFQFPxVGbKLmV1BiFPaVF9gOyQWqmnLYSXJMN+4Bs5ZygsTw==}
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -10485,12 +10511,12 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /wouter/2.8.0-alpha.2_react@17.0.2:
+  /wouter/2.8.0-alpha.2_react@18.0.0-rc.0:
     resolution: {integrity: sha512-aPsL5m5rW9RiceClOmGj6t5gn9Ut2TJVr98UDi1u9MIRNYiYVflg6vFIjdDYJ4IAyH0JdnkSgGwfo0LQS3k2zg==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
-      react: 17.0.2
+      react: 18.0.0-rc.0
     dev: false
 
   /wrap-ansi/6.2.0:
