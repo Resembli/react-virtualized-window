@@ -1,9 +1,15 @@
 # Resembli UI Monorepo
 
+<p align="center">
+    <img src="./assets/expanded-robot.gif">
+</p>
+
 Welcome to the Resembli UI Monorepo. This repo contains the open source projects that the Resembli organization is actively
 working on and maintaining.
 
 **Checkout the full docs at [resembli.com](https://resembli.com)**
+
+---
 
 ## [`@resembli/react-virtualized-window`](./packages/react-virtualized-window/)
 
@@ -26,3 +32,9 @@ yarn add @resembli/react-virtualized-window
 ```sh
 pnpm i @resembli/react-virtualized-window
 ```
+
+---
+
+<p align="center">
+    <a href="https://storyset.com/technology">Technology illustrations by Storyset</a>
+</p>
