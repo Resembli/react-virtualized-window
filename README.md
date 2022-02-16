@@ -1,7 +1,5 @@
-# Resembli UI Monorepo
-
 <p align="center">
-    <img src="./assets/expanded-robot.gif">
+    <img src="./assets/expanded-robot.gif" alt="resembli ui monorepo">
 </p>
 
 Welcome to the Resembli UI Monorepo. This repo contains the open source projects that the Resembli organization is actively
