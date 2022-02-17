@@ -2,6 +2,8 @@ import * as React from "react"
 
 interface UseWindowScrollArgs {
   rtl: boolean
+  transRef: React.RefObject<HTMLDivElement>
+  disableSticky?: boolean
   userOnScroll?: React.UIEventHandler<HTMLElement>
 }
 
@@ -9,13 +11,8 @@ export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
   const vOffset = React.useRef(0)
   const hOffset = React.useRef(0)
 
-  const [, forceUpdate] = React.useReducer((x) => (x + 1) % 2, 0)
-
-  const debounceTime = React.useRef<number | null>(null)
-  const debounceEnded = React.useCallback(() => {
-    debounceTime.current = null
-    forceUpdate()
-  }, [])
+  const [, forceUpdate] = React.useReducer((x) => x + 1, 0)
+  const debounceRef = React.useRef<number | null>(null)
 
   const onScroll: React.UIEventHandler<HTMLElement> = React.useCallback(
     (event) => {
@@ -30,14 +27,13 @@ export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
       hOffset.current = horizontalOffset
       vOffset.current = verticalOffset
 
-      if (debounceTime.current) {
-        cancelAnimationFrame(debounceTime.current)
-      }
-      debounceTime.current = requestAnimationFrame(debounceEnded)
+      if (debounceRef.current) cancelAnimationFrame(debounceRef.current)
+
+      debounceRef.current = requestAnimationFrame(() => forceUpdate())
 
       userOnScroll?.(event)
     },
-    [debounceEnded, rtl, userOnScroll],
+    [rtl, userOnScroll],
   )
 
   return [vOffset.current, hOffset.current, onScroll] as const

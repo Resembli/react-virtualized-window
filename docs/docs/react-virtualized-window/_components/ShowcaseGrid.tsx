@@ -1,3 +1,5 @@
+import BrowserOnly from "@docusaurus/BrowserOnly"
+
 import type { RenderItem } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
 
@@ -26,14 +28,21 @@ const CellItem: RenderItem<number[]> = ({ data, style, cellMeta: { row, column }
 
 export function ShowcaseGrid() {
   return (
-    <Grid
-      height={400}
-      defaultRowHeight={60}
-      defaultColumnWidth={60}
-      data={data}
-      style={{ border: "1px solid grey" }}
-    >
-      {CellItem}
-    </Grid>
+    <BrowserOnly>
+      {() => {
+        const width = globalThis.innerWidth ?? 1280
+        return (
+          <Grid
+            height={600}
+            defaultRowHeight={width < 800 ? 120 : 60}
+            defaultColumnWidth={width < 800 ? 120 : 60}
+            data={data}
+            style={{ border: "1px solid grey", background: "white" }}
+          >
+            {CellItem}
+          </Grid>
+        )
+      }}
+    </BrowserOnly>
   )
 }

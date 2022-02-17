@@ -29,8 +29,6 @@ const Row: RenderItem<number> = ({ data, style }) => {
 }
 
 export function BasicApiExample() {
-  const innerWidth = globalThis.innerWidth ?? 1280
-
   const apiRef = useRef<VirtualWindowApi>()
 
   return (
@@ -44,7 +42,7 @@ export function BasicApiExample() {
         </button>
       </div>
       <div style={{ width: "100%", height: 400 }}>
-        <List defaultSize={50} data={sampleData} disableSticky={innerWidth < 800} apiRef={apiRef}>
+        <List defaultSize={50} data={sampleData} apiRef={apiRef}>
           {Row}
         </List>
       </div>

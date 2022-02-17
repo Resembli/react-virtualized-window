@@ -3,6 +3,7 @@ import * as React from "react"
 export const useWindowDimensions = (windowRef: React.RefObject<HTMLDivElement>) => {
   const windowHeightRef = React.useRef(0)
   const windowWidthRef = React.useRef(0)
+  const browserWidth = React.useRef(0)
 
   const [, forceUpdate] = React.useReducer((x) => (x + 1) % 10, 0)
 
@@ -26,6 +27,10 @@ export const useWindowDimensions = (windowRef: React.RefObject<HTMLDivElement>) 
       windowWidthRef.current = parentElement.clientWidth - 1
       windowHeightRef.current = parentElement.clientHeight - 1
 
+      let root = parentElement
+      while (root.parentElement) root = root.parentElement
+      browserWidth.current = root.clientWidth
+
       parentElement.replaceChildren(windowRef.current)
       windowRef.current.scrollBy({ top: scrollTop, left: scrollLeft })
 
@@ -39,5 +44,5 @@ export const useWindowDimensions = (windowRef: React.RefObject<HTMLDivElement>) 
     return () => resizeObserver.disconnect()
   }, [windowRef])
 
-  return [windowWidthRef.current, windowHeightRef.current] as const
+  return [windowWidthRef.current, windowHeightRef.current, browserWidth.current] as const
 }

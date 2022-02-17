@@ -12,6 +12,7 @@ import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
 import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
+import { useSmartSticky } from "../useSmartSticky"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
@@ -45,9 +46,9 @@ export function Grid<T>({
   columnWidths,
 
   tabIndex,
-  overscan,
+  overscan: userOverscan,
   apiRef,
-  disableSticky,
+  disableSticky: userDisableSticky,
   "data-testid": testId,
 
   getKey,
@@ -63,17 +64,21 @@ export function Grid<T>({
   onScroll: userOnScroll,
 }: GridProps<T>) {
   const windowRef = React.useRef<HTMLDivElement>(null)
+  const transRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
-
-  const [topOffset, leftOffset, onScroll] = useWindowScroll({
-    userOnScroll,
-    rtl: rtl ?? false,
-  })
 
   const verticalGap = getVerticalGap(gap)
   const horizontalGap = getHorizontalGap(gap)
 
-  const [width, height] = useWindowDimensions(windowRef)
+  const [width, height, browserWidth] = useWindowDimensions(windowRef)
+  const [overscan, disableSticky] = useSmartSticky(browserWidth, userOverscan, userDisableSticky)
+
+  const [topOffset, leftOffset, onScroll] = useWindowScroll({
+    userOnScroll,
+    transRef,
+    disableSticky: disableSticky ?? false,
+    rtl: rtl ?? false,
+  })
 
   const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
     height,
@@ -120,67 +125,69 @@ export function Grid<T>({
     overscan: overscan ?? 0,
   })
 
-  const verticalMarginStyles = React.useMemo(() => getVerticalMarginStyling(gap), [gap])
-  const scrollableItems = React.useMemo(() => {
-    return (
-      <>
-        <div style={{ height: runningHeight }}></div>
-        {data.slice(vertStart, vertEnd).map((row, i) => {
-          const rowKey = i + vertStart
-          const itemHeight = dataHeights[vertStart + i]
+  const scrollableItems = React.useMemo(
+    function Items() {
+      const verticalMarginStyles = getVerticalMarginStyling(gap)
+      return (
+        <>
+          <div style={{ height: runningHeight }}></div>
+          {data.slice(vertStart, vertEnd).map((row, i) => {
+            const rowKey = i + vertStart
+            const itemHeight = dataHeights[vertStart + i]
 
-          const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
-            const cellKey = getKey?.(cell) ?? horiStart + j
-            const itemWidth = dataWidths[horiStart + j]
+            const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
+              const cellKey = getKey?.(cell) ?? horiStart + j
+              const itemWidth = dataWidths[horiStart + j]
+
+              return (
+                <RenderItem
+                  key={cellKey}
+                  itemWidth={itemWidth}
+                  Component={children}
+                  rtl={rtl}
+                  itemGap={gap}
+                  itemProps={cell}
+                  column={horiStart + j}
+                  row={vertStart + i}
+                />
+              )
+            })
 
             return (
-              <RenderItem
-                key={cellKey}
-                itemWidth={itemWidth}
-                Component={children}
-                rtl={rtl}
-                itemGap={gap}
-                itemProps={cell}
-                column={horiStart + j}
-                row={vertStart + i}
-              />
+              <div
+                key={rowKey}
+                style={{
+                  display: "flex",
+                  height: itemHeight,
+                  minHeight: itemHeight,
+                  maxHeight: itemHeight,
+                  ...verticalMarginStyles,
+                }}
+              >
+                <div style={{ width: runningWidth }} />
+                {rowChildren}
+              </div>
             )
-          })
-
-          return (
-            <div
-              key={rowKey}
-              style={{
-                display: "flex",
-                height: itemHeight,
-                minHeight: itemHeight,
-                maxHeight: itemHeight,
-                ...verticalMarginStyles,
-              }}
-            >
-              <div style={{ width: runningWidth }} />
-              {rowChildren}
-            </div>
-          )
-        })}
-      </>
-    )
-  }, [
-    children,
-    data,
-    dataHeights,
-    dataWidths,
-    gap,
-    getKey,
-    horiEnd,
-    horiStart,
-    rtl,
-    runningHeight,
-    runningWidth,
-    vertEnd,
-    vertStart,
-    verticalMarginStyles,
-  ])
+          })}
+        </>
+      )
+    },
+    [
+      children,
+      data,
+      dataHeights,
+      dataWidths,
+      gap,
+      getKey,
+      horiEnd,
+      horiStart,
+      rtl,
+      runningHeight,
+      runningWidth,
+      vertEnd,
+      vertStart,
+    ],
+  )
 
   return (
     <SizingDiv
@@ -195,6 +202,7 @@ export function Grid<T>({
         tabIndex={tabIndex}
         onScroll={onScroll}
         style={{
+          contain: "strict",
           height,
           width,
           position: "relative",
@@ -202,7 +210,7 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: innerHeight }}>
+        <div style={{ width: innerWidth, height: innerHeight, contain: "strict" }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             rtl={rtl ?? false}
@@ -210,12 +218,16 @@ export function Grid<T>({
             width={adjustedWidth}
           >
             <div
+              ref={transRef}
               style={{
                 position: "absolute",
-                top: disableSticky ? 0 : -topOffset,
-                left: rtl ? undefined : disableSticky ? 0 : -leftOffset,
-                right: rtl ? (disableSticky ? 0 : -leftOffset) : undefined,
-                willChange: "left, top, right",
+                transform: `translate3d(${disableSticky ? 0 : rtl ? leftOffset : -leftOffset}px, ${
+                  disableSticky ? 0 : -topOffset
+                }px, 0px)`,
+                top: 0,
+                left: rtl ? undefined : 0,
+                right: rtl ? 0 : undefined,
+                willChange: "transform",
               }}
             >
               {scrollableItems}
@@ -237,7 +249,7 @@ type RenderItemsProps<T> = {
   rtl?: boolean
 }
 
-const RenderItem = React.memo(function <T>({
+const RenderItem = function <T>({
   Component,
   itemGap,
   rtl,
@@ -260,6 +272,4 @@ const RenderItem = React.memo(function <T>({
   const cellMeta = React.useMemo<CellMeta>(() => ({ row, column }), [column, row])
 
   return <Component data={itemProps} style={itemStyles} cellMeta={cellMeta} />
-})
-
-RenderItem.displayName = "GridCellItem"
+}
