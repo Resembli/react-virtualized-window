@@ -28,10 +28,9 @@ const Column: RenderItem<number> = ({ data, style }) => {
 }
 
 export function BasicListHorizontal() {
-  const innerWidth = globalThis.innerWidth ?? 1280
   return (
     <div style={{ width: "100%", height: 400 }}>
-      <List defaultSize={50} data={sampleData} disableSticky={innerWidth < 800} layout="horizontal">
+      <List defaultSize={50} data={sampleData} layout="horizontal">
         {Column}
       </List>
     </div>

@@ -14,7 +14,6 @@ export function ChatChannel() {
       width={width < 550 ? "100%" : 500}
       data={chatData}
       defaultSize={100}
-      disableSticky={width < 400}
       sizes={sizes}
       gap={10}
       style={{ border: "1px solid grey" }}
