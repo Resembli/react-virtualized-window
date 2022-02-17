@@ -121,16 +121,66 @@ export function Grid<T>({
   })
 
   const verticalMarginStyles = React.useMemo(() => getVerticalMarginStyling(gap), [gap])
+  const scrollableItems = React.useMemo(() => {
+    return (
+      <>
+        <div style={{ height: runningHeight }}></div>
+        {data.slice(vertStart, vertEnd).map((row, i) => {
+          const rowKey = i + vertStart
+          const itemHeight = dataHeights[vertStart + i]
 
-  const windowStyle = React.useMemo(() => {
-    return {
-      height,
-      width,
-      position: "relative",
-      overflow: "auto",
-      direction: rtl ? "rtl" : "ltr",
-    } as const
-  }, [height, rtl, width])
+          const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
+            const cellKey = getKey?.(cell) ?? horiStart + j
+            const itemWidth = dataWidths[horiStart + j]
+
+            return (
+              <RenderItem
+                key={cellKey}
+                itemWidth={itemWidth}
+                Component={children}
+                rtl={rtl}
+                itemGap={gap}
+                itemProps={cell}
+                column={horiStart + j}
+                row={vertStart + i}
+              />
+            )
+          })
+
+          return (
+            <div
+              key={rowKey}
+              style={{
+                display: "flex",
+                height: itemHeight,
+                minHeight: itemHeight,
+                maxHeight: itemHeight,
+                ...verticalMarginStyles,
+              }}
+            >
+              <div style={{ width: runningWidth }} />
+              {rowChildren}
+            </div>
+          )
+        })}
+      </>
+    )
+  }, [
+    children,
+    data,
+    dataHeights,
+    dataWidths,
+    gap,
+    getKey,
+    horiEnd,
+    horiStart,
+    rtl,
+    runningHeight,
+    runningWidth,
+    vertEnd,
+    vertStart,
+    verticalMarginStyles,
+  ])
 
   return (
     <SizingDiv
@@ -140,7 +190,18 @@ export function Grid<T>({
       className={className}
       userStyle={style}
     >
-      <div ref={windowRef} tabIndex={tabIndex} onScroll={onScroll} style={windowStyle}>
+      <div
+        ref={windowRef}
+        tabIndex={tabIndex}
+        onScroll={onScroll}
+        style={{
+          height,
+          width,
+          position: "relative",
+          overflow: "auto",
+          direction: rtl ? "rtl" : "ltr",
+        }}
+      >
         <div style={{ width: innerWidth, height: innerHeight }}>
           <StickyDiv
             disabled={disableSticky ?? false}
@@ -157,45 +218,7 @@ export function Grid<T>({
                 willChange: "left, top, right",
               }}
             >
-              <div style={{ height: runningHeight }}></div>
-              {data.slice(vertStart, vertEnd).map((row, i) => {
-                const rowKey = i + vertStart
-                const itemHeight = dataHeights[vertStart + i]
-
-                const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
-                  const cellKey = getKey?.(cell) ?? horiStart + j
-                  const itemWidth = dataWidths[horiStart + j]
-
-                  return (
-                    <RenderItem
-                      key={cellKey}
-                      itemWidth={itemWidth}
-                      Component={children}
-                      rtl={rtl}
-                      itemGap={gap}
-                      itemProps={cell}
-                      column={horiStart + j}
-                      row={vertStart + i}
-                    />
-                  )
-                })
-
-                return (
-                  <div
-                    key={rowKey}
-                    style={{
-                      display: "flex",
-                      height: itemHeight,
-                      minHeight: itemHeight,
-                      maxHeight: itemHeight,
-                      ...verticalMarginStyles,
-                    }}
-                  >
-                    <div style={{ width: runningWidth }} />
-                    {rowChildren}
-                  </div>
-                )
-              })}
+              {scrollableItems}
             </div>
           </StickyDiv>
         </div>
