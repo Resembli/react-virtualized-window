@@ -67,7 +67,11 @@ export function Grid<T>({
   const transRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
 
-  const [overscan, disableSticky] = useSmartSticky(userOverscan, userDisableSticky)
+  const verticalGap = getVerticalGap(gap)
+  const horizontalGap = getHorizontalGap(gap)
+
+  const [width, height, browserWidth] = useWindowDimensions(windowRef)
+  const [overscan, disableSticky] = useSmartSticky(browserWidth, userOverscan, userDisableSticky)
 
   const [topOffset, leftOffset, onScroll] = useWindowScroll({
     userOnScroll,
@@ -75,11 +79,6 @@ export function Grid<T>({
     disableSticky: disableSticky ?? false,
     rtl: rtl ?? false,
   })
-
-  const verticalGap = getVerticalGap(gap)
-  const horizontalGap = getHorizontalGap(gap)
-
-  const [width, height] = useWindowDimensions(windowRef)
 
   const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
     height,
@@ -222,6 +221,9 @@ export function Grid<T>({
               ref={transRef}
               style={{
                 position: "absolute",
+                transform: `translate3d(${disableSticky ? 0 : rtl ? leftOffset : -leftOffset}px, ${
+                  disableSticky ? 0 : -topOffset
+                }px, 0px)`,
                 top: 0,
                 left: rtl ? undefined : 0,
                 right: rtl ? 0 : undefined,

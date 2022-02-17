@@ -7,12 +7,7 @@ interface UseWindowScrollArgs {
   userOnScroll?: React.UIEventHandler<HTMLElement>
 }
 
-export const useWindowScroll = ({
-  userOnScroll,
-  transRef,
-  rtl,
-  disableSticky,
-}: UseWindowScrollArgs) => {
+export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
   const vOffset = React.useRef(0)
   const hOffset = React.useRef(0)
 
@@ -21,8 +16,6 @@ export const useWindowScroll = ({
 
   const onScroll: React.UIEventHandler<HTMLElement> = React.useCallback(
     (event) => {
-      if (!transRef.current) return
-
       const target = event.currentTarget
 
       const scrollLeft = rtl ? -target.scrollLeft : target.scrollLeft
@@ -30,10 +23,6 @@ export const useWindowScroll = ({
 
       const verticalOffset = Math.max(0, scrollTop)
       const horizontalOffset = Math.max(0, scrollLeft)
-
-      transRef.current.style.transform = `translate3d(${
-        disableSticky ? 0 : rtl ? horizontalOffset : -horizontalOffset
-      }px, ${disableSticky ? 0 : -verticalOffset}px, 0px)`
 
       hOffset.current = horizontalOffset
       vOffset.current = verticalOffset
@@ -44,7 +33,7 @@ export const useWindowScroll = ({
 
       userOnScroll?.(event)
     },
-    [disableSticky, rtl, transRef, userOnScroll],
+    [rtl, userOnScroll],
   )
 
   return [vOffset.current, hOffset.current, onScroll] as const
