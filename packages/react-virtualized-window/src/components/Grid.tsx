@@ -20,9 +20,10 @@ import { useWindowScroll } from "../useWindowScroll"
 export interface CellMeta {
   column: number
   row: number
+  pinned?: "left" | "right"
 }
 
-export interface GridProps<T> extends VirtualWindowBaseProps<T> {
+export interface GridProps<T, L = unknown> extends VirtualWindowBaseProps<T> {
   data: T[][]
   children: <B extends T>(props: {
     data: B
@@ -33,6 +34,9 @@ export interface GridProps<T> extends VirtualWindowBaseProps<T> {
   rowHeights?: NumberOrPercent[]
   defaultColumnWidth: NumberOrPercent
   columnWidths?: NumberOrPercent[]
+
+  leftColumns?: L[][]
+  leftWidths?: NumberOrPercent[]
 }
 
 export type RenderItem<T> = GridProps<T>["children"]
@@ -62,6 +66,9 @@ export function Grid<T>({
   height: sizingHeight,
 
   onScroll: userOnScroll,
+
+  leftColumns,
+  leftWidths,
 }: GridProps<T>) {
   const windowRef = React.useRef<HTMLDivElement>(null)
   const transRef = React.useRef<HTMLDivElement>(null)
@@ -91,6 +98,14 @@ export function Grid<T>({
     rowHeights,
     rowCount: data.length,
     columnCount: data[0]?.length ?? 0,
+  })
+
+  const [lWidths, leftTotalWidth] = useDataDimension({
+    count: leftColumns?.length ?? 0,
+    defaultDimension: defaultColumnWidth,
+    windowDim: adjustedWidth,
+    gap: horizontalGap,
+    dimensions: leftWidths,
   })
 
   const [dataHeights, innerHeight] = useDataDimension({
@@ -210,7 +225,7 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: innerHeight, contain: "strict" }}>
+        <div style={{ width: innerWidth + leftTotalWidth, height: innerHeight, contain: "strict" }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             rtl={rtl ?? false}
@@ -232,6 +247,43 @@ export function Grid<T>({
             >
               {scrollableItems}
             </div>
+            {leftColumns?.map((column, i) => {
+              const columnWidth = lWidths[i]
+              const posOffset = lWidths.slice(0, i).reduce((a, b) => a + b, 0)
+              return (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: disableSticky ? 0 : -topOffset,
+                    left: posOffset,
+                  }}
+                  key={i}
+                >
+                  <div style={{ height: runningHeight }} />
+                  {column.slice(vertStart, vertEnd).map((row, i) => {
+                    return (
+                      <div
+                        key={i + vertStart}
+                        style={{
+                          height: dataHeights[i + vertStart],
+                        }}
+                      >
+                        <RenderItem
+                          key={i + vertStart}
+                          itemWidth={columnWidth}
+                          Component={children}
+                          rtl={rtl}
+                          itemGap={gap}
+                          itemProps={row}
+                          column={-1}
+                          row={vertStart + i}
+                        />
+                      </div>
+                    )
+                  })}
+                </div>
+              )
+            })}
           </StickyDiv>
         </div>
       </div>
