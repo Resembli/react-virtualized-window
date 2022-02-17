@@ -15,25 +15,12 @@ export const useIndicesForDimensions = ({
   itemDimensions,
   overscan,
 }: UseVerticalIndices) => {
-  const [maxDim, minDim] = React.useMemo(
-    () => [
-      Math.max(...itemDimensions) + gapBetweenItems,
-      Math.min(...itemDimensions) + gapBetweenItems,
-    ],
+  const maxDim = React.useMemo(
+    () => Math.max(...itemDimensions) + gapBetweenItems,
     [gapBetweenItems, itemDimensions],
   )
 
-  const previousValues = React.useRef([0, 0, 0])
-
   const [start, end, running] = React.useMemo(() => {
-    const offsetDiff = offset - previousValues.current[2]
-
-    // We can skip some calculations when the scroll offset would not be enough to change the
-    // start and end indices. We use `minDim / 2` as a heuristic for this.
-    if (offsetDiff < minDim / 2 && offsetDiff > 0) {
-      return previousValues.current
-    }
-
     let start = 0
     let runningTotal = 0
 
@@ -58,9 +45,8 @@ export const useIndicesForDimensions = ({
       end++
     }
 
-    previousValues.current = [start, end, runningTotal]
-    return previousValues.current
-  }, [offset, minDim, overscan, maxDim, windowDimension, itemDimensions, gapBetweenItems])
+    return [start, end, runningTotal]
+  }, [offset, overscan, maxDim, windowDimension, itemDimensions, gapBetweenItems])
 
   return [start, end, running] as const
 }
