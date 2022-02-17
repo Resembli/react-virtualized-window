@@ -195,6 +195,7 @@ export function Grid<T>({
         tabIndex={tabIndex}
         onScroll={onScroll}
         style={{
+          contain: "strict",
           height,
           width,
           position: "relative",
@@ -202,7 +203,7 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: innerHeight }}>
+        <div style={{ width: innerWidth, height: innerHeight, contain: "strict" }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             rtl={rtl ?? false}
