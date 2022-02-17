@@ -3,7 +3,7 @@ import { Grid } from "@resembli/react-virtualized-window"
 
 import { css } from "../../theme/theme"
 
-const data = Array(2000)
+const data = Array(50_00)
   .fill(0)
   .map((_, i) => {
     return Array(200)
@@ -41,7 +41,7 @@ const GridItem: RenderItem<number[]> = ({ style, data: [row, column] }) => {
 
 export function GridPlayground() {
   return (
-    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} width="50%" height="50%">
+    <Grid data={data} defaultColumnWidth={100} defaultRowHeight={100} width="100%" height="100%">
       {GridItem}
     </Grid>
   )
