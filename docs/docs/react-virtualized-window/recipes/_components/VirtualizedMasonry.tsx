@@ -1,7 +1,13 @@
 import type { NumberOrPercent } from "@resembli/react-virtualized-window"
 import { Grid } from "@resembli/react-virtualized-window"
 
-const heights = [200, 300, 150, 100]
+const urls = [
+  "/imgs/masonry-1.jpeg",
+  "/imgs/masonry-2.jpeg",
+  "/imgs/masonry-3.jpeg",
+  "/imgs/masonry-4.jpeg",
+  "/imgs/masonry-5.jpeg",
+]
 
 export function VirtualizedMasonry() {
   const innerWidth = globalThis.innerWidth ?? 1280
@@ -17,13 +23,14 @@ export function VirtualizedMasonry() {
   const imgUrls = Array.from({ length: 100 }, () =>
     Array.from({ length: itemCount }, () => {
       const randomInt = Math.floor(Math.random() * 100)
-      return `https://picsum.photos/250/${heights[randomInt % 4]}`
+
+      return urls[randomInt % 5]
     }),
   )
 
   return (
     <div style={{ height: 500 }}>
-      <Grid data={imgUrls} defaultColumnWidth={width as NumberOrPercent} defaultRowHeight={200}>
+      <Grid data={imgUrls} defaultColumnWidth={width as NumberOrPercent} defaultRowHeight={300}>
         {({ data: url, style }) => {
           return (
             <div
