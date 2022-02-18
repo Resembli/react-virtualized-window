@@ -35,6 +35,11 @@ export interface GridProps<T, L = unknown> extends VirtualWindowBaseProps<T> {
   defaultColumnWidth: NumberOrPercent
   columnWidths?: NumberOrPercent[]
 
+  pinnedRenderer?: <B extends T>(props: {
+    data: B
+    style: React.CSSProperties
+    cellMeta: CellMeta
+  }) => JSX.Element
   leftColumns?: L[][]
   leftWidths?: NumberOrPercent[]
 }
@@ -67,6 +72,7 @@ export function Grid<T>({
 
   onScroll: userOnScroll,
 
+  pinnedRenderer,
   leftColumns,
   leftWidths,
 }: GridProps<T>) {
@@ -143,6 +149,7 @@ export function Grid<T>({
   const scrollableItems = React.useMemo(
     function Items() {
       const verticalMarginStyles = getVerticalMarginStyling(gap)
+      const marginStyling = getHorizontalMarginStyling(gap, rtl)
       return (
         <>
           <div style={{ height: runningHeight }}></div>
@@ -159,8 +166,7 @@ export function Grid<T>({
                   key={cellKey}
                   itemWidth={itemWidth}
                   Component={children}
-                  rtl={rtl}
-                  itemGap={gap}
+                  marginStyling={marginStyling}
                   itemProps={cell}
                   column={horiStart + j}
                   row={vertStart + i}
@@ -257,7 +263,6 @@ export function Grid<T>({
                   right: rtl ? adjustedWidth - leftTotalWidth : undefined,
                   transform: `translate3d(0px, ${disableSticky ? 0 : -topOffset}px, 0px)`,
                   display: "flex",
-                  boxShadow: "2px 0 10px -5px #c4c0c0",
                 }}
               >
                 {leftColumns?.map((column, i) => {
@@ -270,17 +275,19 @@ export function Grid<T>({
                         return (
                           <div
                             key={`${i + vertStart}${j}`}
-                            style={{ height: dataHeights[i + vertStart] }}
+                            style={{
+                              height: dataHeights[i + vertStart],
+                              ...getVerticalMarginStyling(gap),
+                            }}
                           >
                             <RenderItem
+                              marginStyling={{}}
                               key={i + vertStart}
                               itemWidth={columnWidth}
-                              Component={children}
-                              rtl={rtl}
-                              itemGap={gap}
+                              Component={pinnedRenderer ?? children}
                               itemProps={row}
-                              column={-1}
-                              row={vertStart + i}
+                              column={i}
+                              row={vertStart + j}
                             />
                           </div>
                         )
@@ -299,25 +306,22 @@ export function Grid<T>({
 
 type RenderItemsProps<T> = {
   Component: GridProps<T>["children"]
-  itemGap: GridProps<T>["gap"]
+  marginStyling: React.CSSProperties
   itemProps: T
   itemWidth: number
   column: number
   row: number
-  rtl?: boolean
 }
 
 const RenderItem = function <T>({
   Component,
-  itemGap,
-  rtl,
   itemProps,
   itemWidth,
+  marginStyling,
   column,
   row,
 }: RenderItemsProps<T>) {
   const itemStyles = React.useMemo(() => {
-    const marginStyling = getHorizontalMarginStyling(itemGap, rtl)
     return {
       width: itemWidth,
       minWidth: itemWidth,
@@ -325,7 +329,7 @@ const RenderItem = function <T>({
       height: "100%",
       ...marginStyling,
     }
-  }, [rtl, itemGap, itemWidth])
+  }, [itemWidth, marginStyling])
 
   const cellMeta = React.useMemo<CellMeta>(() => ({ row, column }), [column, row])
 
