@@ -24,3 +24,32 @@ export interface VirtualWindowBaseProps<T> {
 
   "data-testid"?: string
 }
+
+export interface CellMeta {
+  column: number
+  row: number
+  pinned?: "left" | "right"
+}
+
+export interface GridProps<T, L = unknown> extends VirtualWindowBaseProps<T> {
+  data: T[][]
+  children: <B extends T>(props: {
+    data: B
+    style: React.CSSProperties
+    cellMeta: CellMeta
+  }) => JSX.Element
+  defaultRowHeight: NumberOrPercent
+  rowHeights?: NumberOrPercent[]
+  defaultColumnWidth: NumberOrPercent
+  columnWidths?: NumberOrPercent[]
+
+  pinnedRenderer?: <B extends T>(props: {
+    data: B
+    style: React.CSSProperties
+    cellMeta: CellMeta
+  }) => JSX.Element
+  leftColumns?: L[][]
+  leftWidths?: NumberOrPercent[]
+}
+
+export type RenderItem<T> = GridProps<T>["children"]

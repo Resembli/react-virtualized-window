@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import { PinnedColumns } from "../PinnedColumns"
+import { RenderItem } from "../RenderItem"
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
 import {
@@ -8,7 +10,7 @@ import {
   getVerticalGap,
   getVerticalMarginStyling,
 } from "../itemGapUtilities"
-import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
+import type { GridProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
 import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
@@ -16,35 +18,6 @@ import { useSmartSticky } from "../useSmartSticky"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
-
-export interface CellMeta {
-  column: number
-  row: number
-  pinned?: "left" | "right"
-}
-
-export interface GridProps<T, L = unknown> extends VirtualWindowBaseProps<T> {
-  data: T[][]
-  children: <B extends T>(props: {
-    data: B
-    style: React.CSSProperties
-    cellMeta: CellMeta
-  }) => JSX.Element
-  defaultRowHeight: NumberOrPercent
-  rowHeights?: NumberOrPercent[]
-  defaultColumnWidth: NumberOrPercent
-  columnWidths?: NumberOrPercent[]
-
-  pinnedRenderer?: <B extends T>(props: {
-    data: B
-    style: React.CSSProperties
-    cellMeta: CellMeta
-  }) => JSX.Element
-  leftColumns?: L[][]
-  leftWidths?: NumberOrPercent[]
-}
-
-export type RenderItem<T> = GridProps<T>["children"]
 
 export function Grid<T>({
   data,
@@ -110,7 +83,7 @@ export function Grid<T>({
     count: leftColumns?.length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
-    gap: horizontalGap,
+    gap: 0,
     dimensions: leftWidths,
   })
 
@@ -254,84 +227,26 @@ export function Grid<T>({
               {scrollableItems}
             </div>
             {leftColumns && (
-              <div
-                style={{
-                  width: leftTotalWidth,
-                  height: innerHeight,
-                  position: disableSticky ? "sticky" : "absolute",
-                  left: rtl ? undefined : 0,
-                  right: rtl ? adjustedWidth - leftTotalWidth : undefined,
-                  transform: `translate3d(0px, ${disableSticky ? 0 : -topOffset}px, 0px)`,
-                  display: "flex",
-                }}
-              >
-                {leftColumns?.map((column, i) => {
-                  const columnWidth = lWidths[i]
-
-                  return (
-                    <div key={i} style={{ width: columnWidth }}>
-                      <div style={{ height: runningHeight }} />
-                      {column.slice(vertStart, vertEnd).map((row, j) => {
-                        return (
-                          <div
-                            key={`${i + vertStart}${j}`}
-                            style={{
-                              height: dataHeights[i + vertStart],
-                              ...getVerticalMarginStyling(gap),
-                            }}
-                          >
-                            <RenderItem
-                              marginStyling={{}}
-                              key={i + vertStart}
-                              itemWidth={columnWidth}
-                              Component={pinnedRenderer ?? children}
-                              itemProps={row}
-                              column={i}
-                              row={vertStart + j}
-                            />
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )
-                })}
-              </div>
+              <PinnedColumns
+                width={leftTotalWidth}
+                height={innerHeight}
+                position={disableSticky ? "sticky" : "absolute"}
+                left={rtl ? undefined : 0}
+                right={rtl ? adjustedWidth - leftTotalWidth : undefined}
+                offset={disableSticky ? 0 : -topOffset}
+                columns={leftColumns}
+                widths={lWidths}
+                heights={dataHeights}
+                runningHeight={runningHeight}
+                start={vertStart}
+                end={vertEnd}
+                gap={gap}
+                Component={pinnedRenderer ?? children}
+              />
             )}
           </StickyDiv>
         </div>
       </div>
     </SizingDiv>
   )
-}
-
-type RenderItemsProps<T> = {
-  Component: GridProps<T>["children"]
-  marginStyling: React.CSSProperties
-  itemProps: T
-  itemWidth: number
-  column: number
-  row: number
-}
-
-const RenderItem = function <T>({
-  Component,
-  itemProps,
-  itemWidth,
-  marginStyling,
-  column,
-  row,
-}: RenderItemsProps<T>) {
-  const itemStyles = React.useMemo(() => {
-    return {
-      width: itemWidth,
-      minWidth: itemWidth,
-      maxWidth: itemWidth,
-      height: "100%",
-      ...marginStyling,
-    }
-  }, [itemWidth, marginStyling])
-
-  const cellMeta = React.useMemo<CellMeta>(() => ({ row, column }), [column, row])
-
-  return <Component data={itemProps} style={itemStyles} cellMeta={cellMeta} />
 }
