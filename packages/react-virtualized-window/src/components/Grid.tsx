@@ -236,54 +236,60 @@ export function Grid<T>({
               ref={transRef}
               style={{
                 position: "absolute",
-                transform: `translate3d(${disableSticky ? 0 : rtl ? leftOffset : -leftOffset}px, ${
-                  disableSticky ? 0 : -topOffset
-                }px, 0px)`,
+                transform: `translate3d(${
+                  disableSticky ? 0 : rtl ? leftOffset : -leftOffset + leftTotalWidth
+                }px, ${disableSticky ? 0 : -topOffset}px, 0px)`,
                 top: 0,
-                left: rtl ? undefined : 0,
+                left: rtl ? undefined : disableSticky ? leftTotalWidth : 0,
                 right: rtl ? 0 : undefined,
                 willChange: "transform",
               }}
             >
               {scrollableItems}
             </div>
-            {leftColumns?.map((column, i) => {
-              const columnWidth = lWidths[i]
-              const posOffset = lWidths.slice(0, i).reduce((a, b) => a + b, 0)
-              return (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: disableSticky ? 0 : -topOffset,
-                    left: posOffset,
-                  }}
-                  key={i}
-                >
-                  <div style={{ height: runningHeight }} />
-                  {column.slice(vertStart, vertEnd).map((row, i) => {
-                    return (
-                      <div
-                        key={i + vertStart}
-                        style={{
-                          height: dataHeights[i + vertStart],
-                        }}
-                      >
-                        <RenderItem
-                          key={i + vertStart}
-                          itemWidth={columnWidth}
-                          Component={children}
-                          rtl={rtl}
-                          itemGap={gap}
-                          itemProps={row}
-                          column={-1}
-                          row={vertStart + i}
-                        />
-                      </div>
-                    )
-                  })}
-                </div>
-              )
-            })}
+            {leftColumns && (
+              <div
+                style={{
+                  width: leftTotalWidth,
+                  height: innerHeight,
+                  position: disableSticky ? "sticky" : "absolute",
+                  left: rtl ? undefined : 0,
+                  right: rtl ? adjustedWidth - leftTotalWidth : undefined,
+                  transform: `translate3d(0px, ${disableSticky ? 0 : -topOffset}px, 0px)`,
+                  display: "flex",
+                  boxShadow: "2px 0 10px -5px #c4c0c0",
+                }}
+              >
+                {leftColumns?.map((column, i) => {
+                  const columnWidth = lWidths[i]
+
+                  return (
+                    <div key={i} style={{ width: columnWidth }}>
+                      <div style={{ height: runningHeight }} />
+                      {column.slice(vertStart, vertEnd).map((row, j) => {
+                        return (
+                          <div
+                            key={`${i + vertStart}${j}`}
+                            style={{ height: dataHeights[i + vertStart] }}
+                          >
+                            <RenderItem
+                              key={i + vertStart}
+                              itemWidth={columnWidth}
+                              Component={children}
+                              rtl={rtl}
+                              itemGap={gap}
+                              itemProps={row}
+                              column={-1}
+                              row={vertStart + i}
+                            />
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </StickyDiv>
         </div>
       </div>
