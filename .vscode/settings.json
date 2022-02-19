@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["changesets", "clsx", "hori", "npmrc", "overscan", "pnpm", "testid", "wouter"]
+  "cSpell.words": [
+    "changesets",
+    "clsx",
+    "hori",
+    "npmrc",
+    "overscan",
+    "pnpm",
+    "preact",
+    "testid",
+    "vitebook",
+    "wouter"
+  ]
 }
