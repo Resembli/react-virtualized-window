@@ -37,7 +37,14 @@ function GridPlayground() {
   return (
     <>
       <Variant name="Default" description="Default Grid">
-        <Grid data={data} defaultRowHeight={100} defaultColumnWidth={100} gap={gap}>
+        <Grid
+          rtl
+          data={data}
+          defaultRowHeight={100}
+          defaultColumnWidth={100}
+          gap={gap}
+          style={{ background: "red" }}
+        >
           {({ data, style }) => (
             <div style={style} className={itemClass({ odd: (data[0] + data[1]) % 2 === 1 })}>
               {data[0]},{data[1]}

@@ -139,9 +139,7 @@ export function Grid<T>({
                   itemWidth={itemWidth}
                   Component={children}
                   marginLeft={rtl || j + horiStart === 0 ? 0 : horizontalGap}
-                  marginRight={!rtl || j + horiStart === data?.[0].length ? 0 : horizontalGap}
-                  rtl={rtl}
-                  itemGap={gap}
+                  marginRight={!rtl || j + horiStart === 0 ? 0 : horizontalGap}
                   itemProps={cell}
                   column={horiStart + j}
                   row={vertStart + i}
@@ -174,7 +172,6 @@ export function Grid<T>({
       data,
       dataHeights,
       dataWidths,
-      gap,
       getKey,
       horiEnd,
       horiStart,
@@ -240,14 +237,12 @@ export function Grid<T>({
 
 type RenderItemsProps<T> = {
   Component: GridProps<T>["children"]
-  itemGap: GridProps<T>["gap"]
   itemProps: T
   itemWidth: number
   column: number
   row: number
   marginLeft: number
   marginRight: number
-  rtl?: boolean
 }
 
 const RenderItem = function <T>({
@@ -255,9 +250,9 @@ const RenderItem = function <T>({
   itemProps,
   itemWidth,
   column,
+  row,
   marginRight,
   marginLeft,
-  row,
 }: RenderItemsProps<T>) {
   const itemStyles = React.useMemo(() => {
     return {
