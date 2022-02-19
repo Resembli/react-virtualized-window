@@ -3,7 +3,6 @@ on:
   pull_request:
     paths:
       - packages/react-virtualized-window/**
-      - demo/**
 # No-op these jobs for now, until the structure of the window is prod ready.
 jobs:
   window-chrome-tests:
