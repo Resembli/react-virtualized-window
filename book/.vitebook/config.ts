@@ -14,8 +14,8 @@ export default defineConfig<DefaultThemeConfig>({
     preact({ include: /\.([j|t]sx?|md)$/ }),
   ],
   site: {
-    title: "Book",
-    description: "Resembli UI book",
+    title: "Resembli UI Book",
+    description: "Playground of the Resembli UI Components",
     theme: {},
   },
 })

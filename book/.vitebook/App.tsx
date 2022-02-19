@@ -1,13 +1,14 @@
-import type { ComponentChildren } from 'preact';
+import type { ReactNode } from "react"
 
 type AppProps = {
-  Component: ComponentChildren;
-};
-
-function App({ Component }: AppProps) {
-  return <Component />;
+  Component: ReactNode
 }
 
-App.displayName = 'VitebookApp';
+function App({ Component }: AppProps) {
+  // @ts-ignore
+  return <Component />
+}
 
-export default App;
+App.displayName = "VitebookApp"
+
+export default App

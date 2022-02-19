@@ -36,7 +36,7 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint . --ext .ts --ext .tsx --ext .js --ext .jsx --ignore-path .gitignore --max-warnings=0",
-    "prettier": "prettier --check ./**/*.{ts,tsx,js,md,mdx}",
+    "prettier": "prettier --check ./**/*.{ts,tsx,js}",
     "build-packages": "pnpm run build --stream --parallel --filter \"{packages}\"",
     "ci:version": "pnpm changeset version && pnpm install",
     "ci:publish": "pnpm changeset tag && pnpm -r --filter \"{packages}\" publish --no-git-checks --access=public"
