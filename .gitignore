@@ -6,6 +6,9 @@
 
 # Vite Js
 .vite
+# Vitebook
+.cache
+.temp
 
 # Build output
 **/dist/
