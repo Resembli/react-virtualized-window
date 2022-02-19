@@ -41,7 +41,7 @@ export const useDataDimension = ({
       draftDimensions.push(dimAsNum)
     }
 
-    return [draftDimensions, runningTotal + gap]
+    return [draftDimensions, runningTotal]
   }, [count, defaultAsNumber, dimensions, gap, windowDim])
 
   return [dataDimensions, dimTotal] as const

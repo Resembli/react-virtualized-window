@@ -2,12 +2,7 @@ import * as React from "react"
 
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
-import {
-  getHorizontalGap,
-  getHorizontalMarginStyling,
-  getVerticalGap,
-  getVerticalMarginStyling,
-} from "../itemGapUtilities"
+import { getHorizontalGap, getVerticalGap } from "../itemGapUtilities"
 import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
@@ -127,7 +122,6 @@ export function Grid<T>({
 
   const scrollableItems = React.useMemo(
     function Items() {
-      const verticalMarginStyles = getVerticalMarginStyling(gap)
       return (
         <>
           <div style={{ height: runningHeight }}></div>
@@ -144,8 +138,8 @@ export function Grid<T>({
                   key={cellKey}
                   itemWidth={itemWidth}
                   Component={children}
-                  rtl={rtl}
-                  itemGap={gap}
+                  marginLeft={rtl || j + horiStart === 0 ? 0 : horizontalGap}
+                  marginRight={!rtl || j + horiStart === 0 ? 0 : horizontalGap}
                   itemProps={cell}
                   column={horiStart + j}
                   row={vertStart + i}
@@ -161,7 +155,8 @@ export function Grid<T>({
                   height: itemHeight,
                   minHeight: itemHeight,
                   maxHeight: itemHeight,
-                  ...verticalMarginStyles,
+                  marginTop: i + vertStart === 0 ? 0 : verticalGap,
+                  marginBottom: i + vertStart === data.length - 1 ? 0 : verticalGap,
                 }}
               >
                 <div style={{ width: runningWidth }} />
@@ -177,15 +172,16 @@ export function Grid<T>({
       data,
       dataHeights,
       dataWidths,
-      gap,
       getKey,
       horiEnd,
       horiStart,
+      horizontalGap,
       rtl,
       runningHeight,
       runningWidth,
       vertEnd,
       vertStart,
+      verticalGap,
     ],
   )
 
@@ -241,33 +237,33 @@ export function Grid<T>({
 
 type RenderItemsProps<T> = {
   Component: GridProps<T>["children"]
-  itemGap: GridProps<T>["gap"]
   itemProps: T
   itemWidth: number
   column: number
   row: number
-  rtl?: boolean
+  marginLeft: number
+  marginRight: number
 }
 
 const RenderItem = function <T>({
   Component,
-  itemGap,
-  rtl,
   itemProps,
   itemWidth,
   column,
   row,
+  marginRight,
+  marginLeft,
 }: RenderItemsProps<T>) {
   const itemStyles = React.useMemo(() => {
-    const marginStyling = getHorizontalMarginStyling(itemGap, rtl)
     return {
       width: itemWidth,
       minWidth: itemWidth,
       maxWidth: itemWidth,
       height: "100%",
-      ...marginStyling,
+      marginLeft,
+      marginRight,
     }
-  }, [rtl, itemGap, itemWidth])
+  }, [itemWidth, marginLeft, marginRight])
 
   const cellMeta = React.useMemo<CellMeta>(() => ({ row, column }), [column, row])
 

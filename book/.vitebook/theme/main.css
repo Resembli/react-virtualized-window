@@ -1,0 +1,16 @@
+.page.__vbk__ {
+  height: 100%;
+}
+
+.page__container.__vbk__ {
+  width: 100%;
+  height: 100%;
+}
+
+.page__container.__vbk__ .__vbk__ {
+  width: 95%;
+  height: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
