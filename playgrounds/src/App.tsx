@@ -15,10 +15,11 @@ const ItemCss = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  background: "Azure",
   variants: {
     odd: {
       true: {
-        background: "white",
+        background: "grey",
       },
     },
   },
@@ -30,10 +31,22 @@ const data = Array.from({ length: 1000 }, (_, row) => {
   })
 })
 
+const pinnedLeft = [
+  Array.from({ length: 1000 }, (_, row) => [-1, row]),
+  Array.from({ length: 1000 }, (_, row) => [-1, row]),
+]
+
 function App() {
   return (
     <div className={AppCss()}>
-      <Grid defaultColumnWidth={100} defaultRowHeight={100} data={data} width="70%" height="70%">
+      <Grid
+        defaultColumnWidth={100}
+        defaultRowHeight={100}
+        data={data}
+        width="70%"
+        height="70%"
+        pinnedLeft={pinnedLeft}
+      >
         {({ data, style }) => (
           <div style={style} className={ItemCss({ odd: (data[0] + data[1]) % 2 === 1 })}>
             {data[0]},{data[1]}

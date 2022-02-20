@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import { PinnedColumn } from "../PinnedColumn"
 import { RenderItem } from "../RenderItem"
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
@@ -39,6 +40,9 @@ export function Grid<T>({
   height: sizingHeight,
 
   onScroll: userOnScroll,
+
+  pinnedLeft,
+  leftWidths,
 }: GridProps<T>) {
   const windowRef = React.useRef<HTMLDivElement>(null)
   const transRef = React.useRef<HTMLDivElement>(null)
@@ -102,6 +106,14 @@ export function Grid<T>({
     overscan: overscan ?? 0,
   })
 
+  const [lWidths, leftTotalWidth] = useDataDimension({
+    count: pinnedLeft?.length ?? 0,
+    defaultDimension: defaultColumnWidth,
+    windowDim: adjustedWidth,
+    gap: 0,
+    dimensions: leftWidths,
+  })
+
   const scrollableItems = useScrollItems({
     children,
     data,
@@ -140,7 +152,7 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: innerHeight, contain: "strict" }}>
+        <div style={{ width: innerWidth, height: innerHeight }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             rtl={rtl ?? false}
@@ -162,6 +174,21 @@ export function Grid<T>({
             >
               {scrollableItems}
             </div>
+            {pinnedLeft && (
+              <PinnedColumn
+                Component={children}
+                totalWidth={leftTotalWidth}
+                left={rtl ? undefined : 0}
+                right={rtl ? adjustedWidth - leftTotalWidth : 0}
+                topOffset={disableSticky ? 0 : -topOffset}
+                columns={pinnedLeft}
+                widths={lWidths}
+                heights={dataHeights}
+                vertStart={vertStart}
+                vertEnd={vertEnd}
+                runningHeight={runningHeight}
+              />
+            )}
           </StickyDiv>
         </div>
       </div>
