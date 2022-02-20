@@ -1,7 +1,6 @@
 import * as React from "react"
 
 import { PinnedColumn } from "../PinnedColumn"
-import { RenderItem } from "../RenderItem"
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
 import { getHorizontalGap, getVerticalGap } from "../itemGapUtilities"
@@ -152,7 +151,7 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth, height: innerHeight }}>
+        <div style={{ width: innerWidth + leftTotalWidth, height: innerHeight }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             rtl={rtl ?? false}
@@ -167,7 +166,7 @@ export function Grid<T>({
                   disableSticky ? 0 : -topOffset
                 }px, 0px)`,
                 top: 0,
-                left: rtl ? undefined : 0,
+                left: rtl ? undefined : leftTotalWidth,
                 right: rtl ? 0 : undefined,
                 willChange: "transform",
               }}
