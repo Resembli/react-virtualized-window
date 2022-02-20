@@ -1,36 +1,18 @@
 import * as React from "react"
 
+import { RenderItem } from "../RenderItem"
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
 import { getHorizontalGap, getVerticalGap } from "../itemGapUtilities"
-import type { NumberOrPercent, VirtualWindowBaseProps } from "../types"
+import type { GridProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
 import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
+import { useScrollItems } from "../useScrollItems"
 import { useSmartSticky } from "../useSmartSticky"
 import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
-
-export interface CellMeta {
-  column: number
-  row: number
-}
-
-export interface GridProps<T> extends VirtualWindowBaseProps<T> {
-  data: T[][]
-  children: <B extends T>(props: {
-    data: B
-    style: React.CSSProperties
-    cellMeta: CellMeta
-  }) => JSX.Element
-  defaultRowHeight: NumberOrPercent
-  rowHeights?: NumberOrPercent[]
-  defaultColumnWidth: NumberOrPercent
-  columnWidths?: NumberOrPercent[]
-}
-
-export type RenderItem<T> = GridProps<T>["children"]
 
 export function Grid<T>({
   data,
@@ -120,70 +102,22 @@ export function Grid<T>({
     overscan: overscan ?? 0,
   })
 
-  const scrollableItems = React.useMemo(
-    function Items() {
-      return (
-        <>
-          <div style={{ height: runningHeight }}></div>
-          {data.slice(vertStart, vertEnd).map((row, i) => {
-            const rowKey = i + vertStart
-            const itemHeight = dataHeights[vertStart + i]
-
-            const rowChildren = row.slice(horiStart, horiEnd).map((cell, j) => {
-              const cellKey = getKey?.(cell) ?? horiStart + j
-              const itemWidth = dataWidths[horiStart + j]
-
-              return (
-                <RenderItem
-                  key={cellKey}
-                  itemWidth={itemWidth}
-                  Component={children}
-                  marginLeft={rtl || j + horiStart === 0 ? 0 : horizontalGap}
-                  marginRight={!rtl || j + horiStart === 0 ? 0 : horizontalGap}
-                  itemProps={cell}
-                  column={horiStart + j}
-                  row={vertStart + i}
-                />
-              )
-            })
-
-            return (
-              <div
-                key={rowKey}
-                style={{
-                  display: "flex",
-                  height: itemHeight,
-                  minHeight: itemHeight,
-                  maxHeight: itemHeight,
-                  marginTop: i + vertStart === 0 ? 0 : verticalGap,
-                  marginBottom: i + vertStart === data.length - 1 ? 0 : verticalGap,
-                }}
-              >
-                <div style={{ width: runningWidth }} />
-                {rowChildren}
-              </div>
-            )
-          })}
-        </>
-      )
-    },
-    [
-      children,
-      data,
-      dataHeights,
-      dataWidths,
-      getKey,
-      horiEnd,
-      horiStart,
-      horizontalGap,
-      rtl,
-      runningHeight,
-      runningWidth,
-      vertEnd,
-      vertStart,
-      verticalGap,
-    ],
-  )
+  const scrollableItems = useScrollItems({
+    children,
+    data,
+    dataHeights,
+    dataWidths,
+    getKey,
+    horiEnd,
+    horiStart,
+    horizontalGap,
+    rtl,
+    runningHeight,
+    runningWidth,
+    vertEnd,
+    vertStart,
+    verticalGap,
+  })
 
   return (
     <SizingDiv
@@ -233,39 +167,4 @@ export function Grid<T>({
       </div>
     </SizingDiv>
   )
-}
-
-type RenderItemsProps<T> = {
-  Component: GridProps<T>["children"]
-  itemProps: T
-  itemWidth: number
-  column: number
-  row: number
-  marginLeft: number
-  marginRight: number
-}
-
-const RenderItem = function <T>({
-  Component,
-  itemProps,
-  itemWidth,
-  column,
-  row,
-  marginRight,
-  marginLeft,
-}: RenderItemsProps<T>) {
-  const itemStyles = React.useMemo(() => {
-    return {
-      width: itemWidth,
-      minWidth: itemWidth,
-      maxWidth: itemWidth,
-      height: "100%",
-      marginLeft,
-      marginRight,
-    }
-  }, [itemWidth, marginLeft, marginRight])
-
-  const cellMeta = React.useMemo<CellMeta>(() => ({ row, column }), [column, row])
-
-  return <Component data={itemProps} style={itemStyles} cellMeta={cellMeta} />
 }

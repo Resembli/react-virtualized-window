@@ -24,3 +24,23 @@ export interface VirtualWindowBaseProps<T> {
 
   "data-testid"?: string
 }
+
+export interface CellMeta {
+  column: number
+  row: number
+}
+
+export interface GridProps<T> extends VirtualWindowBaseProps<T> {
+  data: T[][]
+  children: <B extends T>(props: {
+    data: B
+    style: React.CSSProperties
+    cellMeta: CellMeta
+  }) => JSX.Element
+  defaultRowHeight: NumberOrPercent
+  rowHeights?: NumberOrPercent[]
+  defaultColumnWidth: NumberOrPercent
+  columnWidths?: NumberOrPercent[]
+}
+
+export type RenderItem<T> = GridProps<T>["children"]
