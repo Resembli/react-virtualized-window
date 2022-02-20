@@ -1,44 +1,88 @@
+import { css } from "@stitches/core"
 import { useState } from "react"
 
-import "./App.css"
-import logo from "./logo.svg"
+import { Grid } from "@resembli/react-virtualized-window"
+
+const AppCss = css({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  height: "100%",
+  background: "Beige",
+})
+
+const ItemCss = css({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "Azure",
+  variants: {
+    odd: {
+      true: {
+        background: "grey",
+      },
+    },
+    pinned: {
+      true: {
+        background: "Bisque",
+      },
+    },
+  },
+})
+
+const data = Array.from({ length: 1000 }, (_, row) => {
+  return Array.from({ length: 100 }, (_, column) => {
+    return [row, column]
+  })
+})
+
+const pinnedLeft = [
+  Array.from({ length: 1000 }, (_, row) => [row, -1]),
+  Array.from({ length: 1000 }, (_, row) => [row, -2]),
+  Array.from({ length: 1000 }, (_, row) => [row, -3]),
+  Array.from({ length: 1000 }, (_, row) => [row, -3]),
+]
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [rtl, setRlt] = useState(false)
+  const [disableSticky, setStickyDisabled] = useState(false)
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className={AppCss()}>
+      <div>
+        <label>
+          rtl:
+          <input type="checkbox" checked={rtl} onChange={(e) => setRlt(e.target.checked)} />
+        </label>
+        <label>
+          disableStick:
+          <input
+            type="checkbox"
+            checked={disableSticky}
+            onChange={(e) => setStickyDisabled(e.target.checked)}
+          />
+        </label>
+      </div>
+      <Grid
+        defaultColumnWidth={100}
+        defaultRowHeight={100}
+        data={data}
+        width="70%"
+        height="70%"
+        rtl={rtl}
+        disableSticky={disableSticky}
+        pinnedLeft={pinnedLeft}
+      >
+        {({ data, style, cellMeta }) => (
+          <div
+            style={style}
+            className={ItemCss({ odd: (data[0] + data[1]) % 2 === 1, pinned: !!cellMeta.pinned })}
           >
-            Learn React
-          </a>
-          {" | "}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+            {data[0]},{data[1]}
+          </div>
+        )}
+      </Grid>
     </div>
   )
 }
