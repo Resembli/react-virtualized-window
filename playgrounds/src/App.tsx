@@ -1,4 +1,5 @@
 import { css } from "@stitches/core"
+import { useState } from "react"
 
 import { Grid } from "@resembli/react-virtualized-window"
 
@@ -22,6 +23,11 @@ const ItemCss = css({
         background: "grey",
       },
     },
+    pinned: {
+      true: {
+        background: "Bisque",
+      },
+    },
   },
 })
 
@@ -32,23 +38,47 @@ const data = Array.from({ length: 1000 }, (_, row) => {
 })
 
 const pinnedLeft = [
-  Array.from({ length: 1000 }, (_, row) => [-1, row]),
-  Array.from({ length: 1000 }, (_, row) => [-1, row]),
+  Array.from({ length: 1000 }, (_, row) => [row, -1]),
+  Array.from({ length: 1000 }, (_, row) => [row, -2]),
+  Array.from({ length: 1000 }, (_, row) => [row, -3]),
+  Array.from({ length: 1000 }, (_, row) => [row, -3]),
 ]
 
 function App() {
+  const [rtl, setRlt] = useState(false)
+  const [disableSticky, setStickyDisabled] = useState(false)
+
   return (
     <div className={AppCss()}>
+      <div>
+        <label>
+          rtl:
+          <input type="checkbox" checked={rtl} onChange={(e) => setRlt(e.target.checked)} />
+        </label>
+        <label>
+          disableStick:
+          <input
+            type="checkbox"
+            checked={disableSticky}
+            onChange={(e) => setStickyDisabled(e.target.checked)}
+          />
+        </label>
+      </div>
       <Grid
         defaultColumnWidth={100}
         defaultRowHeight={100}
         data={data}
         width="70%"
         height="70%"
+        rtl={rtl}
+        disableSticky={disableSticky}
         pinnedLeft={pinnedLeft}
       >
-        {({ data, style }) => (
-          <div style={style} className={ItemCss({ odd: (data[0] + data[1]) % 2 === 1 })}>
+        {({ data, style, cellMeta }) => (
+          <div
+            style={style}
+            className={ItemCss({ odd: (data[0] + data[1]) % 2 === 1, pinned: !!cellMeta.pinned })}
+          >
             {data[0]},{data[1]}
           </div>
         )}

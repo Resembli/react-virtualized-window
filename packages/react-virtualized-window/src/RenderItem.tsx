@@ -10,6 +10,7 @@ type RenderItemsProps<T> = {
   row: number
   marginLeft: number
   marginRight: number
+  pinned?: "left" | "right"
 }
 
 export const RenderItem = function <T>({
@@ -20,6 +21,7 @@ export const RenderItem = function <T>({
   row,
   marginRight,
   marginLeft,
+  pinned,
 }: RenderItemsProps<T>) {
   const itemStyles = React.useMemo(() => {
     return {
@@ -32,7 +34,7 @@ export const RenderItem = function <T>({
     }
   }, [itemWidth, marginLeft, marginRight])
 
-  const cellMeta = React.useMemo<CellMeta>(() => ({ row, column }), [column, row])
+  const cellMeta = React.useMemo<CellMeta>(() => ({ row, column, pinned }), [column, pinned, row])
 
   return <Component data={itemProps} style={itemStyles} cellMeta={cellMeta} />
 }

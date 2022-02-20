@@ -109,7 +109,7 @@ export function Grid<T>({
     count: pinnedLeft?.length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
-    gap: 0,
+    gap: horizontalGap,
     dimensions: leftWidths,
   })
 
@@ -151,7 +151,7 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth + leftTotalWidth, height: innerHeight }}>
+        <div style={{ width: innerWidth + leftTotalWidth - horizontalGap, height: innerHeight }}>
           <StickyDiv
             disabled={disableSticky ?? false}
             rtl={rtl ?? false}
@@ -167,7 +167,7 @@ export function Grid<T>({
                 }px, 0px)`,
                 top: 0,
                 left: rtl ? undefined : leftTotalWidth,
-                right: rtl ? 0 : undefined,
+                right: rtl ? leftTotalWidth : undefined,
                 willChange: "transform",
               }}
             >
@@ -178,14 +178,17 @@ export function Grid<T>({
                 Component={children}
                 totalWidth={leftTotalWidth}
                 left={rtl ? undefined : 0}
-                right={rtl ? adjustedWidth - leftTotalWidth : 0}
+                right={rtl ? 0 : undefined}
                 topOffset={disableSticky ? 0 : -topOffset}
                 columns={pinnedLeft}
                 widths={lWidths}
                 heights={dataHeights}
                 vertStart={vertStart}
                 vertEnd={vertEnd}
+                verticalGap={verticalGap}
+                horizontalGap={horizontalGap}
                 runningHeight={runningHeight}
+                rtl={rtl}
               />
             )}
           </StickyDiv>
