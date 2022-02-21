@@ -6,6 +6,8 @@ import type { GridProps } from "./types"
 interface PinnedColumnsProps<T> {
   totalWidth: number
   topOffset: number
+  leftOffset: number
+  position?: "sticky" | "absolute"
   left?: number
   right?: number
   rtl?: boolean
@@ -15,6 +17,7 @@ interface PinnedColumnsProps<T> {
   runningHeight: number
   vertStart: number
   vertEnd: number
+  pinnedRight?: boolean
   verticalGap: number
   horizontalGap: number
   Component: GridProps<T>["children"]
@@ -25,6 +28,7 @@ export function PinnedColumn<T>({
   left,
   right,
   topOffset,
+  leftOffset,
   columns,
   widths,
   heights,
@@ -33,6 +37,7 @@ export function PinnedColumn<T>({
   Component,
   vertStart,
   vertEnd,
+  pinnedRight,
   verticalGap,
   horizontalGap,
 }: PinnedColumnsProps<T>) {
@@ -43,47 +48,50 @@ export function PinnedColumn<T>({
         position: "sticky",
         left,
         right,
-        transform: `translate3d(0px, ${topOffset}px, 0px)`,
-        height: innerHeight,
+        transform: `translate3d(${leftOffset}px, ${topOffset}px, 0px)`,
         display: "flex",
       }}
     >
-      {columns.map((pinnedColumn, colIndex) => {
-        const columnWidth = widths[colIndex]
+      <div style={{ position: "absolute", top: 0, left: 0 }}>
+        {columns.map((pinnedColumn, colIndex) => {
+          const columnWidth = widths[colIndex]
 
-        const marginLeft = !rtl && colIndex !== 0 ? horizontalGap : 0
-        const marginRight = rtl && colIndex !== 0 ? horizontalGap : 0
+          const marginLeft =
+            pinnedRight && !rtl ? horizontalGap : !rtl && colIndex !== 0 ? horizontalGap : 0
+          const marginRight =
+            pinnedRight && rtl ? horizontalGap : rtl && colIndex !== 0 ? horizontalGap : 0
 
-        return (
-          <div key={colIndex}>
-            <div style={{ height: runningHeight }} />
-            {pinnedColumn.slice(vertStart, vertEnd).map((row, rowIndex) => {
-              const height = heights[rowIndex + vertStart]
-              return (
-                <div
-                  key={rowIndex + vertStart}
-                  style={{
-                    height,
-                    marginTop: rowIndex + vertStart === 0 ? 0 : verticalGap,
-                    marginBottom: rowIndex + vertStart === heights.length - 1 ? 0 : verticalGap,
-                  }}
-                >
-                  <RenderItem
-                    Component={Component}
-                    marginLeft={marginLeft}
-                    marginRight={marginRight}
-                    itemProps={row}
-                    pinned="left"
-                    column={colIndex}
-                    itemWidth={columnWidth}
-                    row={rowIndex + vertStart}
-                  />
-                </div>
-              )
-            })}
-          </div>
-        )
-      })}
+          return (
+            <div key={colIndex}>
+              <div style={{ height: runningHeight }} />
+              {pinnedColumn.slice(vertStart, vertEnd).map((row, rowIndex) => {
+                const height = heights[rowIndex + vertStart]
+                return (
+                  <div
+                    key={rowIndex + vertStart}
+                    style={{
+                      height,
+                      marginTop: rowIndex + vertStart === 0 ? 0 : verticalGap,
+                      marginBottom: rowIndex + vertStart === heights.length - 1 ? 0 : verticalGap,
+                    }}
+                  >
+                    <RenderItem
+                      Component={Component}
+                      marginLeft={marginLeft}
+                      marginRight={marginRight}
+                      itemProps={row}
+                      pinned="left"
+                      column={colIndex}
+                      itemWidth={columnWidth}
+                      row={rowIndex + vertStart}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

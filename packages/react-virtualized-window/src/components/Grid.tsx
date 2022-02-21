@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import { PinnedColumn } from "../PinnedColumn"
+import { ScrollDiv } from "../ScrollDiv"
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
 import { getHorizontalGap, getVerticalGap } from "../itemGapUtilities"
@@ -14,7 +15,7 @@ import { useWindowApi } from "../useWindowApi"
 import { useWindowDimensions } from "../useWindowDimensions"
 import { useWindowScroll } from "../useWindowScroll"
 
-export function Grid<T>({
+export function Grid<T, L = unknown, R = unknown>({
   data,
   children,
   defaultRowHeight,
@@ -41,10 +42,11 @@ export function Grid<T>({
   onScroll: userOnScroll,
 
   pinnedLeft,
+  pinnedRight,
   leftWidths,
-}: GridProps<T>) {
+  rightWidths,
+}: GridProps<T, L, R>) {
   const windowRef = React.useRef<HTMLDivElement>(null)
-  const transRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
 
   const verticalGap = getVerticalGap(gap)
@@ -55,8 +57,6 @@ export function Grid<T>({
 
   const [topOffset, leftOffset, onScroll] = useWindowScroll({
     userOnScroll,
-    transRef,
-    disableSticky: disableSticky ?? false,
     rtl: rtl ?? false,
   })
 
@@ -94,7 +94,7 @@ export function Grid<T>({
     offset: topOffset,
     gapBetweenItems: verticalGap,
     windowDimension: height,
-    overscan: overscan ?? 0,
+    overscan: overscan ?? 1,
   })
 
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
@@ -102,7 +102,7 @@ export function Grid<T>({
     offset: leftOffset,
     gapBetweenItems: horizontalGap,
     itemDimensions: dataWidths,
-    overscan: overscan ?? 0,
+    overscan: overscan ?? 1,
   })
 
   const [lWidths, leftTotalWidth] = useDataDimension({
@@ -111,6 +111,14 @@ export function Grid<T>({
     windowDim: adjustedWidth,
     gap: horizontalGap,
     dimensions: leftWidths,
+  })
+
+  const [rWidths, rightTotalWidth] = useDataDimension({
+    count: pinnedRight?.length ?? 0,
+    defaultDimension: defaultColumnWidth,
+    windowDim: adjustedWidth,
+    gap: horizontalGap,
+    dimensions: rightWidths,
   })
 
   const scrollableItems = useScrollItems({
@@ -151,46 +159,80 @@ export function Grid<T>({
           direction: rtl ? "rtl" : "ltr",
         }}
       >
-        <div style={{ width: innerWidth + leftTotalWidth - horizontalGap, height: innerHeight }}>
+        <div
+          style={{
+            width: innerWidth + leftTotalWidth - horizontalGap + rightTotalWidth,
+            height: innerHeight,
+          }}
+        >
           <StickyDiv
             disabled={disableSticky ?? false}
             rtl={rtl ?? false}
             height={adjustedHeight}
             width={adjustedWidth}
           >
-            <div
-              ref={transRef}
-              style={{
-                position: "absolute",
-                transform: `translate3d(${disableSticky ? 0 : rtl ? leftOffset : -leftOffset}px, ${
-                  disableSticky ? 0 : -topOffset
-                }px, 0px)`,
-                top: 0,
-                left: rtl ? undefined : leftTotalWidth,
-                right: rtl ? leftTotalWidth : undefined,
-                willChange: "transform",
-              }}
+            <ScrollDiv
+              rtl={rtl}
+              disableSticky={disableSticky}
+              topOffset={topOffset}
+              leftOffset={leftOffset}
+              pinnedLeftWidth={leftTotalWidth}
+              pinnedRightWidth={200}
             >
               {scrollableItems}
+            </ScrollDiv>
+            <div
+              style={{
+                display: "flex",
+                width: leftTotalWidth + rightTotalWidth,
+                position: "sticky",
+                left: rtl ? undefined : 0,
+                right: rtl ? 0 : undefined,
+              }}
+            >
+              {pinnedLeft && (
+                <PinnedColumn
+                  Component={children}
+                  totalWidth={leftTotalWidth}
+                  left={rtl ? undefined : 0}
+                  right={rtl ? 0 : undefined}
+                  topOffset={disableSticky ? 0 : -topOffset}
+                  leftOffset={0}
+                  columns={pinnedLeft}
+                  widths={lWidths}
+                  heights={dataHeights}
+                  vertStart={vertStart}
+                  vertEnd={vertEnd}
+                  verticalGap={verticalGap}
+                  horizontalGap={horizontalGap}
+                  runningHeight={runningHeight}
+                  rtl={rtl}
+                />
+              )}
+              {pinnedRight && (
+                <PinnedColumn
+                  Component={children}
+                  totalWidth={rightTotalWidth}
+                  left={0}
+                  topOffset={disableSticky ? 0 : -topOffset}
+                  leftOffset={
+                    rtl
+                      ? -adjustedWidth + leftTotalWidth + rightTotalWidth - horizontalGap * 2
+                      : adjustedWidth - leftTotalWidth - rightTotalWidth + horizontalGap * 2
+                  }
+                  columns={pinnedRight}
+                  widths={rWidths}
+                  heights={dataHeights}
+                  vertStart={vertStart}
+                  vertEnd={vertEnd}
+                  verticalGap={verticalGap}
+                  horizontalGap={horizontalGap}
+                  pinnedRight
+                  runningHeight={runningHeight}
+                  rtl={rtl}
+                />
+              )}
             </div>
-            {pinnedLeft && (
-              <PinnedColumn
-                Component={children}
-                totalWidth={leftTotalWidth}
-                left={rtl ? undefined : 0}
-                right={rtl ? 0 : undefined}
-                topOffset={disableSticky ? 0 : -topOffset}
-                columns={pinnedLeft}
-                widths={lWidths}
-                heights={dataHeights}
-                vertStart={vertStart}
-                vertEnd={vertEnd}
-                verticalGap={verticalGap}
-                horizontalGap={horizontalGap}
-                runningHeight={runningHeight}
-                rtl={rtl}
-              />
-            )}
           </StickyDiv>
         </div>
       </div>

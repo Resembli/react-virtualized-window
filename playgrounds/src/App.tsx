@@ -40,8 +40,13 @@ const data = Array.from({ length: 1000 }, (_, row) => {
 const pinnedLeft = [
   Array.from({ length: 1000 }, (_, row) => [row, -1]),
   Array.from({ length: 1000 }, (_, row) => [row, -2]),
-  Array.from({ length: 1000 }, (_, row) => [row, -3]),
-  Array.from({ length: 1000 }, (_, row) => [row, -3]),
+  Array.from({ length: 1000 }, (_, row) => [row, -2]),
+]
+
+const pinnedRight = [
+  Array.from({ length: 1000 }, (_, row) => [row, "R1"]),
+  Array.from({ length: 1000 }, (_, row) => [row, "R2"]),
+  Array.from({ length: 1000 }, (_, row) => [row, "R2"]),
 ]
 
 function App() {
@@ -72,7 +77,8 @@ function App() {
         height="70%"
         rtl={rtl}
         disableSticky={disableSticky}
-        pinnedLeft={pinnedLeft}
+        // pinnedRight={pinnedRight}
+        // pinnedLeft={pinnedLeft}
       >
         {({ data, style, cellMeta }) => (
           <div
