@@ -1,5 +1,32 @@
 # @resembli/react-virtualized-window
 
+## 0.6.0
+
+### Minor Changes
+
+- [#158](https://github.com/Resembli/ui/pull/158) [`4584d06`](https://github.com/Resembli/ui/commit/4584d06308e803c82424f8ed0138aeefcfceb8da) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Added support for pinned left columns
+
+### Patch Changes
+
+- [#152](https://github.com/Resembli/ui/pull/152) [`6e61a00`](https://github.com/Resembli/ui/commit/6e61a00d5e68cb59bc740240b1d89b7866af5323) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Add smart sticky disable and overscan when device with is smaller than 800px
+
+  Before this change the sticky `div` that prevents content from going out of view was
+  enabled by default. In order for the scroll to appear smooth the device needs to be
+  relatively powerful, but mobile phones are on the weaker end and struggle to maintain
+  a consistent 60fps. By disabling the stick `div` we can ensure that the animations
+  remain smooth.
+
+  **This is a change only to the default behavior, users can override these**
+
+* [#160](https://github.com/Resembli/ui/pull/160) [`5978ba8`](https://github.com/Resembli/ui/commit/5978ba84614c0e7a7975407463e0645eaf679f69) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Added support for pinned right columns and RTL warnings for IOS devices
+
+- [#145](https://github.com/Resembli/ui/pull/145) [`33c325a`](https://github.com/Resembli/ui/commit/33c325a6e3790b520a64544fa1085c9035e571ce) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Made some performance improvements. Memoed useScrollAdjustedDim, and a animation frame debounce.
+
+  Our translation `div` now using positioning rather than mix translations and positions. Overall the performance
+  is actually a little better.
+
+* [#155](https://github.com/Resembli/ui/pull/155) [`75b9a9b`](https://github.com/Resembli/ui/commit/75b9a9b7863f29df4264e3b48f0cb0891759d2a5) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Change gap margins to no longer be applied to the first and last element.
+
 ## 0.5.0
 
 ### Minor Changes
