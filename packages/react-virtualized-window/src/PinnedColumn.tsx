@@ -6,6 +6,7 @@ import type { GridProps } from "./types"
 interface PinnedColumnsProps<T> {
   totalWidth: number
   topOffset: number
+  position?: "sticky" | "absolute"
   left?: number
   right?: number
   rtl?: boolean
@@ -15,6 +16,7 @@ interface PinnedColumnsProps<T> {
   runningHeight: number
   vertStart: number
   vertEnd: number
+  pinnedRight?: boolean
   verticalGap: number
   horizontalGap: number
   Component: GridProps<T>["children"]
@@ -33,6 +35,7 @@ export function PinnedColumn<T>({
   Component,
   vertStart,
   vertEnd,
+  pinnedRight,
   verticalGap,
   horizontalGap,
 }: PinnedColumnsProps<T>) {
@@ -40,19 +43,20 @@ export function PinnedColumn<T>({
     <div
       style={{
         width: totalWidth,
-        position: "sticky",
+        position: "absolute",
         left,
         right,
         transform: `translate3d(0px, ${topOffset}px, 0px)`,
-        height: innerHeight,
-        display: "flex",
+        display: "inline-flex",
       }}
     >
       {columns.map((pinnedColumn, colIndex) => {
         const columnWidth = widths[colIndex]
 
-        const marginLeft = !rtl && colIndex !== 0 ? horizontalGap : 0
-        const marginRight = rtl && colIndex !== 0 ? horizontalGap : 0
+        const marginLeft =
+          pinnedRight && !rtl ? horizontalGap : !rtl && colIndex !== 0 ? horizontalGap : 0
+        const marginRight =
+          pinnedRight && rtl ? horizontalGap : rtl && colIndex !== 0 ? horizontalGap : 0
 
         return (
           <div key={colIndex}>

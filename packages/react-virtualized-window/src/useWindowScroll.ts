@@ -2,8 +2,6 @@ import * as React from "react"
 
 interface UseWindowScrollArgs {
   rtl: boolean
-  transRef: React.RefObject<HTMLDivElement>
-  disableSticky?: boolean
   userOnScroll?: React.UIEventHandler<HTMLElement>
 }
 
