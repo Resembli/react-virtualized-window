@@ -8,6 +8,7 @@ import { getHorizontalGap, getVerticalGap } from "../itemGapUtilities"
 import type { GridProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
+import { useRTLWarnings } from "../useRtlWarnings"
 import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
 import { useScrollItems } from "../useScrollItems"
 import { useSmartSticky } from "../useSmartSticky"
@@ -54,6 +55,8 @@ export function Grid<T, L = unknown, R = unknown>({
 
   const [width, height, browserWidth] = useWindowDimensions(windowRef)
   const [overscan, disableSticky] = useSmartSticky(browserWidth, userOverscan, userDisableSticky)
+
+  useRTLWarnings({ rtl, disableSticky, pinnedLeft, pinnedRight })
 
   const [topOffset, leftOffset, onScroll] = useWindowScroll({
     userOnScroll,
