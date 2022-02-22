@@ -184,7 +184,7 @@ export function Grid<T, L = unknown, R = unknown>({
             <div
               style={{
                 display: "flex",
-                width: leftTotalWidth + rightTotalWidth,
+                width: adjustedWidth,
                 position: "sticky",
                 left: rtl ? undefined : 0,
                 right: rtl ? 0 : undefined,
@@ -197,7 +197,6 @@ export function Grid<T, L = unknown, R = unknown>({
                   left={rtl ? undefined : 0}
                   right={rtl ? 0 : undefined}
                   topOffset={disableSticky ? 0 : -topOffset}
-                  leftOffset={0}
                   columns={pinnedLeft}
                   widths={lWidths}
                   heights={dataHeights}
@@ -213,13 +212,9 @@ export function Grid<T, L = unknown, R = unknown>({
                 <PinnedColumn
                   Component={children}
                   totalWidth={rightTotalWidth}
-                  left={0}
+                  left={rtl ? 0 : undefined}
+                  right={rtl ? undefined : 0}
                   topOffset={disableSticky ? 0 : -topOffset}
-                  leftOffset={
-                    rtl
-                      ? -adjustedWidth + leftTotalWidth + rightTotalWidth - horizontalGap * 2
-                      : adjustedWidth - leftTotalWidth - rightTotalWidth + horizontalGap * 2
-                  }
                   columns={pinnedRight}
                   widths={rWidths}
                   heights={dataHeights}

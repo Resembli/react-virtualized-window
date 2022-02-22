@@ -40,7 +40,7 @@ const data = Array.from({ length: 1000 }, (_, row) => {
 const pinnedLeft = [
   Array.from({ length: 1000 }, (_, row) => [row, -1]),
   Array.from({ length: 1000 }, (_, row) => [row, -2]),
-  Array.from({ length: 1000 }, (_, row) => [row, -2]),
+  Array.from({ length: 1000 }, (_, row) => [row, -3]),
 ]
 
 const pinnedRight = [
@@ -77,8 +77,8 @@ function App() {
         height="70%"
         rtl={rtl}
         disableSticky={disableSticky}
-        // pinnedRight={pinnedRight}
-        // pinnedLeft={pinnedLeft}
+        pinnedRight={pinnedRight}
+        pinnedLeft={pinnedLeft}
       >
         {({ data, style, cellMeta }) => (
           <div
