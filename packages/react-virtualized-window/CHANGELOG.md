@@ -1,5 +1,16 @@
 # @resembli/react-virtualized-window
 
+## 0.7.0
+
+### Minor Changes
+
+- [#161](https://github.com/Resembli/ui/pull/161) [`12bd4fd`](https://github.com/Resembli/ui/commit/12bd4fda167e3f2117f0cb0644ddeda4b2a4646b) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Removed rtl support
+
+  RTL support with `sticky` positioning is not widely supported, in particular it breaks in IOS touch devices.
+  The decision was made to drop RTL support in the virtualized window due to the complexity supporting brings vs
+  the actual use cases. If we need to support virtualized rtl views, this can be done through a separate purpose
+  built package.
+
 ## 0.6.0
 
 ### Minor Changes
