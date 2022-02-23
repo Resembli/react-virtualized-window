@@ -9,7 +9,6 @@ interface PinnedColumnsProps<T> {
   position?: "sticky" | "absolute"
   left?: number
   right?: number
-  rtl?: boolean
   columns: T[][]
   widths: number[]
   heights: number[]
@@ -30,7 +29,6 @@ export function PinnedColumn<T>({
   columns,
   widths,
   heights,
-  rtl,
   runningHeight,
   Component,
   vertStart,
@@ -53,10 +51,8 @@ export function PinnedColumn<T>({
       {columns.map((pinnedColumn, colIndex) => {
         const columnWidth = widths[colIndex]
 
-        const marginLeft =
-          pinnedRight && !rtl ? horizontalGap : !rtl && colIndex !== 0 ? horizontalGap : 0
-        const marginRight =
-          pinnedRight && rtl ? horizontalGap : rtl && colIndex !== 0 ? horizontalGap : 0
+        const marginLeft = !pinnedRight && colIndex !== 0 ? horizontalGap : 0
+        const marginRight = pinnedRight && colIndex !== columns.length - 1 ? horizontalGap : 0
 
         return (
           <div key={colIndex}>

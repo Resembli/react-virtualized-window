@@ -8,7 +8,6 @@ import { getHorizontalGap, getVerticalGap } from "../itemGapUtilities"
 import type { GridProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
-import { useRTLWarnings } from "../useRtlWarnings"
 import { useScrollAdjustWindowDims } from "../useScrollAdjustedDim"
 import { useScrollItems } from "../useScrollItems"
 import { useSmartSticky } from "../useSmartSticky"
@@ -35,8 +34,6 @@ export function Grid<T, L = unknown, R = unknown>({
   style,
   gap,
 
-  rtl,
-
   width: sizingWidth,
   height: sizingHeight,
 
@@ -56,11 +53,8 @@ export function Grid<T, L = unknown, R = unknown>({
   const [width, height, browserWidth] = useWindowDimensions(windowRef)
   const [overscan, disableSticky] = useSmartSticky(browserWidth, userOverscan, userDisableSticky)
 
-  useRTLWarnings({ rtl, disableSticky, pinnedLeft, pinnedRight })
-
   const [topOffset, leftOffset, onScroll] = useWindowScroll({
     userOnScroll,
-    rtl: rtl ?? false,
   })
 
   const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
@@ -133,7 +127,6 @@ export function Grid<T, L = unknown, R = unknown>({
     horiEnd,
     horiStart,
     horizontalGap,
-    rtl,
     runningHeight,
     runningWidth,
     vertEnd,
@@ -159,7 +152,6 @@ export function Grid<T, L = unknown, R = unknown>({
           width,
           position: "relative",
           overflow: "auto",
-          direction: rtl ? "rtl" : "ltr",
         }}
       >
         <div
@@ -170,12 +162,10 @@ export function Grid<T, L = unknown, R = unknown>({
         >
           <StickyDiv
             disabled={disableSticky ?? false}
-            rtl={rtl ?? false}
             height={adjustedHeight}
             width={adjustedWidth}
           >
             <ScrollDiv
-              rtl={rtl}
               disableSticky={disableSticky}
               topOffset={topOffset}
               leftOffset={leftOffset}
@@ -187,18 +177,16 @@ export function Grid<T, L = unknown, R = unknown>({
             <div
               style={{
                 display: "flex",
-                width: adjustedWidth,
+                width: width,
                 position: "sticky",
-                left: rtl ? undefined : 0,
-                right: rtl ? 0 : undefined,
+                left: 0,
               }}
             >
               {pinnedLeft && (
                 <PinnedColumn
                   Component={children}
                   totalWidth={leftTotalWidth}
-                  left={rtl ? undefined : 0}
-                  right={rtl ? 0 : undefined}
+                  left={0}
                   topOffset={disableSticky ? 0 : -topOffset}
                   columns={pinnedLeft}
                   widths={lWidths}
@@ -208,15 +196,13 @@ export function Grid<T, L = unknown, R = unknown>({
                   verticalGap={verticalGap}
                   horizontalGap={horizontalGap}
                   runningHeight={runningHeight}
-                  rtl={rtl}
                 />
               )}
               {pinnedRight && (
                 <PinnedColumn
                   Component={children}
                   totalWidth={rightTotalWidth}
-                  left={rtl ? 0 : undefined}
-                  right={rtl ? undefined : 0}
+                  right={0}
                   topOffset={disableSticky ? 0 : -topOffset}
                   columns={pinnedRight}
                   widths={rWidths}
@@ -227,7 +213,6 @@ export function Grid<T, L = unknown, R = unknown>({
                   horizontalGap={horizontalGap}
                   pinnedRight
                   runningHeight={runningHeight}
-                  rtl={rtl}
                 />
               )}
             </div>

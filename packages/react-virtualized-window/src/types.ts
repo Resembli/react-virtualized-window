@@ -15,8 +15,6 @@ export interface VirtualWindowBaseProps<T> {
   gap?: ItemGap
   disableSticky?: boolean
 
-  rtl?: boolean
-
   onScroll?: React.UIEventHandler<HTMLElement>
 
   width?: React.CSSProperties["width"]

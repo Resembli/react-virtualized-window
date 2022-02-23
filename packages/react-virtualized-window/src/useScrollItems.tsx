@@ -17,7 +17,6 @@ interface ScrollItemArgs<T> {
   horizontalGap: number
   getKey: GridProps<T>["getKey"]
   children: GridProps<T>["children"]
-  rtl?: boolean
 }
 
 export function useScrollItems<T>({
@@ -29,7 +28,6 @@ export function useScrollItems<T>({
   horiEnd,
   horiStart,
   horizontalGap,
-  rtl,
   runningHeight,
   runningWidth,
   vertEnd,
@@ -54,8 +52,8 @@ export function useScrollItems<T>({
                   key={cellKey}
                   itemWidth={itemWidth}
                   Component={children}
-                  marginLeft={rtl || j + horiStart === 0 ? 0 : horizontalGap}
-                  marginRight={!rtl || j + horiStart === 0 ? 0 : horizontalGap}
+                  marginLeft={j + horiStart === 0 ? 0 : horizontalGap}
+                  marginRight={0}
                   itemProps={cell}
                   column={horiStart + j}
                   row={vertStart + i}
@@ -92,7 +90,6 @@ export function useScrollItems<T>({
       horiEnd,
       horiStart,
       horizontalGap,
-      rtl,
       runningHeight,
       runningWidth,
       vertEnd,
