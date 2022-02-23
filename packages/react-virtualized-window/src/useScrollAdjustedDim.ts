@@ -29,7 +29,7 @@ export const useScrollAdjustWindowDims = ({
   rowHeights,
   columnWidths,
 }: UseScrollAdjustedWindowDimsArgs) => {
-  const [adjustedWidth, adjustedHeight] = React.useMemo(() => {
+  const [adjustedWidth, adjustedHeight, hasVerticalScroll] = React.useMemo(() => {
     const scrollWidth = getScrollbarWidth()
 
     let hasVerticalScroll = false
@@ -58,7 +58,7 @@ export const useScrollAdjustWindowDims = ({
     const adjustedWidth = hasVerticalScroll ? width - scrollWidth : width
     const adjustedHeight = hasHorizontalScroll ? height - scrollWidth : height
 
-    return [adjustedWidth - horizontalGap * 2, adjustedHeight - verticalGap * 2]
+    return [adjustedWidth - horizontalGap * 2, adjustedHeight - verticalGap * 2, hasVerticalScroll]
   }, [
     columnCount,
     columnWidth,
@@ -72,5 +72,5 @@ export const useScrollAdjustWindowDims = ({
     width,
   ])
 
-  return [adjustedWidth, adjustedHeight]
+  return [adjustedWidth, adjustedHeight, hasVerticalScroll] as const
 }

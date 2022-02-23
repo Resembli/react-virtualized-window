@@ -4,6 +4,7 @@ import { PinnedColumn } from "../PinnedColumn"
 import { ScrollDiv } from "../ScrollDiv"
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
+import { getScrollbarWidth } from "../getScrollbarWidth"
 import { getHorizontalGap, getVerticalGap } from "../itemGapUtilities"
 import type { GridProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
@@ -57,7 +58,7 @@ export function Grid<T, L = unknown, R = unknown>({
     userOnScroll,
   })
 
-  const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
+  const [adjustedWidth, adjustedHeight, hasVerticalScroll] = useScrollAdjustWindowDims({
     height,
     width,
     verticalGap,
@@ -170,15 +171,14 @@ export function Grid<T, L = unknown, R = unknown>({
               topOffset={topOffset}
               leftOffset={leftOffset}
               pinnedLeftWidth={leftTotalWidth}
-              pinnedRightWidth={200}
             >
               {scrollableItems}
             </ScrollDiv>
             <div
               style={{
                 display: "flex",
-                width: width,
                 position: "sticky",
+                width: width - (hasVerticalScroll ? getScrollbarWidth() : 0),
                 left: 0,
               }}
             >
