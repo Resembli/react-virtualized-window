@@ -73,6 +73,7 @@ function App() {
         disableSticky={disableSticky}
         pinnedRight={pinnedRight}
         pinnedLeft={pinnedLeft}
+        gap={20}
       >
         {({ data, style, cellMeta }) => (
           <div

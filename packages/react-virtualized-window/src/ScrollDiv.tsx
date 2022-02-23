@@ -6,7 +6,6 @@ interface ScrollDivProps {
   leftOffset: number
   topOffset: number
   pinnedLeftWidth: number
-  pinnedRightWidth: number
 }
 
 export function ScrollDiv({

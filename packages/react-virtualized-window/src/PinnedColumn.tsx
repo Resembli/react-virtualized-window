@@ -51,8 +51,8 @@ export function PinnedColumn<T>({
       {columns.map((pinnedColumn, colIndex) => {
         const columnWidth = widths[colIndex]
 
-        const marginLeft = !pinnedRight && colIndex !== 0 ? horizontalGap : 0
-        const marginRight = pinnedRight && colIndex !== columns.length - 1 ? horizontalGap : 0
+        const marginLeft = pinnedRight ? horizontalGap : 0
+        const marginRight = !pinnedRight ? horizontalGap : 0
 
         return (
           <div key={colIndex}>
