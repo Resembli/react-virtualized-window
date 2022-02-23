@@ -1,11 +1,10 @@
 import * as React from "react"
 
 interface UseWindowScrollArgs {
-  rtl: boolean
   userOnScroll?: React.UIEventHandler<HTMLElement>
 }
 
-export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
+export const useWindowScroll = ({ userOnScroll }: UseWindowScrollArgs) => {
   const vOffset = React.useRef(0)
   const hOffset = React.useRef(0)
 
@@ -16,7 +15,7 @@ export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
     (event) => {
       const target = event.currentTarget
 
-      const scrollLeft = rtl ? -target.scrollLeft : target.scrollLeft
+      const scrollLeft = target.scrollLeft
       const scrollTop = target.scrollTop
 
       const verticalOffset = Math.max(0, scrollTop)
@@ -31,7 +30,7 @@ export const useWindowScroll = ({ userOnScroll, rtl }: UseWindowScrollArgs) => {
 
       userOnScroll?.(event)
     },
-    [rtl, userOnScroll],
+    [userOnScroll],
   )
 
   return [vOffset.current, hOffset.current, onScroll] as const

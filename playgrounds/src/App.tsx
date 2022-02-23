@@ -50,16 +50,11 @@ const pinnedRight = [
 ]
 
 function App() {
-  const [rtl, setRlt] = useState(false)
   const [disableSticky, setStickyDisabled] = useState(false)
 
   return (
     <div className={AppCss()}>
       <div>
-        <label>
-          rtl:
-          <input type="checkbox" checked={rtl} onChange={(e) => setRlt(e.target.checked)} />
-        </label>
         <label>
           disableStick:
           <input
@@ -75,7 +70,6 @@ function App() {
         data={data}
         width="70%"
         height="70%"
-        rtl={rtl}
         disableSticky={disableSticky}
         pinnedRight={pinnedRight}
         pinnedLeft={pinnedLeft}
