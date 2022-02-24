@@ -8,8 +8,6 @@ type RenderItemsProps<T> = {
   itemWidth: number
   column: number
   row: number
-  marginLeft: number
-  marginRight: number
   pinned?: "left" | "right"
 }
 
@@ -19,8 +17,6 @@ export const RenderItem = function <T>({
   itemWidth,
   column,
   row,
-  marginRight,
-  marginLeft,
   pinned,
 }: RenderItemsProps<T>) {
   const itemStyles = React.useMemo(() => {
@@ -29,10 +25,8 @@ export const RenderItem = function <T>({
       minWidth: itemWidth,
       maxWidth: itemWidth,
       height: "100%",
-      marginLeft,
-      marginRight,
     }
-  }, [itemWidth, marginLeft, marginRight])
+  }, [itemWidth])
 
   const cellMeta = React.useMemo<CellMeta>(() => ({ row, column, pinned }), [column, pinned, row])
 

@@ -6,7 +6,6 @@ interface UseDataDimensionArgs {
   count: number
   defaultDimension: NumberOrPercent
   windowDim: number
-  gap: number
   dimensions?: NumberOrPercent[]
 }
 
@@ -22,7 +21,6 @@ export const useDataDimension = ({
   count,
   windowDim,
   dimensions,
-  gap,
   defaultDimension,
 }: UseDataDimensionArgs) => {
   const defaultAsNumber = React.useMemo(
@@ -37,12 +35,12 @@ export const useDataDimension = ({
     for (let i = 0; i < count; i++) {
       const dimAsNum = dimToNumber((dimensions && dimensions[i]) || defaultAsNumber, windowDim)
 
-      runningTotal += dimAsNum + gap
+      runningTotal += dimAsNum
       draftDimensions.push(dimAsNum)
     }
 
     return [draftDimensions, runningTotal]
-  }, [count, defaultAsNumber, dimensions, gap, windowDim])
+  }, [count, defaultAsNumber, dimensions, windowDim])
 
   return [dataDimensions, dimTotal] as const
 }

@@ -13,8 +13,6 @@ interface ScrollItemArgs<T> {
   dataWidths: number[]
   runningHeight: number
   runningWidth: number
-  verticalGap: number
-  horizontalGap: number
   getKey: GridProps<T>["getKey"]
   children: GridProps<T>["children"]
 }
@@ -27,12 +25,10 @@ export function useScrollItems<T>({
   getKey,
   horiEnd,
   horiStart,
-  horizontalGap,
   runningHeight,
   runningWidth,
   vertEnd,
   vertStart,
-  verticalGap,
 }: ScrollItemArgs<T>) {
   const scrollableItems = React.useMemo(
     function Items() {
@@ -52,8 +48,6 @@ export function useScrollItems<T>({
                   key={cellKey}
                   itemWidth={itemWidth}
                   Component={children}
-                  marginLeft={j + horiStart === 0 ? 0 : horizontalGap}
-                  marginRight={0}
                   itemProps={cell}
                   column={horiStart + j}
                   row={vertStart + i}
@@ -69,8 +63,6 @@ export function useScrollItems<T>({
                   height: itemHeight,
                   minHeight: itemHeight,
                   maxHeight: itemHeight,
-                  marginTop: i + vertStart === 0 ? 0 : verticalGap,
-                  marginBottom: i + vertStart === data.length - 1 ? 0 : verticalGap,
                 }}
               >
                 <div style={{ width: runningWidth }} />
@@ -89,12 +81,10 @@ export function useScrollItems<T>({
       getKey,
       horiEnd,
       horiStart,
-      horizontalGap,
       runningHeight,
       runningWidth,
       vertEnd,
       vertStart,
-      verticalGap,
     ],
   )
 

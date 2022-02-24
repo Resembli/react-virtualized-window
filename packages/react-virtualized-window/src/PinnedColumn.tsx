@@ -16,8 +16,6 @@ interface PinnedColumnsProps<T> {
   vertStart: number
   vertEnd: number
   pinnedRight?: boolean
-  verticalGap: number
-  horizontalGap: number
   Component: GridProps<T>["children"]
 }
 
@@ -33,9 +31,6 @@ export function PinnedColumn<T>({
   Component,
   vertStart,
   vertEnd,
-  pinnedRight,
-  verticalGap,
-  horizontalGap,
 }: PinnedColumnsProps<T>) {
   return (
     <div
@@ -50,28 +45,15 @@ export function PinnedColumn<T>({
     >
       {columns.map((pinnedColumn, colIndex) => {
         const columnWidth = widths[colIndex]
-
-        const marginLeft = pinnedRight ? horizontalGap : 0
-        const marginRight = !pinnedRight ? horizontalGap : 0
-
         return (
           <div key={colIndex}>
             <div style={{ height: runningHeight }} />
             {pinnedColumn.slice(vertStart, vertEnd).map((row, rowIndex) => {
               const height = heights[rowIndex + vertStart]
               return (
-                <div
-                  key={rowIndex + vertStart}
-                  style={{
-                    height,
-                    marginTop: rowIndex + vertStart === 0 ? 0 : verticalGap,
-                    marginBottom: rowIndex + vertStart === heights.length - 1 ? 0 : verticalGap,
-                  }}
-                >
+                <div key={rowIndex + vertStart} style={{ height }}>
                   <RenderItem
                     Component={Component}
-                    marginLeft={marginLeft}
-                    marginRight={marginRight}
                     itemProps={row}
                     pinned="left"
                     column={colIndex}
