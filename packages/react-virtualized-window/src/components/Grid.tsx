@@ -5,7 +5,6 @@ import { ScrollDiv } from "../ScrollDiv"
 import { SizingDiv } from "../SizingDiv"
 import { StickyDiv } from "../StickyDiv"
 import { getScrollbarWidth } from "../getScrollbarWidth"
-import { getHorizontalGap, getVerticalGap } from "../itemGapUtilities"
 import type { GridProps } from "../types"
 import { useDataDimension } from "../useDataDimension"
 import { useIndicesForDimensions } from "../useDimensionIndices"
@@ -33,7 +32,6 @@ export function Grid<T, L = unknown, R = unknown>({
   getKey,
   className,
   style,
-  gap,
 
   width: sizingWidth,
   height: sizingHeight,
@@ -48,9 +46,6 @@ export function Grid<T, L = unknown, R = unknown>({
   const windowRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
 
-  const verticalGap = getVerticalGap(gap)
-  const horizontalGap = getHorizontalGap(gap)
-
   const [width, height, browserWidth] = useWindowDimensions(windowRef)
   const [overscan, disableSticky] = useSmartSticky(browserWidth, userOverscan, userDisableSticky)
 
@@ -61,8 +56,6 @@ export function Grid<T, L = unknown, R = unknown>({
   const [adjustedWidth, adjustedHeight, hasVerticalScroll] = useScrollAdjustWindowDims({
     height,
     width,
-    verticalGap,
-    horizontalGap,
     rowHeight: defaultRowHeight,
     columnWidth: defaultColumnWidth,
     columnWidths,
@@ -75,7 +68,6 @@ export function Grid<T, L = unknown, R = unknown>({
     count: data.length,
     defaultDimension: defaultRowHeight,
     windowDim: adjustedHeight,
-    gap: verticalGap,
     dimensions: rowHeights,
   })
 
@@ -83,14 +75,12 @@ export function Grid<T, L = unknown, R = unknown>({
     count: data[0]?.length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
-    gap: horizontalGap,
     dimensions: columnWidths,
   })
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
     offset: topOffset,
-    gapBetweenItems: verticalGap,
     windowDimension: height,
     overscan: overscan ?? 1,
   })
@@ -98,7 +88,6 @@ export function Grid<T, L = unknown, R = unknown>({
   const [horiStart, horiEnd, runningWidth] = useIndicesForDimensions({
     windowDimension: width,
     offset: leftOffset,
-    gapBetweenItems: horizontalGap,
     itemDimensions: dataWidths,
     overscan: overscan ?? 1,
   })
@@ -107,7 +96,6 @@ export function Grid<T, L = unknown, R = unknown>({
     count: pinnedLeft?.length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
-    gap: horizontalGap,
     dimensions: leftWidths,
   })
 
@@ -115,7 +103,6 @@ export function Grid<T, L = unknown, R = unknown>({
     count: pinnedRight?.length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
-    gap: horizontalGap,
     dimensions: rightWidths,
   })
 
@@ -127,12 +114,10 @@ export function Grid<T, L = unknown, R = unknown>({
     getKey,
     horiEnd,
     horiStart,
-    horizontalGap,
     runningHeight,
     runningWidth,
     vertEnd,
     vertStart,
-    verticalGap,
   })
 
   return (
@@ -157,7 +142,7 @@ export function Grid<T, L = unknown, R = unknown>({
       >
         <div
           style={{
-            width: innerWidth + leftTotalWidth - horizontalGap + rightTotalWidth,
+            width: innerWidth + leftTotalWidth + rightTotalWidth,
             height: innerHeight,
           }}
         >
@@ -193,8 +178,6 @@ export function Grid<T, L = unknown, R = unknown>({
                   heights={dataHeights}
                   vertStart={vertStart}
                   vertEnd={vertEnd}
-                  verticalGap={verticalGap}
-                  horizontalGap={horizontalGap}
                   runningHeight={runningHeight}
                 />
               )}
@@ -209,9 +192,6 @@ export function Grid<T, L = unknown, R = unknown>({
                   heights={dataHeights}
                   vertStart={vertStart}
                   vertEnd={vertEnd}
-                  verticalGap={verticalGap}
-                  horizontalGap={horizontalGap}
-                  pinnedRight
                   runningHeight={runningHeight}
                 />
               )}

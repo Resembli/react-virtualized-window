@@ -7,8 +7,6 @@ import { dimToNumber } from "./utils"
 interface UseScrollAdjustedWindowDimsArgs {
   height: number
   width: number
-  verticalGap: number
-  horizontalGap: number
   columnCount: number
   rowCount: number
   rowHeight: NumberOrPercent
@@ -20,8 +18,6 @@ interface UseScrollAdjustedWindowDimsArgs {
 export const useScrollAdjustWindowDims = ({
   height,
   width,
-  verticalGap,
-  horizontalGap,
   rowCount,
   columnCount,
   rowHeight,
@@ -58,19 +54,8 @@ export const useScrollAdjustWindowDims = ({
     const adjustedWidth = hasVerticalScroll ? width - scrollWidth : width
     const adjustedHeight = hasHorizontalScroll ? height - scrollWidth : height
 
-    return [adjustedWidth - horizontalGap * 2, adjustedHeight - verticalGap * 2, hasVerticalScroll]
-  }, [
-    columnCount,
-    columnWidth,
-    columnWidths,
-    horizontalGap,
-    rowCount,
-    rowHeight,
-    rowHeights,
-    verticalGap,
-    height,
-    width,
-  ])
+    return [adjustedWidth, adjustedHeight, hasVerticalScroll]
+  }, [columnCount, columnWidth, columnWidths, rowCount, rowHeight, rowHeights, height, width])
 
   return [adjustedWidth, adjustedHeight, hasVerticalScroll] as const
 }

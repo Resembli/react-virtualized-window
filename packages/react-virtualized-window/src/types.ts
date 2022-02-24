@@ -1,7 +1,5 @@
 import type { VirtualWindowApi } from "./useWindowApi"
 
-export type ItemGap = number | { horizontal?: number; vertical?: number }
-
 export type NumberOrPercent = number | `${number}%`
 
 export interface VirtualWindowBaseProps<T> {
@@ -12,7 +10,6 @@ export interface VirtualWindowBaseProps<T> {
 
   className?: string
   style?: React.CSSProperties
-  gap?: ItemGap
   disableSticky?: boolean
 
   onScroll?: React.UIEventHandler<HTMLElement>
