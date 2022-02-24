@@ -1,5 +1,13 @@
 # @resembli/react-virtualized-window
 
+## 0.7.1
+
+### Patch Changes
+
+- [#163](https://github.com/Resembli/ui/pull/163) [`635fea5`](https://github.com/Resembli/ui/commit/635fea5deb540fa37c42dde32da103fbd6aa1e51) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Fixed gap margins when using pinned columns left or right.
+
+* [#165](https://github.com/Resembli/ui/pull/165) [`4e014f6`](https://github.com/Resembli/ui/commit/4e014f6ce9ac15b64884e6161719f1ec2b917658) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Remove support for the gap prop. Can be achieved by applying padding.
+
 ## 0.7.0
 
 ### Minor Changes
