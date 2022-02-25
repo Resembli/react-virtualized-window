@@ -1,4 +1,4 @@
-import type { VirtualWindowApi } from "./useWindowApi"
+import type { VirtualWindowApi } from "./useWindowApi.js"
 
 export type NumberOrPercent = number | `${number}%`
 

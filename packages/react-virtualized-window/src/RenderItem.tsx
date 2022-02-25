@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import type { CellMeta, GridProps } from "./types"
+import type { CellMeta, GridProps } from "./types.js"
 
 type RenderItemsProps<T> = {
   Component: GridProps<T>["children"]

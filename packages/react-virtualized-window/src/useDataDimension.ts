@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import type { NumberOrPercent } from "./types"
+import type { NumberOrPercent } from "./types.js"
 
 interface UseDataDimensionArgs {
   count: number
