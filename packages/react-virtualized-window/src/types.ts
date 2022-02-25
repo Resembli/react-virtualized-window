@@ -24,9 +24,10 @@ export interface CellMeta {
   column: number
   row: number
   pinned?: "left" | "right"
+  pinnedRow?: "top" | "bottom"
 }
 
-export interface GridProps<T, L = unknown, R = unknown> extends VirtualWindowBaseProps<T> {
+export interface GridProps<T> extends VirtualWindowBaseProps<T> {
   data: T[][]
   children: <B extends T>(props: {
     data: B
@@ -37,12 +38,6 @@ export interface GridProps<T, L = unknown, R = unknown> extends VirtualWindowBas
   rowHeights?: NumberOrPercent[]
   defaultColumnWidth: NumberOrPercent
   columnWidths?: NumberOrPercent[]
-
-  pinnedLeft?: L[][]
-  leftWidths?: NumberOrPercent[]
-
-  pinnedRight?: R[][]
-  rightWidths?: NumberOrPercent[]
 }
 
 export type RenderItem<T> = GridProps<T>["children"]

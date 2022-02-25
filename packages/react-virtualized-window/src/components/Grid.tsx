@@ -1,10 +1,8 @@
 import * as React from "react"
 
-import { PinnedColumn } from "../PinnedColumn.js"
 import { ScrollDiv } from "../ScrollDiv.js"
 import { SizingDiv } from "../SizingDiv.js"
 import { StickyDiv } from "../StickyDiv.js"
-import { getScrollbarWidth } from "../getScrollbarWidth.js"
 import type { GridProps } from "../types.js"
 import { useDataDimension } from "../useDataDimension.js"
 import { useIndicesForDimensions } from "../useDimensionIndices.js"
@@ -15,7 +13,7 @@ import { useWindowApi } from "../useWindowApi.js"
 import { useWindowDimensions } from "../useWindowDimensions.js"
 import { useWindowScroll } from "../useWindowScroll.js"
 
-export function Grid<T, L = unknown, R = unknown>({
+export function Grid<T>({
   data,
   children,
   defaultRowHeight,
@@ -37,12 +35,7 @@ export function Grid<T, L = unknown, R = unknown>({
   height: sizingHeight,
 
   onScroll: userOnScroll,
-
-  pinnedLeft,
-  pinnedRight,
-  leftWidths,
-  rightWidths,
-}: GridProps<T, L, R>) {
+}: GridProps<T>) {
   const windowRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
 
@@ -53,7 +46,7 @@ export function Grid<T, L = unknown, R = unknown>({
     userOnScroll,
   })
 
-  const [adjustedWidth, adjustedHeight, hasVerticalScroll] = useScrollAdjustWindowDims({
+  const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
     height,
     width,
     rowHeight: defaultRowHeight,
@@ -92,20 +85,6 @@ export function Grid<T, L = unknown, R = unknown>({
     overscan: overscan ?? 1,
   })
 
-  const [lWidths, leftTotalWidth] = useDataDimension({
-    count: pinnedLeft?.length ?? 0,
-    defaultDimension: defaultColumnWidth,
-    windowDim: adjustedWidth,
-    dimensions: leftWidths,
-  })
-
-  const [rWidths, rightTotalWidth] = useDataDimension({
-    count: pinnedRight?.length ?? 0,
-    defaultDimension: defaultColumnWidth,
-    windowDim: adjustedWidth,
-    dimensions: rightWidths,
-  })
-
   const scrollableItems = useScrollItems({
     children,
     data,
@@ -142,7 +121,7 @@ export function Grid<T, L = unknown, R = unknown>({
       >
         <div
           style={{
-            width: innerWidth + leftTotalWidth + rightTotalWidth,
+            width: innerWidth,
             height: innerHeight,
           }}
         >
@@ -151,51 +130,9 @@ export function Grid<T, L = unknown, R = unknown>({
             height={adjustedHeight}
             width={adjustedWidth}
           >
-            <ScrollDiv
-              disableSticky={disableSticky}
-              topOffset={topOffset}
-              leftOffset={leftOffset}
-              pinnedLeftWidth={leftTotalWidth}
-            >
+            <ScrollDiv disableSticky={disableSticky} topOffset={topOffset} leftOffset={leftOffset}>
               {scrollableItems}
             </ScrollDiv>
-            <div
-              style={{
-                display: "flex",
-                position: "sticky",
-                width: width - (hasVerticalScroll ? getScrollbarWidth() : 0),
-                left: 0,
-              }}
-            >
-              {pinnedLeft && (
-                <PinnedColumn
-                  Component={children}
-                  totalWidth={leftTotalWidth}
-                  left={0}
-                  topOffset={disableSticky ? 0 : -topOffset}
-                  columns={pinnedLeft}
-                  widths={lWidths}
-                  heights={dataHeights}
-                  vertStart={vertStart}
-                  vertEnd={vertEnd}
-                  runningHeight={runningHeight}
-                />
-              )}
-              {pinnedRight && (
-                <PinnedColumn
-                  Component={children}
-                  totalWidth={rightTotalWidth}
-                  right={0}
-                  topOffset={disableSticky ? 0 : -topOffset}
-                  columns={pinnedRight}
-                  widths={rWidths}
-                  heights={dataHeights}
-                  vertStart={vertStart}
-                  vertEnd={vertEnd}
-                  runningHeight={runningHeight}
-                />
-              )}
-            </div>
           </StickyDiv>
         </div>
       </div>
