@@ -3,7 +3,7 @@
   "description": "React virtualized window components for rendering massive lists or grids",
   "private": false,
   "author": "Lee Beydoun",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "types": "src/index.ts",
   "main": "src/index.ts",
   "type": "module",

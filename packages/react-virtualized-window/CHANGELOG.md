@@ -1,5 +1,11 @@
 # @resembli/react-virtualized-window
 
+## 0.8.0
+
+### Minor Changes
+
+- [#166](https://github.com/Resembli/ui/pull/166) [`42635d0`](https://github.com/Resembli/ui/commit/42635d036f5a8f9f233b0c63ab8012987ebf86f1) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Make react-virtualized-window an esm module
+
 ## 0.7.1
 
 ### Patch Changes
