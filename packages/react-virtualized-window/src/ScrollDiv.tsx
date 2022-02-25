@@ -5,14 +5,12 @@ interface ScrollDivProps {
   disableSticky?: boolean
   leftOffset: number
   topOffset: number
-  pinnedLeftWidth: number
 }
 
 export function ScrollDiv({
   disableSticky,
   leftOffset,
   topOffset,
-  pinnedLeftWidth,
   children,
 }: PropsWithChildren<ScrollDivProps>) {
   return (
@@ -23,7 +21,6 @@ export function ScrollDiv({
           disableSticky ? 0 : -topOffset
         }px, 0px)`,
         top: 0,
-        left: pinnedLeftWidth,
         willChange: "transform",
       }}
     >
