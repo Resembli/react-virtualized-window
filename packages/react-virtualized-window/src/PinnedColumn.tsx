@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import { RenderItem } from "./RenderItem"
-import type { GridProps } from "./types"
+import { RenderItem } from "./RenderItem.js"
+import type { GridProps } from "./types.js"
 
 interface PinnedColumnsProps<T> {
   totalWidth: number

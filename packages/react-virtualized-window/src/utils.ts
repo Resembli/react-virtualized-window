@@ -1,4 +1,4 @@
-import type { NumberOrPercent } from "./types"
+import type { NumberOrPercent } from "./types.js"
 
 export function percentToNumber(percent: string) {
   return parseFloat(percent) / 100.0

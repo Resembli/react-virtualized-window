@@ -1,7 +1,7 @@
 import * as React from "react"
 
-import type { CellMeta, NumberOrPercent, VirtualWindowBaseProps } from "../types"
-import { Grid } from "./Grid"
+import type { CellMeta, NumberOrPercent, VirtualWindowBaseProps } from "../types.js"
+import { Grid } from "./Grid.js"
 
 export interface ListProps<T> extends VirtualWindowBaseProps<T> {
   data: T[]

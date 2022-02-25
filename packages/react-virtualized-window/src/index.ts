@@ -1,5 +1,5 @@
-export { List } from "./components/List"
-export { Grid } from "./components/Grid"
+export { List } from "./components/List.js"
+export { Grid } from "./components/Grid.js"
 
 export type { ListProps } from "./components/List"
 export type { VirtualWindowApi } from "./useWindowApi"
