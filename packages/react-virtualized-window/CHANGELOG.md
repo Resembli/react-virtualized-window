@@ -1,5 +1,11 @@
 # @resembli/react-virtualized-window
 
+## 0.8.1
+
+### Patch Changes
+
+- [#168](https://github.com/Resembli/ui/pull/168) [`ad418a3`](https://github.com/Resembli/ui/commit/ad418a32ac6c662b3f4d19ec618c708edc7a4575) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Update package.json to have sideEffects false and removed getScrollbar memo.
+
 ## 0.8.0
 
 ### Minor Changes
