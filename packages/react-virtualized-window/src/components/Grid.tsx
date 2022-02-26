@@ -38,6 +38,8 @@ export function Grid<T>({
 
   pinnedTopCount = 0,
   pinnedBottomCount = 0,
+  pinnedLeftCount = 0,
+  pinnedRightCount = 0,
 }: GridProps<T>) {
   const windowRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
@@ -49,13 +51,32 @@ export function Grid<T>({
     userOnScroll,
   })
 
-  const [topData, botData, scrollData] = React.useMemo(() => {
-    return [
-      data.slice(0, pinnedTopCount),
-      data.slice(pinnedTopCount, pinnedTopCount + pinnedBottomCount),
-      data.slice(pinnedTopCount + pinnedBottomCount),
-    ]
-  }, [data, pinnedBottomCount, pinnedTopCount])
+  const [topLeft, topMid, topRight, midLeft, midMid, midRight, botLeft, botMid, botRight] =
+    React.useMemo(() => {
+      const topSection = data.slice(0, pinnedTopCount)
+      const botSection = data.slice(pinnedTopCount, pinnedTopCount + pinnedBottomCount)
+      const midSection = data.slice(pinnedTopCount + pinnedBottomCount)
+
+      const topLeft = topSection.map((row) => row.slice(0, pinnedLeftCount))
+      const topMid = topSection.map((row) => row.slice(pinnedLeftCount))
+      const topRight = topSection.map((row) =>
+        row.slice(pinnedLeftCount, pinnedLeftCount + pinnedRightCount),
+      )
+
+      const midLeft = midSection.map((row) => row.slice(0, pinnedLeftCount))
+      const midMid = midSection.map((row) => row.slice(pinnedLeftCount))
+      const midRight = midSection.map((row) =>
+        row.slice(pinnedLeftCount, pinnedLeftCount + pinnedRightCount),
+      )
+
+      const botLeft = botSection.map((row) => row.slice(0, pinnedLeftCount))
+      const botMid = botSection.map((row) => row.slice(pinnedLeftCount))
+      const botRight = botSection.map((row) =>
+        row.slice(pinnedLeftCount, pinnedLeftCount + pinnedRightCount),
+      )
+
+      return [topLeft, topMid, topRight, midLeft, midMid, midRight, botLeft, botMid, botRight]
+    }, [data, pinnedBottomCount, pinnedLeftCount, pinnedRightCount, pinnedTopCount])
 
   const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
     height,
@@ -69,32 +90,47 @@ export function Grid<T>({
   })
 
   const [dataHeights, innerHeight] = useDataDimension({
-    count: scrollData.length,
+    count: midMid.length,
     defaultDimension: defaultRowHeight,
     windowDim: adjustedHeight,
     dimensions: rowHeights,
   })
 
   const [dataWidths, innerWidth] = useDataDimension({
-    count: scrollData[0]?.length ?? 0,
+    count: midMid[0]?.length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
     dimensions: columnWidths,
   })
 
   const [topHeights, totalTopHeight] = useDataDimension({
-    count: topData.length,
+    count: topMid.length,
     defaultDimension: defaultRowHeight,
     windowDim: adjustedHeight,
     dimensions: rowHeights,
   })
 
   const [botHeights, totalBotHeight] = useDataDimension({
-    count: botData.length,
+    count: botMid.length,
     defaultDimension: defaultRowHeight,
     windowDim: adjustedHeight,
     dimensions: rowHeights,
   })
+
+  const totalLeftWidth = React.useMemo(
+    () => (pinnedLeftCount ? dataWidths.slice(0, pinnedLeftCount).reduce((a, b) => a + b) : 0),
+    [dataWidths, pinnedLeftCount],
+  )
+
+  const totalRightWidth = React.useMemo(
+    () =>
+      pinnedRightCount
+        ? dataWidths
+            .slice(pinnedLeftCount, pinnedLeftCount + pinnedRightCount)
+            .reduce((a, b) => a + b)
+        : 0,
+    [dataWidths, pinnedLeftCount, pinnedRightCount],
+  )
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
     itemDimensions: dataHeights,
@@ -112,7 +148,7 @@ export function Grid<T>({
 
   const scrollableItems = useScrollItems({
     children,
-    data: scrollData,
+    data: midMid,
     dataHeights,
     dataWidths,
     getKey,
@@ -124,9 +160,55 @@ export function Grid<T>({
     vertStart,
   })
 
-  const topItems = useScrollItems({
+  const midLeftItems = useScrollItems({
     children,
-    data: topData,
+    data: midLeft,
+    dataHeights,
+    dataWidths,
+    getKey,
+    horiStart: 0,
+    horiEnd: pinnedLeftCount,
+    runningHeight,
+    runningWidth: 0,
+    vertStart,
+    vertEnd,
+    pinnedColumn: "left",
+  })
+
+  const midRightItems = useScrollItems({
+    children,
+    data: midRight,
+    dataHeights,
+    dataWidths,
+    getKey,
+    horiStart: 0,
+    horiEnd: pinnedRightCount,
+    runningHeight,
+    runningWidth: 0,
+    vertStart,
+    vertEnd,
+    pinnedColumn: "right",
+  })
+
+  const topLeftItems = useScrollItems({
+    children,
+    data: topLeft,
+    dataHeights: topHeights,
+    dataWidths,
+    getKey,
+    horiStart: 0,
+    horiEnd: pinnedLeftCount,
+    runningHeight: 0,
+    runningWidth: 0,
+    vertStart: 0,
+    vertEnd: pinnedTopCount,
+    pinnedColumn: "left",
+    pinnedRow: "top",
+  })
+
+  const topMidItems = useScrollItems({
+    children,
+    data: topMid,
     dataHeights: topHeights,
     dataWidths,
     getKey,
@@ -135,12 +217,29 @@ export function Grid<T>({
     runningHeight: 0,
     runningWidth,
     vertStart: 0,
-    vertEnd: topData.length,
+    vertEnd: pinnedTopCount,
+    pinnedRow: "top",
   })
 
-  const botItems = useScrollItems({
+  const topRightItems = useScrollItems({
     children,
-    data: botData,
+    data: topRight,
+    dataHeights: topHeights,
+    dataWidths,
+    getKey,
+    horiStart: 0,
+    horiEnd: pinnedRightCount,
+    runningHeight: 0,
+    runningWidth: 0,
+    vertStart: 0,
+    vertEnd: pinnedTopCount,
+    pinnedColumn: "right",
+    pinnedRow: "top",
+  })
+
+  const botMidItems = useScrollItems({
+    children,
+    data: botMid,
     dataHeights: botHeights,
     dataWidths,
     getKey,
@@ -149,7 +248,40 @@ export function Grid<T>({
     runningHeight: 0,
     runningWidth,
     vertStart: 0,
-    vertEnd: topData.length,
+    vertEnd: pinnedBottomCount,
+    pinnedRow: "bottom",
+  })
+
+  const botLeftItems = useScrollItems({
+    children,
+    data: botLeft,
+    dataHeights: botHeights,
+    dataWidths,
+    getKey,
+    horiStart: 0,
+    horiEnd: pinnedLeftCount,
+    runningHeight: 0,
+    runningWidth: 0,
+    vertStart: 0,
+    vertEnd: pinnedBottomCount,
+    pinnedColumn: "left",
+    pinnedRow: "bottom",
+  })
+
+  const botRightItems = useScrollItems({
+    children,
+    data: botRight,
+    dataHeights: botHeights,
+    dataWidths,
+    getKey,
+    horiStart: 0,
+    horiEnd: pinnedRightCount,
+    runningHeight: 0,
+    runningWidth: 0,
+    vertStart: 0,
+    vertEnd: pinnedBottomCount,
+    pinnedColumn: "right",
+    pinnedRow: "top",
   })
 
   return (
@@ -174,7 +306,7 @@ export function Grid<T>({
       >
         <div
           style={{
-            width: innerWidth,
+            width: innerWidth + totalLeftWidth + totalRightWidth,
             height: innerHeight + totalTopHeight + totalBotHeight,
           }}
         >
@@ -183,14 +315,43 @@ export function Grid<T>({
             height={adjustedHeight}
             width={adjustedWidth}
           >
+            {/* Scrollable Window */}
             <ScrollDiv
               disableSticky={disableSticky}
               topOffset={topOffset}
               leftOffset={leftOffset}
               top={totalTopHeight}
+              left={totalLeftWidth}
             >
               {scrollableItems}
             </ScrollDiv>
+            {/* Mid Left */}
+            <div style={{ position: "sticky", left: 0, width: adjustedWidth }}>
+              <ScrollDiv
+                disableSticky={disableSticky}
+                topOffset={topOffset}
+                leftOffset={0}
+                top={totalTopHeight}
+                left={0}
+              >
+                {midLeftItems}
+              </ScrollDiv>
+            </div>
+
+            {/* Mid Right */}
+            <div style={{ position: "sticky", left: 0, width: adjustedWidth }}>
+              <ScrollDiv
+                disableSticky={disableSticky}
+                topOffset={topOffset}
+                leftOffset={0}
+                top={totalTopHeight}
+                left={adjustedWidth - totalRightWidth}
+              >
+                {midRightItems}
+              </ScrollDiv>
+            </div>
+
+            {/* Top Mid */}
             <div
               style={{
                 position: "sticky",
@@ -199,22 +360,81 @@ export function Grid<T>({
               }}
             >
               <ScrollDiv
-                top={0}
+                disableSticky={disableSticky}
                 topOffset={0}
                 leftOffset={leftOffset}
-                disableSticky={disableSticky}
+                top={0}
+                left={totalLeftWidth}
               >
-                {topItems}
+                {topMidItems}
               </ScrollDiv>
             </div>
+            {/* Top Left */}
+            <div style={{ position: "sticky", top: 0, left: 0, width: adjustedWidth }}>
+              <ScrollDiv disableSticky={false} top={0} left={0} topOffset={0} leftOffset={0}>
+                {topLeftItems}
+              </ScrollDiv>
+            </div>
+            {/* Top Right */}
+            <div style={{ position: "sticky", top: 0, left: 0, width: adjustedWidth }}>
+              <ScrollDiv
+                disableSticky={false}
+                top={0}
+                left={adjustedWidth - totalRightWidth}
+                topOffset={0}
+                leftOffset={0}
+              >
+                {topRightItems}
+              </ScrollDiv>
+            </div>
+
+            {/* Bot Mid */}
             <div style={{ position: "sticky", top: adjustedHeight - totalBotHeight, left: 0 }}>
               <ScrollDiv
-                top={0}
+                disableSticky={disableSticky}
                 leftOffset={leftOffset}
                 topOffset={0}
-                disableSticky={disableSticky}
+                top={0}
+                left={totalLeftWidth}
               >
-                {botItems}
+                {botMidItems}
+              </ScrollDiv>
+            </div>
+            {/* Bot Left */}
+            <div
+              style={{
+                position: "sticky",
+                top: adjustedHeight - totalBotHeight,
+                left: 0,
+                width: adjustedWidth,
+              }}
+            >
+              <ScrollDiv
+                disableSticky={disableSticky}
+                leftOffset={0}
+                topOffset={0}
+                top={0}
+                left={0}
+              >
+                {botLeftItems}
+              </ScrollDiv>
+            </div>
+            <div
+              style={{
+                position: "sticky",
+                top: adjustedHeight - totalBotHeight,
+                left: 0,
+                width: adjustedWidth,
+              }}
+            >
+              <ScrollDiv
+                disableSticky={disableSticky}
+                leftOffset={0}
+                topOffset={0}
+                top={0}
+                left={adjustedWidth - totalRightWidth}
+              >
+                {botRightItems}
               </ScrollDiv>
             </div>
           </StickyDiv>

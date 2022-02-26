@@ -59,13 +59,18 @@ function App() {
         width="70%"
         height="70%"
         disableSticky={disableSticky}
-        pinnedTopCount={2}
-        pinnedBottomCount={2}
+        pinnedTopCount={1}
+        pinnedBottomCount={1}
+        pinnedLeftCount={1}
+        pinnedRightCount={1}
       >
         {({ data, style, cellMeta }) => (
           <div
             style={style}
-            className={ItemCss({ odd: (data[0] + data[1]) % 2 === 1, pinned: !!cellMeta.pinned })}
+            className={ItemCss({
+              odd: (data[0] + data[1]) % 2 === 1,
+              pinned: !!cellMeta.pinnedRow || !!cellMeta.pinnedColumn,
+            })}
           >
             {data[0]},{data[1]}
           </div>

@@ -19,6 +19,8 @@ export interface VirtualWindowBaseProps<T> {
 
   pinnedTopCount?: number
   pinnedBottomCount?: number
+  pinnedLeftCount?: number
+  pinnedRightCount?: number
 
   "data-testid"?: string
 }
@@ -26,7 +28,7 @@ export interface VirtualWindowBaseProps<T> {
 export interface CellMeta {
   column: number
   row: number
-  pinned?: "left" | "right"
+  pinnedColumn?: "left" | "right"
   pinnedRow?: "top" | "bottom"
 }
 

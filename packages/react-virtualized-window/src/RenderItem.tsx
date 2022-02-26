@@ -8,7 +8,8 @@ type RenderItemsProps<T> = {
   itemWidth: number
   column: number
   row: number
-  pinned?: "left" | "right"
+  pinnedRow?: CellMeta["pinnedRow"]
+  pinnedColumn?: CellMeta["pinnedColumn"]
 }
 
 export const RenderItem = function <T>({
@@ -17,7 +18,8 @@ export const RenderItem = function <T>({
   itemWidth,
   column,
   row,
-  pinned,
+  pinnedRow,
+  pinnedColumn,
 }: RenderItemsProps<T>) {
   const itemStyles = React.useMemo(() => {
     return {
@@ -28,7 +30,10 @@ export const RenderItem = function <T>({
     }
   }, [itemWidth])
 
-  const cellMeta = React.useMemo<CellMeta>(() => ({ row, column, pinned }), [column, pinned, row])
+  const cellMeta = React.useMemo<CellMeta>(
+    () => ({ row, column, pinnedRow, pinnedColumn }),
+    [column, pinnedRow, pinnedColumn, row],
+  )
 
   return <Component data={itemProps} style={itemStyles} cellMeta={cellMeta} />
 }
