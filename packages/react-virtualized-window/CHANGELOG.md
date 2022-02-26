@@ -1,5 +1,11 @@
 # @resembli/react-virtualized-window
 
+## 0.8.3
+
+### Patch Changes
+
+- [#174](https://github.com/Resembli/ui/pull/174) [`270f05c`](https://github.com/Resembli/ui/commit/270f05c00049e6facab5e53f9ca9f7be32531b0a) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Add conditional checks so we don't render pinned column and row divs when they are empty.
+
 ## 0.8.2
 
 ### Patch Changes
