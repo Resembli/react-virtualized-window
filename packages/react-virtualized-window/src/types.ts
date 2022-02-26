@@ -19,6 +19,8 @@ export interface VirtualWindowBaseProps<T> {
 
   pinnedTopCount?: number
   pinnedBottomCount?: number
+  pinnedLeftCount?: number
+  pinnedRightCount?: number
 
   "data-testid"?: string
 }

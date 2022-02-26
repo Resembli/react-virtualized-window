@@ -61,6 +61,8 @@ function App() {
         disableSticky={disableSticky}
         pinnedTopCount={2}
         pinnedBottomCount={2}
+        pinnedLeftCount={2}
+        pinnedRightCount={2}
       >
         {({ data, style, cellMeta }) => (
           <div

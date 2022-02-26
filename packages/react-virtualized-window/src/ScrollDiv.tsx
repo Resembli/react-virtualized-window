@@ -7,6 +7,7 @@ interface ScrollDivProps {
   leftOffset: number
   topOffset: number
   top: number
+  left: number
 }
 
 export function ScrollDiv({
@@ -15,6 +16,7 @@ export function ScrollDiv({
   leftOffset,
   topOffset,
   top,
+  left,
   children,
 }: PropsWithChildren<ScrollDivProps>) {
   return (
@@ -25,6 +27,7 @@ export function ScrollDiv({
           disableSticky ? 0 : -topOffset
         }px, 0px)`,
         top,
+        left,
         willChange: "transform",
         ...style,
       }}
