@@ -35,6 +35,9 @@ export function Grid<T>({
   height: sizingHeight,
 
   onScroll: userOnScroll,
+
+  pinnedTopCount = 0,
+  pinnedBottomCount = 0,
 }: GridProps<T>) {
   const windowRef = React.useRef<HTMLDivElement>(null)
   useWindowApi(windowRef, apiRef)
@@ -45,6 +48,14 @@ export function Grid<T>({
   const [topOffset, leftOffset, onScroll] = useWindowScroll({
     userOnScroll,
   })
+
+  const [topData, botData, scrollData] = React.useMemo(() => {
+    return [
+      data.slice(0, pinnedTopCount),
+      data.slice(pinnedTopCount, pinnedTopCount + pinnedBottomCount),
+      data.slice(pinnedTopCount + pinnedBottomCount),
+    ]
+  }, [data, pinnedBottomCount, pinnedTopCount])
 
   const [adjustedWidth, adjustedHeight] = useScrollAdjustWindowDims({
     height,
@@ -58,17 +69,31 @@ export function Grid<T>({
   })
 
   const [dataHeights, innerHeight] = useDataDimension({
-    count: data.length,
+    count: scrollData.length,
     defaultDimension: defaultRowHeight,
     windowDim: adjustedHeight,
     dimensions: rowHeights,
   })
 
   const [dataWidths, innerWidth] = useDataDimension({
-    count: data[0]?.length ?? 0,
+    count: scrollData[0]?.length ?? 0,
     defaultDimension: defaultColumnWidth,
     windowDim: adjustedWidth,
     dimensions: columnWidths,
+  })
+
+  const [topHeights, totalTopHeight] = useDataDimension({
+    count: topData.length,
+    defaultDimension: defaultRowHeight,
+    windowDim: adjustedHeight,
+    dimensions: rowHeights,
+  })
+
+  const [botHeights, totalBotHeight] = useDataDimension({
+    count: botData.length,
+    defaultDimension: defaultRowHeight,
+    windowDim: adjustedHeight,
+    dimensions: rowHeights,
   })
 
   const [vertStart, vertEnd, runningHeight] = useIndicesForDimensions({
@@ -87,7 +112,7 @@ export function Grid<T>({
 
   const scrollableItems = useScrollItems({
     children,
-    data,
+    data: scrollData,
     dataHeights,
     dataWidths,
     getKey,
@@ -97,6 +122,34 @@ export function Grid<T>({
     runningWidth,
     vertEnd,
     vertStart,
+  })
+
+  const topItems = useScrollItems({
+    children,
+    data: topData,
+    dataHeights: topHeights,
+    dataWidths,
+    getKey,
+    horiStart,
+    horiEnd,
+    runningHeight: 0,
+    runningWidth,
+    vertStart: 0,
+    vertEnd: topData.length,
+  })
+
+  const botItems = useScrollItems({
+    children,
+    data: botData,
+    dataHeights: botHeights,
+    dataWidths,
+    getKey,
+    horiStart,
+    horiEnd,
+    runningHeight: 0,
+    runningWidth,
+    vertStart: 0,
+    vertEnd: topData.length,
   })
 
   return (
@@ -122,7 +175,7 @@ export function Grid<T>({
         <div
           style={{
             width: innerWidth,
-            height: innerHeight,
+            height: innerHeight + totalTopHeight + totalBotHeight,
           }}
         >
           <StickyDiv
@@ -130,9 +183,40 @@ export function Grid<T>({
             height={adjustedHeight}
             width={adjustedWidth}
           >
-            <ScrollDiv disableSticky={disableSticky} topOffset={topOffset} leftOffset={leftOffset}>
+            <ScrollDiv
+              disableSticky={disableSticky}
+              topOffset={topOffset}
+              leftOffset={leftOffset}
+              top={totalTopHeight}
+            >
               {scrollableItems}
             </ScrollDiv>
+            <div
+              style={{
+                position: "sticky",
+                top: 0,
+                left: 0,
+              }}
+            >
+              <ScrollDiv
+                top={0}
+                topOffset={0}
+                leftOffset={leftOffset}
+                disableSticky={disableSticky}
+              >
+                {topItems}
+              </ScrollDiv>
+            </div>
+            <div style={{ position: "sticky", top: adjustedHeight - totalBotHeight, left: 0 }}>
+              <ScrollDiv
+                top={0}
+                leftOffset={leftOffset}
+                topOffset={0}
+                disableSticky={disableSticky}
+              >
+                {botItems}
+              </ScrollDiv>
+            </div>
           </StickyDiv>
         </div>
       </div>
