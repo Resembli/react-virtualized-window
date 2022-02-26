@@ -326,117 +326,133 @@ export function Grid<T>({
               {scrollableItems}
             </ScrollDiv>
             {/* Mid Left */}
-            <div style={{ position: "sticky", left: 0, width: adjustedWidth }}>
-              <ScrollDiv
-                disableSticky={disableSticky}
-                topOffset={topOffset}
-                leftOffset={0}
-                top={totalTopHeight}
-                left={0}
-              >
-                {midLeftItems}
-              </ScrollDiv>
-            </div>
-
+            {!!pinnedLeftCount && (
+              <div style={{ position: "sticky", left: 0, width: adjustedWidth }}>
+                <ScrollDiv
+                  disableSticky={disableSticky}
+                  topOffset={topOffset}
+                  leftOffset={0}
+                  top={totalTopHeight}
+                  left={0}
+                >
+                  {midLeftItems}
+                </ScrollDiv>
+              </div>
+            )}
             {/* Mid Right */}
-            <div style={{ position: "sticky", left: 0, width: adjustedWidth }}>
-              <ScrollDiv
-                disableSticky={disableSticky}
-                topOffset={topOffset}
-                leftOffset={0}
-                top={totalTopHeight}
-                left={adjustedWidth - totalRightWidth}
-              >
-                {midRightItems}
-              </ScrollDiv>
-            </div>
+            {!!pinnedRightCount && (
+              <div style={{ position: "sticky", left: 0, width: adjustedWidth }}>
+                <ScrollDiv
+                  disableSticky={disableSticky}
+                  topOffset={topOffset}
+                  leftOffset={0}
+                  top={totalTopHeight}
+                  left={adjustedWidth - totalRightWidth}
+                >
+                  {midRightItems}
+                </ScrollDiv>
+              </div>
+            )}
 
             {/* Top Mid */}
-            <div
-              style={{
-                position: "sticky",
-                top: 0,
-                left: 0,
-              }}
-            >
-              <ScrollDiv
-                disableSticky={disableSticky}
-                topOffset={0}
-                leftOffset={leftOffset}
-                top={0}
-                left={totalLeftWidth}
+            {!!pinnedTopCount && (
+              <div
+                style={{
+                  position: "sticky",
+                  top: 0,
+                  left: 0,
+                }}
               >
-                {topMidItems}
-              </ScrollDiv>
-            </div>
+                <ScrollDiv
+                  disableSticky={disableSticky}
+                  topOffset={0}
+                  leftOffset={leftOffset}
+                  top={0}
+                  left={totalLeftWidth}
+                >
+                  {topMidItems}
+                </ScrollDiv>
+              </div>
+            )}
             {/* Top Left */}
-            <div style={{ position: "sticky", top: 0, left: 0, width: adjustedWidth }}>
-              <ScrollDiv disableSticky={false} top={0} left={0} topOffset={0} leftOffset={0}>
-                {topLeftItems}
-              </ScrollDiv>
-            </div>
+            {!!pinnedTopCount && !!pinnedLeftCount && (
+              <div style={{ position: "sticky", top: 0, left: 0, width: adjustedWidth }}>
+                <ScrollDiv disableSticky={false} top={0} left={0} topOffset={0} leftOffset={0}>
+                  {topLeftItems}
+                </ScrollDiv>
+              </div>
+            )}
             {/* Top Right */}
-            <div style={{ position: "sticky", top: 0, left: 0, width: adjustedWidth }}>
-              <ScrollDiv
-                disableSticky={false}
-                top={0}
-                left={adjustedWidth - totalRightWidth}
-                topOffset={0}
-                leftOffset={0}
-              >
-                {topRightItems}
-              </ScrollDiv>
-            </div>
+            {!!pinnedTopCount && !!pinnedRightCount && (
+              <div style={{ position: "sticky", top: 0, left: 0, width: adjustedWidth }}>
+                <ScrollDiv
+                  disableSticky={false}
+                  top={0}
+                  left={adjustedWidth - totalRightWidth}
+                  topOffset={0}
+                  leftOffset={0}
+                >
+                  {topRightItems}
+                </ScrollDiv>
+              </div>
+            )}
 
             {/* Bot Mid */}
-            <div style={{ position: "sticky", top: adjustedHeight - totalBotHeight, left: 0 }}>
-              <ScrollDiv
-                disableSticky={disableSticky}
-                leftOffset={leftOffset}
-                topOffset={0}
-                top={0}
-                left={totalLeftWidth}
-              >
-                {botMidItems}
-              </ScrollDiv>
-            </div>
+            {!!pinnedBottomCount && (
+              <div style={{ position: "sticky", top: adjustedHeight - totalBotHeight, left: 0 }}>
+                <ScrollDiv
+                  disableSticky={disableSticky}
+                  leftOffset={leftOffset}
+                  topOffset={0}
+                  top={0}
+                  left={totalLeftWidth}
+                >
+                  {botMidItems}
+                </ScrollDiv>
+              </div>
+            )}
             {/* Bot Left */}
-            <div
-              style={{
-                position: "sticky",
-                top: adjustedHeight - totalBotHeight,
-                left: 0,
-                width: adjustedWidth,
-              }}
-            >
-              <ScrollDiv
-                disableSticky={disableSticky}
-                leftOffset={0}
-                topOffset={0}
-                top={0}
-                left={0}
+            {!!pinnedBottomCount && !!pinnedLeftCount && (
+              <div
+                style={{
+                  position: "sticky",
+                  top: adjustedHeight - totalBotHeight,
+                  left: 0,
+                  width: adjustedWidth,
+                }}
               >
-                {botLeftItems}
-              </ScrollDiv>
-            </div>
-            <div
-              style={{
-                position: "sticky",
-                top: adjustedHeight - totalBotHeight,
-                left: 0,
-                width: adjustedWidth,
-              }}
-            >
-              <ScrollDiv
-                disableSticky={disableSticky}
-                leftOffset={0}
-                topOffset={0}
-                top={0}
-                left={adjustedWidth - totalRightWidth}
+                <ScrollDiv
+                  disableSticky={disableSticky}
+                  leftOffset={0}
+                  topOffset={0}
+                  top={0}
+                  left={0}
+                >
+                  {botLeftItems}
+                </ScrollDiv>
+              </div>
+            )}
+            {/* Bot Right */}
+            {!!pinnedBottomCount && !!pinnedRightCount && (
+              <div
+                style={{
+                  position: "sticky",
+                  top: adjustedHeight - totalBotHeight,
+                  left: 0,
+                  width: adjustedWidth,
+                }}
               >
-                {botRightItems}
-              </ScrollDiv>
-            </div>
+                <ScrollDiv
+                  disableSticky={disableSticky}
+                  leftOffset={0}
+                  topOffset={0}
+                  top={0}
+                  left={adjustedWidth - totalRightWidth}
+                >
+                  {botRightItems}
+                </ScrollDiv>
+              </div>
+            )}
           </StickyDiv>
         </div>
       </div>

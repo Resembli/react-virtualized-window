@@ -36,6 +36,7 @@ export function useScrollItems<T>({
 }: ScrollItemArgs<T>) {
   const scrollableItems = React.useMemo(
     function Items() {
+      if (!data.length) return <></>
       return (
         <>
           <div style={{ height: runningHeight }}></div>
