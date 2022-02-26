@@ -37,18 +37,6 @@ const data = Array.from({ length: 1000 }, (_, row) => {
   })
 })
 
-const pinnedLeft = [
-  Array.from({ length: 1000 }, (_, row) => [row, -1]),
-  Array.from({ length: 1000 }, (_, row) => [row, -2]),
-  Array.from({ length: 1000 }, (_, row) => [row, -3]),
-]
-
-const pinnedRight = [
-  Array.from({ length: 1000 }, (_, row) => [row, "R1"]),
-  Array.from({ length: 1000 }, (_, row) => [row, "R2"]),
-  Array.from({ length: 1000 }, (_, row) => [row, "R2"]),
-]
-
 function App() {
   const [disableSticky, setStickyDisabled] = useState(false)
 
@@ -71,9 +59,8 @@ function App() {
         width="70%"
         height="70%"
         disableSticky={disableSticky}
-        pinnedRight={pinnedRight}
-        pinnedLeft={pinnedLeft}
-        gap={20}
+        pinnedTopCount={2}
+        pinnedBottomCount={2}
       >
         {({ data, style, cellMeta }) => (
           <div

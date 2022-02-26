@@ -17,6 +17,9 @@ export interface VirtualWindowBaseProps<T> {
   width?: React.CSSProperties["width"]
   height?: React.CSSProperties["height"]
 
+  pinnedTopCount?: number
+  pinnedBottomCount?: number
+
   "data-testid"?: string
 }
 
