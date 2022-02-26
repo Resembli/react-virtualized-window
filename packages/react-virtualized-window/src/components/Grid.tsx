@@ -172,6 +172,7 @@ export function Grid<T>({
     runningWidth: 0,
     vertStart,
     vertEnd,
+    pinnedColumn: "left",
   })
 
   const midRightItems = useScrollItems({
@@ -181,11 +182,12 @@ export function Grid<T>({
     dataWidths,
     getKey,
     horiStart: 0,
-    horiEnd: pinnedLeftCount,
+    horiEnd: pinnedRightCount,
     runningHeight,
     runningWidth: 0,
     vertStart,
     vertEnd,
+    pinnedColumn: "right",
   })
 
   const topLeftItems = useScrollItems({
@@ -200,6 +202,8 @@ export function Grid<T>({
     runningWidth: 0,
     vertStart: 0,
     vertEnd: pinnedTopCount,
+    pinnedColumn: "left",
+    pinnedRow: "top",
   })
 
   const topMidItems = useScrollItems({
@@ -213,7 +217,8 @@ export function Grid<T>({
     runningHeight: 0,
     runningWidth,
     vertStart: 0,
-    vertEnd: topMid.length,
+    vertEnd: pinnedTopCount,
+    pinnedRow: "top",
   })
 
   const topRightItems = useScrollItems({
@@ -223,11 +228,13 @@ export function Grid<T>({
     dataWidths,
     getKey,
     horiStart: 0,
-    horiEnd: pinnedLeftCount,
+    horiEnd: pinnedRightCount,
     runningHeight: 0,
     runningWidth: 0,
     vertStart: 0,
     vertEnd: pinnedTopCount,
+    pinnedColumn: "right",
+    pinnedRow: "top",
   })
 
   const botMidItems = useScrollItems({
@@ -241,7 +248,8 @@ export function Grid<T>({
     runningHeight: 0,
     runningWidth,
     vertStart: 0,
-    vertEnd: topMid.length,
+    vertEnd: pinnedBottomCount,
+    pinnedRow: "bottom",
   })
 
   const botLeftItems = useScrollItems({
@@ -256,6 +264,8 @@ export function Grid<T>({
     runningWidth: 0,
     vertStart: 0,
     vertEnd: pinnedBottomCount,
+    pinnedColumn: "left",
+    pinnedRow: "bottom",
   })
 
   const botRightItems = useScrollItems({
@@ -265,11 +275,13 @@ export function Grid<T>({
     dataWidths,
     getKey,
     horiStart: 0,
-    horiEnd: pinnedLeftCount,
+    horiEnd: pinnedRightCount,
     runningHeight: 0,
     runningWidth: 0,
     vertStart: 0,
     vertEnd: pinnedBottomCount,
+    pinnedColumn: "right",
+    pinnedRow: "top",
   })
 
   return (

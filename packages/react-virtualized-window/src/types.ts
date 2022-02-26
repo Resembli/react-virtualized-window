@@ -28,7 +28,7 @@ export interface VirtualWindowBaseProps<T> {
 export interface CellMeta {
   column: number
   row: number
-  pinned?: "left" | "right"
+  pinnedColumn?: "left" | "right"
   pinnedRow?: "top" | "bottom"
 }
 

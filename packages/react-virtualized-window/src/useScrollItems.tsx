@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { RenderItem } from "./RenderItem.js"
-import type { GridProps } from "./types.js"
+import type { CellMeta, GridProps } from "./types.js"
 
 interface ScrollItemArgs<T> {
   vertStart: number
@@ -13,6 +13,8 @@ interface ScrollItemArgs<T> {
   dataWidths: number[]
   runningHeight: number
   runningWidth: number
+  pinnedRow?: CellMeta["pinnedRow"]
+  pinnedColumn?: CellMeta["pinnedColumn"]
   getKey: GridProps<T>["getKey"]
   children: GridProps<T>["children"]
 }
@@ -27,6 +29,8 @@ export function useScrollItems<T>({
   horiStart,
   runningHeight,
   runningWidth,
+  pinnedRow,
+  pinnedColumn,
   vertEnd,
   vertStart,
 }: ScrollItemArgs<T>) {
@@ -51,6 +55,8 @@ export function useScrollItems<T>({
                   itemProps={cell}
                   column={horiStart + j}
                   row={vertStart + i}
+                  pinnedColumn={pinnedColumn}
+                  pinnedRow={pinnedRow}
                 />
               )
             })
@@ -81,6 +87,8 @@ export function useScrollItems<T>({
       getKey,
       horiEnd,
       horiStart,
+      pinnedColumn,
+      pinnedRow,
       runningHeight,
       runningWidth,
       vertEnd,
