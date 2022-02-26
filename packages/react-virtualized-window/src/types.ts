@@ -19,9 +19,6 @@ export interface VirtualWindowBaseProps<T> {
 
   pinnedTopCount?: number
   pinnedBottomCount?: number
-  pinnedLeftCount?: number
-  pinnedRightCount?: number
-
   "data-testid"?: string
 }
 
@@ -43,6 +40,9 @@ export interface GridProps<T> extends VirtualWindowBaseProps<T> {
   rowHeights?: NumberOrPercent[]
   defaultColumnWidth: NumberOrPercent
   columnWidths?: NumberOrPercent[]
+
+  pinnedLeftCount?: number
+  pinnedRightCount?: number
 }
 
 export type RenderItem<T> = GridProps<T>["children"]
