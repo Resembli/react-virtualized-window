@@ -1,5 +1,13 @@
 # @resembli/react-virtualized-window
 
+## 0.8.2
+
+### Patch Changes
+
+- [#171](https://github.com/Resembli/ui/pull/171) [`18efba3`](https://github.com/Resembli/ui/commit/18efba344d61ed4372426d92da2a7d5456a2e3e1) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Added support for pinned rows top and bottom
+
+* [#173](https://github.com/Resembli/ui/pull/173) [`4bd960f`](https://github.com/Resembli/ui/commit/4bd960fa23236d31844e7cc621c5112ee8fdcd61) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Added full support for pinned left and pinned right columns and pinned top and bottom rows
+
 ## 0.8.1
 
 ### Patch Changes
