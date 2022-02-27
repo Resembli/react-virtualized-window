@@ -4,3 +4,30 @@ body,
   margin: 0;
   height: 100%;
 }
+
+.table {
+  background-color: aliceblue;
+  display: block;
+  overflow: auto;
+  max-height: 500px;
+  height: 500px;
+  border-collapse: collapse;
+  transition: width 2s ease-in;
+}
+
+.thead {
+  background-color: green;
+  position: sticky;
+  top: 0;
+}
+
+.tbody {
+  display: block;
+}
+
+.tr {
+  line-height: 0px;
+  height: 20px;
+  max-height: 20px;
+  min-height: 20px;
+}

@@ -45,12 +45,13 @@ importers:
   packages/react-virtualized-window:
     specifiers: {}
 
-  packages/utils:
+  packages/virtual-table:
     specifiers: {}
 
   playgrounds:
     specifiers:
       '@resembli/react-virtualized-window': workspace:^
+      '@resembli/virtual-table': workspace:^
       '@stitches/core': ^1.2.6
       '@types/react': ^17.0.33
       '@types/react-dom': ^17.0.10
@@ -61,6 +62,7 @@ importers:
       vite: ^2.8.0
     dependencies:
       '@resembli/react-virtualized-window': link:../packages/react-virtualized-window
+      '@resembli/virtual-table': link:../packages/virtual-table
       '@stitches/core': 1.2.6
       react: 18.0.0-rc.0
       react-dom: 18.0.0-rc.0_react@18.0.0-rc.0
@@ -2512,7 +2514,7 @@ packages:
   /jsonfile/4.0.0:
     resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
     optionalDependencies:
-      graceful-fs: 4.2.8
+      graceful-fs: 4.2.9
     dev: true
 
   /jsx-ast-utils/3.2.1:
