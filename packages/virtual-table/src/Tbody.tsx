@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import * as React from "react"
 
 type TbodyIntrinsic = JSX.IntrinsicElements["tbody"]
 export interface TbodyProps<T> extends TbodyIntrinsic {
@@ -21,7 +21,7 @@ export function Tbody<T>({
   rowHeights,
   ...props
 }: TbodyProps<T>) {
-  const rows = useMemo(() => {
+  const rows = React.useMemo(() => {
     return rowItems.slice(startIndex, endIndex).map((row, i) => {
       const heightForRow = rowHeights[i + startIndex]
       const style = { minHeight: heightForRow, height: heightForRow, maxHeight: heightForRow }

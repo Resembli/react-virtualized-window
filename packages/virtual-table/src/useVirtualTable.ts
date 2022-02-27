@@ -1,5 +1,4 @@
-import type React from "react"
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react"
+import * as React from "react"
 
 interface UseVirtualTableArgs<T> {
   rowData: T[]
@@ -8,11 +7,11 @@ interface UseVirtualTableArgs<T> {
 }
 
 export function useVirtualTable<T>({ rowData, defaultHeight }: UseVirtualTableArgs<T>) {
-  const [topOffset, setTopOffset] = useState(0)
-  const [bodyHeight, setBodyHeight] = useState(0)
-  const tableRef = useRef<HTMLTableElement>(null)
+  const [topOffset, setTopOffset] = React.useState(0)
+  const [bodyHeight, setBodyHeight] = React.useState(0)
+  const tableRef = React.useRef<HTMLTableElement>(null)
 
-  useLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     const tHead = tableRef.current?.getElementsByTagName("thead")[0]
 
     const headHeight = tHead?.clientHeight ?? 0
@@ -21,36 +20,36 @@ export function useVirtualTable<T>({ rowData, defaultHeight }: UseVirtualTableAr
     setBodyHeight(bodyHeight)
   }, [])
 
-  const totalHeight = useMemo(() => {
+  const totalHeight = React.useMemo(() => {
     return defaultHeight * rowData.length
   }, [defaultHeight, rowData.length])
 
-  const startIndex = useMemo(() => {
+  const startIndex = React.useMemo(() => {
     return Math.floor(topOffset / defaultHeight)
   }, [defaultHeight, topOffset])
 
-  const endIndex = useMemo(() => {
+  const endIndex = React.useMemo(() => {
     return bodyHeight / defaultHeight + startIndex + 1
   }, [bodyHeight, defaultHeight, startIndex])
 
-  const runningHeight = useMemo(() => startIndex * defaultHeight, [defaultHeight, startIndex])
-  const remainingHeight = useMemo(
+  const runningHeight = React.useMemo(() => startIndex * defaultHeight, [defaultHeight, startIndex])
+  const remainingHeight = React.useMemo(
     () => totalHeight - runningHeight - bodyHeight,
     [bodyHeight, runningHeight, totalHeight],
   )
 
-  const onScroll: React.UIEventHandler = useCallback(
+  const onScroll: React.UIEventHandler = React.useCallback(
     (e) => {
       setTopOffset(Math.min(e.currentTarget.scrollTop, totalHeight - bodyHeight))
     },
     [bodyHeight, totalHeight],
   )
 
-  const tableProps = useMemo(() => {
+  const tableProps = React.useMemo(() => {
     return { ref: tableRef, onScroll }
   }, [onScroll])
 
-  const bodyProps = useMemo(() => {
+  const bodyProps = React.useMemo(() => {
     return {
       startIndex,
       endIndex,

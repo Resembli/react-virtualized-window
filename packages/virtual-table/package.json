@@ -1,7 +1,7 @@
 {
   "name": "@resembli/virtual-table",
   "description": "React component for creating semantic virtualized tables",
-  "private": true,
+  "private": false,
   "author": "Lee Beydoun",
   "version": "0.0.0",
   "types": "src/index.ts",
