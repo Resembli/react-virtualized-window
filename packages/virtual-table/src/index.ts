@@ -1,1 +1,3 @@
-export { VirtualTable } from "./VirtualTable"
+export { Table } from "./Table"
+export { Tbody } from "./Tbody"
+export { useVirtualTable } from "./useVirtualTable"
