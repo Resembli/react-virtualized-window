@@ -1,77 +1,71 @@
 import { css } from "@stitches/core"
-import { useState } from "react"
+import { useMemo } from "react"
 
-import { Grid } from "@resembli/react-virtualized-window"
+import { Table, Tbody, useVirtualTable } from "@resembli/virtual-table"
 
 const AppCss = css({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  flexDirection: "column",
   width: "100%",
   height: "100%",
   background: "Beige",
 })
 
-const ItemCss = css({
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  background: "Azure",
-  variants: {
-    odd: {
-      true: {
-        background: "grey",
-      },
-    },
-    pinned: {
-      true: {
-        background: "Bisque",
-      },
-    },
-  },
-})
+const names = ["Lee", "Bob", "Aya", "Sam"]
 
-const data = Array.from({ length: 1000 }, (_, row) => {
-  return Array.from({ length: 100 }, (_, column) => {
-    return [row, column]
+const generateData = () => {
+  return Array.from({ length: 1000 }, (_, i) => {
+    const wins = Math.ceil(Math.random() * 20)
+    const draws = Math.ceil(Math.random() * 20)
+    const losses = Math.ceil(Math.random() * 20)
+    const total = wins + losses + draws
+
+    return [i, names[i % 4], wins, draws, losses, total]
   })
-})
+}
 
 function App() {
-  const [disableSticky, setStickyDisabled] = useState(false)
+  const data = useMemo(() => generateData(), [])
+
+  const { tableProps, bodyProps } = useVirtualTable({ rowData: data, defaultHeight: 20 })
 
   return (
     <div className={AppCss()}>
-      <div>
-        <label>
-          disableStick:
-          <input
-            type="checkbox"
-            checked={disableSticky}
-            onChange={(e) => setStickyDisabled(e.target.checked)}
-          />
-        </label>
-      </div>
-      <Grid
-        defaultColumnWidth={100}
-        defaultRowHeight={100}
-        data={data}
-        width="70%"
-        height="70%"
-        disableSticky={disableSticky}
+      <Table
+        style={{
+          backgroundColor: "aliceblue",
+          height: 500,
+          maxHeight: 500,
+        }}
+        {...tableProps}
       >
-        {({ data, style, cellMeta }) => (
-          <div
-            style={style}
-            className={ItemCss({
-              odd: (data[0] + data[1]) % 2 === 1,
-              pinned: !!cellMeta.pinnedRow || !!cellMeta.pinnedColumn,
-            })}
-          >
-            {data[0]},{data[1]}
-          </div>
-        )}
-      </Grid>
+        <thead>
+          <tr>
+            <th style={{ width: 100 }}>#</th>
+            <th style={{ width: 100 }}>Name</th>
+            <th style={{ width: 100 }}>Wins</th>
+            <th style={{ width: 100 }}>Draws</th>
+            <th style={{ width: 100 }}>Losses</th>
+            <th style={{ width: 100 }}>Total</th>
+          </tr>
+        </thead>
+        <Tbody {...bodyProps}>
+          {({ data: row, style }) => {
+            return (
+              <tr style={style}>
+                <td>{row[0]}</td>
+                <td>{row[1]}</td>
+                <td>{row[2]}</td>
+                <td>{row[3]}</td>
+                <td>{row[4]}</td>
+                <td>{row[5]}</td>
+              </tr>
+            )
+          }}
+        </Tbody>
+      </Table>
     </div>
   )
 }

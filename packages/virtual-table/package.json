@@ -1,0 +1,47 @@
+{
+  "name": "@resembli/virtual-table",
+  "description": "React component for creating semantic virtualized tables",
+  "private": false,
+  "author": "Lee Beydoun",
+  "version": "0.0.0",
+  "types": "src/index.ts",
+  "main": "src/index.ts",
+  "type": "module",
+  "publishConfig": {
+    "main": "dist/index.js",
+    "types": "dist/types/index.d.ts"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "react-components",
+    "virtualized",
+    "infinite-scrolling",
+    "table"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Resembli/ui.git",
+    "directory": "packages/virtual-table"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Resembli/ui/issues"
+  },
+  "homepage": "https://www.resembli.com/docs/",
+  "scripts": {
+    "build": "swc ./src -d dist && tsc",
+    "clean": "rimraf dist",
+    "clean:build": "rimraf dist && swc ./src -d dist && tsc"
+  },
+  "peerDependencies": {
+    "@types/react": "^16.8.6 || ^17.0.0",
+    "react": "^17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
+  },
+  "sideEffects": false
+}
