@@ -1,7 +1,8 @@
 import { css } from "@stitches/core"
 import { useMemo } from "react"
 
-import { Table, Tbody, useVirtualTable } from "@resembli/virtual-table"
+import type { RowRendererType } from "@resembli/virtual-table"
+import { useVirtualTable } from "@resembli/virtual-table"
 
 const AppCss = css({
   display: "flex",
@@ -26,20 +27,39 @@ const generateData = () => {
   })
 }
 
+const RowItem: RowRendererType<(string | number)[]> = ({ data: row, style }) => {
+  return (
+    <tr style={style}>
+      <td>{row[0]}</td>
+      <td>{row[1]}</td>
+      <td>{row[2]}</td>
+      <td>{row[3]}</td>
+      <td>{row[4]}</td>
+      <td>{row[5]}</td>
+    </tr>
+  )
+}
+
 function App() {
   const data = useMemo(() => generateData(), [])
 
-  const { tableProps, bodyProps } = useVirtualTable({ rowData: data, defaultHeight: 20 })
+  const { tableProps, rows } = useVirtualTable({
+    rowData: data,
+    defaultHeight: 20,
+    RowRenderer: RowItem,
+  })
+
+  const { style, ...otherTableProps } = tableProps
 
   return (
     <div className={AppCss()}>
-      <Table
+      <table
         style={{
-          backgroundColor: "aliceblue",
+          ...style,
           height: 500,
           maxHeight: 500,
         }}
-        {...tableProps}
+        {...otherTableProps}
       >
         <thead>
           <tr>
@@ -51,21 +71,8 @@ function App() {
             <th style={{ width: 100 }}>Total</th>
           </tr>
         </thead>
-        <Tbody {...bodyProps}>
-          {({ data: row, style }) => {
-            return (
-              <tr style={style}>
-                <td>{row[0]}</td>
-                <td>{row[1]}</td>
-                <td>{row[2]}</td>
-                <td>{row[3]}</td>
-                <td>{row[4]}</td>
-                <td>{row[5]}</td>
-              </tr>
-            )
-          }}
-        </Tbody>
-      </Table>
+        <tbody>{rows}</tbody>
+      </table>
     </div>
   )
 }
