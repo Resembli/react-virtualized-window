@@ -29,13 +29,13 @@ const generateData = () => {
 
 const RowItem: RowRendererType<(string | number)[]> = ({ data: row, style }) => {
   return (
-    <tr style={style}>
-      <td>{row[0]}</td>
-      <td>{row[1]}</td>
-      <td>{row[2]}</td>
-      <td>{row[3]}</td>
-      <td>{row[4]}</td>
-      <td>{row[5]}</td>
+    <tr style={{ ...style }}>
+      <td style={{ width: 100 }}>{row[0]}</td>
+      <td style={{ width: 100 }}>{row[1]}</td>
+      <td style={{ width: 100 }}>{row[2]}</td>
+      <td style={{ width: 100 }}>{row[3]}</td>
+      <td style={{ width: 100 }}>{row[4]}</td>
+      <td style={{ width: 100 }}>{row[5]}</td>
     </tr>
   )
 }
@@ -43,24 +43,15 @@ const RowItem: RowRendererType<(string | number)[]> = ({ data: row, style }) => 
 function App() {
   const data = useMemo(() => generateData(), [])
 
-  const { tableProps, rows } = useVirtualTable({
+  const { tableStyle, bodyStyle, bodyProps, rows } = useVirtualTable({
     rowData: data,
     defaultHeight: 20,
     RowRenderer: RowItem,
   })
 
-  const { style, ...otherTableProps } = tableProps
-
   return (
     <div className={AppCss()}>
-      <table
-        style={{
-          ...style,
-          height: 500,
-          maxHeight: 500,
-        }}
-        {...otherTableProps}
-      >
+      <table style={tableStyle}>
         <thead>
           <tr>
             <th style={{ width: 100 }}>#</th>
@@ -71,7 +62,9 @@ function App() {
             <th style={{ width: 100 }}>Total</th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody style={{ ...bodyStyle, height: 500, maxHeight: 500 }} {...bodyProps}>
+          {rows}
+        </tbody>
       </table>
     </div>
   )
