@@ -40,12 +40,23 @@ const RowItem: RowRendererType<(string | number)[]> = ({ data: row, style }) => 
   )
 }
 
+const rowHeights = Array.from({ length: 1000 }, (_, i) => [20, 40, 20, 60][i % 4]).reduce(
+  (acc, h, i) => {
+    acc[i] = h
+
+    return acc
+  },
+  {} as Record<number, number>,
+)
+
+console.log(rowHeights)
 function App() {
   const data = useMemo(() => generateData(), [])
 
   const { tableStyle, bodyStyle, bodyProps, rows } = useVirtualTable({
     rowData: data,
     defaultHeight: 20,
+
     RowRenderer: RowItem,
   })
 
