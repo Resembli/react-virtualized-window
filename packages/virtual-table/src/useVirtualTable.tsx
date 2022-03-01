@@ -16,13 +16,10 @@ export function useVirtualTable<T>({
 }: UseVirtualTableArgs<T>) {
   const [topOffset, setTopOffset] = React.useState(0)
   const [bodyHeight, setBodyHeight] = React.useState(0)
-  const tableRef = React.useRef<HTMLTableElement>(null)
+  const tableRef = React.useRef<HTMLTableSectionElement>(null)
 
-  React.useLayoutEffect(() => {
-    const tHead = tableRef.current?.getElementsByTagName("thead")[0]
-
-    const headHeight = tHead?.clientHeight ?? 0
-    const bodyHeight = Math.max((tableRef.current?.clientHeight ?? 0) - headHeight, 0)
+  React.useEffect(() => {
+    const bodyHeight = Math.max(tableRef.current?.clientHeight ?? 0, 0)
 
     setBodyHeight(bodyHeight)
   }, [])
@@ -69,12 +66,18 @@ export function useVirtualTable<T>({
     )
   }, [RowRenderer, defaultHeight, endIndex, remainingHeight, rowData, runningHeight, startIndex])
 
-  const tableProps = React.useMemo(() => {
-    return { ref: tableRef, onScroll, style: { display: "block", overflow: "auto" } }
+  const [bodyStyle, bodyProps, tableStyle] = React.useMemo(() => {
+    return [
+      { display: "block", overflow: "auto" },
+      { ref: tableRef, onScroll },
+      { display: "block" },
+    ] as const
   }, [onScroll])
 
   return {
-    tableProps,
+    tableStyle,
+    bodyStyle,
+    bodyProps,
     rows,
   }
 }
