@@ -56,7 +56,6 @@ function App() {
   const { tableStyle, bodyStyle, bodyProps, rows } = useVirtualTable({
     rowData: data,
     defaultHeight: 20,
-
     RowRenderer: RowItem,
   })
 
