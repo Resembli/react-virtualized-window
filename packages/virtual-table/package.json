@@ -3,7 +3,7 @@
   "description": "React component for creating semantic virtualized tables",
   "private": false,
   "author": "Lee Beydoun",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "types": "src/index.ts",
   "main": "src/index.ts",
   "type": "module",
