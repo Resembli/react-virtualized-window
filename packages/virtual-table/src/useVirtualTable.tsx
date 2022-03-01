@@ -12,6 +12,7 @@ interface UseVirtualTableArgs<T> {
 export function useVirtualTable<T>({
   rowData,
   defaultHeight,
+  rowHeights,
   RowRenderer,
 }: UseVirtualTableArgs<T>) {
   const [topOffset, setTopOffset] = React.useState(0)
@@ -24,22 +25,62 @@ export function useVirtualTable<T>({
     setBodyHeight(bodyHeight)
   }, [])
 
-  const totalHeight = React.useMemo(() => {
-    return defaultHeight * rowData.length
-  }, [defaultHeight, rowData.length])
+  const [totalHeight, maxDim] = React.useMemo(() => {
+    if (!rowHeights) return [defaultHeight * rowData.length, defaultHeight]
 
-  const startIndex = React.useMemo(() => {
-    return Math.floor(topOffset / defaultHeight)
-  }, [defaultHeight, topOffset])
+    let maxDim = defaultHeight
+    let height = 0
 
-  const endIndex = React.useMemo(() => {
-    return bodyHeight / defaultHeight + startIndex + 1
-  }, [bodyHeight, defaultHeight, startIndex])
+    for (let i = 0; i < rowData.length; i++) {
+      const itemDim = rowHeights[i] ?? defaultHeight
+      height += itemDim
+      maxDim = Math.max(maxDim, itemDim)
+    }
 
-  const runningHeight = React.useMemo(() => startIndex * defaultHeight, [defaultHeight, startIndex])
+    return [height, maxDim]
+  }, [defaultHeight, rowData, rowHeights])
+
+  const [startIndex, endIndex, runningHeight] = React.useMemo(() => {
+    let start = 0
+    let runningTotal = 0
+
+    while (runningTotal < Math.max(0, topOffset - maxDim)) {
+      const itemDim = rowHeights?.[start] ?? defaultHeight
+
+      // If the itemDim is less than zero then the window calculations are not complete. To
+      // avoid creating a NaN value, we simply break out of the loop.
+      if (itemDim + runningTotal > topOffset || itemDim < 0) break
+
+      start++
+      runningTotal += itemDim
+    }
+
+    let end = start
+    let endingTotal = runningTotal
+
+    while (endingTotal < topOffset + bodyHeight) {
+      const itemDim = rowHeights?.[end] ?? defaultHeight
+
+      endingTotal += itemDim
+      end++
+    }
+
+    return [start, end, runningTotal]
+  }, [bodyHeight, defaultHeight, maxDim, rowHeights, topOffset])
+
+  const renderedHeight = React.useMemo(() => {
+    let height = 0
+    for (let i = startIndex; i < endIndex; i++) {
+      height += rowHeights?.[i] ?? defaultHeight
+    }
+    return height
+  }, [defaultHeight, endIndex, rowHeights, startIndex])
+
+  console.log(totalHeight, runningHeight, renderedHeight)
+
   const remainingHeight = React.useMemo(
-    () => totalHeight - runningHeight - bodyHeight,
-    [bodyHeight, runningHeight, totalHeight],
+    () => totalHeight - runningHeight - renderedHeight,
+    [renderedHeight, runningHeight, totalHeight],
   )
 
   const onScroll: React.UIEventHandler = React.useCallback(
@@ -51,7 +92,7 @@ export function useVirtualTable<T>({
 
   const rows = React.useMemo(() => {
     const userRows = rowData.slice(startIndex, endIndex).map((row, i) => {
-      const heightForRow = defaultHeight
+      const heightForRow = rowHeights?.[startIndex + i] ?? defaultHeight
       const style = { minHeight: heightForRow, height: heightForRow, maxHeight: heightForRow }
 
       return <RowRenderer key={i + startIndex} data={row} style={style} />
@@ -64,7 +105,16 @@ export function useVirtualTable<T>({
         <tr style={{ height: remainingHeight }} aria-hidden />
       </>
     )
-  }, [RowRenderer, defaultHeight, endIndex, remainingHeight, rowData, runningHeight, startIndex])
+  }, [
+    RowRenderer,
+    defaultHeight,
+    endIndex,
+    remainingHeight,
+    rowData,
+    rowHeights,
+    runningHeight,
+    startIndex,
+  ])
 
   const [bodyStyle, bodyProps, tableStyle] = React.useMemo(() => {
     return [
