@@ -6,6 +6,7 @@ interface UseVirtualTableArgs<T> {
   rowData: T[]
   RowRenderer: RowRendererType<T>
   defaultHeight: number
+  overscan?: number
   rowHeights?: Record<number | string, number>
 }
 
@@ -13,6 +14,7 @@ export function useVirtualTable<T>({
   rowData,
   defaultHeight,
   rowHeights,
+  overscan = 2,
   RowRenderer,
 }: UseVirtualTableArgs<T>) {
   const [topOffset, setTopOffset] = React.useState(0)
@@ -44,7 +46,7 @@ export function useVirtualTable<T>({
     let start = 0
     let runningTotal = 0
 
-    while (runningTotal < Math.max(0, topOffset - maxDim)) {
+    while (runningTotal < Math.max(0, topOffset - maxDim - overscan * maxDim)) {
       const itemDim = rowHeights?.[start] ?? defaultHeight
 
       // If the itemDim is less than zero then the window calculations are not complete. To
@@ -66,7 +68,7 @@ export function useVirtualTable<T>({
     }
 
     return [start, end, runningTotal]
-  }, [bodyHeight, defaultHeight, maxDim, rowHeights, topOffset])
+  }, [bodyHeight, defaultHeight, maxDim, overscan, rowHeights, topOffset])
 
   const renderedHeight = React.useMemo(() => {
     let height = 0
