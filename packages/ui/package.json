@@ -1,0 +1,51 @@
+{
+  "name": "@resembli/ui",
+  "description": "React UI components",
+  "private": false,
+  "author": "Lee Beydoun",
+  "version": "0.0.0",
+  "types": "src/index.ts",
+  "main": "src/index.ts",
+  "type": "module",
+  "publishConfig": {
+    "main": "dist/index.js",
+    "types": "dist/types/index.d.ts"
+  },
+  "keywords": [
+    "react",
+    "reactjs"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Resembli/ui.git",
+    "directory": "packages/ui"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Resembli/ui/issues"
+  },
+  "homepage": "https://www.resembli.com",
+  "scripts": {
+    "build": "swc ./src -d dist && tsc",
+    "clean": "rimraf dist",
+    "clean:build": "rimraf dist && swc ./src -d dist && tsc"
+  },
+  "peerDependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
+    "@types/react-dom": {
+      "optional": true
+    }
+  },
+  "sideEffects": false,
+  "dependencies": {
+    "framer-motion": "^6.2.8"
+  }
+}
