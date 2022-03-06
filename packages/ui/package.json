@@ -31,21 +31,21 @@
     "clean:build": "rimraf dist && swc ./src -d dist && tsc"
   },
   "peerDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "@types/react": "^16.8.6 || ^17.0.0",
+    "react": "^17.0.0"
   },
   "peerDependenciesMeta": {
     "@types/react": {
-      "optional": true
-    },
-    "@types/react-dom": {
       "optional": true
     }
   },
   "sideEffects": false,
   "dependencies": {
-    "framer-motion": "^6.2.8"
+    "@stitches/core": "^1.2.6"
+  },
+  "devDependencies": {
+    "framer-motion": "^6.2.8",
+    "react": "^18.0.0-rc.1",
+    "react-dom": "^18.0.0-rc.0"
   }
 }

@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "@resembli/react-virtualized-window": "workspace:^",
+    "@resembli/ui": "workspace:^0.0.1",
     "@stitches/core": "^1.2.6",
+    "framer-motion": "^6.2.8",
     "react": "^18.0.0-rc.0",
     "react-dom": "^18.0.0-rc.0"
   },
