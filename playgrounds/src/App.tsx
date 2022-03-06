@@ -1,43 +1,26 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+import { TreeNode, TreeRoot } from "@resembli/ui"
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <div style={{ width: 500, height: 500, border: "1px solid black", margin: "200px auto" }}>
+        <TreeRoot>
+          <TreeNode item="Applications">
+            <TreeNode item="Calendar" />
+            <TreeNode item="Chrome" />
+            <TreeNode item="WebStorm" />
+          </TreeNode>
+          <TreeNode item="Documents">
+            <TreeNode item="OSS" />
+            <TreeNode item="UI">
+              <TreeNode item="src">
+                <TreeNode item="index.js" />
+                <TreeNode item="tree-view.js" />
+              </TreeNode>
+            </TreeNode>
+          </TreeNode>
+        </TreeRoot>
+      </div>
     </div>
   )
 }

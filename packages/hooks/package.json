@@ -9,7 +9,11 @@
   "type": "module",
   "publishConfig": {
     "main": "dist/index.js",
-    "types": "dist/types/index.d.ts"
+    "types": "dist/types/index.d.ts",
+    "exports": {
+      ".": "./dist/index.ts",
+      "./useToggle": "./dist/useToggle.ts"
+    }
   },
   "keywords": [
     "react",
@@ -17,7 +21,8 @@
     "react-hooks"
   ],
   "exports": {
-    "./useToggle": "./dist/useToggle.js"
+    ".": "./src/index.ts",
+    "./useToggle": "./src/useToggle.ts"
   },
   "repository": {
     "type": "git",
