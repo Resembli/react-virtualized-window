@@ -1,5 +1,11 @@
 # @resembli/react-virtualized-window
 
+## 0.8.4
+
+### Patch Changes
+
+- [#189](https://github.com/Resembli/ui/pull/189) [`bdd8af2`](https://github.com/Resembli/ui/commit/bdd8af251be81ea545a6f1ea14b70e346e1a10ef) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Transpile target is now es2022.
+
 ## 0.8.3
 
 ### Patch Changes
