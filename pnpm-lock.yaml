@@ -47,11 +47,13 @@ importers:
 
   packages/ui:
     specifiers:
+      '@resembli/hooks': workspace:^0.0.0
       '@stitches/core': ^1.2.7
       framer-motion: ^6.2.8
       react: ^18.0.0-rc.1
       react-dom: ^18.0.0-rc.0
     dependencies:
+      '@resembli/hooks': link:../hooks
       '@stitches/core': 1.2.7
     devDependencies:
       framer-motion: 6.2.8_1453817e42a13f5aecc2255adc2ee96f
