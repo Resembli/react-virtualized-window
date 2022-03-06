@@ -36,7 +36,7 @@
   },
   "homepage": "https://www.resembli.com/docs/react-virtualized-window/",
   "scripts": {
-    "build": "swc ./src -d dist && tsc",
+    "build": "swc ./src -d dist --config-file ../.swcrc && tsc",
     "clean": "rimraf dist",
     "clean:build": "rimraf dist && swc ./src -d dist && tsc"
   },

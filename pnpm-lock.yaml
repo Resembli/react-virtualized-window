@@ -47,12 +47,12 @@ importers:
 
   packages/ui:
     specifiers:
-      '@stitches/core': ^1.2.6
+      '@stitches/core': ^1.2.7
       framer-motion: ^6.2.8
       react: ^18.0.0-rc.1
       react-dom: ^18.0.0-rc.0
     dependencies:
-      '@stitches/core': 1.2.6
+      '@stitches/core': 1.2.7
     devDependencies:
       framer-motion: 6.2.8_1453817e42a13f5aecc2255adc2ee96f
       react: 18.0.0-rc.1
@@ -62,7 +62,7 @@ importers:
     specifiers:
       '@resembli/react-virtualized-window': workspace:^
       '@resembli/ui': workspace:^0.0.1
-      '@stitches/core': ^1.2.6
+      '@stitches/core': ^1.2.7
       '@types/react': ^17.0.33
       '@types/react-dom': ^17.0.10
       '@vitejs/plugin-react': ^1.0.7
@@ -74,7 +74,7 @@ importers:
     dependencies:
       '@resembli/react-virtualized-window': link:../packages/react-virtualized-window
       '@resembli/ui': link:../packages/ui
-      '@stitches/core': 1.2.6
+      '@stitches/core': 1.2.7
       framer-motion: 6.2.8_757a802188413a36d4f24237d13b8e90
       react: 18.0.0-rc.0
       react-dom: 18.0.0-rc.0_react@18.0.0-rc.0
@@ -884,8 +884,8 @@ packages:
       picomatch: 2.3.0
     dev: true
 
-  /@stitches/core/1.2.6:
-    resolution: {integrity: sha512-nDGhYDZw74uL7D4FYwpya2Sgr1LucsdrF7Nr6Ut4jQD49sBK36S2eC2oCAlfAX0JksH0QVfOrWwUipp3uaID1w==}
+  /@stitches/core/1.2.7:
+    resolution: {integrity: sha512-2bSto+jqPjeODcdNvwuXduhUH5b1bROmGNSBj/EVOGk8a8dIdCnoZyXYSxdKlKA9SnedBg94qNO0QQAMvTAz3w==}
     dev: false
 
   /@swc/cli/0.1.55_@swc+core@1.2.138:
