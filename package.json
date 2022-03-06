@@ -38,7 +38,7 @@
     "lint": "eslint . --ext .ts --ext .tsx --ext .js --ext .jsx --ignore-path .gitignore --max-warnings=0",
     "prettier": "prettier --check ./**/*.{ts,tsx}",
     "build-packages": "pnpm run build --stream --parallel --filter \"{packages}\"",
-    "ci:version": "pnpm changeset version && pnpm install",
+    "ci:version": "pnpm changeset version && pnpm install --no-frozen-lockfile && git add .",
     "ci:publish": "pnpm changeset tag && pnpm -r --filter \"{packages}\" publish --no-git-checks --access=public"
   }
 }
