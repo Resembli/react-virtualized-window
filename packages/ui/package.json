@@ -3,7 +3,7 @@
   "description": "React UI components",
   "private": false,
   "author": "Lee Beydoun",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "types": "src/index.ts",
   "main": "src/index.ts",
   "type": "module",
@@ -41,7 +41,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@resembli/hooks": "workspace:^0.0.0",
+    "@resembli/hooks": "workspace:^0.0.1",
     "@stitches/core": "^1.2.7"
   },
   "devDependencies": {
