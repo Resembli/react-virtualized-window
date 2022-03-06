@@ -3,7 +3,7 @@
   "description": "Reusable React hooks",
   "private": false,
   "author": "Lee Beydoun",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "types": "src/index.ts",
   "main": "src/index.ts",
   "type": "module",
