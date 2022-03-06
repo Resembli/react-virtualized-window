@@ -1,5 +1,7 @@
 import { css } from "@stitches/core"
 
+import { TreeNode, TreeRoot } from "@resembli/ui"
+
 const AppCss = css({
   display: "flex",
   alignItems: "center",
@@ -10,18 +12,28 @@ const AppCss = css({
   background: "Beige",
 })
 
-const rowHeights = Array.from({ length: 1000 }, (_, i) => [20, 40, 20, 60][i % 4]).reduce(
-  (acc, h, i) => {
-    acc[i] = h
-
-    return acc
-  },
-  {} as Record<number, number>,
-)
-
-console.log(rowHeights)
 function App() {
-  return <div className={AppCss()}></div>
+  return (
+    <div className={AppCss()}>
+      <div style={{ height: 500, width: 500, border: "1px solid black" }}>
+        <TreeRoot>
+          <TreeNode item={<div>Applications</div>}>
+            <TreeNode item="Calendar" />
+            <TreeNode item="Chrome" />
+            <TreeNode item="Webstorm" />
+          </TreeNode>
+          <TreeNode item={<div>Documents</div>}>
+            <TreeNode item="UI">
+              <TreeNode item="src">
+                <TreeNode item="index.js" />
+                <TreeNode item="tree-view.js" />
+              </TreeNode>
+            </TreeNode>
+          </TreeNode>
+        </TreeRoot>
+      </div>
+    </div>
+  )
 }
 
 export default App
