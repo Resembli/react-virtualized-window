@@ -1,9 +1,9 @@
 {
-  "name": "@resembli/ui",
-  "description": "React UI components",
+  "name": "@resembli/hooks",
+  "description": "Reusable React hooks",
   "private": false,
   "author": "Lee Beydoun",
-  "version": "0.0.2",
+  "version": "0.0.0",
   "types": "src/index.ts",
   "main": "src/index.ts",
   "type": "module",
@@ -13,8 +13,12 @@
   },
   "keywords": [
     "react",
-    "reactjs"
+    "reactjs",
+    "react-hooks"
   ],
+  "exports": {
+    "./useToggle": "./dist/useToggle.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Resembli/ui.git",
@@ -39,14 +43,5 @@
       "optional": true
     }
   },
-  "sideEffects": false,
-  "dependencies": {
-    "@resembli/hooks": "workspace:^0.0.0",
-    "@stitches/core": "^1.2.7"
-  },
-  "devDependencies": {
-    "framer-motion": "^6.2.8",
-    "react": "^18.0.0-rc.1",
-    "react-dom": "^18.0.0-rc.0"
-  }
+  "sideEffects": false
 }

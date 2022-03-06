@@ -1,5 +1,7 @@
 import * as React from "react"
 
+import { useToggle } from "@resembli/hooks"
+
 import { css } from "../../css/css.js"
 import { Collapse } from "../Collapse.js"
 import { useTreeContext } from "./TreeRoot.js"
@@ -32,7 +34,7 @@ interface InternalTreeProps extends TreeNodeProps {
 }
 
 export function TreeNode({ children, ...props }: React.PropsWithChildren<TreeNodeProps>) {
-  const [open, setOpen] = React.useState(false)
+  const [open, toggleOpen] = useToggle()
 
   const { item, __depth = 0 } = props as InternalTreeProps
 
@@ -61,7 +63,7 @@ export function TreeNode({ children, ...props }: React.PropsWithChildren<TreeNod
   return (
     <li className={NodeCss()}>
       <div
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={toggleOpen}
         className={NodeItemCss({ css: { paddingLeft: __depth && indentValue } })}
       >
         {item}
