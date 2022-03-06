@@ -26,7 +26,7 @@
   },
   "homepage": "https://www.resembli.com",
   "scripts": {
-    "build": "swc ./src -d dist && tsc",
+    "build": "swc ./src -d dist --config-file ../.swcrc && tsc",
     "clean": "rimraf dist",
     "clean:build": "rimraf dist && swc ./src -d dist && tsc"
   },
@@ -41,7 +41,7 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@stitches/core": "^1.2.6"
+    "@stitches/core": "^1.2.7"
   },
   "devDependencies": {
     "framer-motion": "^6.2.8",
