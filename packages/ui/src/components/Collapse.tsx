@@ -1,8 +1,4 @@
 import * as React from "react"
-import type { CSSProperties, PropsWithChildren } from "react"
-import { useState } from "react"
-import { useRef } from "react"
-import { useEffect } from "react"
 
 import { css, keyframes } from "../css/css"
 
@@ -28,7 +24,7 @@ export interface CollapseProps {
   open: boolean
   as?: keyof JSX.IntrinsicElements
   className?: string
-  style?: CSSProperties
+  style?: React.CSSProperties
 }
 
 export function Collapse({
@@ -37,18 +33,18 @@ export function Collapse({
   className,
   style,
   as = "div",
-}: PropsWithChildren<CollapseProps>) {
-  const [height, setHeight] = useState(0)
-  const [mounted, setMounted] = useState(false)
+}: React.PropsWithChildren<CollapseProps>): JSX.Element | null {
+  const [height, setHeight] = React.useState(0)
+  const [mounted, setMounted] = React.useState(false)
 
-  const ref = useRef<HTMLUListElement>(null)
+  const ref = React.useRef<HTMLUListElement>(null)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
+  React.useEffect(() => {
     ref.current && setHeight(ref.current.scrollHeight)
   })
 
-  useEffect(() => {
+  React.useEffect(() => {
     open && setMounted(open)
   }, [open])
 
