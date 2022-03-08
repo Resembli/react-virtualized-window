@@ -10,7 +10,6 @@
   "dependencies": {
     "@resembli/hooks": "workspace:^0.0.1",
     "@resembli/ui": "workspace:^0.0.3",
-    "framer-motion": "^6.2.8",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
