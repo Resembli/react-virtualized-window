@@ -27,14 +27,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Resembli/ui.git",
+    "url": "git+https://github.com/Resembli/react-virtualized-window.git",
     "directory": "packages/react-virtualized-window"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Resembli/ui/issues"
+    "url": "https://github.com/Resembli/react-virtualized-window/issues"
   },
-  "homepage": "https://www.resembli.com/docs/react-virtualized-window/",
+  "homepage": "https://react-virtualized-window.com",
   "scripts": {
     "build": "swc ./src -d dist --config-file ../.swcrc && tsc",
     "clean": "rimraf dist",

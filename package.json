@@ -1,18 +1,18 @@
 {
-  "name": "@resembli/root",
+  "name": "@resembli/react-virtualized-window-root",
   "version": "0.0.1",
-  "description": "root directory of @resembli/ui",
+  "description": "root directory of @resembli/react-virtualized-window",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Resembli/ui.git"
+    "url": "git+https://github.com/Resembli/react-virtualized-window.git"
   },
   "author": "Lee Beydoun",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Resembli/ui/issues"
+    "url": "https://github.com/Resembli/react-virtualized-window/issues"
   },
-  "homepage": "https://github.com/Resembli/ui",
+  "homepage": "https://github.com/Resembli/react-virtualized-window",
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.2",
     "@changesets/cli": "^2.20.0",
