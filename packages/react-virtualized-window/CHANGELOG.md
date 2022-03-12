@@ -1,5 +1,11 @@
 # @resembli/react-virtualized-window
 
+## 0.8.6
+
+### Patch Changes
+
+- [`71a7aba`](https://github.com/Resembli/react-virtualized-window/commit/71a7abaa45aab6f8c9938619699c57a135779a41) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Update package.json for the virtual window package.
+
 ## 0.8.5
 
 ### Patch Changes
