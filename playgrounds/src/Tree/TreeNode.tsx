@@ -1,9 +1,9 @@
-import { css } from "@stitches/core"
+import { css } from "@stitches/react"
 import * as React from "react"
 
 import { useToggle } from "@resembli/hooks"
 
-import { Collapse } from "../Collapse.js"
+import { Collapse } from "../Collapse"
 import { useTreeContext } from "./TreeRoot.js"
 
 const NodeCss = css({

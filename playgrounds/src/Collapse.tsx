@@ -1,4 +1,4 @@
-import { css, keyframes } from "@stitches/core"
+import { css, keyframes } from "@stitches/react"
 import * as React from "react"
 
 const openAnimation = keyframes({
