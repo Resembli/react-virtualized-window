@@ -8,7 +8,7 @@
 where only the dom element visible to the user are rendered. Using the components in this package it's possible to render lists or
 grids with 100,000s of items without any noticeable impact on rendering performance.
 
-See the [@resembli/react-virtualized-window](https://react-virtualized-window.com).
+See the [@resembli/react-virtualized-window](https://react-virtualized-window.com) documentation.
 
 ```sh
 npm install @resembli/react-virtualized-window
