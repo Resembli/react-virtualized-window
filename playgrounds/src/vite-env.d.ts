@@ -1,8 +1,7 @@
 /// <reference types="vite/client" />
-import type { VarsType } from "./VariantTest"
+import type { Variants } from "./theme"
 
 declare module "@resembli/variants-types" {
-  export interface ComponentVariants extends VarsType {
-    _: unknown
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  export interface ComponentVariants extends Variants {}
 }

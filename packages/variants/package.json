@@ -17,7 +17,7 @@
   },
   "homepage": "https://www.resembli.com",
   "scripts": {
-    "build": "swc ./src -d dist --config-file ../.swcrc && tsc",
+    "build": "echo skipped",
     "clean": "rimraf dist",
     "clean:build": "rimraf dist && swc ./src -d dist && tsc"
   }

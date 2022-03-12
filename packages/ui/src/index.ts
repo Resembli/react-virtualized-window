@@ -12,9 +12,10 @@ export type { TreeNodeProps } from "./components/Tree/TreeNode.js"
 export { Box } from "./components/Box.js"
 export type { BoxProps } from "./components/Box.js"
 
-export { Flex } from "./components/Flex.js"
-export type { FlexProps } from "./components/Flex"
-
-export { css, keyframes } from "./css/css"
-
+// Styling and theming exports
+export { VariantProvider } from "./providers/VariantProvider.js"
+export * from "@stitches/core"
 export type ExtractVariant<T> = T extends CssComponent<unknown, infer K> ? K : never
+export type MakeComponentVariants<T extends { Box: unknown }> = {
+  [k in keyof T]: ExtractVariant<T[k]>
+}

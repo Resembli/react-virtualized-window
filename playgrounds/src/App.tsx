@@ -1,11 +1,15 @@
-import { Box, Flex } from "@resembli/ui"
+import { Box } from "@resembli/ui"
+import { VariantProvider } from "@resembli/ui/src/providers/VariantProvider"
+
+import { ComponentVariants } from "./theme"
 
 function App() {
   return (
-    <div className="App">
-      <Box flex />
-      <Flex lee bob="x" />
-    </div>
+    <VariantProvider value={ComponentVariants}>
+      <div className="App">
+        <Box pSpace="dense" align="center" justify="center" />
+      </div>
+    </VariantProvider>
   )
 }
 

@@ -2,11 +2,11 @@ import * as React from "react"
 
 import type { ComponentVariants } from "@resembli/variants-types"
 
-export type BoxProps = {
-  as?: string
-} & ComponentVariants["Box"]
+import { useVariantCss } from "../providers/VariantProvider"
+
+export type BoxProps = ComponentVariants["Box"]
 
 export function Box(props: BoxProps) {
-  console.log(props)
-  return <div>Lee</div>
+  const sx = useVariantCss("Box")
+  return <div className={sx && sx({ ...(props as Record<string, unknown>) })}>Lee</div>
 }
