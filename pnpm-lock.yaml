@@ -51,15 +51,21 @@ importers:
   packages/ui:
     specifiers:
       '@resembli/hooks': workspace:^0.0.1
+      '@resembli/variants-types': workspace:^0.0.0
       '@stitches/core': ^1.2.7
     dependencies:
       '@resembli/hooks': link:../hooks
+      '@resembli/variants-types': link:../variants
       '@stitches/core': 1.2.7
+
+  packages/variants:
+    specifiers: {}
 
   playgrounds:
     specifiers:
       '@resembli/hooks': workspace:^0.0.1
       '@resembli/ui': workspace:^0.0.3
+      '@resembli/variants-types': workspace:^0.0.0
       '@types/react': ^17.0.33
       '@types/react-dom': ^17.0.10
       '@vitejs/plugin-react': ^1.0.7
@@ -70,6 +76,7 @@ importers:
     dependencies:
       '@resembli/hooks': link:../packages/hooks
       '@resembli/ui': link:../packages/ui
+      '@resembli/variants-types': link:../packages/variants
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     devDependencies:

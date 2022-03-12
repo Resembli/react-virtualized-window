@@ -1,27 +1,15 @@
-import { TreeNode, TreeRoot } from "@resembli/ui"
+import { Box } from "@resembli/ui"
+import { VariantProvider } from "@resembli/ui/src/providers/VariantProvider"
+
+import { ComponentVariants } from "./theme"
 
 function App() {
   return (
-    <div className="App">
-      <div style={{ width: 500, height: 500, border: "1px solid black", margin: "200px auto" }}>
-        <TreeRoot>
-          <TreeNode item="Applications">
-            <TreeNode item="Calendar" />
-            <TreeNode item="Chrome" />
-            <TreeNode item="WebStorm" />
-          </TreeNode>
-          <TreeNode item="Documents">
-            <TreeNode item="OSS" />
-            <TreeNode item="UI">
-              <TreeNode item="src">
-                <TreeNode item="index.js" />
-                <TreeNode item="tree-view.js" />
-              </TreeNode>
-            </TreeNode>
-          </TreeNode>
-        </TreeRoot>
+    <VariantProvider value={ComponentVariants}>
+      <div className="App">
+        <Box pSpace="dense" align="center" justify="center" />
       </div>
-    </div>
+    </VariantProvider>
   )
 }
 

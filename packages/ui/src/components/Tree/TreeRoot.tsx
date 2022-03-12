@@ -1,6 +1,5 @@
+import { css } from "@stitches/core"
 import * as React from "react"
-
-import { css } from "../../css/css.js"
 
 const TreeRootCss = css({
   margin: 0,
