@@ -1,5 +1,11 @@
 # @resembli/react-virtualized-window
 
+## 0.8.5
+
+### Patch Changes
+
+- [#202](https://github.com/Resembli/ui/pull/202) [`ce9800b`](https://github.com/Resembli/ui/commit/ce9800b1f8d605d512abe0d13f61501bb3990c18) Thanks [@leebeydoun](https://github.com/leebeydoun)! - Removed other supporting packages.
+
 ## 0.8.4
 
 ### Patch Changes
