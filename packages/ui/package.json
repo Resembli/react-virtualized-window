@@ -41,8 +41,6 @@
   },
   "sideEffects": false,
   "dependencies": {
-    "@resembli/hooks": "workspace:^0.0.1",
-    "@resembli/variants-types": "workspace:^0.0.0",
-    "@stitches/core": "^1.2.7"
+    "@resembli/hooks": "workspace:^0.0.1"
   }
 }

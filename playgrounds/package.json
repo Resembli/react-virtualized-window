@@ -10,7 +10,7 @@
   "dependencies": {
     "@resembli/hooks": "workspace:^0.0.1",
     "@resembli/ui": "workspace:^0.0.3",
-    "@resembli/variants-types": "workspace:^0.0.0",
+    "@stitches/react": "^1.2.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

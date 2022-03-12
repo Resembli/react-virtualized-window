@@ -3,7 +3,6 @@ import { css } from "./css"
 
 export const BoxCss = css(commonVariants, {
   display: "flex",
-  border: "1px solid black",
   variants: {
     align: {
       center: { alignItems: "center" },
@@ -23,6 +22,21 @@ export const BoxCss = css(commonVariants, {
     column: {
       true: { flexDirection: "column" },
       reverse: { flexDirection: "column-reverse" },
+    },
+  },
+})
+
+const shellAreas = `
+"nav nav nav"
+"sidebar app control"
+`
+
+export const GridCss = css(commonVariants, {
+  variants: {
+    layout: {
+      shell: {
+        gridTemplateAreas: shellAreas,
+      },
     },
   },
 })

@@ -51,21 +51,14 @@ importers:
   packages/ui:
     specifiers:
       '@resembli/hooks': workspace:^0.0.1
-      '@resembli/variants-types': workspace:^0.0.0
-      '@stitches/core': ^1.2.7
     dependencies:
       '@resembli/hooks': link:../hooks
-      '@resembli/variants-types': link:../variants
-      '@stitches/core': 1.2.7
-
-  packages/variants:
-    specifiers: {}
 
   playgrounds:
     specifiers:
       '@resembli/hooks': workspace:^0.0.1
       '@resembli/ui': workspace:^0.0.3
-      '@resembli/variants-types': workspace:^0.0.0
+      '@stitches/react': ^1.2.7
       '@types/react': ^17.0.33
       '@types/react-dom': ^17.0.10
       '@vitejs/plugin-react': ^1.0.7
@@ -76,7 +69,7 @@ importers:
     dependencies:
       '@resembli/hooks': link:../packages/hooks
       '@resembli/ui': link:../packages/ui
-      '@resembli/variants-types': link:../packages/variants
+      '@stitches/react': 1.2.7_react@17.0.2
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     devDependencies:
@@ -874,8 +867,12 @@ packages:
       picomatch: 2.3.0
     dev: true
 
-  /@stitches/core/1.2.7:
-    resolution: {integrity: sha512-2bSto+jqPjeODcdNvwuXduhUH5b1bROmGNSBj/EVOGk8a8dIdCnoZyXYSxdKlKA9SnedBg94qNO0QQAMvTAz3w==}
+  /@stitches/react/1.2.7_react@17.0.2:
+    resolution: {integrity: sha512-6AxpUag7OW55ANzRnuy7R15FEyQeZ66fytVo3BBilFIU0mfo3t49CAMcEAL/A1SbhSj/FCdWkn/XrbjGBTJTzg==}
+    peerDependencies:
+      react: '>= 16.3.0'
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /@swc/cli/0.1.55_@swc+core@1.2.138:
