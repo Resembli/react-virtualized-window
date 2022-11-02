@@ -41,8 +41,8 @@
     "clean:build": "rimraf dist && swc ./src -d dist && tsc"
   },
   "peerDependencies": {
-    "@types/react": "^16.8.6 || ^17.0.0",
-    "react": "^17.0.0"
+    "@types/react": "^17.0.0 || ^18.0.0",
+    "react": "^17.0.0 || ^18.0.0"
   },
   "peerDependenciesMeta": {
     "@types/react": {
