@@ -1,5 +1,11 @@
 # @resembli/react-virtualized-window
 
+## 1.0.0
+
+### Major Changes
+
+- [#209](https://github.com/Resembli/react-virtualized-window/pull/209) [`3fdfcf3`](https://github.com/Resembli/react-virtualized-window/commit/3fdfcf313b238f2c2d49161c8664b463b2240bea) Thanks [@leebeydoun](https://github.com/leebeydoun)! - First stable release
+
 ## 0.8.6
 
 ### Patch Changes
